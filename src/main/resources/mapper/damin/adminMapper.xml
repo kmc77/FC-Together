@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.together.mapper.admin.adminMapper">
+
+    <!-- 사용자 인증을 위한 SELECT 문 실행 -->
+    <select id="authenticateUser" parameterType="com.project.together.User" resultType="boolean">
+        SELECT COUNT(*) FROM Auth WHERE auth_id = #{authId} AND auth_pw = #{authPw}
+    </select>
+
+    <!-- &lt;!&ndash; 사용자 추가를 위한 INSERT 문 실행 &ndash;&gt;
+     <insert id="addUser" parameterType="com.project.together.User">
+         INSERT INTO Auth (auth_id, auth_name, auth_pw, auth_admin, auth_manager)
+         VALUES (#{authId}, #{authName}, #{authPw}, #{authAdmin}, #{authManager})
+     </insert>
+
+     &lt;!&ndash; 사용자 정보 조회를 위한 SELECT 문 실행 &ndash;&gt;
+     <select id="getUser" parameterType="String" resultType="com.project.together.User">
+         SELECT * FROM Auth WHERE auth_id = #{authId}
+     </select>-->
+
+
+</mapper>

@@ -46,4 +46,14 @@ public class MemberService {
     public void deleteMember(String memberId) {
         memberMapper.deleteMember(memberId);
     }
+
+    public Member getMemberByUsername(String username) {
+        Member member = memberMapper.getMemberByUsername(username);
+
+        if (member == null) {
+            System.out.printf("사용자명이 없습니다." + username);
+        }
+        return member;
+    }
+
 }

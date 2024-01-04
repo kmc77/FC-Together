@@ -15,4 +15,13 @@ public class Member {
     private String memberBirth;
     private String memberAddress;
     private String memberLikePlayer;
+
+
+    public String getPassword() {
+        return memberPw;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
 }

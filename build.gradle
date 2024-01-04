@@ -32,6 +32,9 @@ dependencies {
 	// Spring Security 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
+	//Jwt 토큰 의존성
+	implementation "io.jsonwebtoken:jjwt:0.9.1"
+
 }
 
 

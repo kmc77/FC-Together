@@ -94,46 +94,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-  /*  @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http
-                .csrf().disable(); //일반 사용자에 대해 Session을 저장하지 않으므로 csrf을 disable 처리함.
-
-        http
-                .authorizeRequests()
-                .antMatchers("/admin").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/swagger-ui.html").hasRole("ADMIN")
-                .antMatchers("/schedule/insert", "/schedule/update", "/schedule/delete").hasRole("ADMIN")
-                .antMatchers("/comment/insert", "/comment/update", "/comment/delete").hasRole("ADMIN")
-                .anyRequest().permitAll();
-
-        http
-                .formLogin()
-                .loginPage("/admin")
-                .loginProcessingUrl("/admin/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler);
-
-        http
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/admin")
-                .invalidateHttpSession(true);
-*/
 }

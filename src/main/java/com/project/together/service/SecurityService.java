@@ -20,14 +20,14 @@ public class SecurityService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberService.getMemberByUsername(username);
+    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
+        Member member = memberService.getMemberById(memberId);
         if (member == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Invalid memberId or password.");
         }
 
         SecurityUser user = new SecurityUser(member);
-        UserDetails userDetails = User.withUsername(username)
+        UserDetails userDetails = User.withUsername(memberId)
                 .password(user.getPassword())
                 .authorities(user.getAuthorities())
                 .build();

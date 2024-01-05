@@ -1,0 +1,14 @@
+package com.project.together.domain;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class Player {
+    private int playerNum;
+    private String playerName;
+    private String playerCapYn;
+    private String playerSubcapYn;
+    private String playerPosition;
+}

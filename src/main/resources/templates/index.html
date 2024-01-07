@@ -9,7 +9,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            background-color: #f0f0f0;
             height: 80px;
         }
 
@@ -22,13 +21,13 @@
             margin-left: 10px;
         }
 
-        .logo {
-            margin-right: auto;
-            margin-left: 20px; /* Adjust the margin as needed */
+        #logoImg {
+            height:100px;
+            width:100px;
         }
 
+
         .gnbBox {
-            background-color: #f0f0f0;
             clear: both;
         }
 
@@ -43,37 +42,42 @@
         }
 
         .mainMenu {
-            margin-right: 20px;
+            margin-right: 120px;
         }
-
+        .totalTop {
+        height:100px;
+        }
     </style>
 </head>
 <body>
-<div class="top">
-    <div class="logo">
-        <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
-            <img th:src="@{/FcTogether.jpg}" alt="">
-        </a>
+<div class="totalTop">
+
+    <div class="top">
+        <div class="logo">
+            <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
+                <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
+            </a>
+        </div>
+
+        <div class="utils">
+            <a href="/member/signin" class="link">로그인</a>
+            <a href="/member/signup/1" class="link">회원가입</a>
+        </div>
     </div>
 
-    <div class="utils">
-        <a href="/member/signin" class="link">로그인</a>
-        <a href="/member/signup/1" class="link">회원가입</a>
-    </div>
-</div>
-
-<div class="gnbBox">
-    <div class="container">
-        <ul class="mainMenuBox">
-            <li class="mainMenu"> CLUB</li>
-            <li class="mainMenu"> TEAM</li>
-            <li class="mainMenu "> MATCH</li>
-            <li class="mainMenu"> TICKET</li>
-            <li class="mainMenu"> HISTORY</li>
-            <li class="mainMenu"> RECORD</li>
-            <li class="mainMenu"> MEDIA</li>
-            <li class="mainMenu"> FAN ZONE</li>
-        </ul>
+    <div class="gnbBox">
+        <div class="container">
+            <ul class="mainMenuBox">
+                <li class="mainMenu"> CLUB</li>
+                <li class="mainMenu"> TEAM</li>
+                <li class="mainMenu "> MATCH</li>
+                <li class="mainMenu"> TICKET</li>
+                <li class="mainMenu"> HISTORY</li>
+                <li class="mainMenu"> RECORD</li>
+                <li class="mainMenu"> MEDIA</li>
+                <li class="mainMenu"> FAN ZONE</li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>

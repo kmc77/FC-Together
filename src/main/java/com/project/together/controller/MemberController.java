@@ -21,6 +21,9 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-
+    @GetMapping("/member/JoinForm2")
+    public String showJoinForm() {
+        return "member/JoinForm2";
+    }
 
 }

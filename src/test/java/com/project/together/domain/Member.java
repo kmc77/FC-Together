@@ -16,7 +16,5 @@ public class Member {
     private String memberAddress;
     private String memberLikePlayer;
 
-    public String getPassword() {
 
-    }
 }

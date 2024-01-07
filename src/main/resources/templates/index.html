@@ -3,12 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Team Staff Detail</title>
+    <style>
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            height: 80px;
+        }
+
+        .utils {
+            display: flex;
+            align-items: center;
+        }
+
+        .utils a {
+            margin-left: 10px;
+        }
+
+        .logo {
+            margin-right: auto;
+            margin-left: 20px; /* Adjust the margin as needed */
+        }
+
+        .gnbBox {
+            background-color: #f0f0f0;
+            clear: both;
+        }
+
+        .mainMenuBox {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            align-items: center !important;
+            margin: auto !important;
+            justify-content: center !important;
+            align-self: stretch !important;
+        }
+
+        .mainMenu {
+            margin-right: 20px;
+        }
+
+    </style>
 </head>
 <body>
-        <span th:text="${teamStaffList.teamName}"></span>
-        <span th:text="${teamStaffList.teamStaffName}"></span>
-        <span th:text="${teamStaffList.teamStaffRole}"></span>
-        <span th:text="${teamStaffList.teamLeagueGb}"></span>
+<div class="top">
+    <div class="logo">
+        <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
+            <img th:src="@{/FcTogether.jpg}" alt="">
+        </a>
+    </div>
 
+    <div class="utils">
+        <a href="/member/signin" class="link">로그인</a>
+        <a href="/member/signup/1" class="link">회원가입</a>
+    </div>
+</div>
+
+<div class="gnbBox">
+    <div class="container">
+        <ul class="mainMenuBox">
+            <li class="mainMenu"> CLUB</li>
+            <li class="mainMenu"> TEAM</li>
+            <li class="mainMenu "> MATCH</li>
+            <li class="mainMenu"> TICKET</li>
+            <li class="mainMenu"> HISTORY</li>
+            <li class="mainMenu"> RECORD</li>
+            <li class="mainMenu"> MEDIA</li>
+            <li class="mainMenu"> FAN ZONE</li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>

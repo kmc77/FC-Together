@@ -34,8 +34,8 @@ public class MemberService {
     }
 
     //회원 정보 입력
-    public void insertMember(Member member) {
-        memberMapper.insertMember(member);
+    public void joinMember(Member member) {
+        memberMapper.joinMember(member);
     }
 
     //회원 정보 수정
@@ -47,6 +47,5 @@ public class MemberService {
     public void deleteMember(String memberId) {
         memberMapper.deleteMember(memberId);
     }
-
 
 }

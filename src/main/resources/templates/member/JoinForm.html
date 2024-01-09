@@ -1,10 +1,218 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>JoinForm</title>
+    <style>
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            height: 80px;
+        }
+
+        .utils {
+            display: flex;
+            align-items: center;
+        }
+
+        .utils a {
+            margin-left: 10px;
+        }
+
+        #logoImg {
+            height:100px;
+            width:100px;
+        }
+
+
+        .gnbBox {
+            clear: both;
+        }
+
+        .mainMenuBox {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            align-items: center !important;
+            margin: auto !important;
+            justify-content: center !important;
+            align-self: stretch !important;
+        }
+
+        .mainMenu {
+            margin-right: 120px;
+        }
+        .totalTop {
+        height:100px;
+        }
+        .container2 {
+        margin-top: 100px;
+}
+    </style>
 </head>
 <body>
+<script>
 
+
+</script>
+<div class="totalTop">
+
+    <div class="top">
+        <div class="logo">
+            <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
+                <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
+            </a>
+        </div>
+
+        <div class="utils">
+            <a href="/member/signin" class="link">로그인</a>
+            <a th:href="@{/member/JoinForm}" class="link">회원가입</a>
+        </div>
+    </div>
+
+    <div class="gnbBox">
+        <div class="container">
+            <ul class="mainMenuBox">
+                <li class="mainMenu"> CLUB</li>
+                <li class="mainMenu"> TEAM</li>
+                <li class="mainMenu "> MATCH</li>
+                <li class="mainMenu"> TICKET</li>
+                <li class="mainMenu"> HISTORY</li>
+                <li class="mainMenu"> RECORD</li>
+                <li class="mainMenu"> MEDIA</li>
+                <li class="mainMenu"> FAN ZONE</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="container2">
+    <div data-v-6f0ce499="" class="memberBox wide myinfo">
+        <div data-v-6f0ce499="" class="tabs"><a data-v-6f0ce499="" href="/member/myinfo/sns" class="tab sns"><span
+                data-v-6f0ce499="">SNS 연동</span></a><a data-v-6f0ce499="" href="/member/myinfo/info"
+                                                       class="tab router-link-exact-active router-link-active info"
+                                                       aria-current="page"><span data-v-6f0ce499="">정보수정</span></a><a
+                data-v-6f0ce499="" href="/member/myinfo/withdraw" class="tab withdraw"><span
+                data-v-6f0ce499="">탈퇴</span></a></div>
+        <div data-v-b36d270c="" data-v-6f0ce499="" class="myinfoBox">
+            <div data-v-b36d270c="" class="topTitle">
+                <div data-v-b36d270c="" class="title">정보수정</div>
+                <div data-v-b36d270c="" class="subTitle">FC투게더 웹사이트 회원 정보 수정하실 항목을 수정하세요.<span data-v-b36d270c=""
+                                                                                               class="pcBreak">필수항목은 모두 기입하셔야 정보수정이 가능합니다.</span>
+                </div>
+            </div>
+
+
+            <form action="member/join" method="post">
+                <div class="formGroup">
+                    <label class="label">아이디 <span class="required">(필수)</span></label>
+                    <input type="text" name="id" class="input">
+                    <input type='button' id="id_butt" value='중복확인' style="">
+                </div>
+                <div class="formGroup">
+                    <label class="label">비밀번호 변경</label>
+                    <input type="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
+                    <p class="inputMessage">영어 대/소문자, 특수문자, 숫자를 조합한 9~20자리로 입력하세요</p>
+                </div>
+                <div class="formGroup">
+                    <label class="label">비밀번호 확인</label>
+                    <input type="password" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" class="input">
+                </div>
+                <div class="formGroup">
+                    <label class="label">이름 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" name="name" class="input">
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label class="label">성별 <span class="required">(필수)</span></label>
+                    <div>
+                        <input type="radio" id="male" name="gender" value="male">
+                        <label for="male">남성</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">여성</label>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="label">휴대폰번호 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" class="input">
+                        <button type="button" class="btn whiteLightgrey">휴대폰 변경</button>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="label">이메일 주소 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="email" placeholder="이메일 주소를 입력하세요" class="input">
+                        <button type="button" onclick="checkEmailDuplicate()" class="btn whiteLightgrey">이메일 중복체크
+                        </button>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
+                    <div class="textarea height110">
+                        FC투게더 주식회사(이하 FC투게더)는 FC투게더 웹사이트 이용자(정보주체)를 대상으로 맞춤형 마케팅을 진행하기 위하여 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를
+                        받고 있습니다.<br><br>
+                        ① 마케팅 목적으로 처리하는 개인정보 항목<br>
+                        : 이름, 휴대폰번호, 생년월일, 성별, 우편번호, 좋아하는 선수, 티켓 구매내역, 웹사이트 접속 빈도<br><br>
+                        ② 개인정보의 세부 처리 목적<br>
+                        - 서비스 안내 및 개선에 활용 : 경기 관람을 위한 정보 안내, 서비스 및 만족도 조사, 회원의 서비스 이용 통계 집계 및 분석, 신규 서비스 개발을 위한 리서치<br>
+                        - 맞춤형 마케팅에 활용 : 접속 빈도, 티켓 구매내역에 따른 포인트 지급, 쿠폰 제공<br>
+                        - 맞춤형 메시지 발송에 활용 : 전자적 전송매체를 이용한 이벤트 정보, 프로모션 정보 등의 광고성 메시지 발송<br><br>
+                        ③ 개인정보 수집 방법<br>
+                        - FC투게더 운영하는 FC투게더 웹사이트 회원가입을 통한 수집<br>
+                        - 티켓예매 위탁사를 통한 수집(개인정보의 제3자 제공)<br><br>
+                        ④ 개인정보 보유 및 이용 기간<br>
+                        : 회원탈퇴 또는 동의 철회 시<br><br>
+                        ⑤ 동의를 거부할 권리 및 동의 거부 시 불이익<br>
+                        : 이용자(정보주체)는 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를 거부할 권리가 있습니다.<br><br>
+                        단, 동의를 거부하는 경우에는 포인트 지급(적립 및 사용)이 어려우며 경품, 맞춤형 쿠폰 제공이 어렵습니다. 그 밖의 불이익은 없습니다.<br>
+                    </div>
+                </div>
+                <div class="checkAgree">
+                    <div class="checkbox radio">
+                        <input type="radio" name="agreeSms" id="agree_sms_y" value="Y">
+                        <label for="agree_sms_y">동의</label>
+                    </div>
+                    <div class="checkbox radio">
+                        <input type="radio" name="agreeSms" id="agree_sms_n" value="N">
+                        <label for="agree_sms_n">미동의</label>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="label">우편번호 검색 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" name="postalCode" placeholder="우편번호를 검색하세요" class="input">
+                        <button type="submit" class="btn whiteLightgrey">우편번호 검색</button>
+                    </div>
+                    <div class="zipcodeWrap"></div>
+                </div>
+
+
+                <div class="formGroup">
+                    <label class="label">좋아하는 선수 <span class="required">(필수)</span></label>
+                    <select class="input" name="favoritePlayer">
+                        <option value="">선택하세요</option>
+                        <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}"></option>
+                    </select>
+                </div>
+
+
+                <div class="">
+                    <button type="button" class="">회원가입</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

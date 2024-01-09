@@ -1,0 +1,46 @@
+  .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            height: 80px;
+        }
+header
+        .utils {
+            display: flex;
+            align-items: center;
+        }
+
+        .utils a {
+            margin-left: 10px;
+        }
+
+        #logoImg {
+            height:100px;
+            width:100px;
+        }
+
+
+        .gnbBox {
+            clear: both;
+        }
+
+        .mainMenuBox {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            align-items: center !important;
+            margin: auto !important;
+            justify-content: center !important;
+            align-self: stretch !important;
+        }
+
+        .mainMenu {
+            margin-right: 120px;
+        }
+        .totalTop {
+        height:100px;
+        }
+        .container2 {
+        margin-top: 100px;
+}

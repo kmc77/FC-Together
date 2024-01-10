@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.project.together.mapper.MemberMapper">
 
+    <select id="getMemberById" parameterType="String" resultType="com.project.together.domain.Member">
+        SELECT * FROM Member WHERE member_id = #{memberId}
+    </select>
+
+
+    <select id="getAllMembers" resultType="com.project.together.domain.Member">
+        SELECT * FROM Member
+    </select>
+
+    <update id="updateMember" parameterType="com.project.together.domain.Member">
+        UPDATE Member SET member_name = #{name}, member_gender = #{gender}, member_phone = #{phone}, member_email =
+        #{email}, member_birth = #{birth}, member_address = #{address}, member_like_player = #{likePlayer} WHERE
+        member_id = #{memberId}
+    </update>
+
+    <delete id="deleteMember" parameterType="String">
+        DELETE FROM Member WHERE member_id = #{memberId}
+    </delete>
+
+    <insert id="joinMember" parameterType="com.project.together.domain.Member">
+        INSERT INTO Member (member_id, member_pw, member_name, member_gender, member_phone, member_email, member_birth,
+        member_address, member_like_player) VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{phone}, #{email},
+        #{birth}, #{address}, #{likePlayer})
+    </insert>
 
 </mapper>

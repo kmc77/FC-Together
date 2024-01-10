@@ -48,4 +48,12 @@ public class MemberService {
         memberMapper.deleteMember(memberId);
     }
 
+
+    //ID 중복검사
+    public boolean idCheck(String memberId) {
+        Member member = memberMapper.getMemberById(memberId);
+        return member == null;
+    }
+
+
 }

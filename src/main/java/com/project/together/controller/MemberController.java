@@ -1,14 +1,13 @@
 package com.project.together.controller;
 
 import com.project.together.domain.Member;
-import com.project.together.domain.TeamStaff;
 import com.project.together.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +26,18 @@ public class MemberController {
     public String showJoinForm() {
         return "member/JoinForm";
     }
+
+
+    @GetMapping("/idCheck")
+    public ResponseEntity<String> idCheck(@RequestParam String memberId) {
+        boolean isIdAvailable = memberService.idCheck(memberId);
+        if (isIdAvailable) {
+            return ResponseEntity.ok("해당 ID는 사용 가능합니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("해당 ID는 이미 사용 중입니다.");
+        }
+    }
+
 
     @PostMapping("/join")
     public String joinMember(Member member) {

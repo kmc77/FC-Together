@@ -47,7 +47,7 @@
                 data: { memberId: input_id },
                 success: function (resp) {
                     console.log("ID ​​중복 확인 결과:", resp); // 콘솔 출력
-                    if (resp == -1) {
+                    if (resp === -1) {
                         $("#message").css('color', 'green').html("사용 가능한 ID입니다.");
                         checkid = true;
                         idcheck = input_id;
@@ -120,7 +120,7 @@
                 <div class="formGroup">
                     <label class="label">아이디 <span class="required">(필수)</span></label>
                     <input type="text" id="showId" name="id" class="input">
-                    <input type='button' id="id_butt" value='중복확인' style="">
+                    <input type="button" id="id_butt" value="중복확인">
                 </div>
                 <div class="formGroup">
                     <label class="label">비밀번호 변경</label>

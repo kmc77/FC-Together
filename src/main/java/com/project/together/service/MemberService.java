@@ -49,10 +49,16 @@ public class MemberService {
     }
 
 
-    //ID 중복검사
+  /*  //ID 중복검사
     public boolean idCheck(String memberId) {
         Member member = memberMapper.getMemberById(memberId);
         return member == null;
+    }*/
+
+    //ID 중복검사
+    public int idCheck(String memberId) {
+        Member member = memberMapper.idCheck(memberId);
+        return (member == null) ? -1 : 1;
     }
 
 

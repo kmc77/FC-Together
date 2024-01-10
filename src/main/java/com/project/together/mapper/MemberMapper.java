@@ -19,4 +19,5 @@ public interface MemberMapper {
 
     void joinMember(Member member);
 
+    Member idCheck(String memberId);
 }

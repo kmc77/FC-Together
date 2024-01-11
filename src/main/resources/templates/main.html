@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- Include the header.html file -->
+    <th:block th:include="layout/header"></th:block>
+</head>
+<body>
+<div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+<!--            <div th:each="#" class="swiper-slide">-->
+<!--                <img th:src="${#}">-->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 4100,
+        },
+        speed: 500,
+    })
+</script>
+</body>
+</html>

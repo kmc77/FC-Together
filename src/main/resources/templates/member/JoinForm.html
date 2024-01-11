@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>JoinForm</title>
     <link rel="stylesheet" href="/css/main/header.css">
+    <th:block th:include="layout/header"></th:block>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
@@ -11,37 +12,24 @@
     $(function () {
         let checkid = false;
         let checkemail = false;
-        let idcheck = ''; // 중복 ID 확인 결과를 저장할 변수 추가
+        let idcheck = ''; // 중복 ID 확인 결과를 저장하는 변수 추가
 
         function checkId(id) {
             return id === idcheck;
         }
 
-        // 중복 확인 버튼 클릭 핸들러 추가
+        // 중복 확인 버튼 클릭 핸들러에 중복 ID 검사 로직 추가
         $("#id_butt").click(function () {
             const pattern = /^\w{5,12}$/;
             const input_id = $("#showId").val();
 
             if (!pattern.test(input_id)) {
-                $("#message").css('color', 'red').html("5~12자의 영문자/숫자를 입력하세요.");
+                $("#message").css('color', 'red').html("5~12자의 영문/숫자를 입력하세요.");
                 checkid = false;
                 return;
             }
 
-            // Enter 키 입력 시 폼 제출 방지
-            $("#signupForm").on("keydown", function (e) {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-
-            // 버튼 클릭 시 폼 제출
-            $("#submit_btn").on("click", function () {
-                $("#signupForm").submit();
-            });
-
-            // 서버로 중복 ID 확인 요청을 보내는 ajax 코드
+            // 서버에 중복 ID 확인 요청을 보내는 ajax 코드
             $.ajax({
                 url: "idCheck",
                 data: { memberId: input_id },
@@ -61,19 +49,19 @@
         });
 
         $("#cancel_btn").on("click", function () {
-            location.href = "투게더 메인경로";
+            location.href = "메인 경로";
         });
 
-        // 회원가입 양식 제출 이벤트 리스너 등록
-        $("#signupForm").submit(function (e) {
-            // 필요한 변수 가져오기
-            var id = $("#showId").val().trim();
-            var password = $('#password').val().trim();
-            var date_birth = $('#date_birth').val().trim();
-            var phone = $('#phone').val().trim();
-            var email = $("#email").val().trim();
+       // 회원가입 버튼 클릭 이벤트 핸들러
+    $("#signup_butt").click(function () {
+        // 필요한 변수 가져오기
+        var id = $("#showId").val().trim();
+        var password = $('#password').val().trim();
+        var date_birth = $('#date_birth').val().trim();
+        var phoneNumber = $('#phoneNumber').val().trim();
+        var email = $("#email").val().trim();
 
-            // 중복된 생년월일 확인
+            // 생년월일 중복 확인
             if (!date_birth) {
                 alert("생년월일을 입력하세요");
                 $("input[name='date_birth']").val('').focus();
@@ -83,7 +71,7 @@
             // 생년월일 유효성 검사
             const dateOfBirthPattern = /^(19|20)\d\d-(0\d|1[0-2])-(0\d|1\d|2\d|3[01])$/; // YYYY-MM-DD 형식
             if (!dateOfBirthPattern.test(date_birth)) {
-                alert("올바른 생년월일을 YYYY-MM-DD 형식으로 입력하세요");
+                alert("올바른 형식의 생년월일을 YYYY-MM-DD 형식으로 입력하세요");
                 $('#date_birth').val('').focus();
                 return false;
             }
@@ -95,7 +83,7 @@
                 return false;
             }
 
-            // ID 중복 확인
+            // ID 중복 확인 여부 체크
             if (!checkid) {
                 alert("ID의 사용 가능 여부를 확인하세요.");
                 $("#showId").focus();
@@ -113,26 +101,32 @@
                 return false;
             }
 
-            // 비밀번호 유효성 검사 확인
+            // 비밀번호 유효성 검사
             $("input[name=password]").on('keyup', function () {
                 const password = $(this).val();
-                const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,12}$/;
+                const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,12 }$/;
 
                 if (!pattern.test(password)) {
-                    $("#password_message").css('color', 'red').html("영문/숫자/특수문자를 모두 포함한 6~12자리로 비밀번호를 작성하세요.");
+                    $("#password_message").css('color', 'red').html("모든 문자/숫자/특수 문자를 포함하여 6~12자의 비밀번호를 작성하세요.");
                     checkpassword = false;
                 } else {
                     $("#password_message").css('color', 'green').html("비밀번호 형식이 올바릅니다.");
                     checkpassword = true;
                 }
+                if (id === '' || password === '') {
+                    alert("필수 필드를 모두 입력하세요.");
+                    return false;
+                }
             });
 
-            // 이메일 입력 확인 및 유효성 검사
+            // 이메일 입력 확인
             if (email == '') {
                 alert("이메일을 입력하세요");
                 $('#email').focus();
                 return false;
             }
+
+            // 이메일 유효성 검사
             var pattern = /^[A-Za-z0-9_]{1,100}@[A-Za-z0-9_]{1,100}\.[A-Za-z0-9]{2,3}$/;
             if (!pattern.test(email)) {
                 alert("이메일 형식을 확인하세요");
@@ -140,61 +134,20 @@
                 return false;
             }
 
-            // 카테고리 선택 확인
-            var categories = $('input[name="userCategory"]:checked').length;
-            if (categories === 0) {
-                alert("채널의 주제로 삼을 카테고리를 선택하세요");
-                return false;
-            }
-
             // 전화번호 유효성 검사
-            var phone = $('#phone').val();
-            if (phone.trim().length == 13 || phone.trim().length == 14) {
+            var phoneNumber = $('#phoneNumber').val();
+            if (phoneNumber.trim().length == 13 || phoneNumber.trim().length == 14) {
                 const pattern = /^[0-9]{3,4}-[0-9]{4}-[0-9]{4}$/;
-                if (!pattern.test(phone)) {
-                    alert("전화번호를 올바른 형식으로 입력하세요")
-                    $('#phone').val('').focus();
+                if (!pattern.test(phoneNumber)) {
+                    alert("올바른 형식으로 전화번호를 입력하세요")
+                    $('#phoneNumber').val('').focus();
                     return false;
                 }
             }
-        });//submit end
+        }); // submit end
     });
 </script>
-
-
-<div class="totalTop">
-
-    <div class="top">
-        <div class="logo">
-            <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
-                <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
-            </a>
-        </div>
-
-        <div class="utils">
-            <a href="/member/signin" class="link">로그인</a>
-            <a th:href="@{/member/JoinForm}" class="link">회원가입</a>
-        </div>
-    </div>
-
-    <div class="gnbBox">
-        <div class="container">
-            <ul class="mainMenuBox">
-                <li class="mainMenu"> CLUB</li>
-                <li class="mainMenu"> TEAM</li>
-                <li class="mainMenu "> MATCH</li>
-                <li class="mainMenu"> TICKET</li>
-                <li class="mainMenu"> HISTORY</li>
-                <li class="mainMenu"> RECORD</li>
-                <li class="mainMenu"> MEDIA</li>
-                <li class="mainMenu"> FAN ZONE</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="container2">
+<div class="container">
     <div data-v-6f0ce499="" class="memberBox wide myinfo">
         <div data-v-6f0ce499="" class="tabs"><a data-v-6f0ce499="" href="/member/myinfo/sns" class="tab sns"><span
                 data-v-6f0ce499="">SNS 연동</span></a><a data-v-6f0ce499="" href="/member/myinfo/info"
@@ -209,8 +162,6 @@
                                                                                                class="pcBreak">필수항목은 모두 기입하셔야 정보수정이 가능합니다.</span>
                 </div>
             </div>
-
-
             <form action="member/join" method="post" name="signupForm">
                 <div class="formGroup">
                     <label class="label">아이디 <span class="required">(필수)</span></label>
@@ -219,8 +170,8 @@
                 </div>
                 <div id="message" style="color: red; margin-top: 5px;"></div>
                 <div class="formGroup">
-                    <label class="label">비밀번호 입력</label>
-                    <input type="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
+                    <label class="label" for="password">비밀번호 입력<span class="required">(필수)</span></label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
                     <p class="inputMessage">영어 대/소문자, 특수문자, 숫자를 조합한 9~20자리로 입력하세요</p>
                 </div>
                 <div class="formGroup">
@@ -228,9 +179,9 @@
                     <input type="password" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" class="input">
                 </div>
                 <div class="formGroup">
-                    <label class="label">이름 <span class="required">(필수)</span></label>
+                    <label class="label" for="name">이름 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" name="name" class="input">
+                        <input type="text" id="name" name="name" class="input">
                     </div>
                 </div>
                 <div class="formGroup">
@@ -244,23 +195,29 @@
                         <label for="female">여성</label>
                     </div>
                 </div>
-
                 <div class="formGroup">
-                    <label class="label">휴대폰번호 <span class="required">(필수)</span></label>
+                    <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" class="input">
+                        <input type="text" id="phoneNumber" class="input">
                         <button type="button" class="btn whiteLightgrey">휴대폰 변경</button>
                     </div>
                 </div>
-
                 <div class="formGroup">
-                    <label class="label">이메일 주소 <span class="required">(필수)</span></label>
+                    <label class="label" for="email">이메일 주소 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="email" placeholder="이메일 주소를 입력하세요" class="input">
-                        <button type="button" onclick="checkEmailDuplicate()" class="btn whiteLightgrey">이메일 중복체크
-                        </button>
+                        <input type="email" id="email" placeholder="이메일 주소를 입력하세요" class="input">
+                        <button type="button" onclick="checkEmailDuplicate()" class="btn whiteLightgrey">이메일 중복체크</button>
                     </div>
                 </div>
+
+                <div class="formGroup">
+                    <label class="label" for="date_birth">생년월일 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" name="userBirth" id="date_birth" placeholder="YYYY-MM-DD 형식">
+                    </div>
+                </div>
+
+
 
                 <div class="formGroup">
                     <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
@@ -293,28 +250,23 @@
                         <label for="agree_sms_n">미동의</label>
                     </div>
                 </div>
-
                 <div class="formGroup">
-                    <label class="label">우편번호 검색 <span class="required">(필수)</span></label>
+                    <label class="label" for="postal_code">우편번호 검색 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" name="postalCode" placeholder="우편번호를 검색하세요" class="input">
-                        <button type="submit" class="btn whiteLightgrey">우편번호 검색</button>
+                        <input type="text" name="postalCode" id="postal_code" placeholder="우편번호를 검색하세요" class="input">
+                        <button type="submit" id="postal_code_search_btn" class="btn whiteLightgrey">우편번호 검색</button>
                     </div>
                     <div class="zipcodeWrap"></div>
                 </div>
-
-
                 <div class="formGroup">
-                    <label class="label">좋아하는 선수 <span class="required">(필수)</span></label>
-                    <select class="input" name="favoritePlayer">
+                    <label class="label" for="favorite_player">좋아하는 선수 <span class="required">(필수)</span></label>
+                    <select class="input" name="favoritePlayer" id="favorite_player">
                         <option value="">선택하세요</option>
                         <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}"></option>
                     </select>
                 </div>
-
-
-                <div class="">
-                    <button type='submit' value="일반회원가입" class='signup_butt'>일반회원가입</button>
+                <div class="formGroup">
+                    <button type='submit' value="Sign up" class='signup_butt' id='signup_butt'>회원가입</button>
                     <button type='button' value="취소" class='cancel_butt' id='cancel_btn'>취소</button>
                 </div>
             </form>

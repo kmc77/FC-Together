@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>JoinForm</title>
     <link rel="stylesheet" href="/css/main/header.css">
+    <th:block th:include="layout/header"></th:block>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
@@ -146,42 +147,7 @@
         }); // submit end
     });
 </script>
-
-
-
-<div class="totalTop">
-
-    <div class="top">
-        <div class="logo">
-            <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
-                <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
-            </a>
-        </div>
-
-        <div class="utils">
-            <a href="/member/signin" class="link">로그인</a>
-            <a th:href="@{/member/JoinForm}" class="link">회원가입</a>
-        </div>
-    </div>
-
-    <div class="gnbBox">
-        <div class="container">
-            <ul class="mainMenuBox">
-                <li class="mainMenu"> CLUB</li>
-                <li class="mainMenu"> TEAM</li>
-                <li class="mainMenu "> MATCH</li>
-                <li class="mainMenu"> TICKET</li>
-                <li class="mainMenu"> HISTORY</li>
-                <li class="mainMenu"> RECORD</li>
-                <li class="mainMenu"> MEDIA</li>
-                <li class="mainMenu"> FAN ZONE</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="container2">
+<div class="container">
     <div data-v-6f0ce499="" class="memberBox wide myinfo">
         <div data-v-6f0ce499="" class="tabs"><a data-v-6f0ce499="" href="/member/myinfo/sns" class="tab sns"><span
                 data-v-6f0ce499="">SNS 연동</span></a><a data-v-6f0ce499="" href="/member/myinfo/info"
@@ -196,8 +162,6 @@
                                                                                                class="pcBreak">필수항목은 모두 기입하셔야 정보수정이 가능합니다.</span>
                 </div>
             </div>
-
-
             <form action="member/join" method="post" name="signupForm">
                 <div class="formGroup">
                     <label class="label">아이디 <span class="required">(필수)</span></label>

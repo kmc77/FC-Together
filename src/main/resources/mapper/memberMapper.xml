@@ -23,7 +23,7 @@
 
     <update id="updateMember" parameterType="com.project.together.domain.Member">
         UPDATE Member SET member_name = #{name}, member_gender = #{gender}, member_phone = #{phone}, member_email =
-        #{email}, member_birth = #{birth}, member_address = #{address}, member_like_player = #{likePlayer} WHERE
+        #{email}, member_birth = #{birth}, member_address = #{address}, member_like_player = #{likePlayer}, member_marketing = #{member_marketing} WHERE
         member_id = #{memberId}
     </update>
 
@@ -33,8 +33,8 @@
 
     <insert id="joinMember" parameterType="com.project.together.domain.Member">
         INSERT INTO Member (member_id, member_pw, member_name, member_gender, member_phone, member_email, member_birth,
-        member_address, member_like_player) VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{phone}, #{email},
-        #{birth}, #{address}, #{likePlayer})
+        member_address, member_like_player, member_marketing) VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{phone}, #{email},
+        #{birth}, #{address}, #{likePlayer}, #{member_marketing})
     </insert>
 
 </mapper>

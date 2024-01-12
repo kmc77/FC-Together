@@ -10,6 +10,10 @@ public interface MemberMapper {
 
     Member getMemberById(String memberId);
 
+    Member idCheck(String memberId);
+
+    Member emailCheck(String memberEmail);
+
     List<Member> getAllMembers();
 
 
@@ -18,6 +22,4 @@ public interface MemberMapper {
     void deleteMember(String memberId);
 
     void joinMember(Member member);
-
-    Member idCheck(String memberId);
 }

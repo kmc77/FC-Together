@@ -6,9 +6,14 @@
         SELECT * FROM Member WHERE member_id = #{memberId}
     </select>
 
-    
+
     <select id="idCheck" parameterType="String" resultType="com.project.together.domain.Member">
         SELECT member_id FROM Member WHERE member_id = #{memberId}
+    </select>
+
+
+    <select id="emailCheck" parameterType="String" resultType="com.project.together.domain.Member">
+        SELECT member_email FROM Member WHERE member_email = #{memberEmail}
     </select>
 
 

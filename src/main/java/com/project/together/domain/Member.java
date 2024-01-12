@@ -15,7 +15,7 @@ public class Member {
     private String memberBirth;
     private String memberAddress;
     private String memberLikePlayer;
-
+    private String member_marketing;
 
     public String getPassword() {
         return memberPw;

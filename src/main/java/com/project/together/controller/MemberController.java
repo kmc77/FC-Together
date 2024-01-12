@@ -34,6 +34,12 @@ public class MemberController {
         return memberService.idCheck(memberId);
     }
 
+    @ResponseBody
+    @GetMapping("/emailCheck")
+    public int emailCheck(@RequestParam("memberEmail") String memberEmail) {
+        return memberService.emailCheck(memberEmail);
+    }
+
 
     @PostMapping("/join")
     public String joinMember(Member member) {

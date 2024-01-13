@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class K7_Ranking {
     private String teamName;
+    private int k7PlayerNum;
     private String k7Points;
     private String k7Win;
     private String k7Draw;

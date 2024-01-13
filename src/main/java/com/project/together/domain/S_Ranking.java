@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class S_Ranking {
     private String teamName;
+    private int sPlayerNum;
     private String sPoints;
     private String sWin;
     private String sDraw;

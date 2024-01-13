@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class K5_Ranking {
     private String teamName;
+    private int k5PlayerNum;
     private String k5Points;
     private String k5Win;
     private String k5Draw;

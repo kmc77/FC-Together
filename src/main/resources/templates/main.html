@@ -4,16 +4,25 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <!-- Include the header.html file -->
+    <link th:href="@{/css/main/main.css}" rel="stylesheet" />
     <th:block th:include="layout/header"></th:block>
 </head>
 <body>
 <div>
     <div class="swiper-container">
         <div class="swiper-wrapper">
-<!--            <div th:each="#" class="swiper-slide">-->
-<!--                <img th:src="${#}">-->
-<!--            </div>-->
+            <div  class="swiper-slide">
+                <img th:src="@{img/FcTogether.jpg}" alt="" class="swiperImg">
+                <div class="slide-text">Test1</div>
+            </div>
+            <div  class="swiper-slide">
+                <img th:src="@{img/FcTogether.jpg}" alt="" class="swiperImg">
+                <div class="slide-text">Test2</div>
+            </div>
+            <div  class="swiper-slide">
+                <img th:src="@{img/FcTogether.jpg}" alt="" class="swiperImg">
+                <div class="slide-text">Test3</div>
+            </div>
         </div>
     </div>
 </div>

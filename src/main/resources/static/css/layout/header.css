@@ -1,0 +1,49 @@
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 80px;
+}
+
+.utils {
+    display: flex;
+    align-items: center;
+}
+
+.utils a {
+    margin-left: 10px;
+}
+
+.logo {
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+}
+
+#logoImg {
+    width: 100px;
+    height: 100px;
+}
+
+.gnbBox {
+    clear: both;
+}
+
+.mainMenuBox {
+    list-style: none;
+    display: flex;
+    align-items: center !important;
+    margin: auto !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    margin-left: 60px;
+}
+
+.mainMenu {
+    margin-right: 120px;
+}

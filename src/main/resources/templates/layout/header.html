@@ -3,63 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Team Staff Detail</title>
-    <style>
-        .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    height: 80px;
-}
-
-.utils {
-    display: flex;
-    align-items: center;
-}
-
-.utils a {
-    margin-left: 10px;
-}
-
-.logo {
-    margin-right: auto;
-    margin-left: 20px;
-}
-
-.logo img {
-    height: 100%;
-    width: auto;
-}
-
-#logoImg {
-    width: 100px;
-    height: 100px;
-}
-
-.gnbBox {
-    clear: both;
-}
-
-.mainMenuBox {
-    list-style: none;
-    display: flex;
-    align-items: center !important;
-    margin: auto !important;
-    justify-content: center !important;
-    align-self: stretch !important;
-    margin-left: 60px;
-}
-
-.mainMenu {
-    margin-right: 120px;
-}
-
-    </style>
+    <link th:href="@{/css/layout/header.css}" rel="stylesheet" />
 </head>
 <body>
 <div class="top">
     <div class="logo">
-        <a th:href="@{/}" class="router-link-exact-active router-link-active" aria-current="page">
+        <a th:href="@{/}" aria-current="page">
             <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
         </a>
     </div>

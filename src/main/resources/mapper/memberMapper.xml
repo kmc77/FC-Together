@@ -21,9 +21,23 @@
         SELECT * FROM Member
     </select>
 
+    <select id="getK5Players" resultType="com.project.together.domain.K5_Player">
+        SELECT k5_player_num, k5_player_name FROM K5_Player
+    </select>
+
+    <select id="getK7Players" resultType="com.project.together.domain.K7_Player">
+        SELECT k7_player_num, k7_player_name FROM K7_Player
+    </select>
+
+    <select id="getSPlayers" resultType="com.project.together.domain.S_Player">
+        SELECT s_player_num, s_player_name FROM S_Player
+    </select>
+
+
     <update id="updateMember" parameterType="com.project.together.domain.Member">
         UPDATE Member SET member_name = #{name}, member_gender = #{gender}, member_phone = #{phone}, member_email =
-        #{email}, member_birth = #{birth}, member_address = #{address}, member_like_player = #{likePlayer}, member_marketing = #{member_marketing} WHERE
+        #{email}, member_birth = #{birth}, member_address = #{address}, member_like_player = #{likePlayer},
+        member_marketing = #{member_marketing} WHERE
         member_id = #{memberId}
     </update>
 
@@ -33,8 +47,10 @@
 
     <insert id="joinMember" parameterType="com.project.together.domain.Member">
         INSERT INTO Member (member_id, member_pw, member_name, member_gender, member_phone, member_email, member_birth,
-        member_address, member_like_player, member_marketing) VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{phone}, #{email},
+        member_address, member_like_player, member_marketing) VALUES (#{memberId}, #{password}, #{name}, #{gender},
+        #{phone}, #{email},
         #{birth}, #{address}, #{likePlayer}, #{member_marketing})
     </insert>
+
 
 </mapper>

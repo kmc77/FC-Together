@@ -1,6 +1,9 @@
 package com.project.together.service;
 
+import com.project.together.domain.K5_Player;
+import com.project.together.domain.K7_Player;
 import com.project.together.domain.Member;
+import com.project.together.domain.S_Player;
 import com.project.together.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,5 +62,17 @@ public class MemberService {
     public int emailCheck(String memberEmail) {
         Member member = memberMapper.emailCheck(memberEmail);
         return (member == null) ? -1 : 1;
+    }
+
+    public List<K5_Player> getK5Players() {
+        return memberMapper.getK5Players();
+    }
+
+    public List<K7_Player> getK7Players() {
+        return memberMapper.getK7Players();
+    }
+
+    public List<S_Player> getSPlayers() {
+        return memberMapper.getSPlayers();
     }
 }

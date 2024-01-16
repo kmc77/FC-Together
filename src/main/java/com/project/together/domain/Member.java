@@ -1,28 +1,26 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Member {
-    private String memberId;
-    private String memberPw;
-    private String memberName;
-    private String memberGender;
-    private String memberPhone;
-    private String memberEmail;
-    private String memberBirth;
-    private String memberAddress;
-    private String memberLikePlayer;
-    private String memberLikePlayerGb;
-    private char memberMarketing;
+    private String member_id;
+    private String member_pw;
+    private String member_name;
+    private String member_gender;
+    private String member_phone;
+    private String member_email;
+    private String member_birth;
+    private String member_address;
+    private String member_like_player;
+    private String member_like_player_gb;
+    private String member_marketing;
 
-    public String getPassword() {
-        return memberPw;
+    public String member_pw() {
+        return member_pw;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getmember_id() {
+        return member_id;
     }
 }

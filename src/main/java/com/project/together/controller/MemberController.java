@@ -32,7 +32,7 @@ public class MemberController {
 
     @ResponseBody
     @GetMapping("/idCheck")
-    public int idCheck(@RequestParam("memberId") String memberId) {
+    public int idCheck(@RequestParam("member_id") String memberId) {
         return memberService.idCheck(memberId);
     }
 
@@ -60,13 +60,14 @@ public class MemberController {
     }
 
 
-
     @PostMapping("/join")
     public String joinMember(Member member) {
-        // 회원 가입 처리 로직 구현
         memberService.joinMember(member);
-        return "redirect:/member/list";
+        System.out.println("회원가입 성공 = " + member);
+
+        return "redirect:/";
     }
+
 
     @GetMapping("/list")
     public String getAllMembers(Model model) {

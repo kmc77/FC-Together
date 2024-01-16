@@ -34,7 +34,7 @@
 
              $.ajax({
                  url: "idCheck",
-                 data: { memberId: input_id },
+                 data: { member_id: input_id },
                  success: function (resp) {
                      console.log("ID 중복 확인 결과:", resp);
                      if (resp === -1) {
@@ -141,9 +141,9 @@
              }
 
               // 성별 선택 확인
-             if (!$("input:radio[name='gender']").is(":checked")) {
+             if (!$("input:radio[name='memberGender']").is(":checked")) {
                  alert('성별을 선택하세요.');
-                 $("input:radio[name='gender']").first().focus();
+                 $("input:radio[name='memberGender']").first().focus();
                  return false;
              }
 
@@ -223,60 +223,61 @@
                                                                                                class="pcBreak">필수항목은 모두 기입하셔야 정보수정이 가능합니다.</span>
                 </div>
             </div>
-            <form action="member/join" method="post" name="signupForm">
+            <form action="/member/join" method="post" name="signupForm">
                 <div class="formGroup">
                     <label class="label">아이디 <span class="required">(필수)</span></label>
-                    <input type="text" id="showId" name="id" class="input">
+                    <input type="text" id="showId" name="member_id" class="input">
                     <input type="button" id="id_butt" value="중복확인">
                 </div>
                 <div id="message" style="color: red; margin-top: 5px;"></div>
                 <div class="formGroup">
                     <label class="label" for="password">비밀번호 입력<span class="required">(필수)</span></label>
-                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
+                    <input type="password" id="password" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
                 </div>
                 <div id="password_message" style="color: red; margin-top: 5px;"></div>
                 <div class="formGroup">
                     <label class="label">비밀번호 확인</label>
-                    <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" class="input">
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요"
+                           class="input">
                 </div>
                 <div class="formGroup">
                     <label class="label" for="name">이름 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" id="name" name="name" class="input">
+                        <input type="text" id="name" name="member_name" class="input">
                     </div>
                 </div>
                 <div class="formGroup">
                     <label class="label">성별 <span class="required">(필수)</span></label>
                     <div>
-                        <input type="radio" id="male" name="gender" value="male">
+                        <input type="radio" id="male" name="member_gender" value="male">
                         <label for="male">남성</label>
                     </div>
                     <div>
-                        <input type="radio" id="female" name="gender" value="female">
+                        <input type="radio" id="female" name="member_gender" value="female">
                         <label for="female">여성</label>
                     </div>
                 </div>
                 <div class="formGroup">
                     <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" id="phoneNumber" class="input" placeholder="000-0000-0000 형식">
+                        <input type="text" id="phoneNumber" class="input" name="member_phone"
+                               placeholder="000-0000-0000 형식">
                     </div>
                 </div>
                 <div class="formGroup">
                     <label class="label" for="email">이메일 주소 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="email" id="email" placeholder="이메일 주소를 입력하세요" class="input">
+                        <input type="email" id="email" name="member_email" placeholder="이메일 주소를 입력하세요" class="input">
                         <button type="button" id="email_butt" value="이메일 중복체크">이메일 중복체크</button>
                     </div>
                 </div>
                 <div id="email_message" style="color: red; margin-top: 5px;"></div>
                 <div class="formGroup">
-                    <label class="label" for="date_birth">생년월일 <span class="required">(필수)</span></label>
+                    <label class="label" for="member_birth">생년월일 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" name="userBirth" id="date_birth" placeholder="YYYY-MM-DD 형식">
+                        <input type="text" name="member_birth" id="member_birth" placeholder="YYYY-MM-DD 형식">
                     </div>
                 </div>
-
 
 
                 <div class="formGroup">
@@ -302,34 +303,34 @@
                 </div>
                 <div class="checkAgree">
                     <div class="checkbox radio">
-                        <input type="radio" name="agreeSms" id="agree_sms_y" value="Y">
+                        <input type="radio" name="member_marketing" id="agree_sms_y" value="Y">
                         <label for="agree_sms_y">동의</label>
                     </div>
                     <div class="checkbox radio">
-                        <input type="radio" name="agreeSms" id="agree_sms_n" value="N">
+                        <input type="radio" name="member_marketing" id="agree_sms_n" value="N">
                         <label for="agree_sms_n">미동의</label>
                     </div>
                 </div>
+
                 <div class="formGroup">
                     <label class="label" for="sample4_postcode">우편번호 검색 <span class="required">(필수)</span></label>
                     <div class="withBtn">
-                        <input type="text" name="postalCode" id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
+                        <input type="text"  id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
                         <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-                        <input type="text" id="sample4_roadAddress" placeholder="도로명주소">
+                        <input type="text" id="sample4_roadAddress" name="member_address" placeholder="도로명주소">
                         <input type="text" id="sample4_jibunAddress" placeholder="지번주소">
                         <span id="guide" style="color:#999;display:none"></span>
-                        <input type="text" id="sample4_detailAddress" placeholder="상세주소">
                     </div>
                 </div>
                 <div class="formGroup">
                     <label class="label" for="selectLeague">좋아하는 선수 선택 <span class="required">(필수)</span></label>
-                    <select class="input" name="selectLeague" id="selectLeague">
+                    <select class="input" name="member_like_player_gb" id="selectLeague">
                         <option value="">리그선택</option>
                         <option value="K5_Player">K5</option>
                         <option value="K7_Player">K7</option>
                         <option value="S_Player">S리그</option>
                     </select>
-                    <select class="input" name="playerSelect" id="playerSelect">
+                    <select class="input" name="member_like_player" id="playerSelect">
                         <option value="">선수선택</option>
                     </select>
                 </div>
@@ -343,61 +344,61 @@
     </div>
 </div>
 <script>
-//우편번호 찾기
-      function sample4_execDaumPostcode() {
-          new daum.Postcode({
-              oncomplete: function(data) {
-                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+    //우편번호 찾기
+          function sample4_execDaumPostcode() {
+              new daum.Postcode({
+                  oncomplete: function(data) {
+                      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                  // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                  var roadAddr = data.roadAddress; // 도로명 주소 변수
-                  var extraRoadAddr = ''; // 참고 항목 변수
+                      // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                      var roadAddr = data.roadAddress; // 도로명 주소 변수
+                      var extraRoadAddr = ''; // 참고 항목 변수
 
-                  // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                  // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                  if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                      extraRoadAddr += data.bname;
+                      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                          extraRoadAddr += data.bname;
+                      }
+                      // 건물명이 있고, 공동주택일 경우 추가한다.
+                      if(data.buildingName !== '' && data.apartment === 'Y'){
+                         extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                      }
+                      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                      if(extraRoadAddr !== ''){
+                          extraRoadAddr = ' (' + extraRoadAddr + ')';
+                      }
+
+                      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                      document.getElementById('sample4_postcode').value = data.zonecode;
+                      document.getElementById("sample4_roadAddress").value = roadAddr;
+                      document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+
+                      // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                      if(roadAddr !== ''){
+                          document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                      } else {
+                          document.getElementById("sample4_extraAddress").value = '';
+                      }
+
+                      var guideTextBox = document.getElementById("guide");
+                      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                      if(data.autoRoadAddress) {
+                          var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                          guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                          guideTextBox.style.display = 'block';
+
+                      } else if(data.autoJibunAddress) {
+                          var expJibunAddr = data.autoJibunAddress;
+                          guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                          guideTextBox.style.display = 'block';
+                      } else {
+                          guideTextBox.innerHTML = '';
+                          guideTextBox.style.display = 'none';
+                      }
                   }
-                  // 건물명이 있고, 공동주택일 경우 추가한다.
-                  if(data.buildingName !== '' && data.apartment === 'Y'){
-                     extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                  }
-                  // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                  if(extraRoadAddr !== ''){
-                      extraRoadAddr = ' (' + extraRoadAddr + ')';
-                  }
-
-                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                  document.getElementById('sample4_postcode').value = data.zonecode;
-                  document.getElementById("sample4_roadAddress").value = roadAddr;
-                  document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
-
-                  // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                  if(roadAddr !== ''){
-                      document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-                  } else {
-                      document.getElementById("sample4_extraAddress").value = '';
-                  }
-
-                  var guideTextBox = document.getElementById("guide");
-                  // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                  if(data.autoRoadAddress) {
-                      var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                      guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                      guideTextBox.style.display = 'block';
-
-                  } else if(data.autoJibunAddress) {
-                      var expJibunAddr = data.autoJibunAddress;
-                      guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                      guideTextBox.style.display = 'block';
-                  } else {
-                      guideTextBox.innerHTML = '';
-                      guideTextBox.style.display = 'none';
-                  }
-              }
-          }).open();
-      }
+              }).open();
+          }
 </script>
 <script>
     var leagueSelect = document.getElementById('selectLeague');

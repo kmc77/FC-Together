@@ -23,4 +23,8 @@ public class Member {
     public String getmember_id() {
         return member_id;
     }
+
+    public String getMember_name() {
+        return member_name;
+    }
 }

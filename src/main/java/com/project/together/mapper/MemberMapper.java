@@ -13,9 +13,9 @@ public interface MemberMapper {
 
     Member getMemberById(String memberId);
 
-    Member idCheck(String memberId);
+    int idCheck(String memberId);
 
-    Member emailCheck(String memberEmail);
+    int emailCheck(String memberEmail);
 
     List<Member> getAllMembers();
 

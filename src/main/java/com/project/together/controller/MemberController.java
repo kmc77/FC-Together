@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -58,7 +60,6 @@ public class MemberController {
             return ResponseEntity.badRequest().body("Invalid league parameter");
         }
     }
-
 
     @PostMapping("/join")
     public String joinMember(Member member) {

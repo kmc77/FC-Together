@@ -3,17 +3,17 @@
 <mapper namespace="com.project.together.mapper.MemberMapper">
 
     <select id="getMemberById" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT * FROM Member WHERE member_id = #{memberId}
+        SELECT * FROM member WHERE member_id = #{member_Id}
     </select>
 
 
-    <select id="idCheck" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT member_id FROM member WHERE member_id = #{member_id}
+    <select id="idCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_id = #{member_id}
     </select>
 
 
-    <select id="emailCheck" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT member_email FROM Member WHERE member_email = #{member_email}
+    <select id="emailCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_email = #{member_email}
     </select>
 
 

@@ -54,14 +54,14 @@ public class MemberService {
 
     //ID 중복검사
     public int idCheck(String memberId) {
-        Member member = memberMapper.idCheck(memberId);
-        return (member == null) ? -1 : 1;
+        int count = memberMapper.idCheck(memberId);
+        return (count > 0) ? -1 : 1;
     }
 
     //email 중복검사
     public int emailCheck(String memberEmail) {
-        Member member = memberMapper.emailCheck(memberEmail);
-        return (member == null) ? -1 : 1;
+        int count = memberMapper.emailCheck(memberEmail);
+        return (count > 0) ? -1 : 1;
     }
 
     public List<K5_Player> getK5Players() {

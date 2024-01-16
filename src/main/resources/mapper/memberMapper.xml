@@ -8,12 +8,12 @@
 
 
     <select id="idCheck" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT member_id FROM Member WHERE member_id = #{memberId}
+        SELECT member_id FROM member WHERE member_id = #{member_id}
     </select>
 
 
     <select id="emailCheck" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT member_email FROM Member WHERE member_email = #{memberEmail}
+        SELECT member_email FROM Member WHERE member_email = #{member_email}
     </select>
 
 
@@ -47,9 +47,10 @@
 
     <insert id="joinMember" parameterType="com.project.together.domain.Member">
         INSERT INTO Member (member_id, member_pw, member_name, member_gender, member_phone, member_email, member_birth,
-        member_address, member_like_player, member_marketing) VALUES (#{memberId}, #{password}, #{name}, #{gender},
-        #{phone}, #{email},
-        #{birth}, #{address}, #{likePlayer}, #{member_marketing})
+        member_address, member_like_player, member_like_player_gb, member_marketing) VALUES (#{member_id}, #{member_pw},
+        #{member_name}, #{member_gender},
+        #{member_phone}, #{member_email},
+        #{member_birth}, #{member_address}, #{member_like_player}, #{member_like_player_gb}, #{member_marketing})
     </insert>
 
 

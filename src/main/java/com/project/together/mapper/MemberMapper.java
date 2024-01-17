@@ -5,13 +5,14 @@ import com.project.together.domain.K7_Player;
 import com.project.together.domain.Member;
 import com.project.together.domain.S_Player;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MemberMapper {
 
-    Member getMemberById(String memberId);
 
     int idCheck(String memberId);
 
@@ -31,4 +32,8 @@ public interface MemberMapper {
     List<K7_Player> getK7Players();
 
     List<S_Player> getSPlayers();
+
+    String getPasswordById(String member_id);
+
+
 }

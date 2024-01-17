@@ -8,7 +8,9 @@ import com.project.together.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -21,15 +23,6 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
-    //회원 아이디 조회
-    public Member getMemberById(String memberId) {
-        Member member = memberMapper.getMemberById(memberId);
-
-        if (member == null) {
-            System.out.printf("사용자 아이디가 없습니다." + memberId);
-        }
-        return member;
-    }
 
     //회원 조회
     public List<Member> getAllMembers() {
@@ -75,4 +68,10 @@ public class MemberService {
     public List<S_Player> getSPlayers() {
         return memberMapper.getSPlayers();
     }
+
+    public boolean authenticateMember(String member_id, String member_pw) {
+        String storedPassword = memberMapper.getPasswordById(member_id);
+        return storedPassword != null && storedPassword.equals(member_pw);
+    }
+
 }

@@ -88,13 +88,17 @@ public class MemberController {
         if (loginSuccess) {
             session.setAttribute("userId", id);
             ModelAndView modelAndView = new ModelAndView("redirect:/");
-            modelAndView.addObject("loginSuccess", true);
-            modelAndView.addObject("header", "success");
             return modelAndView;
         } else {
             rattr.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return new ModelAndView("redirect:/member/LoginForm");
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션을 초기화하여 로그아웃 처리
+        return "redirect:/"; // 로그인 폼으로 이동
     }
 
 

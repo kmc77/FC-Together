@@ -9,214 +9,216 @@
 </head>
 <script>
     $(function () {
-     let checkid = false;
-     let checkemail = false;
-     let idcheck = '';
-     let emailcheck = '';
+        let checkid = false;
+        let checkemail = false;
+        let idcheck = '';
+        let emailcheck = '';
 
-     function checkId(id) {
-         return id == idcheck;
-     }
+        function checkId(id) {
+            return id == idcheck;
+        }
 
-     function checkEmail(email) {
-         return email == emailcheck;
-     }
+        function checkEmail(email) {
+            return email == emailcheck;
+        }
 
-     $("#id_butt").click(function () {
-         const pattern = /^\w{5,12}$/;
-         const input_id = $("#showId").val();
+        $("#id_butt").click(function () {
+            const pattern = /^\w{5,12}$/;
+            const input_id = $("#showId").val();
 
-         if (!pattern.test(input_id)) {
-             $("#message").css('color', 'red').html("5~12자의 영문/숫자를 입력하세요.");
-             checkid = false;
-             return;
-         }
+            if (!pattern.test(input_id)) {
+                $("#message").css('color', 'red').html("5~12자의 영문/숫자를 입력하세요.");
+                checkid = false;
+                return;
+            }
 
-              $.ajax({
-            url: "idCheck",
-            data: { member_id: input_id },
-            success: function (resp) {
-                console.log("ID 중복 확인 결과:", resp);
-                if (resp === -1) {
-                    $("#message").css('color', 'red').html("이 ID는 이미 사용 중입니다.");
-                    checkid = false;
-                    idcheck = '';
-                } else if (resp === 1) {
-                    $("#message").css('color', 'green').html("사용 가능한 ID입니다.");
-                    checkid = true;
-                    idcheck = input_id;
-                } else {
-                    // 예외 처리: resp 값이 -1 또는 1이 아닌 경우
-                    $("#message").css('color', 'red').html("ID 중복 확인에 실패했습니다.");
-                    checkid = false;
-                    idcheck = '';
+            $.ajax({
+                url: "idCheck",
+                data: { member_id: input_id },
+                success: function (resp) {
+                    console.log("ID 중복 확인 결과:", resp);
+                    if (resp === -1) {
+                        $("#message").css('color', 'red').html("이 ID는 이미 사용 중입니다.");
+                        checkid = false;
+                        idcheck = '';
+                    } else if (resp === 1) {
+                        $("#message").css('color', 'green').html("사용 가능한 ID입니다.");
+                        checkid = true;
+                        idcheck = input_id;
+                    } else {
+                        // 예외 처리: resp 값이 -1 또는 1이 아닌 경우
+                        $("#message").css('color', 'red').html("ID 중복 확인에 실패했습니다.");
+                        checkid = false;
+                        idcheck = '';
+                    }
                 }
+            });
+        });
+
+        $("#email_butt").click(function () {
+            const pattern = /^[A-Za-z0-9_]{1,100}@[A-Za-z0-9_]{1,100}\.[A-Za-z0-9]{2,3}$/;
+            const input_email = $("#email").val();
+
+            if (!pattern.test(input_email)) {
+                $("#email_message").css('color', 'red').html("이메일 형식을 확인하세요.");
+                checkemail = false;
+                return;
+            }
+
+            $.ajax({
+                url: "emailCheck",
+                data: { memberEmail: input_email },
+                success: function (resp) {
+                    console.log("이메일 중복 확인 결과:", resp);
+                    if (resp === -1) {
+                        $("#email_message").css('color', 'red').html("이 이메일은 이미 사용 중입니다.");
+                        checkemail = false;
+                        emailcheck = '';
+                    } else if (resp === 1) {
+                        $("#email_message").css('color', 'green').html("사용 가능한 이메일입니다.");
+                        checkemail = true;
+                        emailcheck = 'input_email';
+                    } else {
+                        $("#email_message").css('color', 'red').html("이메일 중복 확인에 실패했습니다.");
+                        checkemail = false;
+                        emailcheck = '';
+                    }
+                }
+            });
+        });
+
+        $("#cancel_btn").on("click", function () {
+            location.href = "메인 경로";
+        });
+
+        // 비밀번호 유효성 검사
+        $("#password").on('keyup', function () {
+            const password = $(this).val();
+            // 영문, 숫자, 특수문자를 포함한 최소 1자리 이상의 문자열을 인정하는 정규 표현식
+            const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{1,}$/;
+
+            if (!pattern.test(password)) {
+                $("#password_message").css('color', 'red').html("영문, 숫자, 특수문자를 포함한 최소 1자리 이상의 비밀번호를 입력하세요.");
+            } else {
+                $("#password_message").css('color', 'green').html("비밀번호가 올바르게 형식화되었습니다.");
             }
         });
 
-     });
+        // 비밀번호 확인 입력
+        $("#passwordConfirm").on('keyup', function () {
+            const password = $('#password').val();
+            const passwordConfirm = $(this).val();
 
-     $("#email_butt").click(function () {
-         const pattern = /^[A-Za-z0-9_]{1,100}@[A-Za-z0-9_]{1,100}\.[A-Za-z0-9]{2,3}$/;
-         const input_email = $("#email").val();
-
-         if (!pattern.test(input_email)) {
-             $("#email_message").css('color', 'red').html("이메일 형식을 확인하세요.");
-             checkemail = false;
-             return;
-         }
-
-        $.ajax({
-            url: "emailCheck",
-            data: { memberEmail: input_email },
-            success: function (resp) {
-                console.log("이메일 중복 확인 결과:", resp);
-                if (resp === -1) {
-                    $("#email_message").css('color', 'red').html("이 이메일은 이미 사용 중입니다.");
-                    checkemail = false;
-                    emailcheck = '';
-                } else if (resp === 1) {
-                    $("#email_message").css('color', 'green').html("사용 가능한 이메일입니다.");
-                    checkemail = true;
-                    emailcheck = 'input_email';
-                } else {
-                    $("#email_message").css('color', 'red').html("이메일 중복 확인에 실패했습니다.");
-                    checkemail = false;
-                    emailcheck = '';
-                }
+            if (password === '') {
+                $("#password_message").css('color', 'red').html("비밀번호를 입력하세요.");
+            } else if (passwordConfirm !== password) {
+                $("#password_message").css('color', 'red').html("비밀번호가 일치하지 않습니다.");
+            } else {
+                $("#password_message").css('color', 'green').html("비밀번호가 일치합니다.");
             }
         });
 
-     });
+        $("#signupForm").submit(function (e) {
+            e.preventDefault(); // 폼 제출을 막음
 
-     $("#cancel_btn").on("click", function () {
-         location.href = "메인 경로";
-     });
+            // 필요한 변수 가져오기
+            var id = $('#showId').val().trim();
+            var name = $('#name').val().trim();
+            var date_birth = $('#date_birth').val().trim();
+            var phoneNumber = $('#phoneNumber').val().trim();
+            var email = $('#email').val().trim();
 
+            // ID 입력 확인
+            if (id === '') {
+                alert('ID를 입력하세요.');
+                $("#showId").focus();
+                return false;
+            }
 
-     // 비밀번호 유효성 검사
-     $("#password").on('keyup', function () {
-         const password = $(this).val();
-         // 영문, 숫자, 특수문자를 포함한 최소 1자리 이상의 문자열을 인정하는 정규 표현식
-         const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{1,}$/;
+            // 중복된 ID 확인
+            if (!checkid) {
+                alert("ID의 사용 가능 여부를 확인하세요.");
+                $("#showId").focus();
+                return false;
+            }
 
-         if (!pattern.test(password)) {
-             $("#password_message").css('color', 'red').html("영문, 숫자, 특수문자를 포함한 최소 1자리 이상의 비밀번호를 입력하세요.");
-         } else {
-             $("#password_message").css('color', 'green').html("비밀번호가 올바르게 형식화되었습니다.");
-         }
-     });
+            // 이름 입력 확인
+            if (name === '') {
+                alert('이름을 입력하세요.');
+                $("#name").focus();
+                return false;
+            }
 
-     // 비밀번호 확인 입력
-     $("#passwordConfirm").on('keyup', function () {
-         const password = $('#password').val();
-         const passwordConfirm = $(this).val();
+            // 성별 선택 확인
+            if (!$("input:radio[name='memberGender']").is(":checked")) {
+                alert('성별을 선택하세요.');
+                $("input:radio[name='memberGender']").first().focus();
+                return false;
+            }
 
-         if (password === '') {
-             $("#password_message").css('color', 'red').html("비밀번호를 입력하세요.");
-         } else if (passwordConfirm !== password) {
-             $("#password_message").css('color', 'red').html("비밀번호가 일치하지 않습니다.");
-         } else {
-             $("#password_message").css('color', 'green').html("비밀번호가 일치합니다.");
-         }
-     });
+            // 휴대폰 번호 입력 확인
+            if (phoneNumber === '') {
+                alert("휴대폰 번호를 입력하세요.");
+                $('#phoneNumber').focus();
+                return false;
+            }
 
-     // 회원 가입 버튼 클릭 이벤트 핸들러
-     $("#signup_butt").click(function () {
-         // 필요한 변수 가져오기
-         var id = $("#showId").val().trim();
-         var name = $('#name').val().trim();
-         var date_birth = $('#date_birth').val().trim();
-         var phoneNumber = $('#phoneNumber').val().trim();
-         var email = $("#email").val().trim();
+            // 휴대폰 번호 유효성 검사
+            var regExp = /^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/;
+            if (!regExp.test(phoneNumber)) {
+                alert("올바른 휴대폰 번호를 입력하세요.");
+                $('#phoneNumber').focus();
+                return false;
+            }
 
-         // ID 입력 확인
-         if (id == '') {
-             alert('ID를 입력하세요.');
-             $("#showId").focus();
-             return false;
-         }
+            // 이메일 입력 확인
+            if (email === '') {
+                alert("이메일을 입력하세요.");
+                $('#email').focus();
+                return false;
+            }
 
-         // 중복된 ID 확인
-         if (!checkid) {
-             alert("ID의 사용 가능 여부를 확인하세요.");
-             $("#showId").focus();
-             return false;
-         }
+            // 이메일 유효성 검사
+            var pattern = /^[A-Za-z0-9_]{1,100}@[A-Za-z0-9_]{1,100}\.[A-Za-z0-9]{2,3}$/;
+            if (!pattern.test(email)) {
+                alert("이메일 형식을 확인하세요.");
+                $('#email').val('').focus();
+                return false;
+            }
 
-         // 이름 입력 확인
-         if (name == '') {
-             alert('이름을 입력하세요.');
-             $("#name").focus();
-             return false;
-         }
+            // 중복된 생년월일 확인
+            if (!date_birth) {
+                alert("생년월일을 입력하세요.");
+                $("input[name='date_birth']").val('').focus();
+                return false;
+            }
 
-         // 성별 선택 확인
-         if (!$("input:radio[name='memberGender']").is(":checked")) {
-             alert('성별을 선택하세요.');
-             $("input:radio[name='memberGender']").first().focus();
-             return false;
-         }
+            // 생년월일 유효성 검사
+            const dateOfBirthPattern = /^(19|20)\d\d-(0\d|1[0-2])-(0\d|1\d|2\d|3[01])$/; // YYYY-MM 형식
+            if (!dateOfBirthPattern.test(date_birth)) {
+                alert("올바른 형식의 생년월일을 YYYY-MM-DD 형식으로 입력하세요.");
+                $('#date_birth').val('').focus();
+                return false;
+            }
 
-         // 휴대폰 번호 입력 확인
-         if (phoneNumber == '') {
-             alert("휴대폰 번호를 입력하세요.");
-             $('#phoneNumber').focus();
-             return false;
-         }
+            // 전화번호 유효성 검사
+            var phoneNumber = $('#phoneNumber').val();
+            if (phoneNumber.trim().length === 13 || phoneNumber.trim().length === 14) {
+                    const pattern = /^[0-9]{3,4}-[0-9]{4}-[0-9]{4}$/;
+                    if (!pattern.test(phoneNumber)) {
+                        alert("올바른 형식으로 전화번호를 입력하세요.");
+                        $('#phoneNumber').val('').focus();
+                        return false;
+                    }
+                }
 
-         // 휴대폰 번호 유효성 검사
-         var regExp = /^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/;
+                // 모든 입력이 확인되었을 때 폼 제출
+                $(this).unbind('submit').submit(); // 폼 제출
+            });
+        });
 
-         if (!regExp.test(phoneNumber)) {
-             alert("올바른 휴대폰 번호를 입력하세요.");
-             $('#phoneNumber').focus();
-             return false;
-         }
+</script>
 
-         // 이메일 입력 확인
-         if (email == '') {
-             alert("이메일을 입력하세요.");
-             $('#email').focus();
-             return false;
-         }
-
-         // 이메일 유효성 검사
-         var pattern = /^[A-Za-z0-9_]{1,100}@[A-Za-z0-9_]{1,100}\.[A-Za-z0-9]{2,3}$/;
-         if (!pattern.test(email)) {
-             alert("이메일 형식을 확인하세요.");
-             $('#email').val('').focus();
-             return false;
-         }
-
-         // 중복된 생년월일 확인
-         if (!date_birth) {
-             alert("생년월일을 입력하세요.");
-             $("input[name='date_birth']").val('').focus();
-             return false;
-         }
-
-         // 생년월일 유효성 검사
-         const dateOfBirthPattern = /^(19|20)\d\d-(0\d|1[0-2])-(0\d|1\d|2\d|3[01])$/; // YYYY-MM 형식
-         if (!dateOfBirthPattern.test(date_birth)) {
-             alert("올바른 형식의 생년월일을 YYYY-MM-DD 형식으로 입력하세요.");
-             $('#date_birth').val('').focus();
-             return false;
-         }
-
-         // 전화번호 유효성 검사
-         var phoneNumber = $('#phoneNumber').val();
-         if (phoneNumber.trim().length == 13 || phoneNumber.trim().length == 14) {
-             const pattern = /^[0-9]{3,4}-[0-9]{4}-[0-9]{4}$/;
-             if (!pattern.test(phoneNumber)) {
-                 alert("올바른 형식으로 전화번호를 입력하세요.")
-                 $('#phoneNumber').val('').focus();
-                 return false;
-             }
-         }
-
-     }); // submit end
- });
 
 
 </script>
@@ -440,6 +442,8 @@
      xhttp.open("GET", "/member/players?selectLeague=" + selectedLeague, true);
      xhttp.send();
     };
+
+
 
 
 </script>

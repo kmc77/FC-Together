@@ -20,11 +20,16 @@ public class Member {
         return member_pw;
     }
 
-    public String getmember_id() {
+
+    public String getMember_id() {
         return member_id;
     }
 
     public String getMember_name() {
         return member_name;
+    }
+
+    public String getMember_pw() {
+        return member_pw;
     }
 }

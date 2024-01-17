@@ -16,13 +16,7 @@
                     <p class="title">로그인</p>
                     <p class="subTitle">FC투게더<br>웹사이트 방문을 환영합니다.</p>
                 </div>
-                <!-- 서버에서 전달된 로그인 성공 여부를 템플릿에서 표시 -->
-                <script th:inline="javascript">
-                    /*<![CDATA[*/
-                    var loginSuccess = /*[[${loginSuccess}]]*/ false;
-                    console.log("로그인 성공 여부 = " + loginSuccess);
-                    /*]]>*/
-                </script>
+
 
 
                 <form id="loginForm" method="post" action="/member/login">

@@ -73,7 +73,7 @@ public class MemberController {
 
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
 
-        return "redirect:/LoginForm";
+        return "redirect:/member/LoginForm";
     }
 
 

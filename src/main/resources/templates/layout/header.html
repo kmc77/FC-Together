@@ -2,14 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Team Staff Detail</title>
-    <link th:href="@{/css/layout/header.css}" rel="stylesheet"/>
+    <title>LoginForm</title>
+    <link href="/css/layout/header.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <div class="top">
     <div class="logo">
-        <a th:href="@{/}" aria-current="page">
-            <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
+        <a href="/">
+            <img src="/img/FcTogether.jpg" alt="" id="logoImg">
         </a>
     </div>
 
@@ -33,7 +35,7 @@
         <ul class="mainMenuBox">
             <li class="mainMenu">CLUB</li>
             <li class="mainMenu">TEAM</li>
-            <li class="mainMenu ">MATCH</li>
+            <li class="mainMenu">MATCH</li>
             <li class="mainMenu">HISTORY</li>
             <li class="mainMenu">RECORD</li>
             <li class="mainMenu">MEDIA</li>
@@ -43,3 +45,4 @@
 </div>
 </body>
 </html>
+

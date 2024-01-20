@@ -1,21 +1,19 @@
 package com.project.together.controller;
 
-import com.project.together.domain.K5_Player;
-import com.project.together.domain.K7_Player;
-import com.project.together.domain.Member;
-import com.project.together.domain.S_Player;
+import com.project.together.domain.*;
 import com.project.together.service.MemberService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -77,7 +75,7 @@ public class MemberController {
     }
 
 
-    @PostMapping("/login")
+   /* @PostMapping("/login")
     public ModelAndView loginMember(@RequestParam("member_id") String id,
                                     @RequestParam("member_pw") String password,
                                     HttpSession session,
@@ -93,7 +91,20 @@ public class MemberController {
             rattr.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return new ModelAndView("redirect:/member/LoginForm");
         }
+    }*/
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenInfo> login(@RequestBody MemberLoginRequest request) {
+        String member_id = request.getMember_id();
+        String member_pw = request.getMember_pw();
+        TokenInfo tokenInfo = memberService.login(member_id, member_pw);
+
+        // 토큰 값 로그 출력
+        System.out.println("ㄴㄴToken: " + tokenInfo.getAccessToken());
+
+        return ResponseEntity.ok(tokenInfo);
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

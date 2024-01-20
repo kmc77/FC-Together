@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
@@ -36,4 +37,5 @@ public interface MemberMapper {
     String getPasswordById(String member_id);
 
 
+    Optional<Member> findByMemberId(String username);
 }

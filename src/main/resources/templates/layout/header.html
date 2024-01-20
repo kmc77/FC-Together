@@ -1,53 +1,5 @@
-<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Team Staff Detail</title>
-    <link th:href="@{/css/layout/header.css}" rel="stylesheet"/>
-</head>
-<body>
-<div class="top">
-    <div class="logo">
-        <a th:href="@{/}" aria-current="page">
-            <img th:src="@{img/FcTogether.jpg}" alt="" id="logoImg">
-        </a>
-    </div>
-
-    <div class="utils">
-        &lt;!&ndash; 세션에서 userId 값을 가져와서 로그인 상태인지 확인 &ndash;&gt;
-        <span th:if="${session.userId}" th:text="${session.userId}" class="account-info"></span>
-        <a th:if="${session.userId}" href="/member/logout" class="link" onclick="logout()">로그아웃</a>
-        <a th:unless="${session.userId}" href="/member/LoginForm" class="link">로그인</a>
-        <a th:unless="${session.userId}" href="/member/JoinForm" class="link">회원가입</a>
-    </div>
-</div>
-<script>
-    function logout() {
-        location.href = "/member/logout"; // 로그아웃 요청
-        alert("로그아웃 되었습니다."); // 얼럿 메시지 노출
-    }
-</script>
-
-<div class="gnbBox">
-    <div class="container">
-        <ul class="mainMenuBox">
-            <li class="mainMenu">CLUB</li>
-            <li class="mainMenu">TEAM</li>
-            <li class="mainMenu ">MATCH</li>
-            <li class="mainMenu">HISTORY</li>
-            <li class="mainMenu">RECORD</li>
-            <li class="mainMenu">MEDIA</li>
-            <li class="mainMenu">SERVICE</li>
-        </ul>
-    </div>
-</div>
-</body>
-</html>
--->
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>LoginForm</title>

@@ -17,14 +17,13 @@
                     <p class="subTitle">FC투게더<br>웹사이트 방문을 환영합니다.</p>
                 </div>
 
-
-
-                <form id="loginForm" method="post" action="/member/login">
+                <!-- 로그인 폼 -->
+                <form id="loginForm">
                     <div>
-                        <input type="text" name="member_id" placeholder="아이디를 입력하세요" class="input">
+                        <input type="text" id="member_id" name="member_id" placeholder="아이디를 입력하세요" class="input">
                     </div>
                     <div class="formRow">
-                        <input type="password" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
+                        <input type="password" id="member_pw" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
                     </div>
                     <div class="formBtns formBtns2">
                         <button type="submit" class="btn large full primary1">로그인</button>
@@ -71,9 +70,38 @@
         $("input[name='member_id'], input[name='member_pw']").on("input", function() {
             checkInputStatus();
         });
+
+        // AJAX로 로그인 요청
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();  // 기본 form 제출 동작을 막음
+
+            var member_id = $('#member_id').val();
+            var member_pw = $('#member_pw').val();
+            var loginButton = $("button[type='submit']");
+
+            if (member_id && member_pw) {
+              $.ajax({
+            url: '/member/login',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                member_id: member_id,
+                member_pw: member_pw
+            }),
+            success: function(response) {
+                // 서버로부터 받아온 토큰을 저장
+                localStorage.setItem('token', response.token);
+                window.location.href = '/';
+            },
+            error: function(error) {
+                alert('로그인 실패');
+            }
+        });
+
+            }
+        });
     });
-
-
 </script>
+
 </body>
 </html>

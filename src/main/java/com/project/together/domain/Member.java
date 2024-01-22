@@ -1,27 +1,20 @@
 package com.project.together.domain;
 
 import lombok.*;
-import org.apache.ibatis.mapping.FetchType;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Member implements UserDetails {
+
+public class Member {
 
     private String member_id;
     private String member_pw;
-    private List<String> member_roles;
+    private String member_roles;
     private String member_name;
     private String member_gender;
     private String member_phone;
@@ -33,49 +26,11 @@ public class Member implements UserDetails {
     private String member_marketing;
 
 
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.member_roles.stream()
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        Arrays.stream(this.member_roles.split(","))
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .forEach(authorities::add);
+        return authorities;
     }
-
-    @Override
-    public String getUsername() {
-        return member_id;
-    }
-
-    @Override
-    public String getPassword() {
-        return member_pw;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
-    public String member_pw() {
-        return member_pw;
-    }
-
-
 }

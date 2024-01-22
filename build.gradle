@@ -1,49 +1,56 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.17'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'com.project'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+    sourceCompatibility = '11'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'mysql:mysql-connector-java:8.0.31'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'mysql:mysql-connector-java:8.0.31'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 
-	//lombok 관련
-	implementation 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    //lombok 관련
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	// Spring Security 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Spring Security 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	//Jwt 토큰 의존성
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // Jwt 토큰 의존성
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'com.auth0:java-jwt:3.18.2' // 추가된 라이브러리
+    implementation 'org.json:json:20210307'
 
-	//새로고침 없이 작업 반영(Mac Os)
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    //새로고침 없이 작업 반영(Mac Os)
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 }
 
+dependencies {
+    // other dependencies
+    implementation 'com.auth0:java-jwt:3.18.2'
+}
 
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

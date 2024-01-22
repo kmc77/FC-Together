@@ -81,23 +81,22 @@
 
             if (member_id && member_pw) {
               $.ajax({
-            url: '/member/login',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                member_id: member_id,
-                member_pw: member_pw
-            }),
-            success: function(response) {
-                // 서버로부터 받아온 토큰을 저장
-                localStorage.setItem('token', response.token);
-                window.location.href = '/';
-            },
-            error: function(error) {
-                alert('로그인 실패');
-            }
-        });
-
+                url: '/member/authenticate',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    member_id: member_id,
+                    member_pw: member_pw
+                }),
+                success: function(response) {
+                    // 서버로부터 받아온 토큰을 저장
+                    localStorage.setItem('token', response.token);
+                    window.location.href = '/';
+                },
+                error: function(error) {
+                    alert('로그인 실패');
+                }
+              });
             }
         });
     });

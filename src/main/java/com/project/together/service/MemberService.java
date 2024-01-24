@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = false)
-
+@Transactional(readOnly = true)
 public class MemberService {
+
 
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
@@ -22,7 +22,6 @@ public class MemberService {
     public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
-
     }
 
 
@@ -32,11 +31,16 @@ public class MemberService {
     }
 
     // 회원 정보 입력
-    public void joinMember(Member member) {
+ /*   public void joinMember(Member member) {
         // 비밀번호 인코딩
         String encodedPassword = passwordEncoder.encode(member.getMember_pw());
         member.setMember_pw(encodedPassword);
 
+        memberMapper.joinMember(member);
+    }*/
+
+    // 회원 정보 입력
+    public void joinMember(Member member) {
         memberMapper.joinMember(member);
     }
 
@@ -77,16 +81,18 @@ public class MemberService {
     }
 
     //로그인 회원인증
-   /* public boolean authenticateMember(String member_id, String member_pw) {
+    public boolean authenticateMember(String member_id, String member_pw) {
         System.out.println("SSSmember_id = " + member_id + " SSSmember_pw = " + member_pw);
         String storedPassword = memberMapper.getPasswordById(member_id);
         System.out.println("SSSstoredPassword = " + storedPassword);
         return storedPassword != null && storedPassword.equals(member_pw);
+    }
+
+
+   /* //Jwt
+    public Member findByMemberId(String login_id) {
+        return memberMapper.findByMemberId(login_id);
     }*/
 
-    //Jwt
-   /* public Member findByMemberId(String member_id) {
-        return memberMapper.findByMemberId(member_id);
-    }*/
 
 }

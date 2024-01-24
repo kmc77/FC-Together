@@ -53,53 +53,59 @@
 </div>
 <script>
     $(function() {
-        // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
-        function checkInputStatus() {
-            var member_id = $("input[name='member_id']").val();
-            var member_pw = $("input[name='member_pw']").val();
-            var loginButton = $("button[type='submit']");
+    // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
+    function checkInputStatus() {
+      var username = $("input[name='member_id']").val();
+      var password = $("input[name='member_pw']").val();
+      var loginButton = $("button[type='submit']");
 
-            if (member_id && member_pw) {
-                loginButton.prop("disabled", false);
-            } else {
-                loginButton.prop("disabled", true);
-            }
-        }
+      if (username && password) {
+        loginButton.prop("disabled", false);
+      } else {
+        loginButton.prop("disabled", true);
+      }
+    }
 
-        // 입력 상태 변화 감지
-        $("input[name='member_id'], input[name='member_pw']").on("input", function() {
-            checkInputStatus();
-        });
-
-        // AJAX로 로그인 요청
-        $('#loginForm').on('submit', function(e) {
-            e.preventDefault();  // 기본 form 제출 동작을 막음
-
-            var member_id = $('#member_id').val();
-            var member_pw = $('#member_pw').val();
-            var loginButton = $("button[type='submit']");
-
-            if (member_id && member_pw) {
-              $.ajax({
-                url: '/member/authenticate',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    member_id: member_id,
-                    member_pw: member_pw
-                }),
-                success: function(response) {
-                    // 서버로부터 받아온 토큰을 저장
-                    localStorage.setItem('token', response.token);
-                    window.location.href = '/';
-                },
-                error: function(error) {
-                    alert('로그인 실패');
-                }
-              });
-            }
-        });
+    // 입력 상태 변화 감지
+    $("input[name='member_id'], input[name='member_pw']").on("input", function() {
+      checkInputStatus();
     });
+
+    // 로그인 버튼 클릭 이벤트 핸들러
+    $("button[type='submit']").on("click", function(e) {
+      e.preventDefault(); // 기본 폼 제출 동작 막기
+
+      // 입력된 아이디와 비밀번호 가져오기
+      var username = $("input[name='member_id']").val();
+      var password = $("input[name='member_pw']").val();
+
+      // 로그인 데이터를 JSON 형식으로 변환
+      var loginData = {
+        username: member_id,
+        password: member_pw
+      };
+
+      // AJAX 요청으로 로그인 데이터 전송
+      $.ajax({
+        url: "/member/login",
+        type: "POST",
+        data: JSON.stringify(loginData), // JSON으로 변환하여 전송
+        contentType: "application/json", // 데이터 타입을 JSON으로 설정
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", "Bearer " + response.accessToken);
+        },
+        success: function(response) {
+          // 로그인 성공 시 처리
+          window.location.href = "/main"; // 메인 페이지로 리디렉션
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // 요청 실패 또는 오류 발생 시 처리
+          console.log("로그인 실패:", errorThrown); // 콘솔에 로그 출력
+        }
+      });
+    });
+  });
+
 </script>
 
 </body>

@@ -7,15 +7,8 @@
         SELECT member_pw FROM member WHERE member_id = #{member_id}
     </select>
 
-    <select id="findByMemberId" resultType="com.project.together.domain.Member">
+    <select id="findByMemberId" parameterType="String" resultType="com.project.together.domain.Member">
         SELECT * FROM member WHERE member_id = #{member_id}
-    </select>
-
-
-    <select id="findByUsername" resultType="com.project.together.domain.Member">
-        SELECT *
-        FROM member
-        WHERE member_id = #{username}
     </select>
 
 

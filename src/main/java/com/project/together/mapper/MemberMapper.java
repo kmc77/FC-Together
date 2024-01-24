@@ -30,5 +30,8 @@ public interface MemberMapper {
     List<S_Player> getSPlayers();
 
 
-    Member findByUsername(String username);
+    String getPasswordById(String member_id);
+
+
+    Optional<Member> findByMemberId(String member_id);
 }

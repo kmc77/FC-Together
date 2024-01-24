@@ -1,21 +1,17 @@
 package com.project.together.controller;
 
-import com.project.together.config.jwt.AuthenticationResponse;
-import com.project.together.config.jwt.JwtUtil;
-import com.project.together.config.jwt.MyUserDetailsService;
 import com.project.together.domain.*;
 import com.project.together.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import com.project.together.domain.AuthenticationRequest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -25,20 +21,14 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final MyUserDetailsService myUserDetailsService;
-    private final JwtUtil jwtUtil;
+
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder,
-                            AuthenticationManager authenticationManager, MyUserDetailsService myUserDetailsService,
-                            JwtUtil jwtUtil) {
+    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
         this.memberService = memberService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.myUserDetailsService = myUserDetailsService;
-        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/JoinForm")
@@ -90,17 +80,20 @@ public class MemberController {
         return "redirect:/member/LoginForm";
     }
 
-
-   /* @PostMapping("/login")
-    public ModelAndView loginMember(@RequestParam("member_id") String id,
-                                    @RequestParam("member_pw") String password,
+//일반 로그인 로직
+ /*   @PostMapping("/login")
+    public ModelAndView loginMember(@RequestParam("member_id") String member_id,
+                                    @RequestParam("member_pw") String member_pw,
                                     HttpSession session,
                                     RedirectAttributes rattr) {
-        boolean loginSuccess = memberService.authenticateMember(id, password);
+        System.out.println("member_id = " + member_id);
+        System.out.println("member_pw = " + member_pw);
+
+        boolean loginSuccess = memberService.authenticateMember(member_id, member_pw);
         System.out.println("로그인 성공 여부 = " + loginSuccess + "!!");
 
         if (loginSuccess) {
-            session.setAttribute("userId", id);
+            session.setAttribute("userId", member_id);
             ModelAndView modelAndView = new ModelAndView("redirect:/");
             return modelAndView;
         } else {
@@ -109,39 +102,6 @@ public class MemberController {
         }
     }*/
 
-/*
-    @PostMapping("/login")
-    public ResponseEntity<TokenInfo> login(@RequestBody AuthenticationRequest request) {
-        String member_id = request.getMember_id();
-        String member_pw = request.getMember_pw();
-        TokenInfo tokenInfo = memberService.login(member_id, member_pw);
-
-        // 토큰 값 로그 출력
-        System.out.println("ㄴㄴToken: " + tokenInfo.getAccessToken());
-
-        return ResponseEntity.ok(tokenInfo);
-    }
-*/
-
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        System.out.println("컨트롤러 authenticationRequest = " + authenticationRequest);
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getMember_id(), authenticationRequest.getMember_pw())
-            );
-        } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
-        }
-
-
-        final UserDetails userDetails = myUserDetailsService
-                .loadUserByUsername(authenticationRequest.getMember_id());
-        System.out.println("컨트롤러 userDetails = " + userDetails);
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-    }
 
 
     @GetMapping("/logout")

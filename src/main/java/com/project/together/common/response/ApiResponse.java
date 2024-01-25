@@ -1,7 +1,6 @@
-package com.project.together.config.auth;
+package com.project.together.common.response;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class ApiResponse {

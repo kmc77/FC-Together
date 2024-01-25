@@ -1,16 +1,11 @@
 package com.project.together.domain;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     private String member_id;
@@ -25,6 +20,14 @@ public class Member {
     private String member_like_player_gb;
     private String member_marketing;
     private List<String> member_roles; // 추가된 roles 필드
+
+    @Builder(builderMethodName = "memberBuilder", toBuilder = true)
+    private Member(String member_id, String member_pw, String member_name
+    ) {
+        this.member_id = member_id;
+        this.member_pw = member_pw;
+        this.member_name = member_name;
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package com.project.together.config.auth;
+package com.project.together.common.response;
 
 public class ApiResponseBuilder {
     private String result;

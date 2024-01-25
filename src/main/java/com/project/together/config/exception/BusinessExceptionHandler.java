@@ -1,5 +1,11 @@
-package com.project.together.config.handler;
+package com.project.together.config.exception;
 
+import lombok.Getter;
+
+/**
+ * 에러를 사용하기 위한 구현체
+ */
+@Getter
 public class BusinessExceptionHandler extends RuntimeException {
 
     private final int errorCode;
@@ -9,7 +15,4 @@ public class BusinessExceptionHandler extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public int getErrorCode() {
-        return errorCode;
-    }
 }

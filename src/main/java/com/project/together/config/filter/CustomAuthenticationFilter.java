@@ -14,6 +14,5 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         super.setFilterProcessesUrl(filterProcessesUrl);
     }
 
-    // 다른 메서드들
 }
 

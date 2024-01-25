@@ -1,4 +1,4 @@
-package com.project.together.config.auth;
+package com.project.together.common.codes;
 
 public class ErrorCode {
         public static final int BUSINESS_EXCEPTION_ERROR = 1001;

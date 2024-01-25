@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.project.together.config.auth.AuthConstants;
-import com.project.together.config.jwt.TokenUtils;
-import com.project.together.config.auth.ApiResponse;
-import com.project.together.config.auth.SuccessCode;
+import com.project.together.common.codes.AuthConstants;
+import com.project.together.common.utils.TokenUtils;
+import com.project.together.common.response.ApiResponse;
+import com.project.together.common.codes.SuccessCode;
 
 
 @Slf4j

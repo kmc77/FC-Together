@@ -1,31 +1,24 @@
 package com.project.together.config;
 
-import com.project.together.config.auth.ErrorCode;
 import com.project.together.config.handler.CustomAuthFailureHandler;
 import com.project.together.config.handler.CustomAuthSuccessHandler;
 import com.project.together.config.handler.CustomAuthenticationProvider;
-import com.project.together.domain.Member;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import com.project.together.config.filter.JwtAuthorizationFilter;
+import com.project.together.config.filter.JwtRequestFilter;
 import com.project.together.config.filter.CustomAuthenticationFilter;
-
-import javax.servlet.Filter;
 
 @Slf4j
 @Configuration
@@ -62,7 +55,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
 
                 // [STEP3] Spring Security JWT Filter Load
-                .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(JwtRequestFilter(), BasicAuthenticationFilter.class)
 
                 // [STEP4] Session 기반의 인증기반을 사용하지 않고 추후 JWT를 이용하여서 인증 예정
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -151,7 +144,8 @@ public class WebSecurityConfig {
      * @return JwtAuthorizationFilter
      */
     @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter();
+    public JwtRequestFilter JwtRequestFilter() {
+        return new JwtRequestFilter();
     }
+
 }

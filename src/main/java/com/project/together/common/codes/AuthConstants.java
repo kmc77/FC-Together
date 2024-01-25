@@ -1,4 +1,4 @@
-package com.project.together.config.auth;
+package com.project.together.common.codes;
 
 /**
  * JWT 관련된 상수로 사용 되는 파일

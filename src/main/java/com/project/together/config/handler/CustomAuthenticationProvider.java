@@ -1,36 +1,49 @@
 package com.project.together.config.handler;
 
-import com.project.together.domain.Member;
+import com.project.together.domain.MemberDetails;
+import com.project.together.service.MemberDetailsService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
+
+/**
+ * 전달받은 사용자의 아이디와 비밀번호를 기반으로 비즈니스 로직을 처리하여 사용자의 ‘인증’에 대해서 검증을 수행하는 클래스입니다.
+ * CustomAuthenticationFilter로 부터 생성한 토큰을 통하여 ‘MemberDetailsService’를 통해 데이터베이스 내에서 정보를 조회합니다.
+ */
+@Slf4j
+@RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Resource
+    private MemberDetailsService memberDetailsService;
+    @NonNull
+    private BCryptPasswordEncoder passwordEncoder;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public CustomAuthenticationProvider(BCryptPasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        log.debug("2.CustomAuthenticationProvider");
 
-        // 사용자 인증 로직 구현
-        // 예: 사용자 정보를 DB에서 조회하여 인증 처리
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 
-        // 비밀번호 일치 여부 검사
-        if (!passwordEncoder.matches(password, getMemberPasswordFromDatabase(username))) {
-            throw new BadCredentialsException("Invalid password");
+        // 'AuthenticaionFilter' 에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
+        String userId = token.getName();
+        String userPw = (String) token.getCredentials();
+
+        // Spring Security - UserDetailsService를 통해 DB에서 아이디로 사용자 조회
+        MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(userId);
+
+        if (!(memberDetails.getMember_pw().equalsIgnoreCase(userPw) && memberDetails.getMember_pw().equalsIgnoreCase(userPw))) {
+            throw new BadCredentialsException(memberDetails.getMember_name() + "Invalid password");
         }
-
-        return new UsernamePasswordAuthenticationToken(username, password);
+        return new UsernamePasswordAuthenticationToken(memberDetails, userPw, memberDetails.getAuthorities());
     }
 
     @Override
@@ -38,25 +51,4 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    // 사용자 정보를 DB에서 조회하여 비밀번호를 가져오는 메서드
-    private String getMemberPasswordFromDatabase(String username) {
-        // DB에서 username에 해당하는 사용자 정보를 조회하여 비밀번호를 반환하는 로직을 구현해야 합니다.
-        // 이 메서드를 사용자 정보 조회 로직에 맞게 수정해주세요.
-        Member member = fetchMemberFromDatabase(username);
-        if (member != null) {
-            return member.getMember_pw();
-        }
-        return null;
-    }
-
-    // 사용자 정보를 DB에서 조회하는 메서드 (예시)
-    private Member fetchMemberFromDatabase(String username) {
-        // DB에서 username에 해당하는 사용자 정보를 조회하는 로직을 구현해야 합니다.
-        // 이 메서드를 사용자 정보 조회 로직에 맞게 수정해주세요.
-        // 예시로 Member 객체를 반환하도록 구현했습니다.
-        Member member = new Member();
-        member.setMember_name(username);
-        member.setMember_pw("$2a$10$0Wx1rZ0xhFhKjkiMkRg6OeYf9S3G8rJlLjIL.7cUkH7FJW6z7Zu72"); // 예시: 암호화된 비밀번호
-        return member;
-    }
 }

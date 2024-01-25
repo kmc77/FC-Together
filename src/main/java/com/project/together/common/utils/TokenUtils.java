@@ -1,4 +1,4 @@
-package com.project.together.config.jwt;
+package com.project.together.common.utils;
 
 import com.project.together.domain.Member;
 import io.jsonwebtoken.*;

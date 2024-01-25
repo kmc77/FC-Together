@@ -1,4 +1,4 @@
-package com.project.together.config.auth;
+package com.project.together.common.codes;
 
 public class SuccessCode {
     public static final Success SELECT = new Success(200, "Success");

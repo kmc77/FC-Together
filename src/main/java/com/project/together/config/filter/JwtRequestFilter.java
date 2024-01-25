@@ -1,17 +1,17 @@
 package com.project.together.config.filter;
 
-import com.project.together.config.jwt.TokenUtils;
+import com.project.together.common.utils.TokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.project.together.config.auth.AuthConstants;
-import com.project.together.config.handler.BusinessExceptionHandler;
-import com.project.together.config.auth.ErrorCode;
+import com.project.together.common.codes.AuthConstants;
+import com.project.together.config.exception.BusinessExceptionHandler;
+import com.project.together.common.codes.ErrorCode;
+
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,11 +27,11 @@ import java.util.List;
  * 지정한 URL 별 JWT 유효성 검증을 수행하며 직접적인 사용자 '인증'을 확인합니다.
  *
  * @author lee
- * @fileName JwtAuthorizationFilter
+ * @fileName JwtRequestFilter
  * @since 2022.12.23
  */
 @Slf4j
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws IOException, ServletException {

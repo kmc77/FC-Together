@@ -3,16 +3,10 @@ package com.project.together.controller;
 import com.project.together.domain.*;
 import com.project.together.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -22,13 +16,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private final PasswordEncoder passwordEncoder;
-
 
     @Autowired
-    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     @GetMapping("/JoinForm")
@@ -101,7 +93,6 @@ public class MemberController {
             return new ModelAndView("redirect:/member/LoginForm");
         }
     }*/
-
 
 
     @GetMapping("/logout")

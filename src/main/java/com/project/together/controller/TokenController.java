@@ -14,8 +14,8 @@ import com.project.together.common.codes.SuccessCode;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/test")
-public class TestController {
+@RequestMapping("api/v1/token")
+public class TokenController {
     /**
      * [API] 사용자 정보를 기반으로 JWT를 발급하는 API
      *

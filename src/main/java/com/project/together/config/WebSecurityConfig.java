@@ -3,7 +3,9 @@ package com.project.together.config;
 import com.project.together.config.handler.CustomAuthFailureHandler;
 import com.project.together.config.handler.CustomAuthSuccessHandler;
 import com.project.together.config.handler.CustomAuthenticationProvider;
+import com.project.together.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,7 @@ import com.project.together.config.filter.CustomAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
 
     /**
      * 1. 정적 자원(Resource)에 대해서 인증된 사용자가  정적 자원의 접근에 대해 ‘인가’에 대한 설정을 담당하는 메서드이다.
@@ -66,6 +69,7 @@ public class WebSecurityConfig {
 
                 // [STEP6] Spring Security Custom Filter Load - Form '인증'에 대해서 사용
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
         // [STEP7] 최종 구성한 값을 사용함.
         return http.build();
@@ -147,5 +151,6 @@ public class WebSecurityConfig {
     public JwtRequestFilter JwtRequestFilter() {
         return new JwtRequestFilter();
     }
+
 
 }

@@ -14,9 +14,11 @@ import java.util.Collections;
 @Service
 public class MemberDetailsService implements UserDetailsService {
     private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
 
-    public MemberDetailsService(MemberService memberService) {
+    public MemberDetailsService(MemberService memberService, MemberServiceImpl memberServiceImpl) {
         this.memberService = memberService;
+        this.memberServiceImpl = memberServiceImpl;
     }
 
     @Override
@@ -25,16 +27,18 @@ public class MemberDetailsService implements UserDetailsService {
                 .memberBuilder()
                 .member_id(member_id)
                 .build();
+        System.out.println("디테일 서비스 member = " + member);
 
         // 사용자 정보가 존재하지 않는 경우
         if (member_id == null || member_id.isEmpty()) {
-            return memberService.login(member)
+            return memberServiceImpl.login(member)
                     .map(m -> new MemberDetails(m, Collections.singleton(new SimpleGrantedAuthority(m.getMember_id()))))
                     .orElseThrow(() -> new AuthenticationServiceException(member_id));
         }
         // 비밀번호가 맞지 않는 경우
         else {
-            return memberService.login(member)
+            System.out.println("디테일 서비스 member = " + member);
+            return memberServiceImpl.login(member)
                     .map(m -> new MemberDetails(m, Collections.singleton(new SimpleGrantedAuthority(m.getMember_id()))))
                     .orElseThrow(() -> new BadCredentialsException(member_id));
         }

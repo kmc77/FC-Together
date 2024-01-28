@@ -1,11 +1,10 @@
 package com.project.together.config;
 
+import com.project.together.config.filter.JwtAuthorizationFilter;
 import com.project.together.config.handler.CustomAuthFailureHandler;
 import com.project.together.config.handler.CustomAuthSuccessHandler;
 import com.project.together.config.handler.CustomAuthenticationProvider;
-import com.project.together.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import com.project.together.config.filter.JwtRequestFilter;
 import com.project.together.config.filter.CustomAuthenticationFilter;
 
 @Slf4j
@@ -58,7 +56,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
 
                 // [STEP3] Spring Security JWT Filter Load
-                .addFilterBefore(JwtRequestFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthorizationFilter(), BasicAuthenticationFilter.class)
 
                 // [STEP4] Session 기반의 인증기반을 사용하지 않고 추후 JWT를 이용하여서 인증 예정
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -74,6 +72,7 @@ public class WebSecurityConfig {
         // [STEP7] 최종 구성한 값을 사용함.
         return http.build();
     }
+
 
     /**
      * 3. authenticate 의 인증 메서드를 제공하는 매니져로'Provider'의 인터페이스를 의미합니다.
@@ -106,6 +105,7 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     /**
      * 6. 커스텀을 수행한 '인증' 필터로 접근 URL, 데이터 전달방식(form) 등 인증 과정 및 인증 후 처리에 대한 설정을 구성하는 메서드입니다.
@@ -142,15 +142,15 @@ public class WebSecurityConfig {
         return new CustomAuthFailureHandler();
     }
 
+
     /**
      * 9. JWT 토큰을 통하여서 사용자를 인증합니다.
      *
      * @return JwtAuthorizationFilter
      */
     @Bean
-    public JwtRequestFilter JwtRequestFilter() {
-        return new JwtRequestFilter();
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter();
     }
-
 
 }

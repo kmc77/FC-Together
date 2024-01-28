@@ -31,7 +31,7 @@ import java.util.List;
  * @since 2022.12.23
  */
 @Slf4j
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)

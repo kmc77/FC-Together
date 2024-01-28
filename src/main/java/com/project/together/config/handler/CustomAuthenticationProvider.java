@@ -30,16 +30,20 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         log.debug("2.CustomAuthenticationProvider");
-
+        System.out.println("프로바이더 authentication = " + authentication);
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+        System.out.println("검증 token = " + token);
 
         // 'AuthenticaionFilter' 에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
         String userId = token.getName();
         String userPw = (String) token.getCredentials();
+        System.out.println("시도 userId = " + userId);
+        System.out.println("시도 userPw = " + userPw);
+
 
         // Spring Security - UserDetailsService를 통해 DB에서 아이디로 사용자 조회
         MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(userId);
-
+        System.out.println("DB 사용자 조회 memberDetails = " + memberDetails);
         if (!(memberDetails.getMember_pw().equalsIgnoreCase(userPw) && memberDetails.getMember_pw().equalsIgnoreCase(userPw))) {
             throw new BadCredentialsException(memberDetails.getMember_name() + "Invalid password");
         }

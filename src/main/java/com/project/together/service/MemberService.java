@@ -2,37 +2,69 @@ package com.project.together.service;
 
 import com.project.together.domain.*;
 import com.project.together.mapper.MemberMapper;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
-public interface MemberService {
+public class MemberService {
 
-    List<Member> getAllMembers();
+    private final MemberMapper memberMapper;
 
-    void joinMember(Member member);
+    @Autowired
+    public MemberService(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
+    }
 
-    void updateMember(Member member);
+    public List<Member> getAllMembers() {
+        return MemberMapper.getAllMembers();
+    }
 
-    void deleteMember(String memberId);
+/*    public void joinMember(Member member) {
+        memberMapper.joinMember(member);
+    }*/
 
-    int idCheck(String memberId);
+    public void updateMember(Member member) {
+        memberMapper.updateMember(member);
+    }
 
-    int emailCheck(String memberEmail);
+    public void deleteMember(String memberId) {
+        memberMapper.deleteMember(memberId);
+    }
 
-    List<K5_Player> getK5Players();
+    public int idCheck(String memberId) {
+        int count = memberMapper.idCheck(memberId);
+        return (count > 0) ? -1 : 1;
+    }
 
-    List<K7_Player> getK7Players();
+    public int emailCheck(String memberEmail) {
+        int count = memberMapper.emailCheck(memberEmail);
+        return (count > 0) ? -1 : 1;
+    }
 
-    List<S_Player> getSPlayers();
+    public List<K5_Player> getK5Players() {
+        return memberMapper.getK5Players();
+    }
+
+    public List<K7_Player> getK7Players() {
+        return memberMapper.getK7Players();
+    }
+
+    public List<S_Player> getSPlayers() {
+        return memberMapper.getSPlayers();
+    }
+
+    public Member findByUsername(String username) {
+        return memberMapper.findByUsername(username);
+    }
 
 
-    Optional<Member> login(Member member);
+    public void save(Member member) {
+        memberMapper.save(member);
+    }
+
+
 }

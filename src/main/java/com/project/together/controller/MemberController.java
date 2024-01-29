@@ -62,7 +62,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/join")
+  /*  @PostMapping("/join")
     public String joinMember(Member member, Model model) {
         memberService.joinMember(member);
         System.out.println("회원가입 성공 = " + member);
@@ -70,7 +70,7 @@ public class MemberController {
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
 
         return "redirect:/member/LoginForm";
-    }
+    }*/
 
 //일반 로그인 로직
  /*   @PostMapping("/login")

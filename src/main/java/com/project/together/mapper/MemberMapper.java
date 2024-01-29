@@ -4,24 +4,26 @@ import com.project.together.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
+
 
 
     int idCheck(String memberId);
 
     int emailCheck(String memberEmail);
 
-    List<Member> getAllMembers();
+    static List<Member> getAllMembers() {
+        return null;
+    }
 
 
     void updateMember(Member member);
 
     void deleteMember(String memberId);
 
-    void joinMember(Member member);
+/*    void joinMember(Member member);*/
 
     List<K5_Player> getK5Players();
 
@@ -30,5 +32,8 @@ public interface MemberMapper {
     List<S_Player> getSPlayers();
 
 
-    Optional<Member> findByMemberId(String member_id);
+    Member findByUsername(String username);
+
+
+    void save(Member member);
 }

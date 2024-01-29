@@ -7,8 +7,8 @@
         SELECT member_pw FROM member WHERE member_id = #{member_id}
     </select>
 
-    <select id="findByMemberId" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT * FROM member WHERE member_id = #{member_id}
+    <select id="findByUsername" parameterType="String" resultType="com.project.together.domain.Member">
+        SELECT * FROM member WHERE member_id = #{username}
     </select>
 
 
@@ -50,12 +50,12 @@
         DELETE FROM Member WHERE member_id = #{memberId}
     </delete>
 
-    <insert id="joinMember" parameterType="com.project.together.domain.Member">
+    <insert id="save" parameterType="com.project.together.domain.Member">
         INSERT INTO Member (member_id, member_pw, member_name, member_gender, member_phone, member_email, member_birth,
-        member_address, member_like_player, member_like_player_gb, member_marketing) VALUES (#{member_id}, #{member_pw},
-        #{member_name}, #{member_gender},
-        #{member_phone}, #{member_email},
-        #{member_birth}, #{member_address}, #{member_like_player}, #{member_like_player_gb}, #{member_marketing})
+        member_address, member_like_player, member_like_player_gb, member_marketing, member_roles)
+        VALUES (#{member_id}, #{member_pw}, #{member_name}, #{member_gender},
+        #{member_phone}, #{member_email}, #{member_birth}, #{member_address},
+        #{member_like_player}, #{member_like_player_gb}, #{member_marketing}, #{member_roles})
     </insert>
 
 

@@ -20,10 +20,10 @@
                 <!-- 로그인 폼 -->
                 <form id="loginForm" action="/login" method="post">
                     <div>
-                        <input type="text" id="username" name="member_id" placeholder="아이디를 입력하세요" class="input">
+                        <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" class="input">
                     </div>
                     <div class="formRow">
-                        <input type="password" id="password" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
+                        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
                     </div>
                     <div class="formBtns formBtns2">
                         <button type="submit" class="btn large full primary1">로그인</button>
@@ -56,11 +56,11 @@
     $(function() {
       // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
       function checkInputStatus() {
-        var member_id = $("input[name='member_id']").val();
-        var member_pw = $("input[name='member_pw']").val();
+        var username = $("input[name='username']").val();
+        var password = $("input[name='password']").val();
         var loginButton = $("button[type='submit']");
 
-        if (member_id && member_pw) {
+        if (username && password) {
           loginButton.prop("disabled", false);
         } else {
           loginButton.prop("disabled", true);
@@ -68,38 +68,8 @@
       }
 
       // 입력 상태 변화 감지
-      $("input[name='member_id'], input[name='member_pw']").on("input", function() {
+      $("input[name='username'], input[name='password']").on("input", function() {
         checkInputStatus();
-      });
-
-      // 폼 제출 이벤트 핸들러
-      $("form#loginForm").on("submit", function(e) {
-        e.preventDefault(); // 폼 제출 동작을 막음
-
-        // 폼 데이터를 JSON 객체로 변환
-        var formData = {
-          member_id: $("input[name='member_id']").val(),
-          member_pw: $("input[name='member_pw']").val()
-        };
-
-        // JSON 데이터를 문자열화
-        var jsonData = JSON.stringify(formData);
-
-        // AJAX 요청으로 서버에 전송
-        $.ajax({
-          url: "/login",
-          type: "POST",
-          contentType: "application/json",
-          data: jsonData,
-          success: function(response) {
-            // 서버 응답 처리
-            console.log(response);
-          },
-          error: function(xhr, status, error) {
-            // 에러 처리
-            console.log(xhr.responseText);
-          }
-        });
       });
 
       // 초기 상태에서도 로그인 버튼 상태 확인

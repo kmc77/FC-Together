@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.UserMapper">
+
+
+    <select id="findByUsername" parameterType="String" resultType="com.project.together.domain.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+
+    <select id="idCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE username = #{username}
+    </select>
+
+
+    <select id="emailCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE user_email = #{user_email}
+    </select>
+
+
+    <select id="getK5Players" resultType="com.project.together.domain.K5_Player">
+        SELECT k5_player_num, k5_player_name FROM K5_Player
+    </select>
+
+    <select id="getK7Players" resultType="com.project.together.domain.K7_Player">
+        SELECT k7_player_num, k7_player_name FROM K7_Player
+    </select>
+
+    <select id="getSPlayers" resultType="com.project.together.domain.S_Player">
+        SELECT s_player_num, s_player_name FROM S_Player
+    </select>
+
+
+    <insert id="joinUser" parameterType="com.project.together.domain.User">
+        INSERT INTO user (username, password, user_email, user_role, user_real_name, user_gender, user_phone,
+        user_birth, user_address, user_like_player, user_like_player_gb, user_marketing)
+        VALUES (#{username}, #{password}, #{user_email}, #{user_role}, #{user_real_name}, #{user_gender}, #{user_phone},
+        #{user_birth}, #{user_address}, #{user_like_player}, #{user_like_player_gb}, #{user_marketing})
+    </insert>
+
+
+</mapper>

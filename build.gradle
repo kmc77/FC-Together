@@ -27,6 +27,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+
+    //Thymeleaf & Security
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
     //Mustache 템플릿 엔진
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
 
@@ -41,7 +45,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // JWT
-    implementation 'com.auth0:java-jwt:3.18.1'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.3.0'
+
 
     // JAXB
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'

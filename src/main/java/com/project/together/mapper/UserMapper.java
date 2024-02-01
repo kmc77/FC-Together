@@ -14,8 +14,11 @@ public interface UserMapper {
 
     int idCheck(String username);
 
-    int emailCheck(String user_email);
+    int emailCheck(String userEmail);
 
+    void joinUser(User user);
+
+    User findByUsername(String username);
 
     List<K5_Player> getK5Players();
 
@@ -23,8 +26,4 @@ public interface UserMapper {
 
     List<S_Player> getSPlayers();
 
-
-    void joinUser(User user);
-
-    User findByUsername(String username);
 }

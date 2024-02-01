@@ -33,13 +33,13 @@
                 </form>
 
                 <div class="formBtns formBtns2 memberLinks">
-                    <a href="/member/JoinForm" class="link">회원가입</a>
+                    <a href="/user/JoinForm" class="link">회원가입</a>
                     <a href="/member/findid" class="findid">아이디찾기</a>
                     <a href="/member/findpw" class="findpw">비밀번호찾기</a>
                 </div>
                 <div class="snsLogin">
-                    <a href="javascript:void(0)" class="kakao">카카오<br>로그인</a>
-                    <a href="javascript:void(0)" class="naver">네이버<br>로그인</a>
+                    <a href="/oauth2/authorization/google">구글<br>로그인</a>
+                    <a href="/oauth2/authorization/naver">네이버<br>로그인</a>
                 </div>
                 <div id="naver_id_login" style="display: none;">
                     <a href="https://nid.naver.com/oauth2.0/authorize?response_type=token&amp;client_id=0r3LoCZVmG5_zLbBSGFD&amp;redirect_uri=https%3A%2F%2Fhyundai-motorsfc.com%2Fmember%2Fsignin&amp;state=99b0385d-fd63-49d3-b1b0-6c0deb2d92da"
@@ -54,27 +54,72 @@
 </div>
 <script>
     $(function() {
-      // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
-      function checkInputStatus() {
-        var username = $("input[name='username']").val();
-        var password = $("input[name='password']").val();
-        var loginButton = $("button[type='submit']");
+        // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
+        function checkInputStatus() {
+            var username = $("input[name='username']").val();
+            var password = $("input[name='password']").val();
+            var loginButton = $("button[type='submit']");
 
-        if (username && password) {
-          loginButton.prop("disabled", false);
-        } else {
-          loginButton.prop("disabled", true);
+            if (username && password) {
+                loginButton.prop("disabled", false);
+            } else {
+                loginButton.prop("disabled", true);
+            }
         }
-      }
 
-      // 입력 상태 변화 감지
-      $("input[name='username'], input[name='password']").on("input", function() {
+        // 입력 상태 변화 감지
+        $("input[name='username'], input[name='password']").on("input", function() {
+            checkInputStatus();
+        });
+
+        // 초기 상태에서도 로그인 버튼 상태 확인
         checkInputStatus();
-      });
 
-      // 초기 상태에서도 로그인 버튼 상태 확인
-      checkInputStatus();
+        // 로그인 폼 제출 이벤트 핸들러
+        $("#loginForm").submit(function(event) {
+            event.preventDefault(); // 폼 제출 기본 동작 방지
+
+            var username = $("input[name='username']").val();
+            var password = $("input[name='password']").val();
+            var loginData = {
+                username: username,
+                password: password
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: JSON.stringify(loginData),
+                contentType: "application/json",
+                success: function(data, status, xhr) {
+                    // 로그인 성공 시 처리
+                    console.log("로그인 성공:", data);
+                    console.log(xhr.getResponseHeader('Authorization')); // 헤더에 있는 토큰을 받아와서
+                    localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization')); // 로컬스토리지에 응답 받은 토큰을 그대로 저장
+
+                    // 서버에서 전달한 JWT 토큰을 받아와서 클라이언트에 저장
+                    var jwtToken = data.token;
+                    localStorage.setItem("jwtToken", jwtToken);
+
+                    alert("로그인에 성공하였습니다.");
+
+                    window.location.href = "/";
+
+
+                },
+                error: function(xhr, status, error) {
+                    // 로그인 실패 시 처리
+                    console.error("로그인 실패:", error);
+                    if (xhr.responseJSON.statusCode === 404) {
+                        alert("아이디와 비밀번호를 확인하여 주세요.");
+                    } else {
+                        alert("서버에 문제가 발생하였습니다.");
+                    }
+                }
+            });
+        });
     });
 </script>
+
 </body>
 </html>

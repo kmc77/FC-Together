@@ -68,7 +68,7 @@
 
             $.ajax({
                 url: "/user/emailCheck", // 수정된 URL 경로
-                data: { user_email: input_email },
+                data: { email: input_email },
                 success: function (resp) {
                     console.log("이메일 중복 확인 결과:", resp);
                     if (resp === -1) {
@@ -214,7 +214,7 @@
         <div class="formGroup">
             <label class="label" for="email">이메일 주소 <span class="required">(필수)</span></label>
             <div class="withBtn">
-                <input type="email" id="email" name="user_email" placeholder="이메일 주소를 입력하세요" class="input">
+                <input type="email" id="email" name="email" placeholder="이메일 주소를 입력하세요" class="input">
                 <button type="button" id="email_butt" value="이메일 중복체크">이메일 중복체크</button>
             </div>
         </div>

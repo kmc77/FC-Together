@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>LoginForm</title>
+    <title>header</title>
     <link href="/css/layout/header.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -14,21 +14,43 @@
             <img src="/img/FcTogether.jpg" alt="" id="logoImg">
         </a>
     </div>
+
     <div class="utils">
-        <!-- 세션에서 userId 값을 가져와서 로그인 상태인지 확인 -->
-        <span th:if="${session.userId}" th:text="${session.userId}" class="account-info"></span>
-        <a th:if="${session.userId}" href="/user/logout" class="link" onclick="logout()">로그아웃</a>
-        <a th:unless="${session.userId}" href="/user/LoginForm" class="link">로그인</a>
-        <a th:unless="${session.userId}" href="/user/JoinForm" class="link">회원가입</a>
+        <span sec:authorize="isAuthenticated()" th:text="${#authentication.name}" class="account-info"></span>
+        <!-- 토큰 인증된 사용자 username 값 노출 -->
+        <a sec:authorize="isAuthenticated()" href="/user/logout" class="link" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAnonymous()" href="/user/LoginForm" class="link">로그인</a>
+        <a sec:authorize="isAnonymous()" href="/user/JoinForm" class="link">회원가입</a>
     </div>
+
 </div>
 <script>
     function logout() {
-        location.href = "/member/logout"; // 로그아웃 요청
+        location.href = "/user/logout"; // 로그아웃 요청
         alert("로그아웃 되었습니다."); // 얼럿 메시지 노출
+
+        // getUserMe() 함수 추가
+        function getUserMe(){
+            var settings = {
+                "url": "http://localhost:8081/", // 사용자 정보를 반환하는 API 엔드포인트 경로로 변경
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Authorization": localStorage.getItem("accessToken")
+                },
+            };
+
+            $.ajax(settings).done(function (response) { // 성공하면
+                console.log(response);
+                console.log(response.username); // 사용자 이름이 username인 경우
+                $('#loginUser').empty(); // 기존 ..님 비우고 아래꺼 셋팅
+                $('#loginUser').append(response.username + "님 반갑습니다."); // 사용자 이름을 표시
+            });
+        }
+
+        getUserMe(); // getUserMe() 함수 호출
     }
 </script>
-
 <div class="gnbBox">
     <div class="container">
         <ul class="mainMenuBox">
@@ -44,4 +66,3 @@
 </div>
 </body>
 </html>
-

@@ -1,15 +1,21 @@
 package com.project.together.controller;
 
+import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -22,8 +28,14 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-
     }
+
+    @GetMapping("/user")
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails = " + principalDetails.getUser());
+        return "user";
+    }
+
 
     @GetMapping("/admin")
     public @ResponseBody String admin() {
@@ -58,7 +70,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/emailCheck")
-    public int emailCheck(@RequestParam("user_email") String userEmail) {
+    public int emailCheck(@RequestParam("email") String userEmail) {
         return userService.emailCheck(userEmail);
     }
 
@@ -84,38 +96,17 @@ public class UserController {
     public String joinUser(User user, Model model) {
         userService.joinUser(user);
         System.out.println("회원가입 성공 = " + user);
-
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
-
         return "redirect:/user/LoginForm";
     }
 
-//일반 로그인 로직
- /*   @PostMapping("/login")
-    public ModelAndView loginMember(@RequestParam("member_id") String member_id,
-                                    @RequestParam("member_pw") String member_pw,
-                                    HttpSession session,
-                                    RedirectAttributes rattr) {
-        System.out.println("member_id = " + member_id);
-        System.out.println("member_pw = " + member_pw);
-
-        boolean loginSuccess = memberService.authenticateMember(member_id, member_pw);
-        System.out.println("로그인 성공 여부 = " + loginSuccess + "!!");
-
-        if (loginSuccess) {
-            session.setAttribute("userId", member_id);
-            ModelAndView modelAndView = new ModelAndView("redirect:/");
-            return modelAndView;
-        } else {
-            rattr.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return new ModelAndView("redirect:/member/LoginForm");
-        }
-    }*/
-
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); // 세션을 초기화하여 로그아웃 처리
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
         return "redirect:/"; // 로그인 폼으로 이동
     }
 

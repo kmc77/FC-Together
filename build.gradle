@@ -28,9 +28,6 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 
-    //Thymeleaf & Security
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-
     //Mustache 템플릿 엔진
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
 

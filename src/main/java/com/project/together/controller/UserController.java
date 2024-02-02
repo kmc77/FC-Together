@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -34,6 +36,15 @@ public class UserController {
     public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         System.out.println("principalDetails = " + principalDetails.getUser());
         return "user";
+    }
+
+    @GetMapping("/api")
+    @ResponseBody
+    public Map<String, String> api(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> response = new HashMap<>();
+        response.put("username", principalDetails.getUsername());
+        System.out.println("사용자 정보 response = " + response);
+        return response;
     }
 
 

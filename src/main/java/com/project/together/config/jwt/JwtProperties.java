@@ -3,8 +3,10 @@ package com.project.together.config.jwt;
 import lombok.Data;
 
 public interface JwtProperties {
-    String SECRET = "조익현"; // 우리 서버만 알고 있는 비밀값
-    int EXPIRATION_TIME = 864000000; // 10일 (1/1000초)
+    String SECRET = "kcc5081"; // 서버만 알고 있는 비밀값
+    int EXPIRATION_TIME = 60000 * 10; // 액세스 토큰 만료 시간: 10분
+    int REFRESH_EXPIRATION_TIME = 60000 * 60 * 24; // 리프레시 토큰 만료 시간: 24시간
     String TOKEN_PREFIX = "Bearer ";
     String HEADER_STRING = "Authorization";
+    String REFRESH_TOKEN_HEADER_STRING = "Refresh "; // 리프레시 토큰 헤더 키
 }

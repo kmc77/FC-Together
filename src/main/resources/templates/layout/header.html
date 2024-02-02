@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>header</title>
@@ -16,41 +16,49 @@
     </div>
 
     <div class="utils">
-        <span sec:authorize="isAuthenticated()" th:text="${#authentication.name}" class="account-info"></span>
-        <!-- 토큰 인증된 사용자 username 값 노출 -->
-        <a sec:authorize="isAuthenticated()" href="/user/logout" class="link" onclick="logout()">로그아웃</a>
-        <a sec:authorize="isAnonymous()" href="/user/LoginForm" class="link">로그인</a>
-        <a sec:authorize="isAnonymous()" href="/user/JoinForm" class="link">회원가입</a>
-    </div>
+        <!-- 로그인 상태를 보여주는 부분 -->
+        <span id="account-info" style="display: none;"></span>
+        <a id="logout-link" href="/user/logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
 
+        <!-- 로그아웃 상태를 보여주는 부분 -->
+        <a id="login-link" href="/user/LoginForm" class="link" style="display: none;">로그인</a>
+        <a id="join-link" href="/user/JoinForm" class="link" style="display: none;">회원가입</a>
+    </div>
 </div>
 <script>
-    function logout() {
-        location.href = "/user/logout"; // 로그아웃 요청
-        alert("로그아웃 되었습니다."); // 얼럿 메시지 노출
-
-        // getUserMe() 함수 추가
-        function getUserMe(){
-            var settings = {
-                "url": "http://localhost:8081/", // 사용자 정보를 반환하는 API 엔드포인트 경로로 변경
-                "method": "GET",
-                "timeout": 0,
-                "headers": {
-                    "Authorization": localStorage.getItem("accessToken")
+    $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        if (token) {
+            $.ajax({
+                url: '/user/api',
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', token);
                 },
-            };
-
-            $.ajax(settings).done(function (response) { // 성공하면
-                console.log(response);
-                console.log(response.username); // 사용자 이름이 username인 경우
-                $('#loginUser').empty(); // 기존 ..님 비우고 아래꺼 셋팅
-                $('#loginUser').append(response.username + "님 반갑습니다."); // 사용자 이름을 표시
+                success: function(data) {
+                    $('#account-info').text(data.username + '님, 반갑습니다.');
+                    $('#logout-link').show();
+                    $('#account-info').show();
+                },
+                error: function() {
+                    $('#login-link').show();
+                    $('#join-link').show();
+                    console.error('사용자 정보를 가져오는 데 실패했습니다.');
+                }
             });
+        } else {
+            $('#login-link').show();
+            $('#join-link').show();
         }
+    });
 
-        getUserMe(); // getUserMe() 함수 호출
+    function logout() {
+        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 accessToken 토큰 제거
+        location.href = "/logout";
+        alert("로그아웃 되었습니다.");
     }
 </script>
+
 <div class="gnbBox">
     <div class="container">
         <ul class="mainMenuBox">

@@ -1,7 +1,5 @@
 package com.project.together.config.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.User;
@@ -18,7 +16,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 // 스프링 시큐리티에서 UsernamePasswordAuthenticationFilter 가 있음.
 // login 요청해서 username, password 전송하면 (post)
@@ -28,12 +25,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         System.out.println("JwtAuthenticationFilter 로그인 시도중 = ");
 
-        // 1. username, password 받아서
+        // 1. username, password 받음
         try {
             ObjectMapper om = new ObjectMapper();
             User user = om.readValue(request.getInputStream(), User.class);
@@ -60,36 +58,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
+    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                         Authentication authResult) throws IOException, ServletException {
         System.out.println("successfulAuthentication 실행됨: 인증이 완료되었다는 것이여~");
-        PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
+        // 토큰 생성
+        String jwtToken = TokenUtils.createJwtToken(principalDetails);
+        String refreshToken = TokenUtils.createRefreshToken(principalDetails);
 
-        // 액세스 토큰 생성
-        String jwtToken = JWT.create()
-                .withSubject(principalDetailis.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 토큰의 만료 시간 설정
-                .withClaim("id", principalDetailis.getUser().getId())
-                .withClaim("username", principalDetailis.getUser().getUsername())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+        System.out.println("생성 jwtToken = " + jwtToken);
+        System.out.println("생성 refreshToken = " + refreshToken);
 
-        // 리프레시 토큰 생성
-        String refreshToken = JWT.create()
-                .withSubject(principalDetailis.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.REFRESH_EXPIRATION_TIME)) // 리프레시 토큰의 만료 시간 설정
-                .withClaim("id", principalDetailis.getUser().getId())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET)); // 시크릿 키 사용
-
-        System.out.println("jwtToken = " + jwtToken);
-        System.out.println("refreshToken = " + refreshToken);
-
+        // 응답에 토큰 추가
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
-
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
         response.addCookie(cookie);
-
-
     }
 }

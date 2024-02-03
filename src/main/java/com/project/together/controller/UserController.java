@@ -1,11 +1,16 @@
 package com.project.together.controller;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.config.jwt.JwtProperties;
+import com.project.together.config.jwt.TokenUtils;
 import com.project.together.domain.*;
+import com.project.together.mapper.UserMapper;
 import com.project.together.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,8 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +33,13 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/user")
@@ -38,15 +48,38 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping("/api")
+    //쿠키와 로컬 스토리지에 토큰 값을 받는 로직. 이름 변경 예정임
+    @GetMapping("/tokenAll")
     @ResponseBody
-    public Map<String, String> api(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public Map<String, String> tokenAll(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> response = new HashMap<>();
         response.put("username", principalDetails.getUsername());
         System.out.println("사용자 정보 response = " + response);
         return response;
     }
 
+    @PostMapping("/refresh_token")
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        // 쿠키에서 "refreshToken"의 값을 가져옴
+        String refreshToken = Arrays.stream(request.getCookies())
+                .filter(cookie -> JwtProperties.REFRESH_TOKEN_HEADER_STRING.trim().equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+
+        if (refreshToken != null && TokenUtils.validateToken(refreshToken)) {
+            PrincipalDetails principalDetails = new PrincipalDetails(userMapper.findByUsername(TokenUtils.getUsername(refreshToken)));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String newToken = TokenUtils.createJwtToken(principalDetails);
+
+            Map<String, String> response = new HashMap<>();
+            response.put(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + newToken);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("refresh token 이 유효하지 않습니다. ");
+        }
+    }
 
     @GetMapping("/admin")
     public @ResponseBody String admin() {

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html class="memberPage" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>JoinForm2</title>
+    <title>JoinForm</title>
     <th:block th:include="layout/header"></th:block>
+    <link href="/css/member/JoinForm.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -170,122 +171,136 @@
 </script>
 <body>
 <div class="container">
-    <form action="/user/join" method="post" name="signupForm" id="signupForm">
-        <div class="formGroup">
-            <label class="label">아이디 <span class="required">(필수)</span></label>
-            <input type="text" id="showId" name="username" class="input">
-            <input type="button" id="id_butt" value="중복확인">
-        </div>
-        <div id="message" style="color: red; margin-top: 5px;"></div>
-        <div class="formGroup">
-            <label class="label" for="password">비밀번호 입력<span class="required">(필수)</span></label>
-            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
-        </div>
-        <div id="password_message" style="color: red; margin-top: 5px;"></div>
-        <div class="formGroup">
-            <label class="label">비밀번호 확인</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요"
-                   class="input">
-        </div>
-        <div class="formGroup">
-            <label class="label" for="name">이름 <span class="required">(필수)</span></label>
-            <div class="withBtn">
-                <input type="text" id="name" name="user_real_name" class="input">
+    <div class="memberBox wide join"> <!-- myinfo -> join -->
+        <div>
+            <div class="topTitle">
+                <div class="title">FC Together<br>회원가입 회원정보 입력</div>
+                <div class="subTitle">FC Together 회원가입을 환영합니다.<br>
+                    <span class="pcBreak">필수항목은 모두 기입하셔야 회원가입이 가능합니다.</span>
+                </div>
             </div>
-        </div>
-        <div class="formGroup">
-            <label class="label">성별 <span class="required">(필수)</span></label>
-            <div>
-                <input type="radio" id="male" name="user_gender" value="male">
-                <label for="male">남성</label>
-            </div>
-            <div>
-                <input type="radio" id="female" name="user_gender" value="female">
-                <label for="female">여성</label>
-            </div>
-        </div>
-        <div class="formGroup">
-            <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
-            <div class="withBtn">
-                <input type="text" id="phoneNumber" class="input" name="user_phone"
-                       placeholder="000-0000-0000 형식">
-            </div>
-        </div>
-        <div class="formGroup">
-            <label class="label" for="email">이메일 주소 <span class="required">(필수)</span></label>
-            <div class="withBtn">
-                <input type="email" id="email" name="email" placeholder="이메일 주소를 입력하세요" class="input">
-                <button type="button" id="email_butt" value="이메일 중복체크">이메일 중복체크</button>
-            </div>
-        </div>
-        <div id="email_message" style="color: red; margin-top: 5px;"></div>
-        <div class="formGroup">
-            <label class="label" for="user_birth">생년월일 <span class="required">(필수)</span></label>
-            <div class="withBtn">
-                <input type="text" name="user_birth" id="user_birth" placeholder="YYYY-MM-DD 형식">
-            </div>
-        </div>
-        <div class="formGroup">
-            <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
-            <div class="textarea height110">
-                FC투게더 주식회사(이하 FC투게더)는 FC투게더 웹사이트 이용자(정보주체)를 대상으로 맞춤형 마케팅을 진행하기 위하여 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를
-                받고 있습니다.<br><br>
-                ① 마케팅 목적으로 처리하는 개인정보 항목<br>
-                : 이름, 휴대폰번호, 생년월일, 성별, 우편번호, 좋아하는 선수, 티켓 구매내역, 웹사이트 접속 빈도<br><br>
-                ② 개인정보의 세부 처리 목적<br>
-                - 서비스 안내 및 개선에 활용 : 경기 관람을 위한 정보 안내, 서비스 및 만족도 조사, 회원의 서비스 이용 통계 집계 및 분석, 신규 서비스 개발을 위한 리서치<br>
-                - 맞춤형 마케팅에 활용 : 접속 빈도, 티켓 구매내역에 따른 포인트 지급, 쿠폰 제공<br>
-                - 맞춤형 메시지 발송에 활용 : 전자적 전송매체를 이용한 이벤트 정보, 프로모션 정보 등의 광고성 메시지 발송<br><br>
-                ③ 개인정보 수집 방법<br>
-                - FC투게더 운영하는 FC투게더 웹사이트 회원가입을 통한 수집<br>
-                - 티켓예매 위탁사를 통한 수집(개인정보의 제3자 제공)<br><br>
-                ④ 개인정보 보유 및 이용 기간<br>
-                : 회원탈퇴 또는 동의 철회 시<br><br>
-                ⑤ 동의를 거부할 권리 및 동의 거부 시 불이익<br>
-                : 이용자(정보주체)는 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를 거부할 권리가 있습니다.<br><br>
-                단, 동의를 거부하는 경우에는 포인트 지급(적립 및 사용)이 어려우며 경품, 맞춤형 쿠폰 제공이 어렵습니다. 그 밖의 불이익은 없습니다.<br>
-            </div>
-        </div>
-        <div class="checkAgree">
-            <div class="checkbox radio">
-                <input type="radio" name="user_marketing" id="agree_sms_y" value="Y">
-                <label for="agree_sms_y">동의</label>
-            </div>
-            <div class="checkbox radio">
-                <input type="radio" name="user_marketing" id="agree_sms_n" value="N">
-                <label for="agree_sms_n">미동의</label>
-            </div>
-        </div>
 
-        <div class="formGroup">
-            <label class="label" for="sample4_postcode">우편번호 검색 <span class="required">(필수)</span></label>
-            <div class="withBtn">
-                <input type="text" id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
-                <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-                <input type="text" id="sample4_roadAddress" name="user_address" placeholder="도로명주소">
-                <input type="text" id="sample4_jibunAddress" placeholder="지번주소">
-                <span id="guide" style="color:#999;display:none"></span>
-            </div>
-        </div>
-        <div class="formGroup">
-            <label class="label" for="selectLeague">좋아하는 선수 선택 <span class="required">(필수)</span></label>
-            <select class="input" name="user_like_player_gb" id="selectLeague">
-                <option value="">리그선택</option>
-                <option value="K5_Player">K5</option>
-                <option value="K7_Player">K7</option>
-                <option value="S_Player">S리그</option>
-            </select>
-            <select class="input" name="user_like_player" id="playerSelect">
-                <option value="">선수선택</option>
-            </select>
-        </div>
 
-        <div class="formGroup">
-            <button type='submit' value="Sign up" class='signup_butt' id='signup_butt'>회원가입</button>
-            <button type='button' value="취소" class='cancel_butt' id='cancel_btn'>취소</button>
+            <form action="/user/join" method="post" name="signupForm" id="signupForm">
+                <div class="formGroup">
+                    <label class="label">아이디 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" id="showId" name="username" class="input">
+                        <button class="btn whiteLightgrey" type="button" id="id_butt">중복확인</button>
+                    </div>
+                </div>
+                <div id="message" style="color: red; margin-top: 5px;"></div>
+                <div class="formGroup">
+                    <label class="label" for="password">비밀번호 입력<span class="required">(필수)</span></label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
+                    <p class="inputMessage"><!----> 영어 대/소문자, 특수문자, 숫자를 조합한 9~20자리로 입력하세요</p>
+                </div>
+                <div id="password_message" style="color: red; margin-top: 5px;"></div>
+                <div class="formGroup">
+                    <label class="label">비밀번호 확인</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요"
+                           class="input">
+                </div>
+                <div class="formGroup">
+                    <label class="label" for="name">이름 <span class="required">(필수)</span></label>
+                    <input type="text" id="name" name="user_real_name" class="input">
+                </div>
+                <div class="formGroup">
+                    <label class="label">성별 <span class="required">(필수)</span></label>
+                    <div>
+                        <input type="radio" id="male" name="user_gender" value="male">
+                        <label for="male">남성</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="female" name="user_gender" value="female">
+                        <label for="female">여성</label>
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
+                    <input type="text" id="phoneNumber" class="input" name="user_phone"
+                           placeholder="000-0000-0000 형식">
+                </div>
+                <div class="formGroup">
+                    <label class="label" for="email">이메일 주소 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="email" id="email" name="email" placeholder="이메일 주소를 입력하세요" class="input">
+                        <button class="btn whiteLightgrey" type="button" id="email_butt" value="이메일 중복체크">이메일 중복체크
+                        </button>
+                    </div>
+                </div>
+                <div id="email_message" class="messageContainer"></div>
+                <div class="formGroup">
+                    <label class="label" for="user_birth">생년월일 <span class="required">(필수)</span></label>
+                    <input class="input" type="text" name="user_birth" id="user_birth" placeholder="YYYY-MM-DD 형식">
+                </div>
+                <div class="formGroup">
+                    <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
+                    <div class="textarea height110">
+                        FC투게더 주식회사(이하 FC투게더)는 FC투게더 웹사이트 이용자(정보주체)를 대상으로 맞춤형 마케팅을 진행하기 위하여 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를
+                        받고 있습니다.<br><br>
+                        ① 마케팅 목적으로 처리하는 개인정보 항목<br>
+                        : 이름, 휴대폰번호, 생년월일, 성별, 우편번호, 좋아하는 선수, 티켓 구매내역, 웹사이트 접속 빈도<br><br>
+                        ② 개인정보의 세부 처리 목적<br>
+                        - 서비스 안내 및 개선에 활용 : 경기 관람을 위한 정보 안내, 서비스 및 만족도 조사, 회원의 서비스 이용 통계 집계 및 분석, 신규 서비스 개발을 위한 리서치<br>
+                        - 맞춤형 마케팅에 활용 : 접속 빈도, 티켓 구매내역에 따른 포인트 지급, 쿠폰 제공<br>
+                        - 맞춤형 메시지 발송에 활용 : 전자적 전송매체를 이용한 이벤트 정보, 프로모션 정보 등의 광고성 메시지 발송<br><br>
+                        ③ 개인정보 수집 방법<br>
+                        - FC투게더 운영하는 FC투게더 웹사이트 회원가입을 통한 수집<br>
+                        - 티켓예매 위탁사를 통한 수집(개인정보의 제3자 제공)<br><br>
+                        ④ 개인정보 보유 및 이용 기간<br>
+                        : 회원탈퇴 또는 동의 철회 시<br><br>
+                        ⑤ 동의를 거부할 권리 및 동의 거부 시 불이익<br>
+                        : 이용자(정보주체)는 개인정보의 마케팅 활용 및 광고성 메시지 수신 동의를 거부할 권리가 있습니다.<br><br>
+                        단, 동의를 거부하는 경우에는 포인트 지급(적립 및 사용)이 어려우며 경품, 맞춤형 쿠폰 제공이 어렵습니다. 그 밖의 불이익은 없습니다.<br>
+                    </div>
+
+                    <div class="checkAgree">
+                        <div class="checkbox radio">
+                            <input type="radio" name="user_marketing" id="agree_sms_y" value="Y">
+                            <label for="agree_sms_y">동의</label>
+                        </div>
+                        <div class="checkbox radio">
+                            <input type="radio" name="user_marketing" id="agree_sms_n" value="N">
+                            <label for="agree_sms_n">미동의</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="label" for="sample4_postcode">우편번호 검색 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
+                        <button class="btn whiteLightgrey" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">우편번호 찾기<br></button>
+
+                        <input type="text" id="sample4_roadAddress" name="user_address" placeholder="도로명주소" class="input">
+                        <input type="text" id="sample4_jibunAddress" placeholder="지번주소" class="input">
+                        <span id="guide" style="color:#999;display:none"></span>
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label class="label" for="selectLeague">좋아하는 선수 선택 <span class="required">(필수)</span></label>
+                    <select class="input" name="user_like_player_gb" id="selectLeague">
+                        <option value="">리그선택</option>
+                        <option value="K5_Player">K5</option>
+                        <option value="K7_Player">K7</option>
+                        <option value="S_Player">S리그</option>
+                    </select>
+                    <select class="input" name="user_like_player" id="playerSelect">
+                        <option value="">선수선택</option>
+                    </select>
+                </div>
+
+                <div class="formBtns">
+                    <button type='submit' value="Sign up" class='btn signup_butt' id='signup_butt'>회원가입</button>
+                    <button type='button' value="취소" class='btn cancel_butt' id='cancel_btn'>취소</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
+
+
 <script>
     //우편번호 찾기
     function sample4_execDaumPostcode() {

@@ -13,6 +13,5 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
 
-    private final TeamService teamService;
 
 }

@@ -1,10 +1,14 @@
 package com.project.together.mapper;
 
-import com.project.together.domain.*;
+import com.project.together.domain.K5_Player;
+import com.project.together.domain.K7_Player;
+import com.project.together.domain.Member;
+import com.project.together.domain.S_Player;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Mapper
 public interface MemberMapper {
@@ -29,9 +33,7 @@ public interface MemberMapper {
 
     List<S_Player> getSPlayers();
 
-
     String getPasswordById(String member_id);
 
 
-    Optional<Member> findByMemberId(String member_id);
 }

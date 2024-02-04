@@ -12,9 +12,4 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamService {
 
-    private final TeamMapper teamMapper;
-
-    public TeamStaff getAllTeamStaff() {
-        return teamMapper.getAllTeamStaff();
-    }
 }

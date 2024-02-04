@@ -7,10 +7,6 @@
         SELECT member_pw FROM member WHERE member_id = #{member_id}
     </select>
 
-    <select id="findByMemberId" parameterType="String" resultType="com.project.together.domain.Member">
-        SELECT * FROM member WHERE member_id = #{member_id}
-    </select>
-
 
     <select id="idCheck" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM member WHERE member_id = #{member_id}

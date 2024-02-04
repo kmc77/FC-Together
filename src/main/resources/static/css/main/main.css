@@ -1,13 +1,30 @@
-  .swiperImg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(25%)
-        }
-.swiper-slide{
-width: 100%;
-            height: 100%;
+.body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
 }
+
+.swiper-container {
+    flex: 1; /* Use remaining vertical space */
+}
+
+.matchSchedule {
+    flex: 1; /* Use remaining vertical space */
+}
+
+.swiper-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.swiperImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(25%);
+}
+
 .slide-text {
     position: absolute;
     top: 50%;
@@ -16,10 +33,6 @@ width: 100%;
     color: white;
     font-size: 24px;
     font-weight: bold;
-}
-
-.matchSchedule {
-    position: relative;
 }
 
 .matchImgDiv {
@@ -33,20 +46,25 @@ width: 100%;
     height: 100%;
     object-fit: cover;
     filter: brightness(25%);
+
 }
 
 .pastMatch {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 20%;
+    left: 20%;
     transform: translate(-50%, -50%);
-    width: 30%;
-    height: 30%;
-    background-color: rgba(0, 0, 0, 0.85); /* Adjust background color and transparency as needed */
-    color: white;
+    width: 25%;
+    height: 40%;
+    background-color: rgba(0, 0, 0, 0.85);
     text-align: center;
-    padding: 10px; /* Add padding for better appearance */
+    padding: 10px;
     box-sizing: border-box;
-    filter: brightness(15%);
 }
+
+.pastMatch h4.matchResult {
+    color: white;
+}
+
+
 

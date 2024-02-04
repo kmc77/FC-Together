@@ -7,9 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -76,7 +73,7 @@ public class MemberController {
     }
 
 //일반 로그인 로직
-    @PostMapping("/login")
+ /*   @PostMapping("/login")
     public ModelAndView loginMember(@RequestParam("member_id") String member_id,
                                     @RequestParam("member_pw") String member_pw,
                                     HttpSession session,
@@ -95,7 +92,7 @@ public class MemberController {
             rattr.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return new ModelAndView("redirect:/member/LoginForm");
         }
-    }
+    }*/
 
 
     @GetMapping("/logout")

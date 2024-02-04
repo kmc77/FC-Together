@@ -16,21 +16,14 @@
                     <p class="title">로그인</p>
                     <p class="subTitle">FC투게더<br>웹사이트 방문을 환영합니다.</p>
                 </div>
-                <!-- 서버에서 전달된 로그인 성공 여부를 템플릿에서 표시 -->
-                <script th:inline="javascript">
-                    /*<![CDATA[*/
-                    var loginSuccess = /*[[${loginSuccess}]]*/ false;
-                    console.log("로그인 성공 여부 = " + loginSuccess);
-                    /*]]>*/
-                </script>
 
-
-                <form id="loginForm" method="post" action="/member/login">
+                <!-- 로그인 폼 -->
+                <form id="loginForm">
                     <div>
-                        <input type="text" name="member_id" placeholder="아이디를 입력하세요" class="input">
+                        <input type="text" id="member_id" name="member_id" placeholder="아이디를 입력하세요" class="input">
                     </div>
                     <div class="formRow">
-                        <input type="password" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
+                        <input type="password" id="member_pw" name="member_pw" placeholder="비밀번호를 입력하세요" class="input">
                     </div>
                     <div class="formBtns formBtns2">
                         <button type="submit" class="btn large full primary1">로그인</button>
@@ -60,26 +53,60 @@
 </div>
 <script>
     $(function() {
-        // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
-        function checkInputStatus() {
-            var member_id = $("input[name='member_id']").val();
-            var member_pw = $("input[name='member_pw']").val();
-            var loginButton = $("button[type='submit']");
+    // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
+    function checkInputStatus() {
+      var username = $("input[name='member_id']").val();
+      var password = $("input[name='member_pw']").val();
+      var loginButton = $("button[type='submit']");
 
-            if (member_id && member_pw) {
-                loginButton.prop("disabled", false);
-            } else {
-                loginButton.prop("disabled", true);
-            }
-        }
+      if (username && password) {
+        loginButton.prop("disabled", false);
+      } else {
+        loginButton.prop("disabled", true);
+      }
+    }
 
-        // 입력 상태 변화 감지
-        $("input[name='member_id'], input[name='member_pw']").on("input", function() {
-            checkInputStatus();
-        });
+    // 입력 상태 변화 감지
+    $("input[name='member_id'], input[name='member_pw']").on("input", function() {
+      checkInputStatus();
     });
 
+    // 로그인 버튼 클릭 이벤트 핸들러
+    $("button[type='submit']").on("click", function(e) {
+      e.preventDefault(); // 기본 폼 제출 동작 막기
+
+      // 입력된 아이디와 비밀번호 가져오기
+      var username = $("input[name='member_id']").val();
+      var password = $("input[name='member_pw']").val();
+
+      // 로그인 데이터를 JSON 형식으로 변환
+      var loginData = {
+        username: member_id,
+        password: member_pw
+      };
+
+      // AJAX 요청으로 로그인 데이터 전송
+      $.ajax({
+        url: "/member/login",
+        type: "POST",
+        data: JSON.stringify(loginData), // JSON으로 변환하여 전송
+        contentType: "application/json", // 데이터 타입을 JSON으로 설정
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", "Bearer " + response.accessToken);
+        },
+        success: function(response) {
+          // 로그인 성공 시 처리
+          window.location.href = "/main"; // 메인 페이지로 리디렉션
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // 요청 실패 또는 오류 발생 시 처리
+          console.log("로그인 실패:", errorThrown); // 콘솔에 로그 출력
+        }
+      });
+    });
+  });
 
 </script>
+
 </body>
 </html>

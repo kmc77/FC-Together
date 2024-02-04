@@ -11,5 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class TeamController {
 
+    private final TeamService teamService;
 
+    @GetMapping("/")
+    public String getAllTeamStaff(Model model) {
+        TeamStaff teamStaffList = teamService.getAllTeamStaff();
+        System.out.println("asdf"+ teamStaffList);
+        model.addAttribute("teamStaffList", teamStaffList);
+        return "index";
+    }
 }

@@ -1,0 +1,49 @@
+package com.project.together.service;
+
+import com.project.together.domain.*;
+import com.project.together.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    public int idCheck(String username) {
+        int count = userMapper.idCheck(username);
+        return (count > 0) ? -1 : 1;
+    }
+
+    public int emailCheck(String userEmail) {
+        int count = userMapper.emailCheck(userEmail);
+        return (count > 0) ? -1 : 1;
+    }
+
+
+    public void joinUser(User user) {
+        user.setUser_role("ROLE_USER");
+        String rawPassword = user.getPassword();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        user.setPassword(encPassword);
+        userMapper.joinUser(user);
+    }
+
+    public List<K5_Player> getK5Players() {
+        return userMapper.getK5Players();
+    }
+
+    public List<K7_Player> getK7Players() {
+        return userMapper.getK7Players();
+    }
+
+    public List<S_Player> getSPlayers() {
+        return userMapper.getSPlayers();
+    }
+}

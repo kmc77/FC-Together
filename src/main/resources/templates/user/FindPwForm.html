@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="" class="memberPage" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FindPwForm</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/FindPwForm.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body class="memberPage">
+<div id="app" class="">
+    <div>
+        <div class="memberContent" id="content">
+            <div class="container">
+                <div class="memberBox">
+                    <div class="topTitle">
+                        <p class="title">비밀번호 찾기</p>
+                        <p class="subTitle">FC투게더<br>웹사이트 비밀번호 찾기를 위해 아이디를 입력하세요.</p>
+                    </div>
+                    <div>
+                        <div>
+                            <div>
+                                <input type="text" placeholder="아이디를 입력하세요" class="input"></div>
+
+                            <div class="formBtns formBtns2">
+                                <button type="button" class="btn large full primary1">비밀번호 찾기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

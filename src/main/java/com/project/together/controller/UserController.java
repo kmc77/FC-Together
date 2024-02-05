@@ -105,6 +105,16 @@ public class UserController {
         return "user/JoinForm";
     }
 
+    @GetMapping("/FindIdForm")
+    public String showFindIdForm() {
+        return "user/FindIdForm";
+    }
+
+    @GetMapping("/FindPwForm")
+    public String showFindPwForm() {
+        return "user/FindPwForm";
+    }
+
 
     @ResponseBody
     @GetMapping("/idCheck")

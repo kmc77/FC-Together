@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyProfile</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/my/MyProfile.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <div class="mypagePage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle"><p class="title"><span class="mobileBreak"><strong></strong>님 </span>안녕하세요!
+                    </p></div><!-- ---- --></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+<script>
+    $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        if (token) {
+            $.ajax({
+                url: '/user/tokenAll',
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', token);
+                },
+                success: function(data) {
+                    var username = data.username;
+                    if (username) {
+                        $('.mobileBreak strong').text(username);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 오류 처리
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

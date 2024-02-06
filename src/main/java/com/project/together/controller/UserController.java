@@ -115,6 +115,11 @@ public class UserController {
         return "user/FindPwForm";
     }
 
+    @GetMapping("/my/MyProfile")
+    public String showMyProfile() {
+        return "user/my/MyProfile";
+    }
+
 
     @ResponseBody
     @GetMapping("/idCheck")
@@ -155,8 +160,8 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/Logout")
+    public String Logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);

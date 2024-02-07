@@ -1,0 +1,77 @@
+.mypagePage .top .topTitle {
+    padding-top: 0;
+}
+
+.subTop .top .topTitle {
+    padding-top: 34px;
+    text-align: center;
+}
+
+.mypagePage .top .topTitle .title {
+    padding-top: 110px;
+    font-size: 40px;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+.container {
+    position: relative;
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px
+}
+
+.subTop .tabMenu {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.subTop .tabMenu .current,.subTop .tabMenu .router-link-exact-active {
+    color: #046a38;
+}
+
+.subTop .tabMenu a {
+    display: inline-block;
+    position: relative;
+    padding: 0 36px;
+    vertical-align: middle;
+}
+
+.subTop .tabMenu a span {
+    display: inline-block;
+    position: relative;
+    padding: 25px 0;
+    vertical-align: top
+}
+
+.subTop .tabMenu span:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #046a38
+}
+
+
+
+
+
+
+
+
+
+
+

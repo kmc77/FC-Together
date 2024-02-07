@@ -94,30 +94,25 @@ public class UserController {
         return "매니저 페이지입니다.";
     }
 
-    @GetMapping("/LoginForm")
+    @GetMapping("/loginform")
     public String showLoginForm() {
-        return "user/LoginForm";
+        return "user/loginform";
     }
 
 
-    @GetMapping("/JoinForm")
+    @GetMapping("/joinform")
     public String showJoinForm() {
-        return "user/JoinForm";
+        return "user/joinform";
     }
 
-    @GetMapping("/FindIdForm")
+    @GetMapping("/findidform")
     public String showFindIdForm() {
-        return "user/FindIdForm";
+        return "user/findidform";
     }
 
-    @GetMapping("/FindPwForm")
+    @GetMapping("/findpwform")
     public String showFindPwForm() {
-        return "user/FindPwForm";
-    }
-
-    @GetMapping("/my/MyProfile")
-    public String showMyProfile() {
-        return "user/my/MyProfile";
+        return "user/findpwform";
     }
 
 
@@ -156,7 +151,7 @@ public class UserController {
         userService.joinUser(user);
         System.out.println("회원가입 성공 = " + user);
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
-        return "redirect:/user/LoginForm";
+        return "redirect:/user/loginform";
     }
 
 

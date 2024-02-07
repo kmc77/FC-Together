@@ -10,7 +10,6 @@
 </head>
 <body>
 <div class="container">
-
     <div class="mypagePage" id="content">
         <div class="subTop">
             <div class="top">
@@ -18,12 +17,28 @@
                     <div class="topTitle"><p class="title"><span class="mobileBreak"><strong></strong>님 </span>안녕하세요!
                     </p></div><!-- ---- --></div>
             </div>
+
+
+            <div class="tabMenu">
+                <div class="container">
+                    <a href="/my/myprofile" aria-current="page" class="">
+                        <span>마이페이지</span>
+                    </a>
+                    <a href="/my/qna" aria-current="page" class="">
+                        <span>1:1 문의하기</span>
+                    </a>
+                    <a href="/my/myinfo" class="">
+                        <span>나의정보 수정</span>
+                    </a>
+                </div>
+            </div>
+
+
         </div>
     </div>
+</div>
 
-</div>
-</div>
-</div>
+
 <script>
     $(document).ready(function() {
         var token = localStorage.getItem('accessToken');

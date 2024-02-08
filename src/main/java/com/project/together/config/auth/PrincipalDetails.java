@@ -90,4 +90,9 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public String getName() {
         return null;
     }
+
+    public User getUser() {
+        return user;
+    }
+
 }

@@ -7,6 +7,7 @@
     <link href="/css/user/my/MyProfile.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -14,53 +15,159 @@
         <div class="subTop">
             <div class="top">
                 <div class="container">
-                    <div class="topTitle"><p class="title"><span class="mobileBreak"><strong></strong>님 </span>안녕하세요!
-                    </p></div><!-- ---- --></div>
+                    <div class="topTitle">
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>님</span> 안녕하세요!
+                        </p>
+                    </div>
+                </div>
             </div>
-
-
             <div class="tabMenu">
                 <div class="container">
-                    <a href="/my/myprofile" aria-current="page" class="">
+                    <a href="#" data-target="#mypage" class="tabLink current">
                         <span>마이페이지</span>
                     </a>
-                    <a href="/my/qna" aria-current="page" class="">
+                    <a href="#" data-target="#qna" class="tabLink">
                         <span>1:1 문의하기</span>
                     </a>
-                    <a href="/my/myinfo" class="">
+                    <a href="#" data-target="#myinfo" class="tabLink">
                         <span>나의정보 수정</span>
                     </a>
                 </div>
             </div>
-
-
         </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="mypage" class="tabContent">
+        <div class="content">
+            <div class="listInfo">
+                <h2>마이페이지</h2>
+                <div id="userProfile">
+                    <p id="username"></p>
+                    <p id="email"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="qna" class="tabContent" style="display: none;">
+        <div id="scrollAnchor" class="container">
+            <div islogin="true" reservedata="[object Object]" class="content">
+                <div class="qnaWrite">
+                    <div class="listInfo">
+                        <div class="title">1:1 문의하기 작성</div>
+                    </div>
+                    <div>
+                        <div class="writeTable">
+                            <div class="row">
+                                <div class="label">제목</div>
+                                <div class="cont">
+                                    <input placeholder="제목을 입력하세요" maxlength="50" class="input">
+                                    <div class="letter"><strong id="titleCount">0/50</strong></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="label">내용</div>
+                                <div class="cont">
+                                    <textarea placeholder="내용을 입력하세요" oninput="updateCount(this, 'contentCount')" class="input textarea" maxlength="500"></textarea>
+                                    <div class="letter"><strong id="contentCount">0/500</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btns">
+                            <button class="btn primary2 w190 medium">작성하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myinfo" class="tabContent" style="display: none;">
+        <p>나의정보 수정 예시 텍스트</p>
     </div>
 </div>
 
 
 <script>
     $(document).ready(function() {
-        var token = localStorage.getItem('accessToken');
-        if (token) {
-            $.ajax({
-                url: '/user/tokenAll',
-                type: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', token);
-                },
-                success: function(data) {
-                    var username = data.username;
-                    if (username) {
-                        $('.mobileBreak strong').text(username);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // 오류 처리
-                }
-            });
-        }
-    });
+        // 제목과 내용 입력 필드에서 입력을 카운트하는 기능 추가
+        $('.input').on('input', function() {
+            var $input = $(this);
+            var maxLength = $input.is('textarea') ? 500 : 50;  // 내용 입력 필드인 경우 최대 길이를 500으로 설정
+            var currentLength = $input.val().length;
+            var $counter = $input.siblings('.letter').find('strong');
+            $counter.text(currentLength + '/' + maxLength);
+            if (currentLength > maxLength) {
+                $input.val($input.val().slice(0, maxLength));
+                $counter.text(maxLength + '/' + maxLength);
+            }
+        });
+
+         var token = localStorage.getItem('accessToken');
+         if (token) {
+             $.ajax({
+                 url: '/user/user',
+                 type: 'GET',
+                 beforeSend: function(xhr) {
+                     xhr.setRequestHeader('Authorization', token);
+                 },
+                 success: function(data) {
+                     var username = data.username;
+                     if (username) {
+                         $('.mobileBreak strong').text(username);
+                     }
+
+                     // 사용자 정보를 각 요소에 출력
+                     $('#username').text("사용자 이름: " + data.username);
+                     $('#email').text("이메일: " + data.email);
+                 },
+                 error: function(xhr, status, error) {
+                     // 오류 처리
+                 }
+             });
+         }
+
+         // 페이지 로드시에 마지막으로 활성화된 탭 로드
+         var activeTab = localStorage.getItem('activeTab');
+         if (activeTab) {
+             // 모든 탭 콘텐츠 숨김
+             $('.tabContent').hide();
+
+             // 저장된 탭 콘텐츠 표시
+             $(activeTab).show();
+
+             // 활성화된 탭 스타일 처리
+             $('.tabMenu a').removeClass('current');
+             $('a[data-target="' + activeTab + '"]').addClass('current');
+         }
+
+         // 탭 메뉴 클릭 이벤트 처리
+         $('.tabMenu a').click(function(e) {
+             e.preventDefault(); // 기본 링크 동작 방지
+
+             var target = $(this).attr('data-target'); // 클릭된 탭의 대상 콘텐츠 ID를 가져옴
+
+             // 모든 탭 콘텐츠 숨김
+             $('.tabContent').hide();
+
+             // 클릭된 탭 콘텐츠 표시
+             $(target).show();
+
+             // 활성화된 탭 스타일 처리
+             $('.tabMenu a').removeClass('current');
+             $(this).addClass('current');
+
+             // 활성화된 탭 저장
+             localStorage.setItem('activeTab', target);
+         });
+     });
+
+
+
 </script>
 </body>
 </html>

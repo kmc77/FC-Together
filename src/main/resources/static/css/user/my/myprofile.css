@@ -55,15 +55,156 @@
     vertical-align: top
 }
 
-.subTop .tabMenu span:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #046a38
+.tabMenu .tabLink span {
+  color: #000000; /* 검정색 */
 }
+
+.tabMenu .tabLink.current span {
+  color: #046a38; /* 선택된 탭의 글자 색상 */
+}
+
+.tabMenu .tabLink.current span:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #046a38; /* 선택된 탭의 아래 줄 색상 */
+}
+
+.tabContent .content {
+    padding-top: 80px;
+}
+
+ #userProfile {
+    margin: 20px;
+ }
+
+.listInfo {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 24px;
+    color: #000000b3;
+    flex-direction: row;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.listInfo .title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #000
+}
+
+ .writeTable {
+     border-top: 1px solid #e5e5e5;
+     border-bottom: 2px solid #e5e5e5;
+ }
+
+.writeTable .row {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f9f9f9
+}
+
+.writeTable .label {
+    width: 216px;
+    text-align: center;
+    font-weight: 700
+}
+
+.writeTable .cont {
+    flex: 1;
+    position: relative;
+    padding: 20px 20px 20px 28px;
+    background-color: #fff
+}
+
+.textarea {
+    height: 200px;
+    padding: 24px 32px;
+    overflow: auto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #777;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.input {
+    width: 100%;
+    padding: 16px 20px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff
+}
+
+ .writeTable .cont .letter {
+    position: absolute;
+    bottom: 38px;
+    right: 38px;
+    font-size: 12px;
+    color: #999
+}
+
+ .qnaWrite .btns {
+    margin-top: 32px;
+    text-align: center;
+}
+
+.btn.w100 {
+    min-width: 100px
+}
+
+.btn.w190 {
+    min-width: 190px;
+}
+
+.btn.medium {
+    font-size: 16px;
+}
+
+.btn.primary2 {
+    border-color: #046a38;
+   background-color: #444
+}
+
+.btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #034f36
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

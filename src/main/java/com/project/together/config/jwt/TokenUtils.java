@@ -3,6 +3,7 @@ package com.project.together.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.project.together.config.auth.PrincipalDetails;
 
 import java.util.Date;
@@ -29,7 +30,8 @@ public class TokenUtils {
     public static boolean validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC512(JwtProperties.SECRET);
-            algorithm.verify(JWT.decode(token));
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT decodedJWT = verifier.verify(token);
             return true;
         } catch (Exception e) {
             return false;

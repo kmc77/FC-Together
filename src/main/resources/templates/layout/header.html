@@ -18,84 +18,124 @@
     <div class="utils">
         <!-- 로그인 상태를 보여주는 부분 -->
         <span id="account-info" style="display: none;"></span>
-        <a id="logout-link" href="/user/logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
+        <a id="MyProfile-link" href="/user/my/myprofile" class="link" style="display: none;">내 정보</a>
+        <a id="logout-link" href="/user/Logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
 
         <!-- 로그아웃 상태를 보여주는 부분 -->
-        <a id="login-link" href="/user/LoginForm" class="link" style="display: none;">로그인</a>
-        <a id="join-link" href="/user/JoinForm" class="link" style="display: none;">회원가입</a>
+        <a id="login-link" href="/user/loginform" class="link" style="display: none;">로그인</a>
+        <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
     </div>
 </div>
 <script>
     // JWT 토큰에서 만료 시간을 추출하는 함수
- function parseJwt(token) {
-     var base64Url = token.split('.')[1];
-     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-     }).join(''));
+    function parseJwt(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                })
+                .join('')
+        );
 
-     return JSON.parse(jsonPayload);
- };
+        return JSON.parse(jsonPayload);
+    }
 
- // 서버에 새로운 토큰을 요청하는 함수
- function refreshToken() {
-     var token = localStorage.getItem('accessToken');
-     var refreshToken = localStorage.getItem('refreshToken');
-     var tokenExpiration = parseJwt(token).exp;
+    // 서버에 새로운 토큰을 요청하는 함수
+    function refreshToken() {
+        var token = localStorage.getItem('accessToken');
+        var tokenExpiration = parseJwt(token).exp;
 
-     if (Date.now() >= tokenExpiration * 1000) {
-         $.ajax({
-             url: '/user/refresh_token',
-             type: 'POST',
-             beforeSend: function(xhr) {
-                 xhr.setRequestHeader('Authorization', refreshToken);
-             },
-             success: function(data) {
-                 localStorage.setItem('accessToken', data.accessToken);
-                 setTimeout(refreshToken, 600000);
-             },
-             error: function() {
-                 console.error('새로운 토큰을 발급받는 데 실패했습니다.');
-             }
-         });
-     }
- }
+        console.log('엑세스 토큰 만료 시간: ', tokenExpiration);
+        console.log('현재 시간: ', Date.now() / 1000);
 
- $(document).ready(function() {
-     var token = localStorage.getItem('accessToken');
-     if (token) {
-         $.ajax({
-             url: '/user/tokenAll',
-             type: 'GET',
-             beforeSend: function(xhr) {
-                 xhr.setRequestHeader('Authorization', token);
-             },
-             success: function(data) {
-                 $('#account-info').text(data.username + '님, 반갑습니다.');
-                 $('#logout-link').show();
-                 $('#account-info').show();
-                 // 토큰 만료 확인 및 재발급 시작
-                 refreshToken();
-             },
-             error: function() {
-                 $('#login-link').show();
-                 $('#join-link').show();
-                 console.error('사용자 정보를 가져오는 데 실패했습니다.');
-             }
-         });
-     } else {
-         $('#login-link').show();
-         $('#join-link').show();
-     }
- });
+        if (Date.now() >= tokenExpiration * 1000) {
+            $.ajax({
+                url: '/user/refresh_token',
+                type: 'POST',
+                success: function (data) {
+                    localStorage.setItem('accessToken', data.accessToken);
 
- function logout() {
-     localStorage.removeItem('accessToken'); // 로컬 스토리지에서 accessToken 토큰 제거
-     location.href = "/logout";
-     alert("로그아웃 되었습니다.");
- }
+                    // 토큰이 재발급되었으므로 로그인과 회원가입 버튼을 숨김
+                    $('#login-link').hide();
+                    $('#join-link').hide();
 
+                    // 사용자 정보가 있는 경우 헤더에 사용자 정보와 로그아웃 버튼을 표시
+                    if (data.username) {
+                        $('#account-info').text(data.username + '님, 반갑습니다.');
+                        $('#logout-link').show();
+                        $('#MyProfile-link').show();
+                        $('#account-info').show();
+                    }
+                },
+                error: function () {
+                    console.error('새로운 토큰을 발급받는 데 실패했습니다.');
+
+                    // 토큰 발급 실패 시 로그인과 회원가입 버튼을 표시
+                    $('#login-link').show();
+                    $('#join-link').show();
+
+                    // 사용자 정보와 로그아웃 버튼을 숨김
+                    $('#account-info').hide();
+                    $('#logout-link').hide();
+                    $('#MyProfile-link').hide();
+                },
+            });
+        } else {
+            console.log('엑세스 토큰이 유효합니다.');
+
+            // 토큰이 유효한 경우 로그인과 회원가입 버튼을 숨김
+            $('#login-link').hide();
+            $('#join-link').hide();
+
+            // 사용자 정보와 로그아웃 버튼을 표시
+            $('#account-info').show();
+            $('#logout-link').show();
+            $('#MyProfile-link').show();
+        }
+    }
+
+    $(document).ready(function () {
+        var token = localStorage.getItem('accessToken');
+        if (token) {
+            $.ajax({
+                url: '/user/tokenAll',
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', token);
+                },
+                success: function (data) {
+                    $('#account-info').text(data.username + '님, 반갑습니다.');
+                    $('#logout-link').show();
+                    $('#MyProfile-link').show();
+                    $('#account-info').show();
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 401) {
+                        console.log('엑세스 토큰이 만료되었습니다. 새로운 토큰을 요청합니다.');
+                        refreshToken(); // 새로운 토큰 요청
+                    } else {
+                        $('#login-link').show();
+                        $('#join-link').show();
+                        console.error('사용자 정보를 가져오는 데 실패했습니다.');
+                    }
+                },
+            });
+        } else {
+            $('#login-link').show();
+            $('#join-link').show();
+        }
+    });
+
+    function logout() {
+        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 accessToken 토큰 제거
+        location.href = '/Logout';
+        alert('로그아웃 되었습니다.');
+    }
 </script>
+
 
 <div class="gnbBox">
     <div class="container">

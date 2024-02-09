@@ -1,0 +1,163 @@
+.container {
+    position: relative;
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.memberPage .memberContent {
+    color: #777777c4;
+}
+
+.memberPage .memberBox {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 108px 60px 100px;
+    background-color: #fff;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.memberPage .topTitle {
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-top: 110px;
+    text-align: center;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+}
+
+.memberPage .topTitle .title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #000
+}
+
+.memberPage .topTitle .subTitle {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    line-height: 1.5
+}
+
+.input {
+    width: 100%;
+    padding: 16px 20px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff
+}
+
+.formBtns.formBtns2 {
+    margin-top: 24px
+}
+
+.btn.primary1 {
+    border-color: #034f36;
+    background-color: #444
+}
+
+.btn.large {
+    min-width: 173px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.btn.full {
+    width: 100%
+}
+
+.btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #034f36
+}
+
+.memberLinks {
+    display: flex;
+    margin-bottom: 90px;
+    color: #000
+}
+
+.memberLinks .findid {
+    margin-left: auto;
+    margin-right: 20px
+}
+
+.snsLogin {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px
+}
+
+
+.snsLogin a.naver:before {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDcuMi1jMDAwIDc5LjFiNjVhNzliNCwgMjAyMi8wNi8xMy0yMjowMTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjcxMjVCQzFENjk2MjExRUQ5MDBEOTJEOEYzNDYyRjAxIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjcxMjVCQzFFNjk2MjExRUQ5MDBEOTJEOEYzNDYyRjAxIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NzEyNUJDMUI2OTYyMTFFRDkwMEQ5MkQ4RjM0NjJGMDEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NzEyNUJDMUM2OTYyMTFFRDkwMEQ5MkQ4RjM0NjJGMDEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4w6AWhAAAHgElEQVR42uyd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)
+}
+
+.snsLogin a.google:before {
+     background-image: url(/img/web_light_rd_na@1x.png);
+}
+
+.snsLogin a:before {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 15px;
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat
+}
+
+.snsLogin a+a {
+    margin-left: 20px;
+}
+
+a {
+    color: inherit;
+}
+
+a,a:active,a:focus,a:hover,a:visited {
+    text-decoration: none
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

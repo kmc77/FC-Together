@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="" class="memberPage" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>LoginForm</title>
     <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/LoginForm.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body class="memberPage">
 <div id="app" class="">
+    <div>
     <div class="memberContent" id="content">
         <div class="container">
             <div class="memberBox">
@@ -23,7 +25,8 @@
                         <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" class="input">
                     </div>
                     <div class="formRow">
-                        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
+                        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요"
+                               class="input">
                     </div>
                     <div class="formBtns formBtns2">
                         <button type="submit" class="btn large full primary1">로그인</button>
@@ -33,16 +36,16 @@
                 </form>
 
                 <div class="formBtns formBtns2 memberLinks">
-                    <a href="/user/JoinForm" class="link">회원가입</a>
-                    <a href="/member/findid" class="findid">아이디찾기</a>
-                    <a href="/member/findpw" class="findpw">비밀번호찾기</a>
+                    <a href="/user/joinform" class="link">회원가입</a>
+                    <a href="/user/findidform" class="findid">아이디찾기</a>
+                    <a href="/user/findpwform" class="findpw">비밀번호찾기</a>
                 </div>
                 <div class="snsLogin">
-                    <a href="/oauth2/authorization/google">구글<br>로그인</a>
-                    <a href="/oauth2/authorization/naver">네이버<br>로그인</a>
+                    <a href="/oauth2/authorization/naver" class="naver">네이버<br>로그인</a>
+                    <a href="/oauth2/authorization/google" class="google">구글<br>로그인</a>
                 </div>
                 <div id="naver_id_login" style="display: none;">
-                    <a href="https://nid.naver.com/oauth2.0/authorize?response_type=token&amp;client_id=0r3LoCZVmG5_zLbBSGFD&amp;redirect_uri=https%3A%2F%2Fhyundai-motorsfc.com%2Fmember%2Fsignin&amp;state=99b0385d-fd63-49d3-b1b0-6c0deb2d92da"
+                    <a href="/oauth2/authorization/naver"
                        id="naver_id_login_anchor">
                         <img src="http://static.nid.naver.com/oauth/button_w.PNG" border="0" title="네이버 아이디로 로그인"
                              width="40" height="40">
@@ -51,6 +54,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <script>
     $(function() {
@@ -113,7 +117,5 @@
         });
     });
 </script>
-
-
 </body>
 </html>

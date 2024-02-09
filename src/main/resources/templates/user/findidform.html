@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="" class="memberPage" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FindIdForm</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/FindIdForm.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body class="memberPage">
+<div id="app" class="">
+    <div>
+        <div class="memberContent" id="content">
+            <div class="container">
+                <div class="memberBox">
+                    <div class="topTitle">
+                        <p class="title">아이디 찾기</p>
+                        <p class="subTitle">FC투게더<br>웹사이트 아이디 찾기를 위해 본인인증을 하세요.</p>
+                    </div>
+                    <div>
+                        <div>
+                            <div class="cert">
+                                <button type="button" class="phone">휴대폰 본인인증</button>
+                                <button type="button" class="ipin">아이핀 본인인증</button>
+                            </div>
+                            <div class="certMessage"> NICE평가정보에서 인증 받은 휴대폰 번호를 사용하고 있습니다.
+                                <br>본인인증 실패시 NICE평가정보 고객센터 1600-1522로 문의하세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

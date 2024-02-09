@@ -67,8 +67,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = TokenUtils.createJwtToken(principalDetails);
         String refreshToken = TokenUtils.createRefreshToken(principalDetails);
 
-        System.out.println("생성 jwtToken = " + jwtToken);
-        System.out.println("생성 refreshToken = " + refreshToken);
 
         // 응답에 토큰 추가
         Cookie cookie = new Cookie("refreshToken", refreshToken);

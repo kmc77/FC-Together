@@ -2,6 +2,7 @@ package com.project.together.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.User;
 import com.project.together.mapper.UserMapper;
@@ -33,7 +34,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        /*super.doFilterInternal(request, response, chain);*/
+
         System.out.println("인증이나 권한이 필요한 주소 요청됨");
 
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
@@ -47,21 +48,27 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // JWT 토큰을 검증을 해서 정상적인 사용자인지 확인
         String jwtToken = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
-        String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("username").asString();
+        try {
+            String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("username").asString();
 
+            // 서명이 정상적으로 됨
+            if (username != null) {
+                User userE = userMapper.findByUsername(username);
+                PrincipalDetails principalDetails = new PrincipalDetails(userE);
 
-        // 서명이 정상적으로 됨
-        if (username != null) {
-            User userE = userMapper.findByUsername(username);
-            PrincipalDetails principalDetails = new PrincipalDetails(userE);
+                // Jwt 토큰 서명을 통해서 서명이 정상이면 Authentication 객체를 만듬
+                Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
-            // Jwt 토큰 서명을 통해서 서명이 정상이면 Authentication 객체를 만듬
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
+                //강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            //강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            chain.doFilter(request, response);
+                chain.doFilter(request, response);
+            }
+        } catch (TokenExpiredException e) {
+            // 토큰이 만료되었을 때의 처리
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("토큰이 만료되었습니다.");
+            return;
         }
     }
 

@@ -46,4 +46,9 @@ public class UserService {
     public List<S_Player> getSPlayers() {
         return userMapper.getSPlayers();
     }
+
+
+    public User getFullUserInfo(String username) {
+        return userMapper.findByUsername(username);
+    }
 }

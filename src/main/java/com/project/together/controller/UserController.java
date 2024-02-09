@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -35,20 +34,25 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-
     @Autowired
     public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
 
+    // 사용자 정보 조회
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println("principalDetails = " + principalDetails.getUser());
-        return "user";
+    public ResponseEntity<User> getUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = userService.getFullUserInfo(principalDetails.getUser().getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 사용자 정보가 없는 경우 404 에러 반환
+        }
+
+        return ResponseEntity.ok(user); // User 객체를 직접 반환
     }
 
-    //쿠키와 로컬 스토리지에 토큰 값을 받는 로직. 이름 변경 예정임
+
+    // 토큰 값을 쿠키와 로컬 스토리지에서 가져오는 로직
     @GetMapping("/tokenAll")
     @ResponseBody
     public Map<String, String> tokenAll(@AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -58,66 +62,83 @@ public class UserController {
         return response;
     }
 
+    // 토큰 갱신
     @PostMapping("/refresh_token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
-        // 쿠키에서 "refreshToken"의 값을 가져옴
-        String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> JwtProperties.REFRESH_TOKEN_HEADER_STRING.trim().equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElse(null);
+    public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        System.out.println("컨트롤러 refreshToken = " + refreshToken);
 
-        if (refreshToken != null && TokenUtils.validateToken(refreshToken)) {
-            PrincipalDetails principalDetails = new PrincipalDetails(userMapper.findByUsername(TokenUtils.getUsername(refreshToken)));
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (TokenUtils.validateToken(refreshToken)) {
+            String username = TokenUtils.getUsername(refreshToken);
+            PrincipalDetails principalDetails = new PrincipalDetails(userMapper.findByUsername(username));
             String newToken = TokenUtils.createJwtToken(principalDetails);
 
             Map<String, String> response = new HashMap<>();
-            response.put(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + newToken);
+            response.put("accessToken", newToken); // 클라이언트에서 읽을 수 있도록 "accessToken" 키에 새 토큰을 설정
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("refresh token 이 유효하지 않습니다. ");
         }
     }
 
+
+    // 어드민 페이지
     @GetMapping("/admin")
     public @ResponseBody String admin() {
         return "어드민 페이지입니다.";
     }
 
-    //@PostAuthorize("hasRole('ROLE_MANAGER')")
-    //@PreAuthorize("hasRole('ROLE_MANAGER')")
+    // 매니저 페이지
     @Secured("ROLE_MANAGER")
     @GetMapping("/manager")
     public @ResponseBody String manager() {
         return "매니저 페이지입니다.";
     }
 
-    @GetMapping("/LoginForm")
-    public String showLoginForm() {
-        return "user/LoginForm";
+    // 로그인 폼 페이지
+    @GetMapping("/loginform")
+    public String loginFormPage() {
+        return "user/loginform";
     }
 
-
-    @GetMapping("/JoinForm")
-    public String showJoinForm() {
-        return "user/JoinForm";
+    // 회원 가입 폼 페이지
+    @GetMapping("/joinform")
+    public String joinFormPage() {
+        return "user/joinform";
     }
 
+    // 아이디 찾기 폼 페이지
+    @GetMapping("/findidform")
+    public String findIdFormPage() {
+        return "user/findidform";
+    }
 
+    // 비밀번호 찾기 폼 페이지
+    @GetMapping("/findpwform")
+    public String findPwFormPage() {
+        return "user/findpwform";
+    }
+
+    // 내 프로필 페이지
+    @GetMapping("/my/myprofile")
+    public String myProfilePage() {
+        return "user/my/myprofile";
+    }
+
+    // 아이디 중복 체크
     @ResponseBody
     @GetMapping("/idCheck")
     public int idCheck(@RequestParam("username") String username) {
         return userService.idCheck(username);
     }
 
+    // 이메일 중복 체크
     @ResponseBody
     @GetMapping("/emailCheck")
     public int emailCheck(@RequestParam("email") String userEmail) {
         return userService.emailCheck(userEmail);
     }
 
+    // 선수 목록 조회
     @ResponseBody
     @GetMapping("/players")
     public ResponseEntity<?> getPlayers(@RequestParam("selectLeague") String league) {
@@ -135,26 +156,22 @@ public class UserController {
         }
     }
 
-
+    // 회원 가입
     @PostMapping("/join")
     public String joinUser(User user, Model model) {
         userService.joinUser(user);
         System.out.println("회원가입 성공 = " + user);
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
-        return "redirect:/user/LoginForm";
+        return "redirect:/user/loginform";
     }
 
-
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    // 로그아웃
+    @GetMapping("/Logout")
+    public String Logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         return "redirect:/"; // 로그인 폼으로 이동
     }
-
-
 }
-
-

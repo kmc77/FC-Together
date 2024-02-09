@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    height: 80px;
+   /* height: 80px;*/ /*임시 주석*/
 }
 
 .utils {
@@ -46,4 +46,9 @@
 
 .mainMenu {
     margin-right: 120px;
+}
+
+/*밑줄 삭제*/
+a,a:active,a:focus,a:hover,a:visited {
+    text-decoration: none;
 }

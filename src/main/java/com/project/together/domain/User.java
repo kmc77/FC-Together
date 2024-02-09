@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -45,9 +46,10 @@ public class User {
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList() {
-        if (this.user_role.length() > 0) {
-            return Arrays.asList(this.user_role.split(","));
+        if (this.user_role != null && !this.user_role.isEmpty()) {
+            return Collections.singletonList(this.user_role);  // 단일 권한을 리스트로 변환
         }
         return new ArrayList<>();
     }
+
 }

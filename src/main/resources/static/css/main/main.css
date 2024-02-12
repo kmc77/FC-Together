@@ -2,15 +2,20 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100%;
     margin: 0;
 }
 
 .swiper-container {
-    flex: 1; /* Use remaining vertical space */
+    flex: 1;
+    height: 120vh;
+    width: 100%;
 }
 
 .matchSchedule {
-    flex: 1; /* Use remaining vertical space */
+    flex: 1;
+    height: 100vh;
+    width: 100%;
 }
 
 .swiper-slide {
@@ -22,7 +27,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(25%);
+    filter: brightness(50%);
 }
 
 .slide-text {
@@ -51,11 +56,10 @@
 
 .pastMatch {
     position: absolute;
-    top: 20%;
-    left: 20%;
-    transform: translate(-50%, -50%);
+    top: 5%;
+    left: 10%;
     width: 25%;
-    height: 40%;
+    height: 80%;
     background-color: rgba(0, 0, 0, 0.85);
     text-align: center;
     padding: 10px;
@@ -66,5 +70,18 @@
     color: white;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+    color: white;
+    top: 80%;
+    margin-top: -50px;
+}
 
 
+.swiper-slide {
+    margin-right: 0;
+}
+.matchResult1,
+.matchResult2 {
+    color: white;
+}

@@ -1,15 +1,16 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Qna {
     private String authId;
+    private int id;
+    private String username;
     private String qnaTitle;
     private String qnaContent;
     private String qnaDate;
     private String qnaUpdate;
     private String qnaStatus;
+    private Integer qnaView;
 }

@@ -51,4 +51,6 @@ public class UserService {
     public User getFullUserInfo(String username) {
         return userMapper.findByUsername(username);
     }
+
+
 }

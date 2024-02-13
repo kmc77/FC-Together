@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.InfoMapper">
+
+    <insert id="saveQna" parameterType="com.project.together.domain.Qna">
+        INSERT INTO QnA (auth_id, username, qna_title, qna_content, qna_date, qna_update, qna_status, qna_view)
+        VALUES (#{authId}, #{username}, #{qnaTitle}, #{qnaContent}, #{qnaDate}, #{qnaUpdate}, #{qnaStatus}, #{qnaView})
+    </insert>
+
+
+</mapper>

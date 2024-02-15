@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @MapperScan(basePackages = "com.project.together")
+
 @SpringBootApplication
 public class TogetherApplication {
 

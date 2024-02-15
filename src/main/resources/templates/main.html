@@ -36,22 +36,18 @@
             <img src="/img/FcTogether.jpg" alt="" class="matchImg">
             <div class="pastMatch">
                 <h4 class="matchResult">지난 경기 결과</h4>
-                <div class="swiper-container2">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="matchResult1">
-                                matchResult1
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="matchResult2">
-                                matchResult2
-                            </div>
-                        </div>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slide">matchResult1</div>
+                        <div class="slide">matchResult2</div>
+                        <div class="slide">matchResult3</div>
+                        <!-- Add more slides as needed -->
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
                 </div>
+
+                <button onclick="prevSlide()"> < </button>
+                <button onclick="nextSlide()"> > </button>
+
             </div>
         </div>
     </div>
@@ -103,13 +99,35 @@
                 matchResult1.style.zIndex = zIndexValue;
                 matchResult2.style.zIndex = zIndexValue;
 
-                // 부모 컨테이너에 기반하여 보이기/숨기기 처리
                 matchResult1.style.display = parent && index === activeIndex ? 'none' : 'block';
                 matchResult2.style.display = parent && index === activeIndex ? 'none' : 'block';
             });
         },
     },
 });
+
+     let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const sliderWrapper = document.querySelector('.slider-wrapper');
+
+    function showSlide(index) {
+        if (index < 0 || index >= totalSlides) {
+            return;
+        }
+
+        const translateValue = -index * 100 + '%';
+        sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
+        currentIndex = index;
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
 </script>
 </body>
 </html>

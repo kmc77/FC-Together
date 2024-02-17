@@ -31,6 +31,7 @@
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
+
     <div class="matchSchedule">
         <div class="matchImgDiv">
             <img src="/img/FcTogether.jpg" alt="" class="matchImg">
@@ -41,16 +42,29 @@
                         <div class="slide">matchResult1</div>
                         <div class="slide">matchResult2</div>
                         <div class="slide">matchResult3</div>
-                        <!-- Add more slides as needed -->
                     </div>
                 </div>
 
                 <button onclick="prevSlide()"> < </button>
                 <button onclick="nextSlide()"> > </button>
+            </div>
 
+            <div class="nextMatch">
+                <h4 class="nextSchedule">다음 경기 일정</h4>
+                <div class="slider-container2">
+                    <div class="slider-wrapper2">
+                        <div class="slide2">nextMatch1</div>
+                        <div class="slide2">nextMatch2</div>
+                        <div class="slide2">nextMatch3</div>
+                    </div>
+                </div>
+                    <button onclick="prevSlide2()"> < </button>
+                    <button onclick="nextSlide2()"> > </button>
             </div>
         </div>
     </div>
+
+
 </div>
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -73,38 +87,6 @@
         },
     });
 
-   const matchSwiper = new Swiper('.matchSchedule .swiper-container2', {
-    loop: true,
-    speed: 500,
-    autoplay: false,
-    slidesPerView: 1,
-    spaceBetween: 7,
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    on: {
-        slideChangeTransitionEnd: function () {
-            const activeIndex = this.activeIndex;
-            const matchResults = document.querySelectorAll('.matchSchedule .swiper-slide');
-
-            matchResults.forEach((result, index) => {
-                const parent = result.closest('.pastMatch');
-                const zIndexValue = parent && index === activeIndex ? '2' : '1';
-                result.style.zIndex = zIndexValue;
-
-                const matchResult1 = result.querySelector('.matchResult1');
-                const matchResult2 = result.querySelector('.matchResult2');
-
-                matchResult1.style.zIndex = zIndexValue;
-                matchResult2.style.zIndex = zIndexValue;
-
-                matchResult1.style.display = parent && index === activeIndex ? 'none' : 'block';
-                matchResult2.style.display = parent && index === activeIndex ? 'none' : 'block';
-            });
-        },
-    },
-});
 
      let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');
@@ -127,6 +109,29 @@
 
     function nextSlide() {
         showSlide(currentIndex + 1);
+    }
+
+    let currentIndex2 = 0;
+    const slides2 = document.querySelectorAll('.slide2');
+    const totalSlides2 = slides2.length;
+    const sliderWrapper2 = document.querySelector('.slider-wrapper2');
+
+    function showSlide2(index) {
+        if (index < 0 || index >= totalSlides2) {
+            return;
+        }
+
+        const translateValue2 = -index * 100 + '%';
+        sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
+        currentIndex2 = index;
+    }
+
+    function prevSlide2() {
+        showSlide2(currentIndex2 - 1);
+    }
+
+    function nextSlide2() {
+        showSlide2(currentIndex2 + 1);
     }
 </script>
 </body>

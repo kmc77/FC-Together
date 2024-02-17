@@ -4,7 +4,7 @@
 
     <insert id="saveQna" parameterType="com.project.together.domain.Qna">
         INSERT INTO QnA (auth_id, username, qna_title, qna_content, qna_date, qna_update, qna_status, qna_view)
-        VALUES (#{authId}, #{username}, #{qnaTitle}, #{qnaContent}, #{qnaDate}, #{qnaUpdate}, #{qnaStatus}, #{qnaView})
+        VALUES (NULL, #{username}, #{qnaTitle}, #{qnaContent}, #{qnaDate}, #{qnaUpdate}, #{qnaStatus}, #{qnaView})
     </insert>
 
 

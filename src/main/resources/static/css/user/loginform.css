@@ -65,8 +65,9 @@
 }
 
 .btn.primary1 {
+    color: #000;
     border-color: #034f36;
-    background-color: #444
+    background-color: #ffc954;
 }
 
 .btn.large {

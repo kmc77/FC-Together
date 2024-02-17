@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +38,14 @@ public class InfoService {
 
         infoMapper.saveQna(qna);
     }
+
+    public List<Qna> getQnaListByUserName(String username) {
+        User user = infoMapper.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다.");
+        }
+        return infoMapper.findQnaByUsername(username);
+    }
+
 
 }

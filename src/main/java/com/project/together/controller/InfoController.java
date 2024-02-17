@@ -1,13 +1,19 @@
 package com.project.together.controller;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.domain.Qna;
 import com.project.together.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/info")
@@ -35,9 +41,27 @@ public class InfoController {
         // qnaTitle과 qnaContent를 사용하여 qna 테이블에 저장하는 로직 구현
         infoService.saveQna(qnaTitle, qnaContent, userId, username);
 
+        System.out.println("1:1 문의글 작성 성공");
+
         // 저장 후, 리다이렉트할 경로 또는 뷰 이름 반환
         return "redirect:/user/my/myprofile";
     }
+
+    //1:1 문의글 목록 조회
+    @GetMapping("list")
+    public ResponseEntity<List<Qna>> getQnaListForUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        String username = principalDetails.getUsername();
+
+        List<Qna> qnaList = infoService.getQnaListByUserName(username);
+
+        if (qnaList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(qnaList, HttpStatus.OK);
+    }
+
 
 
 }

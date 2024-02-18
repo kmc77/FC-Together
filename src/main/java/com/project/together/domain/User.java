@@ -34,7 +34,7 @@ public class User {
     private String providerId; //소셜 계정 고유값(id)
 
     @Builder
-    public User(String username, String password, String email, String user_role, String provider, String providerId, String user_real_name) {
+    public User(String username, String password, String email, String user_role, String provider, String providerId, String user_real_name, String user_phone, String user_birth) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -42,6 +42,8 @@ public class User {
         this.provider = provider;
         this.providerId = providerId;
         this.user_real_name = user_real_name;
+        this.user_phone = user_phone;
+        this.user_birth = user_birth;
     }
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!

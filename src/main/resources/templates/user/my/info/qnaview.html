@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QnaView</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/my/info/qnaview.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+
+<!-- contents -->
+<div id="contents" class="contents">
+    <div class="layout-inner">
+        <section class="qna-wrap view-wrap">
+            <div class="cont-top-area">
+                <h1 class="cont-tit">나의 1:1문의</h1>
+                <p class="cont-txt notice-txt">답변 운영 시간은 09:00 ~ 18:00</p>
+            </div>
+
+            <div class="content-box">
+                <div class="form-list view-list">
+                    <input type="hidden" name="no" value="">
+                    <div class="col">
+                        <dl class="flex-align-center">
+                            <dt>등록일</dt>
+                            <dd>등록일(qnaDate)</dd>
+                        </dl>
+                        <dl>
+                            <dt>상태</dt>
+                            <dd>
+
+                                <span class="badge-answer ">답변대기(qnaStatus)</span>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <dl>
+                        <dt>문의내용</dt>
+                        <dd>
+                            <em class="qna-cont-tit">문의드립니다.(qnaTitle)</em>
+                            <div class="qna-cont ql-editor">
+                                @문의 내용 삽입@(qnaContent)
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+
+
+            </div>
+
+
+            <div class="content-box">
+                <div class="form-list">
+                    <dl>
+                        <dt>답변</dt>
+                        <dd>답변 대기중입니다.</dd>
+                    </dl>
+                </div>
+                <div class="formBtns">
+                    <button type='button' value="삭제" class='btn btn-default' id='cancel_btn'>삭제</button>
+                    <button type="button" onclick="location.href='http://localhost:8081/my/info/myprofile'"
+                            class="btn btn-default">목록
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- // contents -->
+
+</body>
+</html>

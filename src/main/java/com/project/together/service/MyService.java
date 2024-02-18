@@ -4,6 +4,7 @@ import com.project.together.domain.Qna;
 import com.project.together.domain.User;
 import com.project.together.mapper.MyMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +38,22 @@ public class MyService {
         myMapper.saveQna(qna);
     }
 
+    //사용자 문의글 전체 조회
     public List<Qna> getQnaListByUserName(String username) {
         User user = myMapper.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다.");
         }
         return myMapper.findQnaByUsername(username);
+    }
+
+    //사용자 특정 문의글 조회
+    public Qna getQna(int qnaNum) throws NotFoundException {
+        Qna qna = myMapper.findQnaByQnaNum(qnaNum);
+        if (qna == null) {
+            throw new NotFoundException(qnaNum + " 번호의 문의를 찾을 수 없습니다.");
+        }
+        return qna;
     }
 
 

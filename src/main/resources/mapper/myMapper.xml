@@ -2,11 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.MyMapper">
 
+    <select id="findQnaByQnaNum" parameterType="int" resultType="com.project.together.domain.Qna">
+        SELECT * FROM QnA WHERE qna_Num = #{qnaNum}
+    </select>
 
     <select id="findByUsername" parameterType="string" resultType="com.project.together.domain.User">
         SELECT * FROM user WHERE username = #{username}
     </select>
-
 
     <select id="findQnaByUsername" parameterType="string" resultType="com.project.together.domain.Qna">
         SELECT * FROM QnA WHERE username = #{username}

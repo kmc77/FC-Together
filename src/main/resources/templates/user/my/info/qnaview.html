@@ -25,32 +25,26 @@
                     <input type="hidden" name="no" value="">
                     <div class="col">
                         <dl class="flex-align-center">
-                            <dt>등록일</dt>
-                            <dd>등록일(qnaDate)</dd>
+                            <dt id="date-label">등록일</dt>
+                            <dd th:text="${qna.qnaDate}"></dd>
                         </dl>
                         <dl>
-                            <dt>상태</dt>
+                            <dt id="status-label">상태</dt>
                             <dd>
-
-                                <span class="badge-answer ">답변대기(qnaStatus)</span>
+                                <span class="badge-answer" th:text="${qna.qnaStatus}"></span>
                             </dd>
                         </dl>
                     </div>
 
                     <dl>
-                        <dt>문의내용</dt>
+                        <dt id="title-label">문의내용</dt>
                         <dd>
-                            <em class="qna-cont-tit">문의드립니다.(qnaTitle)</em>
-                            <div class="qna-cont ql-editor">
-                                @문의 내용 삽입@(qnaContent)
-                            </div>
+                            <em class="qna-cont-tit" th:text="${qna.qnaTitle}"></em>
+                            <div class="qna-cont ql-editor" th:utext="${qna.qnaContent}"></div>
                         </dd>
                     </dl>
                 </div>
-
-
             </div>
-
 
             <div class="content-box">
                 <div class="form-list">
@@ -58,6 +52,12 @@
                         <dt>답변</dt>
                         <dd>답변 대기중입니다.</dd>
                     </dl>
+
+                    <dl>
+                        <dt id="authId-label">작성자 ID</dt>
+                        <dd id="authId-content" th:text="${qna.authId}"></dd>
+                    </dl>
+
                 </div>
                 <div class="formBtns">
                     <button type='button' value="삭제" class='btn btn-default' id='cancel_btn'>삭제</button>
@@ -70,6 +70,39 @@
     </div>
 </div>
 <!-- // contents -->
+<script>
+    $(document).ready(function() {
+     // URL에서 qnaNum을 추출
+     var urlParams = new URLSearchParams(window.location.search);
+     var qnaNum = urlParams.get('no');
+
+     // qnaNum에 해당하는 문의글을 불러옴
+   $.ajax({
+    url: '/my/info/qnaview?no=' + qnaNum,
+    type: 'GET',
+    success: function(data) {
+        // HTML 요소의 내용을 업데이트
+        $('#date-label').next('dd').text(data.qnaDate);
+        $('#status-label').next('dd').find('span').text(data.qnaStatus);
+        $('#authId-content').text(data.authId);  // authId 값을 추가
+        $('#title-label').next('dd').find('em').text(data.qnaTitle);
+        $('.qna-cont').html(data.qnaContent);  // HTML로 된 내용이라면 .html() 메서드를 사용
+
+        // 답변이 있으면 답변을 보여주고, 없으면 "답변 대기중입니다."라는 메시지를 보여줌
+        if (data.qnaReply) {
+            $('#reply-label').text(data.qnaReply);
+        } else {
+            $('#reply-label').text('답변 대기중입니다.');
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('QnA 상세 정보 불러오기 요청 실패: ' + error);
+    }
+});
+
+ });
+
+</script>
 
 </body>
 </html>

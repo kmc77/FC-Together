@@ -2,11 +2,8 @@ package com.project.together.service;
 
 import com.project.together.domain.Qna;
 import com.project.together.domain.User;
-import com.project.together.mapper.InfoMapper;
+import com.project.together.mapper.MyMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +12,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class InfoService {
+public class MyService {
 
-    private final InfoMapper infoMapper;
+    private final MyMapper myMapper;
 
     public void saveQna(String qnaTitle, String qnaContent, int userId, String username) {
         System.out.println("서비스 username = " + username);
@@ -35,16 +32,17 @@ public class InfoService {
 
         // qnaUpdate 컬럼에 수정일은 어떻게 처리?
         // qnaStatus 컬럼에 "답변대기" 설정
+        qna.setQnaStatus("답변대기");
 
-        infoMapper.saveQna(qna);
+        myMapper.saveQna(qna);
     }
 
     public List<Qna> getQnaListByUserName(String username) {
-        User user = infoMapper.findByUsername(username);
+        User user = myMapper.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다.");
         }
-        return infoMapper.findQnaByUsername(username);
+        return myMapper.findQnaByUsername(username);
     }
 
 

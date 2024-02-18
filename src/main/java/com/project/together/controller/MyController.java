@@ -3,6 +3,7 @@ package com.project.together.controller;
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.Qna;
 import com.project.together.service.MyService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,10 +73,12 @@ public class MyController {
 
     //1:1 문의글 상세 페이지
     @GetMapping("/info/qnaview")
-    public String qnaViewPage(@RequestParam("no") int qnaNum, Model model) {
-        model.addAttribute("qnaNum", qnaNum);
+    public String qnaViewPage(@RequestParam("no") int qnaNum, Model model) throws NotFoundException {
+        Qna qna = myService.getQna(qnaNum);  // QnaService를 사용하여 데이터를 가져옴
+        model.addAttribute("qna", qna);  // Model에 데이터를 추가
         return "/user/my/info/qnaview";
     }
+
 
 
 }

@@ -2,12 +2,13 @@ package com.project.together.controller;
 
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.Qna;
-import com.project.together.service.InfoService;
+import com.project.together.service.MyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/info")
-public class InfoController {
+@RequestMapping("/my")
+public class MyController {
 
-    private final InfoService infoService;
+    private final MyService myService;
 
     @Autowired
-    public InfoController(InfoService infoService) {
-        this.infoService = infoService;
+    public MyController(MyService myService) {
+        this.myService = myService;
     }
 
 
@@ -39,7 +40,7 @@ public class InfoController {
         System.out.println("컨트롤러 userId = " + userId);
 
         // qnaTitle과 qnaContent를 사용하여 qna 테이블에 저장하는 로직 구현
-        infoService.saveQna(qnaTitle, qnaContent, userId, username);
+        myService.saveQna(qnaTitle, qnaContent, userId, username);
 
         System.out.println("1:1 문의글 작성 성공");
 
@@ -53,7 +54,7 @@ public class InfoController {
 
         String username = principalDetails.getUsername();
 
-        List<Qna> qnaList = infoService.getQnaListByUserName(username);
+        List<Qna> qnaList = myService.getQnaListByUserName(username);
 
         if (qnaList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,6 +63,19 @@ public class InfoController {
         return new ResponseEntity<>(qnaList, HttpStatus.OK);
     }
 
+
+    // 내 프로필 페이지
+    @GetMapping("/info/myprofile")
+    public String myProfilePage() {
+        return "user/my/info/myprofile";
+    }
+
+    //1:1 문의글 상세 페이지
+    @GetMapping("/info/qnaview")
+    public String qnaViewPage(@RequestParam("no") int qnaNum, Model model) {
+        model.addAttribute("qnaNum", qnaNum);
+        return "/user/my/info/qnaview";
+    }
 
 
 }

@@ -1,0 +1,318 @@
+.mypagePage .top .topTitle {
+  padding-top: 0;
+}
+
+.subTop .top .topTitle {
+  padding-top: 34px;
+  text-align: center;
+}
+
+.mypagePage .top .topTitle .title {
+  padding-top: 110px;
+  font-size: 40px;
+  background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  max-width: 1260px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.subTop .tabMenu {
+  padding-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  vertical-align: top;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.subTop .tabMenu .current,
+.subTop .tabMenu .router-link-exact-active {
+  color: #046a38;
+}
+
+.subTop .tabMenu a {
+  display: inline-block;
+  position: relative;
+  padding: 0 36px;
+  vertical-align: middle;
+}
+
+.subTop .tabMenu a span {
+  display: inline-block;
+  position: relative;
+  padding: 25px 0;
+  vertical-align: top;
+}
+
+.tabMenu .tabLink span {
+  color: #000000; /* 검정색 */
+}
+
+.tabMenu .tabLink.current span {
+  color: #046a38; /* 선택된 탭의 글자 색상 */
+}
+
+.tabMenu .tabLink.current span:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #046a38; /* 선택된 탭의 아래 줄 색상 */
+}
+
+.tabContent .content {
+  padding-top: 30px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#userProfile {
+  margin: 20px;
+}
+
+/*.listInfo {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 24px;
+    color: #000000b3;
+    flex-direction: row;
+    align-content: space-between;
+}*/
+
+.writeTable {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.writeTable .row {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #e5e5e5;
+  background-color: #f9f9f9;
+}
+
+.writeTable .label {
+  width: 216px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.writeTable .cont {
+  flex: 1;
+  position: relative;
+  padding: 20px 20px 20px 28px;
+  background-color: #fff;
+}
+
+.textarea {
+  height: 200px;
+  padding: 24px 32px;
+  overflow: auto;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #777;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.input {
+  width: 100%;
+  padding: 16px 20px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #000;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.writeTable .cont .letter {
+  position: absolute;
+  bottom: 38px;
+  right: 38px;
+  font-size: 12px;
+  color: #999;
+}
+
+.qnaWrite .btns {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.btn.primary1 {
+    color: #000;
+    border-color: #034f36;
+    background-color: #ffc954;
+}
+
+.btn.large {
+    min-width: 173px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #034f36
+}
+
+.qnaList .cont-top-area {
+  padding-bottom: 24px;
+}
+
+.qnaList .cont-top-area {
+  padding-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.cont-tit {
+  color: #000000b3;
+}
+
+.listInfo .cont-top-area {
+  padding-bottom: 15px;
+  border-bottom: 2px solid #000000b3;
+}
+
+.qna-wrap .list-item .col.category {
+  margin-top: 0;
+}
+
+/* 리스트테이블 형식 */
+.list-item {
+  flex-direction: row;
+  align-items: center;
+  padding: 20px 30px;
+}
+
+.list-item > .col + .col {
+  margin-top: 0;
+}
+
+.list-item .col.tit a {
+  max-height: 32px;
+  font-size: 16px;
+  word-break: break-all;
+  -webkit-line-clamp: 1;
+}
+
+.list-item .txt-num {
+  font-size: 15px;
+}
+
+/* 1:1문의 */
+.essential-txt {
+  margin-top: 20px;
+}
+
+.list-item.list-top {
+  display: flex;
+}
+
+.list-item.list-top .col {
+  font-weight: 700;
+  color: #121212;
+  font-size: 15px;
+}
+
+.list-item .col {
+  flex: 0 0 auto;
+}
+
+.list-item .col.date,
+.list-item .col.state {
+  text-align: center;
+}
+
+.list-item .col.date {
+  width: 70px;
+}
+
+.list-item .col.tit {
+  width: 220px;
+}
+
+.list-item .col.text {
+  width: 51%;
+}
+
+.list-item .col.state {
+  width: 85px;
+}
+
+/* 리스트 */
+.list-basic {
+  border-top: 2px solid #121212;
+}
+
+.list-item {
+  display: flex;
+  padding: 17px 10px;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.list-item:last-child {
+  border-color: #ddd;
+}
+
+/*.list-item > .col + .col {margin-top:7px}*/
+.list-item.fixed {
+  background-color: #f7f7f7;
+}
+
+.list-item.fixed .notice-tit {
+  font-weight: 700;
+}
+
+.list-item .col.tit a {
+  display: block;
+  display: -webkit-box;
+  max-height: 48px;
+  line-height: 24px;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.list-item .txt-num {
+  color: #888;
+  font-size: 13px;
+}

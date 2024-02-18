@@ -118,11 +118,7 @@ public class UserController {
         return "user/findpwform";
     }
 
-    // 내 프로필 페이지
-    @GetMapping("/my/myprofile")
-    public String myProfilePage() {
-        return "user/my/myprofile";
-    }
+
 
     // 아이디 중복 체크
     @ResponseBody

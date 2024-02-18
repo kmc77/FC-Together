@@ -39,19 +39,24 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         //회원가입 강제 진행
         OAuth2UserInfo oAuth2UserInfo = null;
+        String userPhone = null; // 사용자 전화번호를 저장할 변수
+        String userBirth = null; // 사용자 생일을 저장할 변수
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청");
             oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             System.out.println("네이버 로그인 요청");
-            oAuth2UserInfo = new NaverUserInfo((Map) oauth2User.getAttributes().get("response"));
+            Map<String, Object> attributes = (Map<String, Object>) oauth2User.getAttributes().get("response");
+            oAuth2UserInfo = new NaverUserInfo(attributes);
+            userPhone = (String) attributes.get("mobile"); // 네이버 로그인의 경우, mobile 값을 추출
+            userBirth = (String) attributes.get("birthday"); // 네이버 로그인의 경우, birthday 값을 추출
         } else {
             System.out.println("투게더는 구글과 네이버만 지원합니다.");
         }
 
         String provider = oAuth2UserInfo.getProvider();
-        String providerld = oAuth2UserInfo.getProviderId();
-        String username = provider + "_" + providerld; // google_109742856182916427686
+        String providerId = oAuth2UserInfo.getProviderId();
+        String username = provider + "_" + providerId;
         String password = bCryptPasswordEncoder.encode("겟인데어");
         String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
@@ -66,7 +71,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .email(email)
                     .user_role(role)
                     .provider(provider)
-                    .providerId(providerld)
+                    .providerId(providerId)
+                    .user_phone(userPhone)
+                    .user_birth(userBirth)
                     .build();
             userMapper.joinUser(userE);
         } else {
@@ -75,4 +82,5 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         return new PrincipalDetails(userE, oauth2User.getAttributes());
     }
+
 }

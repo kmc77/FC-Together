@@ -14,4 +14,6 @@ public interface MyMapper {
     User findByUsername(String username);
 
     List<Qna> findQnaByUsername(String username);
+
+    Qna findQnaByQnaNum(int qnaNum);
 }

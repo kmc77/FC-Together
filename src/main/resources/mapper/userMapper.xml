@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.UserMapper">
 
+    <delete id="delete" parameterType="String">
+        DELETE FROM user WHERE username = #{username}
+    </delete>
 
     <select id="findByUsername" parameterType="String" resultType="com.project.together.domain.User">
         SELECT * FROM user WHERE username = #{username}

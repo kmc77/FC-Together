@@ -129,11 +129,13 @@
         }
     });
 
-    function logout() {
-        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 accessToken 토큰 제거
-        location.href = '/Logout';
-        alert('로그아웃 되었습니다.');
-    }
+  function logout() {
+    localStorage.removeItem('accessToken'); // 로컬 스토리지에서 accessToken 토큰 제거
+
+    location.href = '/Logout';
+    alert('로그아웃 되었습니다.');
+}
+
 </script>
 
 

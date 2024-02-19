@@ -2,6 +2,7 @@ package com.project.together.mapper;
 
 import com.project.together.domain.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface MyMapper {
     List<Qna> findQnaByUsername(String username);
 
     Qna findQnaByQnaNum(int qnaNum);
+
+    void deleteQna(@Param("username") String username, @Param("qnaNum") int qnaNum);
+
+    void deleteByUserId(String username);
 }

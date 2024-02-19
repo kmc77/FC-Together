@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.domain.*;
+import com.project.together.mapper.MyMapper;
 import com.project.together.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +14,7 @@ import java.util.List;
 public class UserService {
 
     private final UserMapper userMapper;
+    private final MyMapper myMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
@@ -53,4 +55,13 @@ public class UserService {
     }
 
 
+    public void deleteUser(String username) {
+        User user = userMapper.findByUsername(username);
+
+        // Qna 테이블에서 관련 레코드를 먼저 삭제합니다.
+        myMapper.deleteByUserId(user.getUsername());
+
+        // User 테이블에서 해당 사용자를 삭제합니다.
+        userMapper.delete(user);
+    }
 }

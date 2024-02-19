@@ -54,13 +54,18 @@
                     </dl>
 
                     <dl>
-                        <dt id="authId-label">작성자 ID</dt>
+                        <dt id="authId-label">답변자 ID</dt>
                         <dd id="authId-content" th:text="${qna.authId}"></dd>
                     </dl>
 
                 </div>
                 <div class="formBtns">
-                    <button type='button' value="삭제" class='btn btn-default' id='cancel_btn'>삭제</button>
+                    <!-- 문의글 삭제 버튼 -->
+                    <button type="button" value="삭제" class="btn btn-default" id="delete-btn"
+                            th:data-qnanum="${qna.qnaNum}">삭제
+                    </button>
+
+
                     <button type="button" onclick="location.href='http://localhost:8081/my/info/myprofile'"
                             class="btn btn-default">목록
                     </button>
@@ -72,37 +77,63 @@
 <!-- // contents -->
 <script>
     $(document).ready(function() {
-     // URL에서 qnaNum을 추출
-     var urlParams = new URLSearchParams(window.location.search);
-     var qnaNum = urlParams.get('no');
+        // URL에서 qnaNum 추출
+        var urlParams = new URLSearchParams(window.location.search);
+        var qnaNum = urlParams.get('no');
 
-     // qnaNum에 해당하는 문의글을 불러옴
-   $.ajax({
-    url: '/my/info/qnaview?no=' + qnaNum,
-    type: 'GET',
-    success: function(data) {
-        // HTML 요소의 내용을 업데이트
-        $('#date-label').next('dd').text(data.qnaDate);
-        $('#status-label').next('dd').find('span').text(data.qnaStatus);
-        $('#authId-content').text(data.authId);  // authId 값을 추가
-        $('#title-label').next('dd').find('em').text(data.qnaTitle);
-        $('.qna-cont').html(data.qnaContent);  // HTML로 된 내용이라면 .html() 메서드를 사용
+        // qnaNum에 해당하는 문의 메시지 로드
+        $.ajax({
+            url: '/my/info/qnaview?no=' + qnaNum,
+            type: 'GET',
+            success: function(data) {
+                // HTML 요소의 내용 업데이트
+                $('#date-label').next('dd').text(data.qnaDate);
+                $('#status-label').next('dd').find('span').text(data.qnaStatus);
+                $('#authId-content').text(data.authId); // authId 값 추가
+                $('#title-label').next('dd').find('em').text(data.qnaTitle);
+                $('.qna-cont').html(data.qnaContent); // 컨텐츠가 HTML인 경우 .html() 메서드 사용
 
-        // 답변이 있으면 답변을 보여주고, 없으면 "답변 대기중입니다."라는 메시지를 보여줌
-        if (data.qnaReply) {
-            $('#reply-label').text(data.qnaReply);
-        } else {
-            $('#reply-label').text('답변 대기중입니다.');
-        }
-    },
-    error: function(xhr, status, error) {
-        console.error('QnA 상세 정보 불러오기 요청 실패: ' + error);
-    }
-});
+                // 답변이 있는 경우 답변을 표시하고, 그렇지 않은 경우 "답변 대기 중" 메시지 표시
+                if (data.qnaReply) {
+                    $('#reply-label').text(data.qnaReply);
+                } else {
+                    $('#reply-label').text('답변 대기 중입니다.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('QnA 상세 정보 검색 요청 실패: ' + error);
+            }
+        });
 
- });
+        // 삭제 버튼 클릭 시
+        $("#delete-btn").click(function() {
+            if (confirm("삭제하시겠습니까?")) {
+                var qnaNumData = $(this).data("qnanum");
+                var qnaNum = parseInt(qnaNumData); // 현재 클릭된 버튼의 data-qnanum 속성 값을 정수로 변환하여 가져옴
+                // 로컬 스토리지에서 액세스 토큰 가져오기
+                var accessToken = localStorage.getItem("accessToken");
 
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: '/my/qna/' + qnaNum,
+                    type: 'DELETE',
+                    beforeSend: function(xhr) {
+                        // 헤더에 액세스 토큰 추가
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                    },
+                    success: function(result) {
+                        alert("문의가 성공적으로 삭제되었습니다.");
+                        window.location.href = "/my/info/myprofile";
+                    },
+                    error: function(request, status, error) {
+                        alert("삭제 실패: " + request.responseText);
+                    }
+                });
+            }
+        });
+    });
 </script>
+
 
 </body>
 </html>

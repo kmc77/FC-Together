@@ -6,6 +6,7 @@ import com.project.together.config.jwt.TokenUtils;
 import com.project.together.domain.*;
 import com.project.together.mapper.UserMapper;
 import com.project.together.service.UserService;
+import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -119,7 +120,6 @@ public class UserController {
     }
 
 
-
     // 아이디 중복 체크
     @ResponseBody
     @GetMapping("/idCheck")
@@ -168,6 +168,20 @@ public class UserController {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect:/"; // 로그인 폼으로 이동
+        return "redirect:/";
     }
+
+    // 회원 탈퇴
+    @DeleteMapping("/delete")
+    public String deleteUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        userService.deleteUser(principalDetails.getUsername()); // 사용자 삭제
+
+        // 로그아웃 처리
+        SecurityContextHolder.getContext().setAuthentication(null);
+        System.out.println("회원탈퇴 성공");
+
+        return "redirect:/";
+    }
+
 }

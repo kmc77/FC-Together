@@ -23,5 +23,5 @@ public interface UserMapper {
 
     List<S_Player> getSPlayers();
 
-
+    void delete(User user);
 }

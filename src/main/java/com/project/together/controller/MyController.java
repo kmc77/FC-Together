@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -46,7 +45,7 @@ public class MyController {
         System.out.println("1:1 문의글 작성 성공");
 
         // 저장 후, 리다이렉트할 경로 또는 뷰 이름 반환
-        return "redirect:/user/my/myprofile";
+        return "/user/my/info/myprofile";
     }
 
     //1:1 문의글 목록 조회
@@ -54,7 +53,6 @@ public class MyController {
     public ResponseEntity<List<Qna>> getQnaListForUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         String username = principalDetails.getUsername();
-
         List<Qna> qnaList = myService.getQnaListByUserName(username);
 
         if (qnaList.isEmpty()) {
@@ -79,6 +77,22 @@ public class MyController {
         return "/user/my/info/qnaview";
     }
 
+    //문의글 삭제
+    @DeleteMapping("/qna/{qnaNum}")
+    public ResponseEntity<?> deleteQna(@PathVariable("qnaNum") int qnaNum, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        String username = principalDetails.getUsername();
+
+        if (username != null) {
+            try {
+                myService.deleteQna(username, qnaNum);
+                return ResponseEntity.ok().build();
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제할 권한이 없습니다.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자가 인증되지 않았습니다.");
+        }
+    }
 
 
 }

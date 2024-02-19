@@ -30,9 +30,9 @@
                     <a href="#" data-target="#qna" class="tabLink">
                         <span>1:1 문의하기</span>
                     </a>
-                    <a href="#" data-target="#myinfo" class="tabLink">
-                        <span>나의정보 수정</span>
-                    </a>
+                    <!--  <a href="#" data-target="#myinfo" class="tabLink">
+                          <span>나의정보 수정</span>
+                      </a>-->
                 </div>
             </div>
         </div>
@@ -47,10 +47,17 @@
                     <h1>마이페이지</h1>
                 </div>
                 <div id="userProfile">
-                    <p id="username"></p>
-                    <p id="email"></p>
+                    <div class="list-item list-top">
+                        <div class="col name">아이디</div>
+                        <div class="col email">이메일</div>
+                    </div>
                 </div>
             </div>
+
+            <div class="btns">
+                <button class="btn large full primary1" id="delete-account-btn">회원탈퇴</button>
+            </div>
+
         </div>
     </div>
 
@@ -108,9 +115,9 @@
             </div>
         </div>
     </div>
-    <div id="myinfo" class="tabContent" style="display: none;">
-        <p>나의정보 수정 예시 텍스트</p>
-    </div>
+    <!-- <div id="myinfo" class="tabContent" style="display: none;">
+         <p>나의정보 수정 예시 텍스트</p>
+     </div>-->
 </div>
 
 
@@ -187,24 +194,33 @@
             });
 
             // 유저 정보 불러오기
-            $.ajax({
+          $.ajax({
                 url: '/user/user',
                 type: 'GET',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', token);
                 },
-                success: function(data) {
-                    var username = data.username;
+                success: function(user) {
+                    var html = '<div class="list-item">'
+                        + '    <div class="col name">'
+                        + '        <span class="col date txt-name">' + user.username + '</span>'
+                        + '    </div>'
+                        + '    <div class="col email">'
+                        + '        <span class="col date txt-email">' + user.email + '</span>'
+                        + '    </div>'
+                        + '</div>';
+                    $('#userProfile').append(html);
+
+                    var username = user.username;
                     if (username) {
                         $('.mobileBreak strong').text(username);
                     }
-
-                    $('#username').text("사용자 이름: " + data.username);
-                    $('#email').text("이메일: " + data.email);
                 },
                 error: function(xhr, status, error) {
+                    // 오류 처리
                 }
             });
+
 
             var activeTab = localStorage.getItem('activeTab');
             if (activeTab) {
@@ -233,6 +249,7 @@
                     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
                 success: function(data) {
+
                     data.forEach(function(qna) {
                         var html = '<div class="list-item">'
                                  + '    <div class="col tit">'
@@ -244,7 +261,7 @@
                                  + '    <div class="col qna-info">'
                                  + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'
                                  + '    </div>'
-                                 + '    <div class="col state"><span class="badge-answer ">' + qna.qnaStatus + '</span></div>'
+                                 + '    <div class="col state"><sp12an class="badge-answer ">' + qna.qnaStatus + '</span></div>'
                                  + '</div>';
                         $('.qnaList').append(html);
                     });
@@ -258,8 +275,32 @@
         }
     });
 </script>
+<script>
+    $('#delete-account-btn').click(function() {
+   var token = localStorage.getItem('accessToken'); // LocalStorage에서 토큰 가져오기
 
+   if (confirm("정말 탈퇴하시겠습니까?")) {
+       $.ajax({
+           url: '/user/delete',
+           type: 'DELETE',
+           beforeSend: function(xhr) {
+               xhr.setRequestHeader('Authorization', 'Bearer ' + token); // 토큰을 헤더에 추가
+           },
+      success: function(result) {
+          // 회원 탈퇴가 성공적으로 처리되면 로컬 스토리지의 토큰 삭제
+          localStorage.removeItem('accessToken');
+          console.log('Token removed: ', !localStorage.getItem('accessToken')); // 토큰 삭제 확인
+          alert("회원 탈퇴가 성공적으로 처리되었습니다.");
+          window.location.href = "/"; // 홈페이지로 리다이렉트
+           },
+           error: function(xhr, status, error) {
+               alert("회원 탈퇴 중 오류가 발생했습니다: " + error);
+           }
+       });
+   }
+ });
 
+</script>
 
 
 </body>

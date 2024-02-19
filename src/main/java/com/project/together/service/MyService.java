@@ -56,5 +56,24 @@ public class MyService {
         return qna;
     }
 
+    //문의글 삭제
+    public void deleteQna(String username, int qnaNum) {
+        // 먼저, qnaNum에 해당하는 문의글을 찾습니다.
+        Qna qna = myMapper.findQnaByQnaNum(qnaNum);
+
+        // 문의글이 존재하지 않으면, 예외를 발생시킵니다.
+        if (qna == null) {
+            throw new IllegalArgumentException("해당 번호의 문의글이 존재하지 않습니다.");
+        }
+
+        // 문의글의 작성자와 삭제를 요청한 사용자가 같지 않으면, 예외를 발생시킵니다.
+        if (!qna.getUsername().equals(username)) {
+            throw new IllegalArgumentException("문의글의 작성자만 삭제할 수 있습니다.");
+        }
+
+        // 위의 모든 검증을 통과하면, 문의글을 삭제합니다.
+        myMapper.deleteQna(username, qnaNum);
+    }
+
 
 }

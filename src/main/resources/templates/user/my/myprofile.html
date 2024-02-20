@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>MyProfile</title>
     <th:block th:include="layout/header"></th:block>
-    <link href="/css/user/my/info/myprofile.css" rel="stylesheet"/>
+    <link href="/css/user/my/myprofile.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -256,7 +256,7 @@
                                  + '        <span class="col date txt-tit">' + qna.qnaTitle + '</span>'
                                  + '    </div>'
                                  + '    <div class="col text">'
-                                 + '       <a href="/my/info/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qna.qnaContent + '</a>'
+                                 + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qna.qnaContent + '</a>'
                                  + '    </div>'
                                  + '    <div class="col qna-info">'
                                  + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'

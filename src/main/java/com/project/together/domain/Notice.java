@@ -1,13 +1,13 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Notice {
+    private int noticeNum;
+    private String authId;
     private String noticeTitle;
     private String noticeDate;
-    private String noticeHits; // int?
+    private int noticeHits;
     private String noticeContent;
 }

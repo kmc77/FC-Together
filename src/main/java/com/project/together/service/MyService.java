@@ -47,7 +47,7 @@ public class MyService {
         return myMapper.findQnaByUsername(username);
     }
 
-    //사용자 특정 문의글 조회
+    //1:1 문의글 상세 조회 페이지
     public Qna getQna(int qnaNum) throws NotFoundException {
         Qna qna = myMapper.findQnaByQnaNum(qnaNum);
         if (qna == null) {

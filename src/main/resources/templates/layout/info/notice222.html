@@ -32,8 +32,8 @@
     <link rel="shortcut icon" href="https://www.hankyung.com/favicon.ico">
     <link rel="apple-touch-icon" sizes="192x192"
           href="https://static.hankyung.com/resource/common/img/favicon/apple-touch-icon.png">
-    <link rel="stylesheet" href="https://static.hankyung.com/css/www/w/common.ui.all.css?v=202402161556">
-    <link rel="stylesheet" href="https://static.hankyung.com/resource/www/help/css/help.css?v=202402161556">
+    <link rel="stylesheet" href="https://static.hankyung.com/css/www/w/common.ui.all.css?v=202402200832">
+    <link rel="stylesheet" href="https://static.hankyung.com/resource/www/help/css/help.css?v=202402200832">
 
     <script type="text/javascript" async=""
             src="https://www.googletagmanager.com/gtag/js?id=G-YR1S7BMWY7&amp;l=dataLayer&amp;cx=c"></script>
@@ -44,7 +44,7 @@
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-T9TD5G7"></script>
     <script src="https://static.hankyung.com/plugin/jquery-1.12.4.min.js"></script>
     <script src="https://static.hankyung.com/plugin/jquery.cookie.js"></script>
-    <script type="text/javascript" src="https://static.hankyung.com/js/ga/googleTagManager.js?v=202402161556"
+    <script type="text/javascript" src="https://static.hankyung.com/js/ga/googleTagManager.js?v=202402200832"
             async="true"></script>
 </head>
 <body>
@@ -84,10 +84,10 @@
                                 </p>
                             </div>
                             <div class="btns">
-                                <a href="https://member.hankyung.com/apps.frame/member.main?url=https%3A//www.hankyung.com/help/qna/view%3Fno%3D271"
+                                <a href="https://member.hankyung.com/apps.frame/member.main?url=https%3A//www.hankyung.com/help/notice"
                                    class="btn-account">계정관리</a>
                                 <a role="button" class="btn-logout"
-                                   href="https://member.hankyung.com/apps.frame/login.work.logout?url=https%3A//www.hankyung.com/help/qna/view%3Fno%3D271">로그아웃</a>
+                                   href="https://member.hankyung.com/apps.frame/login.work.logout?url=https%3A//www.hankyung.com/help/notice">로그아웃</a>
                             </div>
                         </div>
 
@@ -382,9 +382,9 @@
             </div>
             <ul class="gnb-section">
                 <!-- [D] 활성화 클래스 on -->
-                <li><a href="https://www.hankyung.com/help/notice" target="">공지사항</a></li>
+                <li class="on"><a href="https://www.hankyung.com/help/notice" target="">공지사항</a></li>
                 <li><a href="https://www.hankyung.com/help/faq" target=""><span class="txt-en">FAQ</span></a></li>
-                <li class="on"><a href="https://www.hankyung.com/help/qna" target="">1:1문의<span
+                <li><a href="https://www.hankyung.com/help/qna" target="">1:1문의<span
                         class="icon-membersonly2">회원전용</span></a></li>
                 <li><a href="https://www.hankyung.com/help/policy" target="">운영정책</a></li>
             </ul>
@@ -393,104 +393,108 @@
     <!-- // header -->
 
     <!-- contents -->
-    <link href="/help/css/quill_editor.css" rel="stylesheet">
     <!-- contents -->
     <div id="contents" class="contents">
         <div class="layout-inner">
-            <section class="qna-wrap view-wrap">
-                <div class="cont-top-area">
-                    <h1 class="cont-tit">나의 1:1문의</h1>
-                    <p class="cont-txt notice-txt">답변 운영 시간은 09:00 ~ 18:00 / 토·일·공휴일 제외입니다.</p>
-                </div>
+            <section class="notice-wrap">
+                <h1 class="cont-tit">공지사항</h1>
+                <div class="list-basic">
 
-                <div class="content-box">
-                    <div class="form-list view-list">
-                        <input type="hidden" name="no" value="271">
-                        <div class="col">
-                            <dl class="flex-align-center">
-                                <dt>등록일</dt>
-                                <dd>2023.09.12</dd>
-                            </dl>
-                            <dl>
-                                <dt>상태</dt>
-                                <dd>
-
-                                    <span class="badge-answer ">답변대기</span>
-                                </dd>
-                            </dl>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=56" class="notice-tit">금융NCS 시험 및 홈페이지
+                                종료 안내</a>
                         </div>
-                        <dl>
-                            <dt>문의유형</dt>
-                            <dd>한경닷컴 웹페이지 - 회원 관련</dd>
-                        </dl>
-                        <dl>
-                            <dt>문의내용</dt>
-                            <dd>
-                                <em class="qna-cont-tit">문의드립니다.</em>
-                                <div class="qna-cont ql-editor">
-                                    안녕하세요, 혹시 현재 한경닷컴 웹 페이지를 제작한 업체 정보를 알 수 있을까요?
-                                </div>
-                            </dd>
-                        </dl>
+                        <div class="col"><span class="txt-num">2023.11.09</span></div>
                     </div>
-
-                    <div class="btn-area">
-                        <button type="reset" class="btn-default bg-gray" id="btn-delete">삭제</button>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=55" class="notice-tit">한경 회원전용 콘텐츠
+                                설문조사 당첨자 발표</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.09.25</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=54" class="notice-tit">한경 회원전용 콘텐츠(기사)
+                                설문조사에 참여해주세요.</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.09.13</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=53" class="notice-tit">한경닷컴 휴면회원 정책이
+                                폐지됩니다.</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.08.14</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=50" class="notice-tit">개인정보처리방침 개정 및
+                                휴면정책 변경 안내</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.08.14</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=48" class="notice-tit">한경 고객센터
+                                오픈안내</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.06.30</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=47" class="notice-tit">기사뷰 프린트 서비스 종료
+                                안내</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.06.01</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=46" class="notice-tit">한국경제 소셜 로그인 오픈
+                                안내</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2023.04.10</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=42" class="notice-tit">한경온리 회원 서비스
+                                업데이트 안내</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2022.08.22</span></div>
+                    </div>
+                    <div class="list-item ">
+                        <div class="col tit">
+                            <a href="https://www.hankyung.com/help/notice/view?no=41" class="notice-tit">기사뷰 개편 및 신규 서비스
+                                'My News' 오픈 알림</a>
+                        </div>
+                        <div class="col"><span class="txt-num">2022.06.30</span></div>
                     </div>
                 </div>
 
-
-                <div class="content-box">
-                    <div class="form-list">
-                        <dl>
-                            <dt>답변</dt>
-                            <dd>답변 대기중입니다.</dd>
-                        </dl>
-                    </div>
-                    <div class="btn-area">
-                        <a href="https://www.hankyung.com/help/qna" class="btn-default">목록</a>
-                    </div>
+                <div class="pagination" role="navigation">
+                    <a href="https://www.hankyung.com/help/notice?page=1" class="btn-page-first">
+                        <span class="blind">처음</span>
+                    </a>
+                    <a href="https://www.hankyung.com/help/notice?page=1" class="btn-page-prev">
+                        <span class="blind">이전</span>
+                    </a>
+                    <strong>1</strong>
+                    <a href="https://www.hankyung.com/help/notice?page=2">2</a>
+                    <a href="https://www.hankyung.com/help/notice?page=3">3</a>
+                    <a href="https://www.hankyung.com/help/notice?page=4">4</a>
+                    <a href="https://www.hankyung.com/help/notice?page=5">5</a>
+                    <a href="https://www.hankyung.com/help/notice?page=5" class="btn-page-next">
+                        <span class="blind">다음</span>
+                    </a>
+                    <a href="https://www.hankyung.com/help/notice?page=5" class="btn-page-last">
+                        <span class="blind">마지막</span>
+                    </a>
                 </div>
             </section>
         </div>
     </div>
     <!-- // contents -->
-    <script>
-        // 삭제
-        $("#btn-delete").on("click", function(){
-            if(confirm("삭제하시겠습니까?") == false){
-                return false;
-            }
-
-            $("#progressModal").show();
-
-            $.ajax({
-                url: 'https://www.hankyung.com/help/qna/delete'
-                , data:{
-                    no: '271'
-                }
-                , success: function(data){
-                    if(data.result == true){
-                        alert('문의글 삭제에 성공했습니다.');
-                        location.href = 'https://www.hankyung.com/help/qna';
-                    }else{
-                        alert(data.text);
-                    }
-                }
-                , error: function(xhr, status, responseTxt){
-                    console.log(xhr);
-                    alert('공지사항 사제 도중 에러가 발생했습니다.');
-                }
-                , complete: function(){
-                    $("#progressModal").hide();
-                }
-            });
-        });
-
-         $('.btn-file-open').click(function(){
-            $(this).toggleClass('active');
-        });
-    </script>
     <!-- // contents -->
 
     <!-- footer -->

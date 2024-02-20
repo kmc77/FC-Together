@@ -45,7 +45,7 @@ public class MyController {
         System.out.println("1:1 문의글 작성 성공");
 
         // 저장 후, 리다이렉트할 경로 또는 뷰 이름 반환
-        return "/user/my/info/myprofile";
+        return "/user/my/myprofile";
     }
 
     //1:1 문의글 목록 조회
@@ -64,17 +64,17 @@ public class MyController {
 
 
     // 내 프로필 페이지
-    @GetMapping("/info/myprofile")
+    @GetMapping("/myprofile")
     public String myProfilePage() {
-        return "user/my/info/myprofile";
+        return "user/my/myprofile";
     }
 
     //1:1 문의글 상세 페이지
-    @GetMapping("/info/qnaview")
+    @GetMapping("/qnaview")
     public String qnaViewPage(@RequestParam("no") int qnaNum, Model model) throws NotFoundException {
         Qna qna = myService.getQna(qnaNum);  // QnaService를 사용하여 데이터를 가져옴
         model.addAttribute("qna", qna);  // Model에 데이터를 추가
-        return "/user/my/info/qnaview";
+        return "/user/my/qnaview";
     }
 
     //문의글 삭제

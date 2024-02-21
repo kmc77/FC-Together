@@ -39,8 +39,6 @@
             src="https://www.googletagmanager.com/gtag/js?id=G-YR1S7BMWY7&amp;l=dataLayer&amp;cx=c"></script>
     <script type="text/javascript" async=""
             src="https://www.googletagmanager.com/gtag/js?id=G-Y2XH7W3BRT&amp;l=dataLayer&amp;cx=c"></script>
-    <script type="text/javascript" async=""
-            src="https://www.googletagmanager.com/gtag/destination?id=G-YR1S7BMWY7&amp;l=dataLayer&amp;cx=c"></script>
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-T9TD5G7"></script>
     <script src="https://static.hankyung.com/plugin/jquery-1.12.4.min.js"></script>
     <script src="https://static.hankyung.com/plugin/jquery.cookie.js"></script>
@@ -64,59 +62,19 @@
                     </h1>
                 </div>
                 <!-- 로그인 전 -->
-
-
-                <!-- 로그인 후 -->
-                <div class="login-area ms-3 login-info" style="">
-                    <a role="button" class="login-link btn-info">
+                <div class="item login-area ms-3 login_link" style="">
+                    <a role="button" class="login-link btn-info"
+                       href="https://member.hankyung.com/apps.frame/login?url=https%3A//www.hankyung.com/help/notice/view%3Fno%3D56">
                         <svg width="12" height="12" viewBox="0 0 12 12">
                             <path d="m9.5,3.5c0,1.9-1.6,3.5-3.5,3.5s-3.5-1.6-3.5-3.5S4.1,0,6,0s3.5,1.6,3.5,3.5Zm-.8,3.6c-.8.6-1.7.9-2.7.9s-1.9-.3-2.7-.9c-2,.9-3.3,3.7-3.3,4.9h12c0-1.2-1.3-4-3.3-4.9Z"
                                   class="svg-icon"></path>
                         </svg>
-                        <span id="login_txt" class="txt user-name">내정보</span>
+                        <span id="login_txt" class="txt">로그인</span>
                     </a>
-                    <div class="layer-my">
-                        <div class="user-info">
-                            <div class="account-info">
-                                <p class="email">
-                                    <span class="icon-mylogin-naver"><span class="blind">네이버로 로그인</span></span>
-                                    <span class="txt">k_minchoi@naver.com</span>
-                                </p>
-                            </div>
-                            <div class="btns">
-                                <a href="https://member.hankyung.com/apps.frame/member.main?url=https%3A//www.hankyung.com/help/notice"
-                                   class="btn-account">계정관리</a>
-                                <a role="button" class="btn-logout"
-                                   href="https://member.hankyung.com/apps.frame/login.work.logout?url=https%3A//www.hankyung.com/help/notice">로그아웃</a>
-                            </div>
-                        </div>
-
-                        <div class="subscription-info">
-                            <div class="mypages-area">
-                                <a href="https://www.hankyung.com/my-news">
-                                    <span class="txt-en">My News</span>
-                                </a>
-                                <a href="https://markets.hankyung.com/my-stock">
-                                    <span class="txt-en">My Stock</span>
-                                </a>
-                            </div>
-
-                            <dl class="details">
-                                <dt>구독내역</dt>
-                                <dd class="bioinsight">
-                                    <a href="https://www.hankyung.com/bioinsight">한경 <span
-                                            class="txt-en">BIO Insight</span></a>
-                                    <a href="https://www.hankyung.com/bioinsight/guide"
-                                       class="badge-subscribing">구독신청</a>
-                                </dd>
-                                <dd class="esg">
-                                    <a href="https://www.hankyung.com/esg">한경 <span class="txt-en">ESG</span></a>
-                                    <a href="https://www.hankyung.com/esg/guide" class="badge-subscribing">구독신청</a>
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
                 </div>
+
+                <!-- 로그인 후 -->
+
 
                 <script>
                     var url = escape(document.location.href);
@@ -393,108 +351,48 @@
     <!-- // header -->
 
     <!-- contents -->
-    <!-- contents -->
-    <div id="contents" class="contents">
+    <link href="/help/css/quill_editor.css?v=202402200832" rel="stylesheet">
+    <div id="contents" class="contents view-wrap">
         <div class="layout-inner">
             <section class="notice-wrap">
-                <h1 class="cont-tit">공지사항</h1>
-                <div class="list-basic">
+                <div class="view-top">
+                    <h1 class="tit">금융NCS 시험 및 홈페이지 종료 안내</h1>
+                    <div class="view-info">
+                        <span class="txt-num">2023.11.09</span>
 
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=56" class="notice-tit">금융NCS 시험 및 홈페이지
-                                종료 안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.11.09</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=55" class="notice-tit">한경 회원전용 콘텐츠
-                                설문조사 당첨자 발표</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.09.25</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=54" class="notice-tit">한경 회원전용 콘텐츠(기사)
-                                설문조사에 참여해주세요.</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.09.13</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=53" class="notice-tit">한경닷컴 휴면회원 정책이
-                                폐지됩니다.</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.08.14</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=50" class="notice-tit">개인정보처리방침 개정 및
-                                휴면정책 변경 안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.08.14</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=48" class="notice-tit">한경 고객센터
-                                오픈안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.06.30</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=47" class="notice-tit">기사뷰 프린트 서비스 종료
-                                안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.06.01</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=46" class="notice-tit">한국경제 소셜 로그인 오픈
-                                안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2023.04.10</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=42" class="notice-tit">한경온리 회원 서비스
-                                업데이트 안내</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2022.08.22</span></div>
-                    </div>
-                    <div class="list-item ">
-                        <div class="col tit">
-                            <a href="https://www.hankyung.com/help/notice/view?no=41" class="notice-tit">기사뷰 개편 및 신규 서비스
-                                'My News' 오픈 알림</a>
-                        </div>
-                        <div class="col"><span class="txt-num">2022.06.30</span></div>
+
                     </div>
                 </div>
+                <div class="view-cont ql-editor">
+                    <p style="letter-spacing: -0.675px;">&nbsp;</p>
+                    <p style="letter-spacing: -0.675px;">안녕하세요. 한경닷컴입니다.</p>
+                    <p style="letter-spacing: -0.675px;"><br></p>
+                    <p style="letter-spacing: -0.675px;">금융NCS 시험 및 홈페이지(<span
+                            style="letter-spacing: -0.675px; background-color: var(--bs-body-bg); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">https://www.fintest.or.kr/)</span><span
+                            style="letter-spacing: -0.675px; background-color: var(--bs-body-bg); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">&nbsp;</span><span
+                            style="letter-spacing: -0.675px; background-color: var(--bs-body-bg); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">가</span>
+                    </p>
+                    <p style="letter-spacing: -0.675px;">2023년 11월 10일부로 종료될 예정임을 안내해드립니다.</p>
+                    <p style="letter-spacing: -0.675px;"><br></p>
+                    <p style="letter-spacing: -0.675px;">그동안 금융NCS를 이용해주신 여러분께&nbsp;감사의 인사를 드립니다.</p>
+                    <p style="letter-spacing: -0.675px;"><span
+                            style="letter-spacing: -0.675px; background-color: var(--bs-body-bg); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">감사합니다.</span><br>
+                    </p>
 
-                <div class="pagination" role="navigation">
-                    <a href="https://www.hankyung.com/help/notice?page=1" class="btn-page-first">
-                        <span class="blind">처음</span>
-                    </a>
-                    <a href="https://www.hankyung.com/help/notice?page=1" class="btn-page-prev">
-                        <span class="blind">이전</span>
-                    </a>
-                    <strong>1</strong>
-                    <a href="https://www.hankyung.com/help/notice?page=2">2</a>
-                    <a href="https://www.hankyung.com/help/notice?page=3">3</a>
-                    <a href="https://www.hankyung.com/help/notice?page=4">4</a>
-                    <a href="https://www.hankyung.com/help/notice?page=5">5</a>
-                    <a href="https://www.hankyung.com/help/notice?page=5" class="btn-page-next">
-                        <span class="blind">다음</span>
-                    </a>
-                    <a href="https://www.hankyung.com/help/notice?page=5" class="btn-page-last">
-                        <span class="blind">마지막</span>
-                    </a>
+
+                </div>
+                <div class="btn-area">
+                    <a href="https://www.hankyung.com/help/notice/" class="btn-default">목록</a>
                 </div>
             </section>
         </div>
     </div>
-    <!-- // contents -->
+    <script>
+        // 첨부파일 버튼 클릭시 레이어 노출
+        $('.btn-file-open').click(function(){
+            $(this).toggleClass('active');
+        });
+    </script>
     <!-- // contents -->
 
     <!-- footer -->

@@ -4,6 +4,12 @@
 
     <select id="findAll" resultType="com.project.together.domain.Notice">
         SELECT * FROM Notice
+        ORDER BY notice_num DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findNoticeByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM Notice WHERE notice_num = #{noticeNum}
     </select>
 
 </mapper>

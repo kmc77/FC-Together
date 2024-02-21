@@ -4,8 +4,11 @@ import com.project.together.domain.Notice;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MediaMapper {
-    List<Notice> findAll();
+    List<Notice> findAll(Map<String, Integer> params);
+
+    Notice findNoticeByNoticeNum(int noticeNum);
 }

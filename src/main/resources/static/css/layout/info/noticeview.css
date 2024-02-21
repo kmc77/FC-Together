@@ -1,0 +1,67 @@
+.notice-wrap .btn-default {
+    min-width: 106px;
+}
+
+.notice-wrap .view-top {
+    padding: 10px 10px 0px;
+    box-sizing: border-box;
+}
+
+.notice-wrap .view-top .tit {
+    line-height: 1.4;
+    font-size: 24px;
+}
+
+.notice-wrap .view-info > .txt-num {
+    display: block;
+    margin-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    color: #888;
+    font-size: 13px;
+}
+
+.notice-wrap .view-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.view-cont {
+    padding: 20px 10px 25px;
+    border-bottom: 1px solid #eee;
+    line-height: 1.9;
+    font-size: initial;
+    box-sizing: border-box;
+}
+
+.notice-wrap .btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #ffc954;
+}
+
+.formBtns {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.btn.btn-default {
+   /* min-width: 173px;*/
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.layout-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+

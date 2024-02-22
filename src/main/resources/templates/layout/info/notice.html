@@ -37,7 +37,7 @@
                         <span>경기사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
-                        <span>구단영상</span>
+                        <span>영상</span>
                     </a>
                 </div>
             </div>
@@ -92,10 +92,6 @@
             // 클릭한 탭을 현재 활성화된 탭으로 설정합니다.
             activeTab = this;
 
-            // 모든 탭에서 'router-link-exact-active', 'router-link-active', 'current' 클래스를 제거합니다.
-            $(".tabLink").removeClass("router-link-exact-active router-link-active current");
-            // 클릭한 탭에 'router-link-exact-active', 'router-link-active', 'current' 클래스를 추가합니다.
-            $(this).addClass("router-link-exact-active router-link-active current");
 
             // 페이지의 일부만 동적으로 변경합니다.
             $.ajax({

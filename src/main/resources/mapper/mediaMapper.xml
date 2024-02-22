@@ -12,4 +12,18 @@
         SELECT * FROM Notice WHERE notice_num = #{noticeNum}
     </select>
 
+    <select id="getNewsList" resultType="com.project.together.domain.News">
+        SELECT
+        news_idx as newsIdx,
+        auth_id as authId,
+        news_titile as newsTitle,
+        news_regdate as newsRegdate,
+        news_hits as newsHits,
+        news_content as newsContent
+        FROM News
+        ORDER BY news_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.project.together.service;
 
+import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,6 @@ public class MediaService {
         return mediaMapper.findAll(params);
     }
 
-
-
     // 공지사항 상세보기 페이지
     public Notice getNotice(int noticeNum) throws NotFoundException {
         Notice notice = mediaMapper.findNoticeByNoticeNum(noticeNum);
@@ -30,5 +29,9 @@ public class MediaService {
         return notice;
     }
 
+    // 뉴스 목록
+    public List<News> getNewsList(Map<String, Integer> params) {
+        return mediaMapper.getNewsList(params);
+    }
 }
 

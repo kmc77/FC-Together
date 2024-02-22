@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.service.MediaService;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -77,4 +78,15 @@ public class MediaController {
         model.addAttribute("notice", notice);
         return "/layout/info/noticeview";
     }
+
+    // 구단뉴스 목록 조회
+    @GetMapping("/news/list")
+    public ResponseEntity<List<News>> getNewsList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("start", start);
+        params.put("limit", limit);
+        List<News> newsList = mediaService.getNewsList(params);
+        return new ResponseEntity<>(newsList, HttpStatus.OK);
+    }
+
 }

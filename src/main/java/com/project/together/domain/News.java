@@ -1,12 +1,11 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class News {
     private int newsIdx;
+    private String authId;
     private String newsTitle;
     private String newsRegdate;
     private int newsHits;

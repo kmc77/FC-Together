@@ -1,3 +1,5 @@
+/*공지사항 탭 영역*/
+
 .noticePage .top .topTitle {
   padding-top: 0;
 }
@@ -130,7 +132,8 @@
     display: -webkit-box;
     max-height: 48px;
     line-height: 24px;
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: 700;
     text-overflow: ellipsis;
     word-break: keep-all;
     -webkit-line-clamp: 2;
@@ -138,7 +141,7 @@
     overflow: hidden;
 }
 
-.list-item .txt-num,
+/*.list-item .txt-num,*/
 .list-item .txt-hit {
     color: #888;
     font-size: 13px;
@@ -177,3 +180,63 @@ a {
     font-weight: 700;
 }
 
+/*공지사항 탭 and*/
+
+
+/*소식 탭*/
+
+.news-item-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 30px;
+    padding-bottom: 60px;
+}
+
+.news-item-container {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.news-detail {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.news-detail .news-pinned {
+    margin: 12px 12px 0px 317px;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAT....);
+    background-size: auto;
+}
+
+.news-detail .news-thumbnail {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    aspect-ratio: 354 / 204;
+    border-radius: 5px;
+}
+
+.news-detail .news-contents {
+    margin-top: 20px;
+}
+
+.news-detail .news-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 25px;
+}
+
+.news-container {
+    padding-top: 30px;
+}
+
+
+
+/*소식 탭 and*/

@@ -85,7 +85,9 @@ public class MediaController {
         Map<String, Integer> params = new HashMap<>();
         params.put("start", start);
         params.put("limit", limit);
+
         List<News> newsList = mediaService.getNewsList(params);
+        System.out.println("컨트롤러 newsList = " + newsList);
         return new ResponseEntity<>(newsList, HttpStatus.OK);
     }
 

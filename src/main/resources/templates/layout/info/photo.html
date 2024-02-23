@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
-   <!-- <meta charset="UTF-8">
-    <title>notice</title>
-    <th:block th:include="layout/header"></th:block>
-    <link href="/css/layout/info/notice.css" rel="stylesheet"/>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>-->
+    <!-- <meta charset="UTF-8">
+     <title>notice</title>
+     <th:block th:include="layout/header"></th:block>
+     <link href="/css/layout/info/notice.css" rel="stylesheet"/>
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>-->
 </head>
 <body>
 <div class="container">
@@ -16,7 +16,7 @@
                 <div class="container">
                     <div class="topTitle">
                         <p class="title">
-                            <span class="mobileBreak"><strong></strong>경기사진</span>
+                            <span class="mobileBreak"><strong></strong>구단사진</span>
                         </p>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <span>구단소식</span>
                     </a>
                     <a href="/media/photo" class="tabLink router-link-exact-active router-link-active current">
-                        <span>경기사진</span>
+                        <span>구단사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
                         <span>영상</span>
@@ -42,8 +42,72 @@
                 </div>
             </div>
         </div>
+        <div class="list-contents">
+            <div class="photo-container">
+                <div class="photo-board">
+                    <div class="photo-item-container">
+                        <!-- <div class="news-detail">
+                             <div class="news-thumbnail" style="background-image: url('https://static.mims.kr/upload/suG3cOmTNpBUkM72CCXX20230925014050817314.jpg');"></div>
+                             <div class="news-contents">
+                                 <div class="news-title">
+                                     <p id="news-title"></p> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
+                                 </div>
+                                 <div class="news-date" id="news-date"> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
+                                 </div>
+                             </div>
+                         </div>-->
+
+                    </div>
+                </div>
+                <div class="formBtns">
+                    <button id="loadMore" class="btn btn-more">More</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+    $.ajax({
+        url: '/media/photo/list',
+        type: 'GET',
+        data: {
+            start: 0,
+            limit: 9
+        },
+        dataType: 'json',
+      success: function(photoList) {
+    // photoList 배열을 반복하여 각 사진을 동적으로 생성합니다.
+            $.each(photoList, function(index, photo) {
+                var photoItem =
+                    '<div class="photo-detail">' +
+                        '<div class="photo-thumbnail" style="background-image: url(\'/img/KakaoTalk_20240201_225301988.jpg\');"></div>' +
+                        '<div class="photo-contents">' +
+                            '<div class="photo-title">' +
+                                '<p>' + photo.cpTitle + '</p>' +
+                            '</div>' +
+                            '<div class="photo-date-and-hits">' +
+                                '<p>' + photo.cpRegdate + ' • ' + photo.cpHits + '</p>' +
+                            '</div>' +
+                            '<div class="photo-table">' +
+                                '<p>' + photo.tableGb + '</p>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                // 생성한 사진 아이템을 웹 페이지에 추가합니다.
+                $('.photo-item-container').append(photoItem);
+            });
+        },
+
+        error: function(error) {
+            console.error('뉴스를 가져오는데 실패했습니다.', error);
+        }
+    });
+});
+
+</script>
+
 
 </body>
 </html>

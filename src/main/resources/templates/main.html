@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link th:href="@{/css/main/main.css}" rel="stylesheet"/>
     <th:block th:include="layout/header"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
 </head>
 <body>
 <div class="body">
@@ -36,7 +43,7 @@
         <div class="matchImgDiv">
             <img src="/img/FcTogether.jpg" alt="" class="matchImg">
             <div class="pastMatch">
-                <h4 class="matchResult">지난 경기 결과</h4>
+                <h2 class="matchResult">지난 경기 결과</h2>
                 <div class="slider-container">
                     <div class="slider-wrapper">
                         <div class="slide">matchResult1</div>
@@ -45,12 +52,12 @@
                     </div>
                 </div>
 
-                <button onclick="prevSlide()"> < </button>
-                <button onclick="nextSlide()"> > </button>
+                <button onclick="prevSlide()"> <</button>
+                <button onclick="nextSlide()"> ></button>
             </div>
 
             <div class="nextMatch">
-                <h4 class="nextSchedule">다음 경기 일정</h4>
+                <h2 class="nextSchedule">다음 경기 일정</h2>
                 <div class="slider-container2">
                     <div class="slider-wrapper2">
                         <div class="slide2">nextMatch1</div>
@@ -58,12 +65,109 @@
                         <div class="slide2">nextMatch3</div>
                     </div>
                 </div>
-                    <button onclick="prevSlide2()"> < </button>
-                    <button onclick="nextSlide2()"> > </button>
+                <button onclick="prevSlide2()"> <</button>
+                <button onclick="nextSlide2()"> ></button>
+            </div>
+
+            <div class="leagueRanking">
+                <h3 class="leagueRank">리그 순위</h3>
+                <div class="rankingTable">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>순위</th>
+                            <th>팀</th>
+                            <th>경기</th>
+                            <th>승</th>
+                            <th>무</th>
+                            <th>패</th>
+                            <th>승점</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="video">
+        <div class="videoImgdiv">
+            <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+            <div class="v-story-wrap con">
+                <h2 class="v-story-tt" data-aos="fade-up">영상으로 만나는 투게더</h2>
+                <div class="v-story-slider" data-aos="fade-up">
+                    <div class="slider-item">
+                        <a href="#" class="block">
+                            <div class="img-box block">
+                                <img src="https://source.unsplash.com/random/690x386" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="slider-item">
+                        <a href="#" class="block">
+                            <div class="img-box">
+                                <img src="https://source.unsplash.com/random/690x386" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="slider-item">
+                        <a href="#" class="block">
+                            <div class="img-box">
+                                <img src="https://source.unsplash.com/random/690x386" alt="">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -133,6 +237,88 @@
     function nextSlide2() {
         showSlide2(currentIndex2 + 1);
     }
+
+ $(document).ready(function(){
+      $('.center').slick({
+        centerMode: true,
+        centerPadding: '60px',
+        slidesToShow: 3,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: '40px',
+              slidesToShow: 3
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: '40px',
+              slidesToShow: 1
+            }
+          }
+        ]
+      });
+    });
+
+    console.clear();
+
+AOS.init({
+    //once:true,
+    duration:800,
+    easing: 'ease',
+});
+
+
+$('.v-story-slider').slick({
+    dots:true,
+    draggable:false,
+    arrows:true,
+    adaptiveHeight:true,
+    centerMode:true,
+    centerPadding:'300px',
+    responsive: [
+        {
+          breakpoint: 1440,
+          settings: {
+            centerPadding:'20vw',
+          }
+        },
+        {
+          breakpoint: 770,
+          settings: {
+            centerPadding:'0',
+            arrows:false,
+          }
+        },
+    ],
+}).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+    /* 자바스크립트
+    if (currentSlide !== nextSlide) {
+        document.querySelectorAll('.slick-center + .slick-cloned').forEach((next) => {
+            // timeout required or Slick will overwrite the classes
+            setTimeout(() => next.classList.add('slick-current', 'slick-center'));
+        });
+    }
+    */
+
+    if (currentSlide !== nextSlide) {
+        $('.slick-center + .slick-cloned').each(function(index, node) {
+            var $node = $(node);
+
+            setTimeout(function() {
+                $node.addClass('slick-current');
+                $node.addClass('slick-center');
+            });
+        });
+    }
+});
+
 </script>
 </body>
 </html>

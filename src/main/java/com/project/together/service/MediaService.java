@@ -1,5 +1,6 @@
 package com.project.together.service;
 
+import com.project.together.domain.ClubPhoto;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.mapper.MediaMapper;
@@ -32,6 +33,20 @@ public class MediaService {
     // 뉴스 목록
     public List<News> getNewsList(Map<String, Integer> params) {
         return mediaMapper.getNewsList(params);
+    }
+
+    // 사진 목록
+    public List<ClubPhoto> getClubPhotoList(Map<String, Integer> params) {
+        return mediaMapper.getClubPhotoList(params);
+    }
+
+    //뉴스 상세보기 페이지
+    public News newsViewPage(int newsNum) throws NotFoundException {
+        News news = mediaMapper.findNewsByNewsNumber(newsNum);
+        if (news == null) {
+            throw new NotFoundException(newsNum + "번호의 공지 사항을 찾을 수 없습니다.");
+        }
+        return news;
     }
 }
 

@@ -1,5 +1,6 @@
 package com.project.together.mapper;
 
+import com.project.together.domain.ClubPhoto;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,4 +15,8 @@ public interface MediaMapper {
     Notice findNoticeByNoticeNum(int noticeNum);
 
     List<News> getNewsList(Map<String, Integer> params);
+
+    List<ClubPhoto> getClubPhotoList(Map<String, Integer> params);
+
+    News findNewsByNewsNumber(int newsNum);
 }

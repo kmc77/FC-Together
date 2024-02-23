@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+import com.project.together.domain.ClubPhoto;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.service.MediaService;
@@ -89,6 +90,27 @@ public class MediaController {
         List<News> newsList = mediaService.getNewsList(params);
         System.out.println("컨트롤러 newsList = " + newsList);
         return new ResponseEntity<>(newsList, HttpStatus.OK);
+    }
+
+    //구단 뉴스 상세보기 페이지
+    @GetMapping("/newsview")
+    public String newsViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
+        News news = mediaService.newsViewPage(noticeNum);
+        model.addAttribute("news", news);
+        return "/layout/info/newsview";
+    }
+
+
+    // 구단사진 목록 조회
+    @GetMapping("/photo/list")
+    public ResponseEntity<List<ClubPhoto>> getClubPhotoList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("start", start);
+        params.put("limit", limit);
+
+        List<ClubPhoto> photoList = mediaService.getClubPhotoList(params);
+
+        return new ResponseEntity<>(photoList, HttpStatus.OK);
     }
 
 }

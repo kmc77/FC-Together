@@ -34,7 +34,7 @@
                         <span>구단소식</span>
                     </a>
                     <a href="/media/photo" class="tabLink">
-                        <span>경기사진</span>
+                        <span>구단사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
                         <span>영상</span>
@@ -56,7 +56,7 @@
                      </div>-->
                 </div>
                 <div class="formBtns">
-                    <button id="loadMore" class="btn btn-more">더보기</button>
+                    <button id="loadMore" class="btn btn-more">More</button>
                 </div>
             </section>
         </div>
@@ -125,7 +125,7 @@
 
                     var listHtml = ''; // HTML 문자열을 저장할 변수
 
-                    // 각 노티스 항목에 대해 HTML 문자열을 생성합니다.
+                  // 각 노티스 항목에 대해 HTML 문자열을 생성합니다.
                     response.forEach(function(notice) {
                         listHtml += '<div class="list-item">'
                                 + '    <div class="col tit">'
@@ -133,10 +133,11 @@
                                 + '    </div>'
                                 + '    <div class="col">'
                                 + '        <span class="txt-num">' + notice.noticeDate + '</span>'
-                                + '        <span class="txt-hit">' + notice.noticeHits + '</span>'
+                                + '        <span class="txt-hit dot">' + notice.noticeHits + '</span>'
                                 + '    </div>'
                                 + '</div>';
                     });
+
 
                     // 생성한 HTML 문자열을 페이지에 추가합니다.
                     $(".list-basic").append(listHtml);

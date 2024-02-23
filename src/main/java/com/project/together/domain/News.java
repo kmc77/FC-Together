@@ -10,4 +10,5 @@ public class News {
     private String newsRegdate;
     private int newsHits;
     private String newsContent;
+    private String tableGb;
 }

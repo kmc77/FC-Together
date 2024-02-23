@@ -10,4 +10,5 @@ public class Notice {
     private String noticeDate;
     private int noticeHits;
     private String noticeContent;
+    private String tableGb;
 }

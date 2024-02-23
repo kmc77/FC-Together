@@ -95,7 +95,9 @@ public class MediaController {
     //구단 뉴스 상세보기 페이지
     @GetMapping("/newsview")
     public String newsViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
+
         News news = mediaService.newsViewPage(noticeNum);
+        System.out.println("컨트롤러 news = " + news);
         model.addAttribute("news", news);
         return "/layout/info/newsview";
     }

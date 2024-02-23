@@ -13,36 +13,24 @@
     </select>
 
     <select id="getNewsList" resultType="com.project.together.domain.News">
-        SELECT
-        news_idx as newsIdx,
-        auth_id as authId,
-        news_titile as newsTitle,
-        news_regdate as newsRegdate,
-        news_hits as newsHits,
-        news_content as newsContent,
-        table_gb as tableGb
+        SELECT *
         FROM News
         ORDER BY news_idx DESC
         LIMIT #{start}, #{limit}
     </select>
+
 
     <select id="findNewsByNewsNumber" parameterType="int" resultType="com.project.together.domain.News">
         SELECT * FROM News WHERE news_idx = #{newsNum}
     </select>
 
     <select id="getClubPhotoList" resultType="com.project.together.domain.ClubPhoto">
-        SELECT
-        cp_idx as cpIdx,
-        auth_id as authId,
-        cp_titile as cpTitle,
-        cp_regdate as cpRegdate,
-        cp_hits as cpHits,
-        cp_content as cpContent,
-        table_gb as tableGb
+        SELECT *
         FROM ClubPhoto
         ORDER BY cp_idx DESC
         LIMIT #{start}, #{limit}
     </select>
+
 
 
 

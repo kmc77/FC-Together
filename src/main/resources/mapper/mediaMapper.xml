@@ -12,6 +12,7 @@
         SELECT * FROM Notice WHERE notice_num = #{noticeNum}
     </select>
 
+
     <select id="getNewsList" resultType="com.project.together.domain.News">
         SELECT *
         FROM News
@@ -19,10 +20,10 @@
         LIMIT #{start}, #{limit}
     </select>
 
-
     <select id="findNewsByNewsNumber" parameterType="int" resultType="com.project.together.domain.News">
         SELECT * FROM News WHERE news_idx = #{newsNum}
     </select>
+
 
     <select id="getClubPhotoList" resultType="com.project.together.domain.ClubPhoto">
         SELECT *
@@ -30,6 +31,12 @@
         ORDER BY cp_idx DESC
         LIMIT #{start}, #{limit}
     </select>
+
+    <select id="findPhotosByPhotoNumber" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM ClubPhoto WHERE cp_idx = #{photoNum}
+    </select>
+
+
 
 
 

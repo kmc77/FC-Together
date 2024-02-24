@@ -22,12 +22,6 @@ margin : 0;
     width: 100%;
 }
 
-.video {
-    flex: 1;
-    height: 100vh;
-    width: 100%;
-}
-
 .swiper-slide {
     width: 100%;
     height: 100%;
@@ -56,13 +50,6 @@ margin : 0;
     height: 100%;
 }
 
-.videoImgdiv{
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-
 
 .matchImg {
     width: 100%;
@@ -72,13 +59,7 @@ margin : 0;
 
 }
 
-.videoImg {
-     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(25%);
-    position: relative;
-}
+
 .pastMatch {
     position: absolute;
     top: 5%;
@@ -103,6 +84,7 @@ margin : 0;
     box-sizing : border-box;
 }
 
+
 .leagueRanking {
     position : absolute;
         top : 5%;
@@ -113,6 +95,35 @@ margin : 0;
         text-align : center;
         padding : 10px;
         box-sizing : border-box;
+}
+
+.video {
+    position: relative;
+    flex: 1;
+    height: 120vh;
+    width: 100%;
+}
+
+.videoImgdiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120vh;
+    z-index: 1;
+}
+
+.videoImg {
+    width: 100%;
+    height: 120vh;
+    object-fit: cover;
+    filter: brightness(25%);
+}
+
+.v-story-wrap {
+    position: relative;
+    z-index: 2;
+    text-align: center;
 }
 
 .pastMatch h2.matchResult {
@@ -350,7 +361,7 @@ table {
     display:table-cell;
 }
 
-input, button, select, fieldset {
+input, select, fieldset {
     -webkit-border-radius: 0;
     border-radius: 0;
     -webkit-appearance: none;
@@ -374,11 +385,6 @@ fieldset {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-button {
-    cursor:pointer;
-    padding:0;
-    font-size:inherit;
-}
 
 /* 커스텀 */
 .con {
@@ -389,15 +395,6 @@ button {
     min-width:320px;
 }
 
-html {
-    overflow-x:hidden;
-}
-
-body {
-    padding-top: 20px;
-}
-
-/* 중앙 컨텐츠 3차 visual story */
     .v-story-wrap {
         font-size:25px;
     }
@@ -405,10 +402,17 @@ body {
     .v-story-wrap .v-story-tt {
         text-align:center;
         margin-bottom:11px;
+        color : white;
+        margin-top : 40px;
+        margin-bottom : 40px;
     }
-
+``
     .v-story-wrap .v-story-slider {
         text-align:center;
+    }
+
+    .v-story-slider {
+        width: 100%;
     }
 
     .v-story-wrap .v-story-slider .slick-list {
@@ -420,18 +424,29 @@ body {
         position:relative;
     }
 
+.slider-item {
+    max-width: 690px;
+    margin: 0 auto;
+}
     .v-story-wrap .v-story-slider .slider-item .img-box > img {
         transform-origin:50% 50%;
         transform:scale(0.88);
         transition:transform .5s linear;
     }
 
+.img-box {
+    width: 100%;
+}
     .v-story-wrap .v-story-slider .slick-center .slider-item .img-box > img {
         transform:scale(1);
         transition:transform .5s linear;
     }
 
-    /* discover btn 호버시 나오는 애니메이션까지 */
+.img-box > img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
     .v-story-wrap .v-story-slider .slider-item > a {
         position:relative;
     }
@@ -634,4 +649,9 @@ body {
         .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
             font-size:34px;
         }
+    }
+
+    .videoThumbnail{
+        width:200px;
+        height:200px;
     }

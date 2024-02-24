@@ -2,9 +2,9 @@
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>newsView</title>
+    <title>photo</title>
     <th:block th:include="layout/header"></th:block>
-    <link href="/css/layout/info/newsview.css" rel="stylesheet"/>
+    <link href="/css/layout/info/photoview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -12,17 +12,17 @@
 <div class="newsWrapper newsContainer">
     <div class="mediaRoomContainer">
         <div class="mediaRoomContents">
-            <div class="newsInformation">
-                <div class="titleBox"><p th:text="${news.newsTitle}"></p>
+            <div class="photoInformation">
+                <div class="titleBox"><p th:text="${clubPhoto.cpTitle}"></p>
                     <div>
                         <div class="titleInfo"><p>작성자</p>
-                            <p th:text="${news.username}"></p></div>
+                            <p th:text="${clubPhoto.username}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>작성일</p>
-                            <p th:text="${news.newsRegdate}"></p></div>
+                            <p th:text="${clubPhoto.cpRegdate}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>조회수</p>
-                            <p th:text="${news.newsHits}"></p></div>
+                            <p th:text="${clubPhoto.cpHits}"></p></div>
                     </div>
                 </div>
                 <div class="share">
@@ -37,42 +37,42 @@
                             alt=""></button>
                 </div>
             </div>
-            <div class="newsContent">
-                <div class="content"><p th:utext="${news.newsContent}"><img
+            <div class="photoContent">
+                <div class="content"><p th:utext="${clubPhoto.cpContent}"><img
                         src="https://static.mims.kr/upload/5MqX8IoxI94plSdHElaZ20231222051052266427.jpg"
                         alt="" width="670"></p>
 
-            </div>
+                </div>
                 <div class="previous-post post-navigation">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}" th:text="${prevNews.newsTitle}">이전글 제목</a>
+                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}" th:text="${prevPhoto.cpTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
-                <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
+                    <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 <script>
     $(document).ready(function() {
-    // URL에서 noticeNum 추출
+    // URL에서 photoNum 추출
     var urlParams = new URLSearchParams(window.location.search);
-    var newsIdx = urlParams.get('no');
+    var photoIdx = urlParams.get('no');
 
     // newsIdx 해당하는 뉴스 정보 로드
     $.ajax({
-        url: '/media/newsview?no=' + newsIdx,
+        url: '/media/photoview?no=' + cpIdx,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
-            $('.newsInformation .titleBox p').text(data.newsTitle);
+            $('.newsInformation .titleBox p').text(data.cpTitle);
             $('.titleInfo p').eq(1).text(data.username);
-            $('.titleInfo p').eq(3).text(data.newsRegdate);
-            $('.titleInfo p').eq(5).text(data.newsHits);
-            $('.newsContent .content').html(data.newsContent);
+            $('.titleInfo p').eq(3).text(data.cpRegdate);
+            $('.titleInfo p').eq(5).text(data.cpHits);
+            $('.newsContent .content').html(data.cpContent);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
@@ -80,15 +80,15 @@
     });
 
  $.ajax({
-    url: '/media/newsview?no=' + (newsIdx - 1), // 이전 뉴스 번호
+    url: '/media/photoview?no=' + (cpIdx - 1), // 이전글 번호
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-        if(data.prevNews == null) { // 이전 뉴스가 없는 경우
+        if(data.prevPhoto == null) { // 이전 뉴스가 없는 경우
             alert("이전글 없음");
         } else {
-            // 서버에서 반환한 데이터를 사용하여 이전 뉴스의 제목을 업데이트
-            var titleLink = '<a href="/media/newsview?no=' + data.prevNews.newsIdx + '">' + data.prevNews.newsTitle + '</a>';
+            // 서버에서 반환한 데이터를 사용하여 이전 글의 제목을 업데이트
+            var titleLink = '<a href="/media/prevPhoto?no=' + data.prevPhoto.cpIdx + '">' + data.prevPhoto.cpTitle + '</a>';
             $('.sc-bUTAii iQdlyk .title').html(titleLink);
         }
     },
@@ -100,5 +100,6 @@
 
 });
 </script>
+
 </body>
 </html>

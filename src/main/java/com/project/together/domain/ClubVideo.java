@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class ClubVideo {
     private int cvIdx;
+    private String username;
     private String cvTitle;
     private int cvHits;
     private String cvDate;

@@ -88,17 +88,22 @@ public class MediaController {
         params.put("limit", limit);
 
         List<News> newsList = mediaService.getNewsList(params);
-        System.out.println("컨트롤러 newsList = " + newsList);
         return new ResponseEntity<>(newsList, HttpStatus.OK);
     }
 
-    //구단 뉴스 상세보기 페이지
+    // 구단 뉴스 상세보기 페이지
     @GetMapping("/newsview")
-    public String newsViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
+    public String newsViewPage(@RequestParam("no") int newsNum, Model model) throws NotFoundException {
 
-        News news = mediaService.newsViewPage(noticeNum);
-        System.out.println("컨트롤러 news = " + news);
+        News news = mediaService.newsViewPage(newsNum);
         model.addAttribute("news", news);
+
+        // 이전 뉴스 불러오기
+        if (newsNum > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
+            News prevNews = mediaService.newsViewPage(newsNum - 1);
+            model.addAttribute("prevNews", prevNews);
+        }
+
         return "/layout/info/newsview";
     }
 

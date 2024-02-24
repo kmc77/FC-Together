@@ -13,16 +13,16 @@
     <div class="mediaRoomContainer">
         <div class="mediaRoomContents">
             <div class="newsInformation">
-                <div class="titleBox"><p th:text="${news.newsTitle}">2024 파리올림픽 양궁 대표팀 홍승진 총감독 선임</p>
+                <div class="titleBox"><p th:text="${news.newsTitle}"></p>
                     <div>
                         <div class="titleInfo"><p>작성자</p>
-                            <p th:text="${news.authId}">대한양궁협회</p></div>
+                            <p th:text="${news.username}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>작성일</p>
-                            <p th:text="${news.newsRegdate}">23.12.22</p></div>
+                            <p th:text="${news.newsRegdate}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>조회수</p>
-                            <p th:text="${news.newsHits}">166</p></div>
+                            <p th:text="${news.newsHits}"></p></div>
                     </div>
                 </div>
                 <div class="share">
@@ -41,84 +41,64 @@
                 <div class="content"><p th:utext="${news.newsContent}"><img
                         src="https://static.mims.kr/upload/5MqX8IoxI94plSdHElaZ20231222051052266427.jpg"
                         alt="" width="670"></p>
-                    <p><strong>2024 파리올림픽 양궁 대표팀 홍승진 총감독 선임</strong><br>- 올림픽 여자 단체전 10연패 도전을 위한 준비 본격화 -
-                    </p>
-                    <p>&nbsp;</p>
-                    <p>대한양궁협회가 2024년 파리올림픽 양궁 국가대표 코칭 스텝을 발표했다.&nbsp;</p>
-                    <p>2024년 양궁 대표팀 코칭 스텝은 공정한 지도자 선임을 위해 전원 공모제로 진행되었으며 현 청주시청 홍승진 감독이 총감독으로 선임 되었다. 홍승진
-                        감독은 지난 2020 도쿄올림픽 대한민국 남자 대표팀 감독으로서 올림픽 양궁 남자 단체전 2연패를 이끈 바 있으며, 2009년부터 청주시청 양궁단
-                        감독을 맡아 한국 양궁의 간판 김우진을 배출한 인물로 알려져 있다.&nbsp;</p>
-                    <p>&nbsp;</p>
-                    <p>남자팀과 여자팀은 박성수 인천계양구청 감독과 양창훈 현대모비스 감독이 각각 맡아 지도한다. 박성수 감독은 국가대표 출신으로 지난 2012년 런던올림픽
-                        양궁 남자 대표팀 코치를 역임하며 한국 남자 양궁 개인전 첫 올림픽 금메달(오진혁)을 이끌어낸 바 있으며 양창훈 감독은 스타 선수 출신으로 지난
-                        2016년과 2023년 두 차례 국가대표 여자팀 감독을 맡아 대표팀의 2016 리우올림픽 전 종목 석권과 2022 항저우 아시안게임 여자 단체전
-                        7연패를 이뤄내며 지도력을 인정받아 재선임에 성공했다.</p>
-                    <p>&nbsp;</p>
-                    <p>코치진에는 새로운 인물들이 가세한다. 현 청주시청 코치이자 2004 아테네올림픽과 2008 베이징올림픽 남자 단체전에서 연속 대회 금메달을 따낸 임동현
-                        코치가 남자팀을, 2002 부산아시안게임 여자 단체전 금메달의 주역이자 한국체육대학교에서 코치로 활동하며 현 세계랭킹 1위 임시현을 육성한 김문정
-                        코치가 여자팀을 맡는다.&nbsp;</p>
-                    <p>&nbsp;</p>
-                    <p>컴파운드 대표팀에는 지난 2021년부터 대표팀 코치로 활동한 정의수 코치가 감독으로 새롭게 선임되었으며 2023년도에 정의수 감독과 함께 대표팀 코치를
-                        지닌 정경수 코치가 재신임 얻게 되었다.&nbsp;</p>
-                    <p>&nbsp;</p>
-                    <p><img src="https://static.mims.kr/upload/xoz0SMkeKTEJnPw4VtNQ20231222051153551762.jpg"
-                            alt="" width="670"></p>
-                    <p>&nbsp;</p>
-                    <p>홍승진 총감독은 "대표팀 총감독을 맡게되어 영광스럽게 생각한다."며 "감독과 코치 그리고 선수와 협회가 모두 원팀으로 움직여야 우리가 원하는 성적을 거둘
-                        수 있다. 무거운 중책을 맡게된 만큼 대표팀을 이끌고 최고의 결과를 만들 수 있도록 최선을 다하겠다."고 포부를 밝혔다.</p>
-                    <p>&nbsp;</p>
-                    <p>양궁 국가대표팀은 새로운 지도자 구성과 함께 2024 파리올림픽 준비에 나선다. 오는 12월 22일 양궁 국가대표 지도자 워크샵을 통해 지도자들 간
-                        상견례에 나설 예정이며 리더십, 소통법 등 특강을 통해 대표팀 지도를 위한 첫 발걸음을 내딛는다.</p>
-                    <p>&nbsp;</p>
-                    <p>2023년도 국가대표 선수단 16명과 2024 국가대표 2차 선발전 상위 16명, 총 32명의 선수들은 이달 26일 소집되어 진천 국가대표 선수촌에서
-                        진행되는 동계 합숙 훈련에 돌입한다. 파리올림픽 출전 최종 명단은 내년 3월과 4월 국가대표 3차 선발전과 1, 2차 최종 평가전을 통해
-                        결정된다.</p>
-                    <p>&nbsp;</p>
-                    <p>한편, 이번 공모를 통해 주니어(U-20) 레벨 대표에 해당하는 국가대표 상비군 지도자에는 이창환, 조예심 코치가 각각 남자팀과 여자팀에 재선임되었다.
-                        (끝)</p>
-                    <p>&nbsp;</p>
-                    <p><strong>[2024 양궁 국가대표 코칭 및 지원 스텝]</strong><br>- 총감독: 홍승진 감독<br>- 리커브 감독: 박성수 감독(남) /
-                        양창훈 감독(여)<br>- 리커브 코치: 임동현 코치(남) / 김문정 코치(여)<br>- 컴파운드 감독: 정의수 감독<br>- 컴파운드 코치: 정경수
-                        코치<br>- 상비군 코치: 이창환 코치(남) / 조예심 코치(여)<br>- 의무트레이너: 김홍재, 이원혁 트레이너</p></div>
+
             </div>
-            <div class="sc-bUTAii iQdlyk">
-                <div><p>이전글</p>
-                    <div class="arrow up"></div>
-                    <p class="title">2023 현대모비스와 함께하는 학교스포츠클럽 양궁대회 개최 (2학기)</p></div>
-            </div>
-            <div class="formBtns">
+                <div class="sc-bUTAii iQdlyk">
+                    <div><p>이전글</p>
+                        <div class="arrow up"></div>
+                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}" th:text="${prevNews.newsTitle}">이전글 제목</a>
+                    </div>
+                </div>
+                <div class="formBtns">
                 <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
-     // URL에서 noticeNum 추출
-     var urlParams = new URLSearchParams(window.location.search);
-     var newsIdx = urlParams.get('no');
+    // URL에서 noticeNum 추출
+    var urlParams = new URLSearchParams(window.location.search);
+    var newsIdx = urlParams.get('no');
 
-     // newsIdx 해당하는 뉴스 정보 로드
-     $.ajax({
-         url: '/media/newsview?no=' + newsIdx,
-         type: 'GET',
-         dataType: 'json',
-         success: function(data) {
-             // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
-             $('.newsInformation .titleBox p').text(data.newsTitle);
-             $('.titleInfo p').eq(1).text(data.authId);
-             $('.titleInfo p').eq(3).text(data.newsRegdate);
-             $('.titleInfo p').eq(5).text(data.newsHits);
-             $('.newsContent .content').html(data.newsContent);
-         },
-         error: function(jqXHR, textStatus, errorThrown) {
-             console.log(textStatus, errorThrown);
-         }
-     });
- });
+    // newsIdx 해당하는 뉴스 정보 로드
+    $.ajax({
+        url: '/media/newsview?no=' + newsIdx,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
+            $('.newsInformation .titleBox p').text(data.newsTitle);
+            $('.titleInfo p').eq(1).text(data.username);
+            $('.titleInfo p').eq(3).text(data.newsRegdate);
+            $('.titleInfo p').eq(5).text(data.newsHits);
+            $('.newsContent .content').html(data.newsContent);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
 
+ $.ajax({
+    url: '/media/newsview?no=' + (newsIdx - 1), // 이전 뉴스 번호
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+        if(data.prevNews == null) { // 이전 뉴스가 없는 경우
+            alert("이전글 없음");
+        } else {
+            // 서버에서 반환한 데이터를 사용하여 이전 뉴스의 제목을 업데이트
+            var titleLink = '<a href="/media/newsview?no=' + data.prevNews.newsIdx + '">' + data.prevNews.newsTitle + '</a>';
+            $('.sc-bUTAii iQdlyk .title').html(titleLink);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+    }
+});
+
+
+});
 </script>
-
 </body>
 </html>

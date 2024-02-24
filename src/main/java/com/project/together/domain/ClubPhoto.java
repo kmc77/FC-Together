@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ClubPhoto {
     private int cpIdx;
-    private String authId;
+    private String username;
     private String cpTitle;
     private String cpRegdate;
     private int cpHits;

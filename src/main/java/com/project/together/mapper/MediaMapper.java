@@ -19,4 +19,6 @@ public interface MediaMapper {
     List<ClubPhoto> getClubPhotoList(Map<String, Integer> params);
 
     News findNewsByNewsNumber(int newsNum);
+
+    ClubPhoto findPhotosByPhotoNumber(int photoNum);
 }

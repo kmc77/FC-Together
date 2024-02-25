@@ -12,7 +12,7 @@
     margin-top: 77px;
 }
 
-.newsInformation {
+.photoInformation {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,14 +21,14 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.newsInformation .titleBox > p {
+.photoInformation .titleBox > p {
     font-size: 1.333rem;
     line-height: 2rem;
     font-weight: 700;
     max-width: 910px;
 }
 
-.newsInformation .titleBox > div {
+.photoInformation .titleBox > div {
     display: flex;
     font-size: 0.888rem;
     color: rgba(0, 0, 0, 0.5);
@@ -36,34 +36,34 @@
     align-items: center;
 }
 
-.newsInformation .titleBox > div .titleInfo {
+.photoInformation .titleBox > div .titleInfo {
     display: grid;
     grid-template-columns: 3.3em 1fr;
     font-weight: 400;
 }
 
-.newsInformation .titleBox > div .titleInfo p:first-child {
+.photoInformation .titleBox > div .titleInfo p:first-child {
     font-weight: 700;
 }
 
-.newsInformation .titleBox .line {
+.photoInformation .titleBox .line {
     width: 1px;
     height: 12px;
     background-color: rgba(0, 0, 0, 0.2);
     margin: 0px 1.111rem;
 }
 
-.newsInformation .share {
+.photoInformation .share {
     display: flex;
     gap: 0.667rem;
 }
 
-.newsContent {
+.photoContent {
    /* border-bottom: 1px solid rgb(0, 0, 0);*/
     font-weight: 400;
 }
 
-.newsContent .content {
+.photoContent .content {
     padding: 3.111rem 2.111rem;
     font-size: 0.944rem;
     letter-spacing: -0.6px;

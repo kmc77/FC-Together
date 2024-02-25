@@ -80,7 +80,7 @@ public class MediaController {
         return "/layout/info/noticeview";
     }
 
-    // 구단뉴스 목록 조회
+    // 구단 뉴스 목록 조회
     @GetMapping("/news/list")
     public ResponseEntity<List<News>> getNewsList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
         Map<String, Integer> params = new HashMap<>();
@@ -108,7 +108,7 @@ public class MediaController {
     }
 
 
-    // 구단사진 목록 조회
+    // 구단 사진 목록 조회
     @GetMapping("/photo/list")
     public ResponseEntity<List<ClubPhoto>> getClubPhotoList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
         Map<String, Integer> params = new HashMap<>();
@@ -120,4 +120,20 @@ public class MediaController {
         return new ResponseEntity<>(photoList, HttpStatus.OK);
     }
 
+    // 구단 사진 상세보기 페이지
+    @GetMapping("/photoview")
+    public String photoViewPage(@RequestParam("no") int photoNum, Model model) throws NotFoundException {
+
+        ClubPhoto clubPhoto = mediaService.photoViewPage(photoNum);
+        model.addAttribute("clubPhoto", clubPhoto);
+
+        System.out.println("컨트롤러 clubPhoto = " + clubPhoto);
+        // 이전글 불러오기
+        if (photoNum > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
+            ClubPhoto prevPhoto = mediaService.photoViewPage(photoNum - 1);
+            model.addAttribute("prevPhoto", prevPhoto);
+        }
+
+        return "/layout/info/photoview";
+    }
 }

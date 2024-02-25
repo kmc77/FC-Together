@@ -48,5 +48,14 @@ public class MediaService {
         }
         return news;
     }
+
+    // 구단 사진 상세보기 페이지
+    public ClubPhoto photoViewPage(int photoNum) throws NotFoundException {
+        ClubPhoto clubPhoto = mediaMapper.findPhotosByPhotoNumber(photoNum);
+        if (clubPhoto == null) {
+            throw new NotFoundException(photoNum + "번호의 구단 사진을 찾을 수 없습니다.");
+        }
+        return clubPhoto;
+    }
 }
 

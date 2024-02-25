@@ -51,4 +51,5 @@
 /*밑줄 삭제*/
 a,a:active,a:focus,a:hover,a:visited {
     text-decoration: none;
+    color: #000000;
 }

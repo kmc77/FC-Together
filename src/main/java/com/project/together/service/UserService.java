@@ -30,7 +30,7 @@ public class UserService {
 
 
     public void joinUser(User user) {
-        user.setUser_role("ROLE_USER");
+        user.setRoles("ROLE_USER");
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);

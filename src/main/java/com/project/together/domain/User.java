@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String user_role;
+    private String roles;
     private String user_real_name;
     private String user_gender;
     private String user_phone;
@@ -34,11 +34,11 @@ public class User {
     private String providerId; //소셜 계정 고유값(id)
 
     @Builder
-    public User(String username, String password, String email, String user_role, String provider, String providerId, String user_real_name, String user_phone, String user_birth) {
+    public User(String username, String password, String email, String roles, String provider, String providerId, String user_real_name, String user_phone, String user_birth) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.user_role = user_role;
+        this.roles = roles;
         this.provider = provider;
         this.providerId = providerId;
         this.user_real_name = user_real_name;
@@ -47,11 +47,11 @@ public class User {
     }
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
-    public List<String> getRoleList() {
+  /*  public List<String> getRoleList() {
         if (this.user_role != null && !this.user_role.isEmpty()) {
             return Collections.singletonList(this.user_role);  // 단일 권한을 리스트로 변환
         }
         return new ArrayList<>();
-    }
+    }*/
 
 }

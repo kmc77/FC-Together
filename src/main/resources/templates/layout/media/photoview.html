@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>photo</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/media/photoview.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="newsWrapper newsContainer">
+    <div class="mediaRoomContainer">
+        <div class="mediaRoomContents">
+            <div class="photoInformation">
+                <div class="titleBox"><p th:text="${clubPhoto.cpTitle}"></p>
+                    <div>
+                        <div class="titleInfo"><p>작성자</p>
+                            <p th:text="${clubPhoto.username}"></p></div>
+                        <div class="line"></div>
+                        <div class="titleInfo"><p>작성일</p>
+                            <p th:text="${clubPhoto.cpRegdate}"></p></div>
+                        <div class="line"></div>
+                        <div class="titleInfo"><p>조회수</p>
+                            <p th:text="${clubPhoto.cpHits}"></p></div>
+                    </div>
+                </div>
+                <div class="share">
+                    <button><img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAIJSURBVHgBxZbPSgJRFMY/M4r+ihpGQZaLapMg1KaV+ACC0JP4JIJP4CvoAwhualOBtGshJlGbTKUokoLON3MnR5mcK47jDz5Hz73eb869d87cAAasi3ZFK6JFeMu3qCt6FvXtDTuipGhjBqZQY0aVR9QKWoFZGI6yrLyCQfnYgzkFH5g9PzQVrS3AnN4u/ONTtLoA/+FGC87D2GDSDcXdf6yuGyrWFr2IbkTvugPpGi+J0qKEQ1tUiTd0LbqFR8Y0vcAgw3GcqX41t446a3wOB9NkMolqtYpGo2Eom81aTcz8xG1Qt4x31UBDhEIhlMtlJBKDmY9EIvYup6J7jJRHO24ZHzoFM5nMn2mhUDC+VyoVexdWqCOMwS3jLacgM7YoFotoNpva/9U1jo4ahsPhIeN4PG5cHczXMYXxELlcDqVSaShWq5kbOJVKoV6vQxe3NX6DJg4ZtzGF8b39BzcQN1I+n/+LpdNpI9br9Ub/+wSvjDudjpEZrxatVsspW87UA6Yw5gBXmBxPKtedki6XcJlmorurmTXfPCyF/9Vszk5Nx3QSY8Ksueb7sVjsAGZ1+ur3+7yhpq6hnVP4CwvL0dxOIDS2Tn5+weX9oTGPtTH4Bwt9l8aPom2YJ41ZwwQ3Re2ACvAtxIM9S1Ib3sOl5GtyFeaT8RWwNS6rO1qB93Af8Tl/hXmuxi/1nHejgYNNcQAAAABJRU5ErkJggg=="
+                            alt=""></button>
+                    <button><img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKUSURBVHgB5ZdNbxJRFIbvDHQIpkVgYMgYjV0QVBISjav2B7iyC3+ocVM37lw1JrqiwUpwRygSKNZa+ZoBnwMzhpoGhpQOi57kzf06nPeej3vvoKmrYgMTxNT6ZQguQMPrK81biIAnwAGnntK6xQA5kATf/A2IPAS7KhyxQEE6upp5LTtqqHCk5bU7Qh5XszAPVXjyR3h1tRlxQWRT5FPZKHk0qGKxWDS63W5pPB4XQFzTtCu/ZTzRdf1sMpm00+n0UaVSWVpDgckhfo1hHXyC6HI4HA4gG8sam9Gj0WicscH6fqfTecX04VrIM5mM7ThOAsNv2+32tRdQNpt1XNfdR+99JBJ5I79B9/TG5Bg1MdieJ7Zt+yXzj5mX4dd+v98gIgrvJ7TnRENuspuTQxDD6MgfW5a1h/Hd0WhUBsowjOexWMxqNpsfvPUeG7i3zG7gaod8IG0qlbpPU8LrQ+rgWCB9UlJIJBJpTzfQhbXyUaOwLLy6mE+B9NnAb7w3V7EVmFwqXVoIOjTbFNi2vyZ9vN2h2FpqBQl81CCf6tbr9TMquUodHJCCssxBXGK9TArOZUw9GEFsBiLH8CXNI39MmD+apvl0a2vrGUONkFeZ++KvkxaDucEyu4HI5eiwgWQ+n4/VarWpUS6SE5qT/3UlBXieJjKfl9oFkrsHoLpIMZfLHYguGznCqz757UEwveHoRzhu8ukluX8Budtqtd4tMGevRI4Y5HoP4xk2kCYS2vwiYwf0xE4ymTz2I7SIXHnkBRWuCLl9d9/zjZNPv6dUuCJ8rpBLhcoxiavwJAV++h7LeZXj9kvNInGbYnscnfmzKuTyKv1Qs+/qdYvc9xmv/102oF2jIP9ebiMF8sbLi/jvKf4LqLIVTgbd45wAAAAASUVORK5CYII="
+                            alt=""></button>
+                    <button><img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJlSURBVHgB7VdLj9JQGP1KgYKCEcdomMTExPgIAQOUkOBmduz8Af5CVrpy5cpZoAkBWTBhMWHjZiaaQEAmPMrLc8rtqLOYlnEoi5mTnLT92t7zvXpvryZ/oIOPwD3QkOvHCPwJdh2Dpo5h8AU4UA9M5fpxR9bBRcFjcOHcSIOPxR88AZM8CYAx5cUP8Qcn4ENQp3gc7It/YKBz0AjIbkAH9F2J27i54kH5T6RSqXA0Gk0vFot7mqZNgVa73T7z8i4nmaQ6P5UN4IjiNLNarYxAIDBcLpdxOqDr+sdarda95HVOaKdXTnskEqFogYPAiUq9Xq/wCAfOZrNZ2csYG0VeKpUejMfj15Zl1ROJhAaR8MUIs9nsU2ShHAwG318SvR25p5ozxYZhmKhnBimdQrhRrVaHsMdyudwBHtlvNpsVOxpNs3hED4TdxvUkjhQzjftgYzAYHCH6lWmaeVxnlGDDcRKHA9YfZXDNpKs400hhDPgFAx4xWmThLeodh+243+9/7XQ600KhkIbN5Dvz+fxQPMBVHAJc34XCymTB1kVjHcLGRULy+byJawqz+T6zJOIBrg3HiDDwm4sNxAygHC8nk0kLPWCMRqM46n4i3mA3nKu4+p7fwQErFAp9Qs2tWCz2XFS94cAHr5FuLE4Ui8U9iJc5iTg21Lc1HA6/sd6yObyLO2DzhYFer/f9iqL/iIsST4q/oHj8dj3fmbj9PyX+gnoLio9F/cqKP+D8z5l1REGuQndlvZP4JdsF9V7J+jMba38ZnymveGMb2yVOUFwnerLeOJzv1Rzw5n3ZTglYXm5Ozqfi3+Wk8XcoeBEpAAAAAElFTkSuQmCC"
+                            alt=""></button>
+                </div>
+            </div>
+            <div class="photoContent">
+                <div class="content"><p th:utext="${clubPhoto.cpContent}"><img
+                        src="https://static.mims.kr/upload/5MqX8IoxI94plSdHElaZ20231222051052266427.jpg"
+                        alt="" width="670"></p>
+
+                </div>
+                <div class="previous-post post-navigation">
+                    <div><p>이전글</p>
+                        <div class="arrow up"></div>
+                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}" th:text="${prevPhoto.cpTitle}">이전글 제목</a>
+                    </div>
+                </div>
+                <div class="formBtns">
+                    <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+    // URL에서 photoNum 추출
+    var urlParams = new URLSearchParams(window.location.search);
+    var photoIdx = urlParams.get('no');
+
+    // newsIdx 해당하는 뉴스 정보 로드
+    $.ajax({
+        url: '/media/photoview?no=' + cpIdx,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
+            $('.newsInformation .titleBox p').text(data.cpTitle);
+            $('.titleInfo p').eq(1).text(data.username);
+            $('.titleInfo p').eq(3).text(data.cpRegdate);
+            $('.titleInfo p').eq(5).text(data.cpHits);
+            $('.newsContent .content').html(data.cpContent);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+
+ $.ajax({
+    url: '/media/photoview?no=' + (cpIdx - 1), // 이전글 번호
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+        if(data.prevPhoto == null) { // 이전 뉴스가 없는 경우
+            alert("이전글 없음");
+        } else {
+            // 서버에서 반환한 데이터를 사용하여 이전 글의 제목을 업데이트
+            var titleLink = '<a href="/media/prevPhoto?no=' + data.prevPhoto.cpIdx + '">' + data.prevPhoto.cpTitle + '</a>';
+            $('.sc-bUTAii iQdlyk .title').html(titleLink);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+    }
+});
+
+
+});
+</script>
+
+</body>
+</html>

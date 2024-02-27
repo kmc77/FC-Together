@@ -33,31 +33,31 @@ public class MediaController {
     // 전체 페이지
     @GetMapping("/all")
     public String allPage() {
-        return "/layout/info/all";
+        return "/layout/media/all";
     }
 
     // 공지사항 페이지
     @GetMapping("/notice")
     public String noticePage() {
-        return "/layout/info/notice";
+        return "/layout/media/notice";
     }
 
     // 구단소식 페이지
     @GetMapping("/news")
     public String newsPage() {
-        return "/layout/info/news";
+        return "/layout/media/news";
     }
 
     // 경기사진 페이지
     @GetMapping("/photo")
     public String photoPage() {
-        return "/layout/info/photo";
+        return "/layout/media/photo";
     }
 
     // 구단영상 페이지
     @GetMapping("/video")
     public String videoPage() {
-        return "/layout/info/video";
+        return "/layout/media/video";
     }
 
 
@@ -77,7 +77,7 @@ public class MediaController {
     public String noticeViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
         Notice notice = mediaService.getNotice(noticeNum);
         model.addAttribute("notice", notice);
-        return "/layout/info/noticeview";
+        return "/layout/media/noticeview";
     }
 
     // 구단 뉴스 목록 조회
@@ -104,7 +104,7 @@ public class MediaController {
             model.addAttribute("prevNews", prevNews);
         }
 
-        return "/layout/info/newsview";
+        return "/layout/media/newsview";
     }
 
 
@@ -134,6 +134,6 @@ public class MediaController {
             model.addAttribute("prevPhoto", prevPhoto);
         }
 
-        return "/layout/info/photoview";
+        return "/layout/media/photoview";
     }
 }

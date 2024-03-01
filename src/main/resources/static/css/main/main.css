@@ -1,47 +1,28 @@
-body {
-margin : 0;
+
+.slick-container {
+    width: 100%;
+    height: 900px;
 }
 
-.body {
+.slick-slide {
+    height: 900px;
     display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    margin: 0;
+    justify-content: center;
+    align-items: center;
 }
 
-.swiper-container {
-    flex: 1;
-    height: 120vh;
+.swiperImg {
     width: 100%;
+    height: 900px;
+    object-fit: cover;
+    filter: brightness(50%);
 }
+
 
 .matchSchedule {
     flex: 1;
     height: 100vh;
     width: 100%;
-}
-
-.swiper-slide {
-    width: 100%;
-    height: 100%;
-}
-
-.swiperImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(50%);
-}
-
-.slide-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
 }
 
 .matchImgDiv {
@@ -50,15 +31,12 @@ margin : 0;
     height: 100%;
 }
 
-
 .matchImg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: brightness(25%);
-
 }
-
 
 .pastMatch {
     position: absolute;
@@ -70,6 +48,32 @@ margin : 0;
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.matchResult {
+    color: white;
+}
+
+.slider-container {
+    width: 100%;
+    height:80%;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.85);
+    height : 100%;
+}
+
+.slide {
+    width: 100%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    color : white;
 }
 
 .nextMatch {
@@ -84,93 +88,46 @@ margin : 0;
     box-sizing : border-box;
 }
 
-
-.leagueRanking {
-    position : absolute;
-        top : 5%;
-        left : 71%;
-        width : 23%;
-        height : 80%;
-        background-color : rgba(0, 0, 0, 0.85);
-        text-align : center;
-        padding : 10px;
-        box-sizing : border-box;
-}
-
-.video {
-    position: relative;
-    flex: 1;
-    height: 120vh;
-    width: 100%;
-}
-
-.videoImgdiv {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 120vh;
-    z-index: 1;
-}
-
-.videoImg {
-    width: 100%;
-    height: 120vh;
-    object-fit: cover;
-    filter: brightness(25%);
-}
-
-.v-story-wrap {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-}
-
-.pastMatch h2.matchResult {
-    color: white;
-}
-
-.nextMatch h2.nextSchedule {
+.nextSchedule {
     color : white;
 }
-
-.leagueRanking h3.leagueRank {
-    color : white;
-}
-
-.main-slider {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-    color: white;
-    top: 80%;
-    margin-top: -50px;
-}
-
-
-.swiper-slide {
-    margin-right: 0;
-}
-.matchResult1,
-.matchResult2 {
-    color: white;
-}
-
-.slider-container {
-            width: 100%;
-            height:80%;
-            overflow: hidden;
-        }
 
 .slider-container2 {
     width : 100%;
     height : 80%;
     overflow : hidden;
+}
+
+.slider-wrapper2 {
+    display : flex;
+    transition : transform 0.5s ease-in-out;
+    background-color : rgba(0, 0, 0, 0.85);
+    height: 100%;
+}
+
+.slide2 {
+    width : 100%;
+    flex: 0 0 auto;
+    box-sizing : border-box;
+    padding: 20px;
+    text-align: center;
+    color : white;
+}
+
+.leagueRanking {
+    position : absolute;
+    top : 5%;
+    left : 71%;
+    width : 23%;
+    height : 80%;
+    background-color : rgba(0, 0, 0, 0.85);
+    text-align : center;
+    padding : 10px;
+    box-sizing : border-box;
+}
+
+.leagueRank {
+    color : white;
 }
 
 .rankingTable {
@@ -183,48 +140,10 @@ margin : 0;
     color : white;
 }
 
-.slider-wrapper {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.85);
-    height : 100%;
-}
-
-.slider-wrapper2 {
-    display : flex;
-    transition : transform 0.5s ease-in-out;
-    background-color : rgba(0, 0, 0, 0.85);
-    height: 100%;
-}
-
-.slide {
-    width: 100%;
-    flex: 0 0 auto;
-    box-sizing: border-box;
-    padding: 20px;
-    text-align: center;
-    color : white;
-}
-
-.slide2 {
-    width : 100%;
-    flex: 0 0 auto;
-    box-sizing : border-box;
-    padding: 20px;
-    text-align: center;
-    color : white;
-}
-
-button {
-    margin: 10px;
-    padding: 10px;
-    cursor: pointer;
-}
-
 table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
     }
 
     th, td {
@@ -232,58 +151,14 @@ table {
         text-align: center;
     }
 
-    .post-slider{
-      width:70%;
-      margin:0px auto;
-      position:relative;
-    }
-    .post-slider .silder-title{
-      text-align:center;
-      margin:30px auto;
-    }
-    .post-slider .next{
-      position:absolute;
-      top:50%;
-      right:30px;
-      font-size:2em;
-      color:gray;
-      cursor: pointer;
-    }
-    .post-slider .prev{
-      position:absolute;
-      top:50%;
-      left:30px;
-      font-size:2em;
-      color:gray;
-        cursor: pointer;
-    }
-    .post-slider .post-wrapper{
 
-      width:84%;
-      height:350px;
-      margin:0px auto;
-      overflow: hidden;
-      padding:10px 0px 10px 0px;
-    }
-    .post-slider .post-wrapper .post{
-      width:300px;
-      height:300px;
-      margin:0px 10px;
-      display:inline-block;
-      background:white;
-      border-radius: 5px;
-    }
-    .post-slider .post-wrapper .post .post-info{
-      font-size:15px;
-      height:30%;
-      padding-left:10px;
-    }
-    .post-slider .post-wrapper .post .slider-image{
-      width:100%;
-      height:175px;
-      border-top-left-radius:5px;
-      border-top-right-radius:5px;
-    }
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+/* 라이브러리 */
 .con {
     margin:0 auto;
 }
@@ -361,15 +236,6 @@ table {
     display:table-cell;
 }
 
-input, select, fieldset {
-    -webkit-border-radius: 0;
-    border-radius: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border:0;
-    background-color:transparent;
-}
 
 fieldset {
     padding:0;
@@ -385,7 +251,6 @@ fieldset {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-
 /* 커스텀 */
 .con {
     max-width:1440px;
@@ -395,263 +260,282 @@ fieldset {
     min-width:320px;
 }
 
-    .v-story-wrap {
-        font-size:25px;
-    }
 
+.v-story-wrap {
+    width: 100%;
+    object-fit: cover;
+}
+
+.v-story-wrap .v-story-tt {
+    text-align:center;
+    margin-bottom:11px;
+}
+
+.v-story-wrap .v-story-slider {
+    text-align:center;
+}
+
+.v-story-wrap .v-story-slider .slick-list {
+    box-sizing:border-box;
+}
+
+.v-story-wrap .v-story-slider .slider-item {
+    max-width:690px;
+    position:relative;
+}
+
+.v-story-wrap .v-story-slider .slider-item .img-box > img {
+    transform-origin:50% 50%;
+    transform:scale(0.88);
+    transition:transform .5s linear;
+}
+
+.v-story-wrap .v-story-slider .slick-center .slider-item .img-box > img {
+    transform:scale(1);
+    transition:transform .5s linear;
+}
+
+/* discover btn 호버시 나오는 애니메이션까지 */
+.v-story-wrap .v-story-slider .slider-item > a {
+    position:relative;
+}
+
+.v-story-wrap .v-story-slider .slider-item > a::after {
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:rgba(0,0,0,0);
+    transition:background-color .8s;
+}
+
+.v-story-wrap .v-story-slider .slick-active .slider-item > a:hover::after {
+    background-color:rgba(0,0,0,.3);
+}
+
+.v-story-wrap .v-story-slider .slider-item > a > .discover {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    z-index:5;
+    opacity:0;
+    transition:opacity .8s;
+}
+
+.v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-btn {
+    background:url('https://kimyang-sun.github.io/pf-img/samsung-img/s-discover-btn.png');
+    width:106px;
+    height:106px;
+}
+
+.v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-btn::after {
+    content:"";
+    display:block;
+    background:url('https://kimyang-sun.github.io/pf-img/samsung-img/s-discover-plus-ico.png');
+    width:100%;
+    height:100%;
+    transition:transform .8s;
+}
+
+.v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-txt {
+    font-size:12px;
+    color:#fff;
+}
+
+/* 호버 애니메이션 */
+.v-story-wrap .v-story-slider .slick-active .slider-item > a:hover > .discover {
+    opacity:1;
+}
+
+.v-story-wrap .v-story-slider .slick-active .slider-item > a:hover > .discover > span.discover-btn::after {
+    transform:rotate(360deg);
+}
+
+/* visual story 내부 텍스트 */
+.v-story-wrap .v-story-slider .slider-item > .v-story-desc-list {
+    margin-top:26px;
+    opacity:0;
+    transform:translateY(30%);
+    transition:opacity .8s, transform .8s;
+}
+
+.v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc-tt {
+    font-size:14px;
+}
+
+.v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
+    font-size:24px;
+}
+
+.v-story-wrap .v-story-slider .slick-active .slider-item > .v-story-desc-list {
+    opacity:1;
+    transform:translateY(0);
+    transition:opacity .8s .5s, transform .8s .5s;
+}
+
+/* visual story 사이드 버튼 */
+.v-story-wrap .v-story-slider .slick-arrow {
+    z-index:10;
+    top:185px;
+    width:50px;
+    height:60px;
+}
+
+.v-story-wrap .v-story-slider .slick-prev {
+    left:259px;
+}
+
+.v-story-wrap .v-story-slider .slick-next {
+    right:259px;
+    left:auto;
+}
+
+.v-story-wrap .v-story-slider .slick-arrow::before {
+    display:block;
+    width:14px;
+    height:26px;
+    margin:0 auto;
+    color: #000;
+    font-size: 24px;
+}
+
+/* visual story 하단 페이지 버튼 */
+.v-story-wrap .v-story-slider .slick-dots > li {
+    width:auto;
+    height:auto;
+    margin:0 8px;
+}
+
+.v-story-wrap .v-story-slider .slick-dots > li > button {
+    width:8px;
+    height:8px;
+    border:1px solid #363636;
+    border-radius:45px;
+    box-sizing:border-box;
+    display:block;
+    position:relative;
+}
+
+.v-story-wrap .v-story-slider .slick-dots > li > button::before {
+    content:"";
+    width:100%;
+    height:100%;
+    border-radius:45px;
+    background-color:#363636;
+    opacity:0;
+    transition:opacity .8s;
+}
+
+.v-story-wrap .v-story-slider .slick-dots > li.slick-active > button::before {
+    opacity:1;
+}
+
+.v-story-wrap .v-story-slider .slick-dots > li:hover > button::before {
+    opacity:1;
+}
+
+/* 중앙 컨텐츠 3차 visual story 반응형 */
+@media (max-width:1440px){
     .v-story-wrap .v-story-tt {
-        text-align:center;
-        margin-bottom:11px;
-        color : white;
-        margin-top : 40px;
-        margin-bottom : 40px;
-    }
-``
-    .v-story-wrap .v-story-slider {
-        text-align:center;
-    }
-
-    .v-story-slider {
-        width: 100%;
-    }
-
-    .v-story-wrap .v-story-slider .slick-list {
-        box-sizing:border-box;
+        font-size:2.2vw;
     }
 
     .v-story-wrap .v-story-slider .slider-item {
-        max-width:690px;
-        position:relative;
-    }
-
-.slider-item {
-    max-width: 690px;
-    margin: 0 auto;
-}
-    .v-story-wrap .v-story-slider .slider-item .img-box > img {
-        transform-origin:50% 50%;
-        transform:scale(0.88);
-        transition:transform .5s linear;
-    }
-
-.img-box {
-    width: 100%;
-}
-    .v-story-wrap .v-story-slider .slick-center .slider-item .img-box > img {
-        transform:scale(1);
-        transition:transform .5s linear;
-    }
-
-.img-box > img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-    .v-story-wrap .v-story-slider .slider-item > a {
-        position:relative;
-    }
-
-    .v-story-wrap .v-story-slider .slider-item > a::after {
-        content:"";
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        background-color:rgba(0,0,0,0);
-        transition:background-color .8s;
-    }
-
-    .v-story-wrap .v-story-slider .slick-active .slider-item > a:hover::after {
-        background-color:rgba(0,0,0,.3);
-    }
-
-    .v-story-wrap .v-story-slider .slider-item > a > .discover {
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%, -50%);
-        z-index:5;
-        opacity:0;
-        transition:opacity .8s;
-    }
-
-    .v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-btn {
-        background:url('https://kimyang-sun.github.io/pf-img/samsung-img/s-discover-btn.png');
-        width:106px;
-        height:106px;
-    }
-
-    .v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-btn::after {
-        content:"";
-        display:block;
-        background:url('https://kimyang-sun.github.io/pf-img/samsung-img/s-discover-plus-ico.png');
-        width:100%;
-        height:100%;
-        transition:transform .8s;
-    }
-
-    .v-story-wrap .v-story-slider .slider-item > a > .discover > span.discover-txt {
-        font-size:12px;
-        color:#fff;
-    }
-
-    /* 호버 애니메이션 */
-    .v-story-wrap .v-story-slider .slick-active .slider-item > a:hover > .discover {
-        opacity:1;
-    }
-
-    .v-story-wrap .v-story-slider .slick-active .slider-item > a:hover > .discover > span.discover-btn::after {
-        transform:rotate(360deg);
-    }
-
-    /* visual story 내부 텍스트 */
-    .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list {
-        margin-top:26px;
-        opacity:0;
-        transform:translateY(30%);
-        transition:opacity .8s, transform .8s;
+        max-width:48vw;
     }
 
     .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc-tt {
-        font-size:14px;
+        font-size:12px;
     }
 
     .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
-        font-size:24px;
+        font-size:18px;
     }
 
-    .v-story-wrap .v-story-slider .slick-active .slider-item > .v-story-desc-list {
-        opacity:1;
-        transform:translateY(0);
-        transition:opacity .8s .5s, transform .8s .5s;
-    }
-
-    /* visual story 사이드 버튼 */
     .v-story-wrap .v-story-slider .slick-arrow {
-        z-index:10;
-        top:185px;
-        width:50px;
-        height:60px;
+        top:13vw;
+        width:3.5vw;
+        height:4.1vw;
     }
 
     .v-story-wrap .v-story-slider .slick-prev {
-        left:259px;
+        left:18vw;
     }
 
     .v-story-wrap .v-story-slider .slick-next {
-        right:259px;
-        left:auto;
+        right:18vw;
+    }
+}
+
+@media (max-width:770px){
+    .v-story-wrap .v-story-tt {
+        font-size:40px;
     }
 
-    .v-story-wrap .v-story-slider .slick-arrow::before {
-        display:block;
-        width:14px;
-        height:26px;
-        margin:0 auto;
-        color: #000;
-        font-size: 24px;
+    .v-story-wrap .v-story-slider .slider-item {
+        max-width:100%;
     }
 
-    /* visual story 하단 페이지 버튼 */
-    .v-story-wrap .v-story-slider .slick-dots > li {
-        width:auto;
-        height:auto;
-        margin:0 8px;
+    .v-story-wrap .v-story-slider .slider-item > a {
+        padding:0 6.6vw;
     }
 
-    .v-story-wrap .v-story-slider .slick-dots > li > button {
-        width:8px;
-        height:8px;
-        border:1px solid #363636;
-        border-radius:45px;
-        box-sizing:border-box;
-        display:block;
-        position:relative;
+    .v-story-wrap .v-story-slider .slider-item > a::after {
+        display:none;
     }
 
-    .v-story-wrap .v-story-slider .slick-dots > li > button::before {
-        content:"";
-        width:100%;
-        height:100%;
-        border-radius:45px;
-        background-color:#363636;
-        opacity:0;
-        transition:opacity .8s;
+    .v-story-wrap .v-story-slider .slider-item > a > .discover {
+        display:none;
     }
 
-    .v-story-wrap .v-story-slider .slick-dots > li.slick-active > button::before {
-        opacity:1;
+    .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc-tt {
+        font-size:22px;
     }
 
-    .v-story-wrap .v-story-slider .slick-dots > li:hover > button::before {
-        opacity:1;
+    .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
+        font-size:34px;
     }
+}
 
-    /* 중앙 컨텐츠 3차 visual story 반응형 */
-    @media (max-width:1440px){
-        .v-story-wrap .v-story-tt {
-            font-size:2.2vw;
-        }
+.tab-container{
+    height:800px;
+    width:100%;
+    margin: 0 auto;
+    padding-top : 50px;
+}
 
-        .v-story-wrap .v-story-slider .slider-item {
-            max-width:48vw;
-        }
+.feeds {
+    font-size : 40px;
+    color : black;
+    text-align : center;
+}
 
-        .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc-tt {
-            font-size:12px;
-        }
+.tab-content {
+    display: none;
+    text-align : center;
+    margin-top:40px;
+}
 
-        .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
-            font-size:18px;
-        }
+.tab-content.active {
+    display: block;
+}
 
-        .v-story-wrap .v-story-slider .slick-arrow {
-            top:13vw;
-            width:3.5vw;
-            height:4.1vw;
-        }
+.tab-buttons {
+    text-align: center;
+    margin-top : 50px;
+}
 
-        .v-story-wrap .v-story-slider .slick-prev {
-            left:18vw;
-        }
+.tab-buttons button {
+    margin: 5px;
+}
 
-        .v-story-wrap .v-story-slider .slick-next {
-            right:18vw;
-        }
-    }
 
-    @media (max-width:770px){
-        .v-story-wrap .v-story-tt {
-            font-size:40px;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item {
-            max-width:100%;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item > a {
-            padding:0 6.6vw;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item > a::after {
-            display:none;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item > a > .discover {
-            display:none;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc-tt {
-            font-size:22px;
-        }
 
-        .v-story-wrap .v-story-slider .slider-item > .v-story-desc-list > .v-story-desc {
-            font-size:34px;
-        }
-    }
-
-    .videoThumbnail{
-        width:200px;
-        height:200px;
-    }

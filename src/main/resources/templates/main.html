@@ -10,315 +10,391 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
 </head>
 <body>
-<div class="body">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img th:src="@{img/KakaoTalk_20240201_225000752.jpg}" alt="" class="swiperImg">
-                <div class="slide-text">Test1</div>
-            </div>
-            <div class="swiper-slide">
-                <img th:src="@{img/KakaoTalk_20240201_225301988.jpg}" alt="" class="swiperImg">
-                <div class="slide-text">Test2</div>
-            </div>
-            <div class="swiper-slide">
-                <img th:src="@{img/KakaoTalk_20240201_225459830.jpg}" alt="" class="swiperImg">
-                <div class="slide-text">Test3</div>
-            </div>
-            <div class="swiper-slide">
-                <img th:src="@{img/KakaoTalk_20240201_225719222.jpg}" alt="" class="swiperImg">
-                <div class="slide-text">Test3</div>
-            </div>
+<!--섹션1-->
+<div class="slick-container">
+    <div class="slick fade">
+        <div>
+            <img th:src="@{img/KakaoTalk_20240201_225301988.jpg}" alt="" class="swiperImg">
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-
-    <div class="matchSchedule">
-        <div class="matchImgDiv">
-            <img src="/img/FcTogether.jpg" alt="" class="matchImg">
-            <div class="pastMatch">
-                <h2 class="matchResult">지난 경기 결과</h2>
-                <div class="slider-container">
-                    <div class="slider-wrapper">
-                        <div class="slide">matchResult1</div>
-                        <div class="slide">matchResult2</div>
-                        <div class="slide">matchResult3</div>
-                    </div>
-                </div>
-
-                <button onclick="prevSlide()"> <</button>
-                <button onclick="nextSlide()"> ></button>
-            </div>
-
-            <div class="nextMatch">
-                <h2 class="nextSchedule">다음 경기 일정</h2>
-                <div class="slider-container2">
-                    <div class="slider-wrapper2">
-                        <div class="slide2">nextMatch1</div>
-                        <div class="slide2">nextMatch2</div>
-                        <div class="slide2">nextMatch3</div>
-                    </div>
-                </div>
-                <button onclick="prevSlide2()"> <</button>
-                <button onclick="nextSlide2()"> ></button>
-            </div>
-
-            <div class="leagueRanking">
-                <h3 class="leagueRank">리그 순위</h3>
-                <div class="rankingTable">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>순위</th>
-                            <th>팀</th>
-                            <th>경기</th>
-                            <th>승</th>
-                            <th>무</th>
-                            <th>패</th>
-                            <th>승점</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>4</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>5</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div>
+            <img th:src="@{img/KakaoTalk_20240201_225000752.jpg}" alt="" class="swiperImg">
+        </div>
+        <div>
+            <img th:src="@{img/KakaoTalk_20240201_225459830.jpg}" alt="" class="swiperImg">
+        </div>
+        <div>
+            <img th:src="@{img/KakaoTalk_20240201_225719222.jpg}" alt="" class="swiperImg">
         </div>
     </div>
+</div>
+<!--섹션2-->
+<div class="matchSchedule">
+    <div class="matchImgDiv">
+        <img src="/img/FcTogether.jpg" alt="" class="matchImg">
+        <div class="pastMatch">
+            <h2 class="matchResult">지난 경기 결과</h2>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide">matchResult1</div>
+                    <div class="slide">matchResult2</div>
+                    <div class="slide">matchResult3</div>
+                </div>
+            </div>
 
-    <div class="video">
-        <div class="videoImgdiv">
-            <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+            <button onclick="prevSlide1()"> <</button>
+            <button onclick="nextSlide1()"> ></button>
         </div>
 
-        <div class="v-story-wrap con">
-            <h2 class="v-story-tt" data-aos="fade-up">영상으로 만나는 투게더</h2>
-            <div class="v-story-slider" data-aos="fade-up">
-                <div class="slider-item">
-                    <a href="#" class="block">
-                        <div class="img-box block">
-                            <img src="/img/FcTogether.jpg" alt="" class="videoThumbnail">
-                        </div>
-                    </a>
+        <div class="nextMatch">
+            <h2 class="nextSchedule">다음 경기 일정</h2>
+            <div class="slider-container2">
+                <div class="slider-wrapper2">
+                    <div class="slide2">nextMatch1</div>
+                    <div class="slide2">nextMatch2</div>
+                    <div class="slide2">nextMatch3</div>
                 </div>
-                <div class="slider-item">
-                    <a href="#" class="block">
-                        <div class="img-box">
-                            <img src="/img/FcTogether.jpg" alt="">
-                        </div>
-                    </a>
-                </div>
-                <div class="slider-item">
-                    <a href="#" class="block">
-                        <div class="img-box">
-                            <img src="/img/FcTogether.jpg" alt="">
-                        </div>
-                    </a>
-                </div>
+            </div>
+            <button onclick="prevSlide2()"> <</button>
+            <button onclick="nextSlide2()"> ></button>
+        </div>
+
+        <div class="leagueRanking">
+            <h3 class="leagueRank">리그 순위</h3>
+            <div class="rankingTable">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>순위</th>
+                        <th>팀</th>
+                        <th>경기</th>
+                        <th>승</th>
+                        <th>무</th>
+                        <th>패</th>
+                        <th>승점</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+<!--섹션3-->
+<div class="videoDiv">
+    <div class="v-story-wrap con">
+        <div class="v-story-slider" data-aos="fade-up">
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box block">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--섹션4-->
+<div class="tab-container">
 
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <p class="feeds"><strong>투게더 소식</strong></p>
+
+    <div class="tab-buttons">
+        <button onclick="showTab('all')">전체</button>
+        <button onclick="showTab('tab1')">탭 1</button>
+        <button onclick="showTab('tab2')">탭 2</button>
+        <button onclick="showTab('tab3')">탭 3</button>
+    </div>
+
+    <div class="tab-content" id="all-content">
+        all
+    </div>
+
+    <div class="tab-content" id="tab1-content">
+       notice
+    </div>
+
+    <div class="tab-content" id="tab2-content">
+        news
+    </div>
+
+    <div class="tab-content" id="tab3-content">
+        instagram
+    </div>
+</div>
+
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+
 <script>
-    const swiper = new Swiper('.swiper-container', {
-        loop: true,
-        autoplay: {
-            delay: 4100,
-        },
-        speed: 500,
-        slidesPerView: 1,
-        spaceBetween: 7,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-    });
+    <!--    섹션1-->
+         $(document).ready(function(){
+            $('.fade').slick({
+                infinite: true,
+                speed: 800,
+                fade: true,
+                cssEase: 'linear',
+                autoplay: true,
+                autoplaySpeed: 3000
+            });
 
-
-     let currentIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-    const sliderWrapper = document.querySelector('.slider-wrapper');
-
-    function showSlide(index) {
-        if (index < 0 || index >= totalSlides) {
-            return;
-        }
-
-        const translateValue = -index * 100 + '%';
-        sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
-        currentIndex = index;
-    }
-
-    function prevSlide() {
-        showSlide(currentIndex - 1);
-    }
-
-    function nextSlide() {
-        showSlide(currentIndex + 1);
-    }
-
-    let currentIndex2 = 0;
-    const slides2 = document.querySelectorAll('.slide2');
-    const totalSlides2 = slides2.length;
-    const sliderWrapper2 = document.querySelector('.slider-wrapper2');
-
-    function showSlide2(index) {
-        if (index < 0 || index >= totalSlides2) {
-            return;
-        }
-
-        const translateValue2 = -index * 100 + '%';
-        sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
-        currentIndex2 = index;
-    }
-
-    function prevSlide2() {
-        showSlide2(currentIndex2 - 1);
-    }
-
-    function nextSlide2() {
-        showSlide2(currentIndex2 + 1);
-    }
-
- $(document).ready(function(){
-      $('.center').slick({
-        centerMode: true,
-        centerPadding: '60px',
-        slidesToShow: 3,
-        responsive: [
-          {
-            breakpoint: 768,
-            settings: {
-              arrows: false,
-              centerMode: true,
-              centerPadding: '40px',
-              slidesToShow: 3
-            }
-          },
-          {
-            breakpoint: 480,
-            settings: {
-              arrows: false,
-              centerMode: true,
-              centerPadding: '40px',
-              slidesToShow: 1
-            }
-          }
-        ]
-      });
-    });
-
-    console.clear();
-
-AOS.init({
-    //once:true,
-    duration:800,
-    easing: 'ease',
-});
-
-
-$('.v-story-slider').slick({
-    dots:true,
-    draggable:false,
-    arrows:true,
-    adaptiveHeight:true,
-    centerMode:true,
-    centerPadding:'300px',
-    responsive: [
-        {
-          breakpoint: 1440,
-          settings: {
-            centerPadding:'20vw',
-          }
-        },
-        {
-          breakpoint: 770,
-          settings: {
-            centerPadding:'0',
-            arrows:false,
-          }
-        },
-    ],
-}).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-    /* 자바스크립트
-    if (currentSlide !== nextSlide) {
-        document.querySelectorAll('.slick-center + .slick-cloned').forEach((next) => {
-            // timeout required or Slick will overwrite the classes
-            setTimeout(() => next.classList.add('slick-current', 'slick-center'));
-        });
-    }
-    */
-
-    if (currentSlide !== nextSlide) {
-        $('.slick-center + .slick-cloned').each(function(index, node) {
-            var $node = $(node);
-
-            setTimeout(function() {
-                $node.addClass('slick-current');
-                $node.addClass('slick-center');
+            $('.fade').on('click', function(){
+                $('.fade').slick('slickNext');
             });
         });
-    }
-});
+    <!--    섹션2-->
+         let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const sliderWrapper = document.querySelector('.slider-wrapper');
 
+        function showSlide(index) {
+            if (index < 0 || index >= totalSlides) {
+                return;
+            }
+
+            const translateValue = -index * 100 + '%';
+            sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
+            currentIndex = index;
+        }
+
+        function prevSlide1() {
+            showSlide(currentIndex - 1);
+        }
+
+        function nextSlide1() {
+            showSlide(currentIndex + 1);
+        }
+
+        let currentIndex2 = 0;
+        const slides2 = document.querySelectorAll('.slide2');
+        const totalSlides2 = slides2.length;
+        const sliderWrapper2 = document.querySelector('.slider-wrapper2');
+
+        function showSlide2(index) {
+            if (index < 0 || index >= totalSlides2) {
+                return;
+            }
+
+            const translateValue2 = -index * 100 + '%';
+            sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
+            currentIndex2 = index;
+        }
+
+        function prevSlide2() {
+            showSlide2(currentIndex2 - 1);
+        }
+
+        function nextSlide2() {
+            showSlide2(currentIndex2 + 1);
+        }
+
+     $(document).ready(function(){
+          $('.center').slick({
+            centerMode: true,
+            centerPadding: '60px',
+            slidesToShow: 3,
+            responsive: [
+              {
+                breakpoint: 768,
+                settings: {
+                  arrows: false,
+                  centerMode: true,
+                  centerPadding: '40px',
+                  slidesToShow: 3
+                }
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  arrows: false,
+                  centerMode: true,
+                  centerPadding: '40px',
+                  slidesToShow: 1
+                }
+              }
+            ]
+          });
+        });
+
+    <!--섹션3-->
+
+        let currentIndexVideo = 0;
+        const slidesVideo = document.querySelectorAll('.slider-item');
+        const totalSlidesVideo = slidesVideo.length;
+        const sliderWrapperVideo = document.querySelector('.slider');
+
+        function showSlideVideo(index) {
+            if (index < 0 || index >= totalSlidesVideo) {
+                return;
+            }
+
+            const translateValue = -index * 100 + '%';
+            sliderWrapperVideo.style.transform = 'translateX(' + translateValue + ')';
+            currentIndexVideo = index;
+        }
+
+        function prevSlide() {
+            showSlideVideo(currentIndexVideo - 1);
+        }
+
+        function nextSlide() {
+            showSlideVideo(currentIndexVideo + 1);
+        }
+
+    <!--    섹션3-->
+        console.clear();
+
+    // animation on scroll
+    AOS.init({
+        //once:true,
+        duration:800,
+        easing: 'ease',
+    });
+
+
+    $('.v-story-slider').slick({
+        dots:true,
+        draggable:false,
+        arrows:true,
+        adaptiveHeight:true,
+        centerMode:true,
+        centerPadding:'300px',
+        responsive: [
+            {
+              breakpoint: 1440,
+              settings: {
+                centerPadding:'20vw',
+              }
+            },
+            {
+              breakpoint: 770,
+              settings: {
+                centerPadding:'0',
+                arrows:false,
+              }
+            },
+        ],
+    }).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+        /* 자바스크립트
+        if (currentSlide !== nextSlide) {
+            document.querySelectorAll('.slick-center + .slick-cloned').forEach((next) => {
+                // timeout required or Slick will overwrite the classes
+                setTimeout(() => next.classList.add('slick-current', 'slick-center'));
+            });
+        }
+        */
+        // IE 호환성을 고려한 제이쿼리
+        if (currentSlide !== nextSlide) {
+            $('.slick-center + .slick-cloned').each(function(index, node) {
+                var $node = $(node);
+
+                setTimeout(function() {
+                    $node.addClass('slick-current');
+                    $node.addClass('slick-center');
+                });
+            });
+        }
+    });
+
+    <!--    섹션4-->
+         $(document).ready(function () {
+        showTab('all');
+    });
+
+    function showTab(tabName) {
+        $('.tab-content').removeClass('active');
+        $('#' + tabName + '-content').addClass('active');
+    }
 </script>
+
 </body>
 </html>

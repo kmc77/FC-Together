@@ -16,8 +16,28 @@ public class MainController {
 
 
     @GetMapping({"/", ""})
-    public String getAllTeamStaff() {
+    public String mainpage() {
         return "main";
+    }
+
+    @GetMapping("/club/clubpage")
+    public String clubpage() {
+        return "/club/clubpage";
+    }
+
+    @GetMapping("/team/teampage")
+    public String teampage() {
+        return "/team/teampage";
+    }
+
+    @GetMapping("/match/matchpage")
+    public String matchpage() {
+        return "/match/matchpage";
+    }
+
+    @GetMapping("/history/historypage")
+    public String historypage() {
+        return "/history/historypage";
     }
 
 

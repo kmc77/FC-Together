@@ -61,7 +61,7 @@
 }
 
 .tabMenu .tabLink.current span {
-  color: #f4ae15; /* 선택된 탭의 글자 색상 */
+  color: #ffc954; /* 선택된 탭의 글자 색상 */
 }
 
 .tabMenu .tabLink.current span:before {
@@ -317,4 +317,108 @@ textarea {
   font-size: 13px;
 }
 
+/*================== userProfile ===============*/
 
+@import "https://fonts.googleapis.com/css?family=Montserrat:300,400,700";
+
+#userProfile .rwd-table {
+  margin: 1em 0;
+  min-width: 300px;
+}
+
+#userProfile .rwd-table tr {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+#userProfile .rwd-table th {
+  display: none;
+}
+
+#userProfile .rwd-table td {
+  display: block;
+}
+
+#userProfile .rwd-table td:first-child {
+  padding-top: .5em;
+}
+
+#userProfile .rwd-table td:last-child {
+  padding-bottom: .5em;
+}
+
+#userProfile .rwd-table td:before {
+  content: attr(data-th) ": ";
+  font-weight: bold;
+  width: 6.5em;
+  display: inline-block;
+}
+
+@media (min-width: 480px) {
+  #userProfile .rwd-table td:before {
+    display: none;
+  }
+}
+
+#userProfile .rwd-table th, #userProfile .rwd-table td {
+  text-align: left;
+}
+
+@media (min-width: 480px) {
+  #userProfile .rwd-table th, #userProfile .rwd-table td {
+    display: table-cell;
+    padding: .25em .5em;
+  }
+  #userProfile .rwd-table th:first-child, #userProfile .rwd-table td:first-child {
+    padding-left: 0;
+  }
+  #userProfile .rwd-table th:last-child, #userProfile .rwd-table td:last-child {
+    padding-right: 0;
+  }
+}
+
+#userProfile {
+  padding: 0 2em;
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #444;
+  /*background: #eee;*/
+}
+
+#userProfile h1 {
+  font-weight: normal;
+  letter-spacing: -1px;
+  color: #34495E;
+}
+
+#userProfile .rwd-table {
+  background: #34495E;
+  color: #fff;
+  border-radius: .4em;
+  overflow: hidden;
+}
+
+#userProfile .rwd-table tr {
+  border-color: #46637f;
+}
+
+#userProfile .rwd-table th, #userProfile .rwd-table td {
+  margin: .5em 1em;
+}
+
+@media (min-width: 480px) {
+  #userProfile .rwd-table th, #userProfile .rwd-table td {
+    padding: 1em !important;
+  }
+}
+
+#userProfile .rwd-table th, #userProfile .rwd-table td:before {
+  color: #dd5;
+}
+
+
+
+
+
+/*================== userProfile AND ===============*/

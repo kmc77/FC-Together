@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.AdminMapper">
 
-<mapper namespace="com.project.together.mapper.admin.adminMapper">
+    <select id="findById" parameterType="int" resultType="com.project.together.domain.Qna">
+        SELECT * FROM qna WHERE qna_num = #{qnaNum}
+    </select>
 
+    <select id="getAllUsers" resultType="com.project.together.domain.User">
+        SELECT * FROM user
+    </select>
+
+    <select id="getAllQnAs" resultType="com.project.together.domain.Qna">
+        SELECT * FROM qna
+    </select>
 
 
 </mapper>

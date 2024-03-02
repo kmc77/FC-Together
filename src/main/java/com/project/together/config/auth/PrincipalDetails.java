@@ -59,16 +59,17 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return user.getUsername();
     }
 
+
     public String getUserRealName() {
-        return user.getUser_real_name();
+        return user.getUserRealName();
     }
 
     public String getUserGender() {
-        return user.getUser_gender();
+        return user.getUserGender();
     }
 
     public String getUserPhone() {
-        return user.getUser_phone();
+        return user.getUserPhone();
     }
 
 

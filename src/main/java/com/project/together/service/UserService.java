@@ -1,5 +1,6 @@
 package com.project.together.service;
 
+import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.mapper.MyMapper;
 import com.project.together.mapper.UserMapper;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,4 +66,8 @@ public class UserService {
         // User 테이블에서 해당 사용자를 삭제합니다.
         userMapper.delete(user);
     }
+
+
+
+
 }

@@ -9,7 +9,8 @@
 <aside th:fragment="load()" class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
         <span class="brand-text font-weight-light">FC Together</span>
     </a>
 
@@ -21,7 +22,7 @@
                 <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block"></a>
+                <a href="/admin/layout/adminpage" class="d-block"></a>
             </div>
         </div>
 
@@ -42,9 +43,11 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link"> <!--active 클래스로 클릭 표시-->
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'qna'  ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'qna'  ? 'active' : ''}"> <!--active 클래스로 클릭 표시-->
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             My
                             <i class="right fas fa-angle-left"></i>
@@ -52,28 +55,20 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link">  <!--active 클래스로 클릭 표시-->
+                            <a th:href="@{./qna}"
+                               th:classappend="${currentPage == 'qna' ? 'active' : ''}" class="nav-link">
+                                <!--active 클래스로 클릭 표시-->
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>1:1 문의</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="./index2.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v2</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'players' || currentPage == 'staff' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'players' || currentPage == 'staff' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             Team
                             <i class="right fas fa-angle-left"></i>
@@ -81,28 +76,26 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./other_index1.html" class="nav-link">
+                            <a th:href="@{./players}" th:classappend="${currentPage == 'players' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>선수단</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index2.html" class="nav-link">
+                            <a th:href="@{./staff}" th:classappend="${currentPage == 'staff' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>코칭스태프</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./other_index3.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Other Dashboard 1 v3</p>
+                                <p>스태프</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'k4match' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'sLeaguematch' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'k4match' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'sLeaguematch' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             Match
                             <i class="right fas fa-angle-left"></i>
@@ -110,34 +103,41 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./other_index1.html" class="nav-link">
+                            <a th:href="@{./k4match}" th:classappend="${currentPage == 'k4match' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>현역</p>
+                                <p>K4</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index1.html" class="nav-link">
+                            <a th:href="@{./k5match}" th:classappend="${currentPage == 'k5match' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>K5</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index2.html" class="nav-link">
+                            <a th:href="@{./k7match}" th:classappend="${currentPage == 'k7match' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>K7</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index3.html" class="nav-link">
+                            <a th:href="@{./sLeaguematch}"
+                               th:classappend="${currentPage == 'sLeaguematch' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>S리그</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'notice_management' || currentPage == 'news_management' || currentPage == 'photo_management' || currentPage == 'video_management' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'notice_management' || currentPage == 'news_management' || currentPage == 'photo_management' || currentPage == 'video_management' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             Media
                             <i class="right fas fa-angle-left"></i>
@@ -145,34 +145,44 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./other_index1.html" class="nav-link">
+                            <a href="./notice_management"
+                               th:classappend="${currentPage == 'notice_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>공지사항</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index2.html" class="nav-link">
+                            <a href="./news_management"
+                               th:classappend="${currentPage == 'news_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>구단소식</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index3.html" class="nav-link">
+                            <a href="./photo_management"
+                               th:classappend="${currentPage == 'photo_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>구단사진</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index3.html" class="nav-link">
+                            <a href="./video_management"
+                               th:classappend="${currentPage == 'video_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>구단영상</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             고객지원
                             <i class="right fas fa-angle-left"></i>
@@ -180,13 +190,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./other_index1.html" class="nav-link">
+                            <a href="./faq_management"
+                               th:classappend="${currentPage == 'faq_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>FAQ</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./other_index2.html" class="nav-link">
+                            <a href="./trainingSchedule_management"
+                               th:classappend="${currentPage == 'trainingSchedule_management' ? 'active' : ''}"
+                               class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>훈련일정</p>
                             </a>
@@ -195,39 +209,6 @@
                 </li>
 
 
-
-
-
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
-                        <p>
-                            Tables
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Simple Tables</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/tables/data.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>DataTables</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/tables/jsgrid.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>jsGrid</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-header">EXAMPLES</li>
                 <li class="nav-item">
                     <a href="pages/calendar.html" class="nav-link">
@@ -246,8 +227,8 @@
 </aside>
 <script>
 
-
 </script>
+
 
 </body>
 </html>

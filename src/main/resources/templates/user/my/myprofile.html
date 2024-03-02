@@ -241,7 +241,7 @@
                 localStorage.setItem('activeTab', target);
             });
 
-            // QnA 목록 불러오기
+          // QnA 목록 불러오기
             $.ajax({
                 url: '/my/list',
                 type: 'GET',
@@ -251,12 +251,14 @@
                 success: function(data) {
 
                     data.forEach(function(qna) {
+                        var qnaContent = qna.qnaContent.length > 10 ? qna.qnaContent.substring(0, 10) + " •••" : qna.qnaContent;
+
                         var html = '<div class="list-item">'
                                  + '    <div class="col tit">'
                                  + '        <span class="col date txt-tit">' + qna.qnaTitle + '</span>'
                                  + '    </div>'
                                  + '    <div class="col text">'
-                                 + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qna.qnaContent + '</a>'
+                                 + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qnaContent + '</a>'
                                  + '    </div>'
                                  + '    <div class="col qna-info">'
                                  + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'

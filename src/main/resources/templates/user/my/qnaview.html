@@ -49,8 +49,8 @@
             <div class="content-box">
                 <div class="form-list">
                     <dl>
-                        <dt>답변</dt>
-                        <dd>답변 대기중입니다.</dd>
+                        <dt id="reply-label">답변</dt>
+                        <dd th:text="${qna.qnaReply}"></dd>
                     </dl>
 
                     <dl>
@@ -93,12 +93,8 @@
                 $('#title-label').next('dd').find('em').text(data.qnaTitle);
                 $('.qna-cont').html(data.qnaContent); // 컨텐츠가 HTML인 경우 .html() 메서드 사용
 
-                // 답변이 있는 경우 답변을 표시하고, 그렇지 않은 경우 "답변 대기 중" 메시지 표시
-                if (data.qnaReply) {
-                    $('#reply-label').text(data.qnaReply);
-                } else {
-                    $('#reply-label').text('답변 대기 중입니다.');
-                }
+                // 답변을 표시
+                $('#reply-label').next('dd').text(data.qnaReply);
             },
             error: function(xhr, status, error) {
                 console.error('QnA 상세 정보 검색 요청 실패: ' + error);

@@ -20,14 +20,14 @@ public class User {
     private String password;
     private String email;
     private String roles;
-    private String user_real_name;
-    private String user_gender;
-    private String user_phone;
-    private String user_birth;
-    private String user_address;
-    private String user_like_player;
-    private String user_like_player_gb;
-    private String user_marketing;
+    private String userRealName;
+    private String userGender;
+    private String userPhone;
+    private String userBirth;
+    private String userAddress;
+    private String userLikePlayer;
+    private String userLikePlayerGb;
+    private String userMarketing;
 
     // OAuth2 를 위해 구성한 추가 필드 2개
     private String provider;   //소셜 플랫폼 이름
@@ -41,9 +41,9 @@ public class User {
         this.roles = roles;
         this.provider = provider;
         this.providerId = providerId;
-        this.user_real_name = user_real_name;
-        this.user_phone = user_phone;
-        this.user_birth = user_birth;
+        this.userRealName = user_real_name;
+        this.userPhone = user_phone;
+        this.userBirth = user_birth;
     }
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!

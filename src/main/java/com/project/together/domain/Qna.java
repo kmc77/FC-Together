@@ -14,4 +14,5 @@ public class Qna {
     private String qnaUpdate;
     private String qnaStatus;
     private Integer qnaView;
+    private String qnaReply;
 }

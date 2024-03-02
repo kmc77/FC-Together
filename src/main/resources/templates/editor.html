@@ -1,18 +1,23 @@
 <!DOCTYPE HTML>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="/build/ckeditor.js"></script>
+    <link href="/sample/styles.css" rel="stylesheet"/>
 </head>
-<body>
+<body th:fragment="body">
 <form action="/save" method="POST">
     <input name="title" type="text" placeholder="제목"/><br>
     <textarea name="content" id="content"></textarea><br>
-    <input type="submit" value="등록">
+    <div class="btn-perspective">
+        <button type="submit" class="btn btn-3d btn-two">등록</button>
+    </div>
 </form>
+
+
 <script>
 
     ClassicEditor.create( document.querySelector( '#content' ), {

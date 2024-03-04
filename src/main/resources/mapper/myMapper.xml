@@ -23,9 +23,9 @@
     </select>
 
     <insert id="saveQna" parameterType="com.project.together.domain.Qna">
-        INSERT INTO QnA (auth_id, id, username, qna_title, qna_content, qna_date, qna_update, qna_status, qna_View)
-        VALUES (#{authId}, #{id}, #{username}, #{qnaTitle}, #{qnaContent}, #{qnaDate}, #{qnaUpdate}, #{qnaStatus},
-        #{qnaView})
+        INSERT INTO QnA (username, qna_title, qna_content, qna_date, qna_update, qna_status, qna_View, auth_Id)
+        VALUES (#{username}, #{qnaTitle}, #{qnaContent}, #{qnaDate}, #{qnaUpdate}, #{qnaStatus},
+        #{qnaView}, #{authId})
     </insert>
 
 

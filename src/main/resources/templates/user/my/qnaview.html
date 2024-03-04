@@ -52,19 +52,12 @@
                         <dt id="reply-label">답변</dt>
                         <dd th:text="${qna.qnaReply}"></dd>
                     </dl>
-
-                    <dl>
-                        <dt id="authId-label">답변자 ID</dt>
-                        <dd id="authId-content" th:text="${qna.authId}"></dd>
-                    </dl>
-
                 </div>
                 <div class="formBtns">
                     <!-- 문의글 삭제 버튼 -->
                     <button type="button" value="삭제" class="btn btn-default" id="delete-btn"
                             th:data-qnanum="${qna.qnaNum}">삭제
                     </button>
-
 
                     <button type="button" onclick="location.href='http://localhost:8081/my/myprofile'"
                             class="btn btn-default">목록
@@ -89,7 +82,6 @@
                 // HTML 요소의 내용 업데이트
                 $('#date-label').next('dd').text(data.qnaDate);
                 $('#status-label').next('dd').find('span').text(data.qnaStatus);
-                $('#authId-content').text(data.authId); // authId 값 추가
                 $('#title-label').next('dd').find('em').text(data.qnaTitle);
                 $('.qna-cont').html(data.qnaContent); // 컨텐츠가 HTML인 경우 .html() 메서드 사용
 

@@ -2,17 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.AdminMapper">
 
-    <select id="findById" parameterType="int" resultType="com.project.together.domain.Qna">
-        SELECT * FROM qna WHERE qna_num = #{qnaNum}
-    </select>
 
     <select id="getAllUsers" resultType="com.project.together.domain.User">
         SELECT * FROM user
     </select>
 
+    <!-- ==============  QnA Start ============== -->
+
     <select id="getAllQnAs" resultType="com.project.together.domain.Qna">
-        SELECT * FROM qna
+        SELECT * FROM qna ORDER BY qna_num DESC
     </select>
+
+    <select id="findById" parameterType="int" resultType="com.project.together.domain.Qna">
+        SELECT * FROM qna WHERE qna_num = #{qnaNum}
+    </select>
+
+    <update id="updateQnA">
+        UPDATE qna
+        SET auth_id = #{authId}, qna_reply = #{qnaReply}, qna_status = '답변완료'
+        WHERE qna_num = #{qnaNum}
+    </update>
+
+
+    <delete id="deleteQna" parameterType="list">
+        DELETE FROM qna WHERE qna_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  QnA Start ============== -->
+
+
+    <!-- ==============  Notice Start ============== -->
+
+
+    <select id="getAllNotice" resultType="com.project.together.domain.Notice">
+        SELECT * FROM notice ORDER BY notice_num DESC
+    </select>
+
+
+    <select id="findNoticesById" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM notice WHERE notice_num = #{noticeNum}
+    </select>
+
+    <insert id="insertNotice" parameterType="com.project.together.domain.Notice">
+        INSERT INTO notice (notice_num, username, notice_title, notice_date, notice_hits, notice_content, table_gb)
+        VALUES (#{noticeNum}, #{username}, #{noticeTitle}, #{noticeDate}, #{noticeHits}, #{noticeContent}, #{tableGb})
+    </insert>
+
+    <update id="updateNotice" parameterType="com.project.together.domain.Notice">
+        UPDATE notice
+        SET notice_title = #{noticeTitle}, notice_content = #{noticeContent}, notice_date = #{noticeDate}
+        WHERE notice_num = #{noticeNum}
+    </update>
+
+    <delete id="deleteNotice" parameterType="list">
+        DELETE FROM notice WHERE notice_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  Notice and ============== -->
 
 
 </mapper>

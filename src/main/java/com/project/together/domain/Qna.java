@@ -5,8 +5,6 @@ import lombok.Data;
 @Data
 public class Qna {
     private int qnaNum;
-    private String authId;
-    private int id;
     private String username;
     private String qnaTitle;
     private String qnaContent;
@@ -15,4 +13,5 @@ public class Qna {
     private String qnaStatus;
     private Integer qnaView;
     private String qnaReply;
+    private String authId;
 }

@@ -25,14 +25,12 @@ public class MyService {
         qna.setQnaTitle(qnaTitle);
         qna.setQnaContent(qnaContent);
         qna.setUsername(username); // 현재 사용자의 아이디 설정
-        qna.setId(userId); // 현재 사용자의 id 설정
+
 
         // qnaDate 컬럼에 문의글 등록일 주입
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         qna.setQnaDate(timestamp.toString());
 
-        // qnaUpdate 컬럼에 수정일은 어떻게 처리?
-        // qnaStatus 컬럼에 "답변대기" 설정
         qna.setQnaStatus("답변대기");
 
         myMapper.saveQna(qna);

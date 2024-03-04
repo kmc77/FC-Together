@@ -5,6 +5,7 @@
 
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 
+import { CKFinderUploadAdapter } from '@ckeditor/ckeditor5-adapter-ckfinder';
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
 import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
@@ -37,6 +38,7 @@ class Editor extends ClassicEditor {
 		Autoformat,
 		BlockQuote,
 		Bold,
+		CKFinderUploadAdapter,
 		CloudServices,
 		Essentials,
 		Heading,
@@ -76,8 +78,8 @@ class Editor extends ClassicEditor {
 				'blockQuote',
 				'insertTable',
 				'mediaEmbed',
-				'redo',
-				'undo'
+				'undo',
+				'redo'
 			]
 		},
 		language: 'ko',

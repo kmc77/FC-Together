@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.domain.Notice;
 import com.project.together.domain.Qna;
 import com.project.together.domain.User;
 import com.project.together.mapper.AdminMapper;
@@ -8,14 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
-private final AdminMapper adminMapper;
+    private final AdminMapper adminMapper;
 
     public List<PrincipalDetails> getAllUsers() {
         // 모든 사용자 정보를 가져옵니다.
@@ -29,6 +36,8 @@ private final AdminMapper adminMapper;
         return principalDetailsList;
     }
 
+    // ================================== QnA start
+
     public List<Qna> getAllQnAs() {
         // 모든 QnA 정보를 가져옵니다.
         return adminMapper.getAllQnAs();
@@ -38,4 +47,78 @@ private final AdminMapper adminMapper;
     public Qna findById(int qnaNum) {
         return adminMapper.findById(qnaNum);
     }
+
+    public boolean updateQnA(String qnaNum, String authId, String qnaReply) {
+        int updatedRows = adminMapper.updateQnA(qnaNum, authId, qnaReply);
+        return updatedRows > 0;
+    }
+
+
+    public void deleteQna(List<Integer> qnaNums) {
+        // 데이터베이스에서 해당 qnaNum의 QnA들을 찾는다.
+        for (int qnaNum : qnaNums) {
+            Qna qna = adminMapper.findById(qnaNum);
+            if (qna == null) {
+                throw new IllegalArgumentException("해당 QnA가 존재하지 않습니다. qnaNum: " + qnaNum);
+            }
+        }
+
+        // 찾은 QnA들을 삭제한다.
+        adminMapper.deleteQna(qnaNums);
+    }
+
+
+    // ================================== QnA and
+
+    // ================================== Notice start
+
+    public List<Notice> getAllNotice() {
+        // 모든 Notice 정보를 가져옵니다.
+        return adminMapper.getAllNotice();
+    }
+
+    public Notice findNoticesById(int noticeNum) {
+        return adminMapper.findNoticesById(noticeNum);
+    }
+
+    public void saveNotice(Notice notice) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        notice.setNoticeDate(nowStr);
+
+        adminMapper.insertNotice(notice);
+    }
+
+    public void updateNotice(Notice notice) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        notice.setNoticeDate(nowStr);
+
+        adminMapper.updateNotice(notice);
+    }
+
+    public void noticeDelete(List<Integer> noticeNums) {
+        //데이터베이스에서 해당 noticeNums 의 Notice 들을 찾는다.
+        for (int noticeNum : noticeNums) {
+            Notice notice = adminMapper.findNoticesById(noticeNum);
+            if (notice == null) {
+                throw new IllegalArgumentException("해당 Notice가 존재하지 않습니다. noticeNum: " + noticeNum);
+            }
+        }
+
+        //찾은 Notice 글을 삭제
+        adminMapper.deleteNotice(noticeNums);
+    }
+
+
+    // ================================== Notice and
 }

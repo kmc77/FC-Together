@@ -177,7 +177,152 @@ main .ck-editor[role='application'] .ck.ck-content,
     border-color: var(--ck-color-base-border);
 }
 
+/*================== qnaView ==================*/
+.textarea.qna-wrap {
+    height: 280px;
+    padding: 20px 10px;
+    overflow: auto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #777;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+}
 
+.textarea.qna-wrap.height110 {
+    height: 110px;
+}
+
+/* 서브페이지 공통 */
+.contents > .layout-inner {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 50px;
+}
+.cont-tit {
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.pagination {
+    margin-top: 30px;
+}
+
+.qna-wrap .cont-top-area,
+.privacy-wrap .cont-top-area {
+    padding-bottom: 24px;
+}
+
+.privacy-wrap .cont-top-area .cont-tit {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.qna-wrap .cont-top-area,
+.privacy-wrap .cont-top-area {
+    padding-top: 50px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #121212;
+    box-sizing: border-box;
+}
+.qna-wrap .cont-top-area::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.qna-wrap .cont-top-area + .list-basic {
+    border-top: none;
+}
+.qna-wrap .cont-top-area .cont-tit,
+.privacy-wrap .cont-top-area .cont-tit {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+.qna-wrap .cont-top-area .cont-txt {
+    margin-top: 10px;
+    line-height: 1.5;
+    color: #888;
+    font-size: 13px;
+}
+.qna-wrap .cont-top-area .cont-txt.notice-txt {
+    padding: 4px 10px 2px 30px;
+    color: #121212;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+.qna-wrap .nodata-area {
+    padding: 130px 10px;
+    font-size: 17px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    box-sizing: border-box;
+}
+.qna-wrap .list-item .col.category {
+    margin-top: 0;
+}
+.qna-wrap .account-info .email .txt {
+    margin-left: 5px;
+    font-size: 17px;
+    letter-spacing: 0;
+}
+.qna-wrap [class^="icon-mylogin-"] {
+    vertical-align: -7px;
+}
+
+.qna-wrap .cont-top-area .cont-txt.notice-txt {
+    float: right;
+    margin-top: 20px;
+    font-size: 15px;
+}
+.qna-wrap.view-wrap .cont-top-area .cont-tit {
+    margin-top: 0;
+}
+.qna-wrap.view-wrap .form-list dt {
+    padding-top: 0;
+}
+.qna-wrap.view-wrap .form-list.view-list .col {
+    display: flex;
+}
+.qna-wrap.view-wrap .form-list.view-list .col dl {
+    width: 50%;
+}
+.qna-wrap.view-wrap .file-list {
+    margin-top: 0;
+}
+
+.form-list dl {
+    display: flex;
+    padding: 15px 30px;
+}
+
+.form-list dl {
+    border-bottom: 1px solid #eee;
+}
+.form-list dt {
+    width: 110px;
+    font-size: 15px;
+}
+.form-list dd {
+    width: calc(100% - 110px);
+}
+
+.qna-cont {
+    margin-top: 10px;
+    padding: 20px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow: auto; /* 스크롤이 필요한 경우에만 스크롤바가 보이게 설정 */
+    /* overflow: scroll; 스크롤바를 항상 보이게 설정 */
+}
+
+/*================== qnaView And ==================*/
 
 
 

@@ -28,6 +28,6 @@ public class PrincipalDetailsService implements UserDetailsService {
         if (userE != null) {
             return new PrincipalDetails(userE);
         }
-        return null;
+        throw new UsernameNotFoundException("입력하신 아이디를 찾을 수 없습니다.");
     }
 }

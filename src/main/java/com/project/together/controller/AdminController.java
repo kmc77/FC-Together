@@ -29,7 +29,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-
+    // 사용자 정보 가져오기
     @GetMapping("/layout/getUserInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<PrincipalDetails>> getUserInfo() {
@@ -38,10 +38,9 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
+    // ================================== QnA start
 
-    // ================================== QnA 처리
-
-
+    // QnA 정보 가져오기
     @GetMapping("/layout/getQnAInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Qna>> getQnAInfo() {
@@ -50,6 +49,7 @@ public class AdminController {
         return ResponseEntity.ok(qnas);
     }
 
+    // QnA 상세 정보 가져오기
     @GetMapping("/layout/qnaview")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Qna> getQnaView(@RequestParam("qnaNum") int qnaNum, HttpServletResponse response) {
@@ -62,6 +62,7 @@ public class AdminController {
         }
     }
 
+    // QnA 답변 작성
     @PostMapping("/layout/adminReply")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String adminReply(@RequestParam("qnaNum") String qnaNum,
@@ -74,30 +75,29 @@ public class AdminController {
         return "layout/common/board/qna";
     }
 
-
+    // QnA 삭제
     @PostMapping("/layout/qnaDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> qnaDelete(@RequestParam("qnaNum") List<Integer> qnaNums) {
         try {
             adminService.deleteQna(qnaNums);
 
-            // 성공 응답 반환
+
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            // 에러 로그 출력
+
             e.printStackTrace();
 
-            // 실패 응답 반환
+
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     // ================================== QnA and
-
 
     // ================================== Notice start
 
+    // 공지사항 정보 가져오기
     @GetMapping("/layout/getNoticeInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Notice>> getNoticeInfo() {
@@ -106,7 +106,7 @@ public class AdminController {
         return ResponseEntity.ok(notices);
     }
 
-
+    // 공지사항 상세 정보 가져오기
     @GetMapping("/layout/noticeView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Notice> getNoticeView(@RequestParam("noticeNum") int noticeNum, HttpServletResponse response) {
@@ -119,26 +119,28 @@ public class AdminController {
         }
     }
 
-
+    // 공지사항 작성
     @PostMapping("/layout/noticePost")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String postNotice(@ModelAttribute Notice notice, RedirectAttributes redirectAttributes) {
-        // 공지사항을 추가
+
         adminService.saveNotice(notice);
         redirectAttributes.addFlashAttribute("message", "공지사항이 성공적으로 추가되었습니다.");
         return "redirect:/admin/layout/notice_management";
     }
 
+    // 공지사항 수정
     @PostMapping("/layout/noticeUpdate/{noticeNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateNotice(@PathVariable int noticeNum, @ModelAttribute Notice notice, RedirectAttributes redirectAttributes) {
-        // 공지사항을 업데이트
+
         notice.setNoticeNum(noticeNum);
         adminService.updateNotice(notice);
         redirectAttributes.addFlashAttribute("message", "공지사항이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/notice_management";
     }
 
+    // 공지사항 삭제
     @PostMapping("/layout/noticeDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> noticeDelete(@RequestParam("noticeNum") List<Integer> noticeNums) {
@@ -153,12 +155,7 @@ public class AdminController {
         }
     }
 
-
-
     // ================================== Notice and
-
-
-
 
 
     // ================================== page 이동

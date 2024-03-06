@@ -112,6 +112,7 @@
                 xhr.setRequestHeader('Authorization', token);
             },
             success: function (data) {
+
                 $('#account-info').text(data.username + '님, 반갑습니다.');
                 $('#logout-link').show();
                 $('#MyProfile-link').show();

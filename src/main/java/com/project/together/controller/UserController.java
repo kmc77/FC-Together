@@ -59,6 +59,7 @@ public class UserController {
     public Map<String, String> tokenAll(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> response = new HashMap<>();
         response.put("username", principalDetails.getUsername());
+
         System.out.println("사용자 정보 response = " + response);
         return response;
     }

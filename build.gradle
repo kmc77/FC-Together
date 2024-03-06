@@ -49,6 +49,9 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 
+    // s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 
 }
 

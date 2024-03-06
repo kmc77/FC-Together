@@ -60,6 +60,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String password = bCryptPasswordEncoder.encode("겟인데어");
         String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
+        String userRealName = oAuth2UserInfo.getName(); // 사용자의 실제 이름을 가져옵니다.
+
 
         User userE = userMapper.findByUsername(username);
 
@@ -72,6 +74,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .roles(role)
                     .provider(provider)
                     .providerId(providerId)
+                    .user_real_name(userRealName) // 사용자의 실제 이름 저장.
                     .user_phone(userPhone)
                     .user_birth(userBirth)
                     .build();

@@ -203,7 +203,7 @@
                 </div>
                 <div class="formGroup">
                     <label class="label" for="name">이름 <span class="required">(필수)</span></label>
-                    <input type="text" id="name" name="user_real_name" class="input">
+                    <input type="text" id="name" name="userRealName" class="input">
                 </div>
 
                 <div class="formGroup">
@@ -211,13 +211,13 @@
                         <label class="label">성별 <span class="required">(필수)</span></label>
                         <div>
                             <div class="checkbox radio">
-                                <input type="radio" id="male" name="user_gender" value="male">
+                                <input type="radio" id="male" name="userGender" value="male">
                                 <label for="male">남성</label>
                             </div>
                         </div>
                         <div>
                             <div class="checkbox radio">
-                                <input type="radio" id="female" name="user_gender" value="female">
+                                <input type="radio" id="female" name="userGender" value="female">
                                 <label for="female">여성</label>
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                 </div>
                 <div class="formGroup">
                     <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
-                    <input type="text" id="phoneNumber" class="input" name="user_phone"
+                    <input type="text" id="phoneNumber" class="input" name="userPhone"
                            placeholder="000-0000-0000 형식">
                 </div>
                 <div class="formGroup">
@@ -239,7 +239,7 @@
                 <div id="email_message" class="messageContainer"></div>
                 <div class="formGroup">
                     <label class="label" for="user_birth">생년월일 <span class="required">(필수)</span></label>
-                    <input class="input" type="text" name="user_birth" id="user_birth" placeholder="YYYY-MM-DD 형식">
+                    <input class="input" type="text" name="userBirth" id="user_birth" placeholder="YYYY-MM-DD 형식">
                 </div>
                 <div class="formGroup">
                     <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
@@ -264,11 +264,11 @@
 
                     <div class="checkAgree">
                         <div class="checkbox radio">
-                            <input type="radio" name="user_marketing" id="agree_sms_y" value="Y">
+                            <input type="radio" name="userMarketing" id="agree_sms_y" value="Y">
                             <label for="agree_sms_y">동의</label>
                         </div>
                         <div class="checkbox radio">
-                            <input type="radio" name="user_marketing" id="agree_sms_n" value="N">
+                            <input type="radio" name="userMarketing" id="agree_sms_n" value="N">
                             <label for="agree_sms_n">미동의</label>
                         </div>
                     </div>
@@ -281,7 +281,7 @@
                         <button class="btn whiteLightgrey" type="button" onclick="sample4_execDaumPostcode()"
                                 value="우편번호 찾기">우편번호 찾기<br></button>
 
-                        <input type="text" id="sample4_roadAddress" name="user_address" placeholder="도로명주소"
+                        <input type="text" id="sample4_roadAddress" name="userAddress" placeholder="도로명주소"
                                class="input">
                         <input type="text" id="sample4_jibunAddress" placeholder="지번주소" class="input">
                         <span id="guide" style="color:#999;display:none"></span>
@@ -289,13 +289,13 @@
                 </div>
                 <div class="formGroup">
                     <label class="label" for="selectLeague">좋아하는 선수 선택 <span class="required">(필수)</span></label>
-                    <select class="input" name="user_like_player_gb" id="selectLeague">
+                    <select class="input" name="userLikePlayerGb" id="selectLeague">
                         <option value="">리그선택</option>
                         <option value="K5_Player">K5</option>
                         <option value="K7_Player">K7</option>
                         <option value="S_Player">S리그</option>
                     </select>
-                    <select class="input" name="user_like_player" id="playerSelect">
+                    <select class="input" name="userLikePlayer" id="playerSelect">
                         <option value="">선수선택</option>
                     </select>
                 </div>

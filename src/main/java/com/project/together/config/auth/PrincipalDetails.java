@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class PrincipalDetails implements UserDetails, OAuth2User {
     private User user;
     private Map<String, Object> attributes;
+    private String token;
 
 
     //Normal Login
@@ -59,6 +60,14 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return user.getUsername();
     }
 
+    // 토큰 관련 getter, setter 추가
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Override
     public boolean isAccountNonExpired() {

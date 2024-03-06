@@ -354,136 +354,160 @@
             }
         });
 
- // "보기" 버튼 클릭 이벤트
- $('.checkButton').click(function() {
-    if (selectedRows.length === 0) {
-        alert("확인할 공지 글을 선택해주세요.");
-    } else if (selectedRows.length > 1) {
-        alert("확인할 공지 글을 하나만 선택해주세요.");
-    } else {
-        for (var i = 0; i < selectedRows.length; i++) {
-            var noticeNum = selectedRows[i];
-            var accessToken = localStorage.getItem('accessToken');
-            // 선택된 noticeNum 해당하는 문의글 뷰페이지로 이동
-            $.ajax({
-                url: "/admin/layout/noticeView",
-                method: "GET",
-                data: { noticeNum: noticeNum },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-                },
-               success: function(notice) {
+        // "보기" 버튼 클릭 이벤트
+        $('.checkButton').click(function() {
+            if (selectedRows.length === 0) {
+                alert("확인할 공지 글을 선택해주세요.");
+            } else if (selectedRows.length > 1) {
+                alert("확인할 공지 글을 하나만 선택해주세요.");
+            } else {
+                for (var i = 0; i < selectedRows.length; i++) {
+                    var noticeNum = selectedRows[i];
+                    var accessToken = localStorage.getItem('accessToken');
+                    // 선택된 noticeNum 해당하는 문의글 뷰페이지로 이동
+                    $.ajax({
+                        url: "/admin/layout/noticeView",
+                        method: "GET",
+                        data: { noticeNum: noticeNum },
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        },
+                        success: function(notice) {
 
-                    // 'update' 상태 설정
-                    $('form').data('state', 'update');
+                            // 'update' 상태 설정
+                            $('form').data('state', 'update');
 
-                    // 응답받은 데이터로 화면 갱신
-                    $('#num-value').text(notice.noticeNum); // 공지번호
-                    $('#date-value').text(notice.noticeDate); // 등록일
-                    $('#title-value').text(notice.noticeTitle); // 공지제목
-                    $('#content-html-value').html(notice.noticeContent); // HTML 공지내용
+                            // 응답받은 데이터로 화면 갱신
+                            $('#num-value').text(notice.noticeNum); // 공지번호
+                            $('#date-value').text(notice.noticeDate); // 등록일
+                            $('#title-value').text(notice.noticeTitle); // 공지제목
+                            $('#content-html-value').html(notice.noticeContent); // HTML 공지내용
 
-                    // "공지 작성" 탭 클릭
-                    $("#nav-1 li:contains('공지 작성') a").click();
+                            // "공지 작성" 탭 클릭
+                            $("#nav-1 li:contains('공지 작성') a").click();
 
-                    // Form submit 버튼의 텍스트를 "수정"으로 변경
-                    $(".btn-perspective .btn").text("수정");
+                            // Form submit 버튼의 텍스트를 "수정"으로 변경
+                            $(".btn-perspective .btn").text("수정");
 
-                    // 공지사항 수정을 위한 요청을 보내도록 폼의 action 속성 변경
-                    $('form').attr('action', '/admin/layout/noticeUpdate/' + notice.noticeNum);
+                            // 공지사항 수정을 위한 요청을 보내도록 폼의 action 속성 변경
+                            $('form').attr('action', '/admin/layout/noticeUpdate/' + notice.noticeNum);
 
-                    // noticeNum 값을 hidden input에 설정
-                    $("input[name='noticeNum']").val(notice.noticeNum);
-                },
+                            // noticeNum 값을 hidden input에 설정
+                            $("input[name='noticeNum']").val(notice.noticeNum);
+                        },
 
-                error: function(error) {
-                    // 에러 처리
-                    console.log(error);
+                        error: function(error) {
+                            // 에러 처리
+                            console.log(error);
+                        }
+                    });
+                }
+            }
+        });
+
+        $('.writeButton').click(function() {
+
+            // 'create' 상태 설정
+            $('form').data('state', 'create');
+
+            // CK에디터 보이게
+            $('#ck-editor-wrapper').show();
+
+            // viewContainer 영역 숨기기
+            $('#viewContainer').hide();
+            $('#tableContainer').hide();
+            $('#buttonContainer').hide();
+
+            // "공지 작성" 탭 클릭
+            $("#nav-1 li:contains('공지 작성') a").trigger('click');
+
+            // noticeNum 값을 지움
+            $("input[name='noticeNum']").remove();
+        });
+
+        //
+        $(document).ready(function() {
+            $(".alert-success").delay(3000).fadeOut('slow');
+        });
+
+        $('form').submit(function(e) {
+            var isEmpty = false;
+            // 폼 내의 모든 보이는 입력 필드를 검사합니다.
+            $(this).find('input[type="text"], textarea').each(function() {
+                if ($(this).val() === '') { // 값이 비어 있는지 확인합니다.
+                    isEmpty = true;
+                    return false; // each 루프를 종료합니다.
                 }
             });
-        }
-    }
-});
+
+            if (isEmpty) {
+                e.preventDefault(); // 폼 제출을 막습니다.
+                alert('모든 필드를 채워주세요.'); // 경고 알림을 띄웁니다.
+            } else {
+                var buttonText = $(".btn-perspective .btn").text();
+                // 버튼의 텍스트에 따라 다른 확인 메시지를 띄웁니다.
+                if (buttonText === "수정") {
+                    if (!confirm("수정을 완료하시겠습니까?")) {
+                        e.preventDefault();
+                    }
+                } else if (buttonText === "등록") {
+                    if (!confirm("공지 글을 등록하시겠습니까?")) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        // Notice 정보 키
+        var noticeKeys = ['noticeNum', 'username', 'noticeTitle', 'noticeContent', 'noticeDate', 'noticeHits'];
+
+        // 컬럼 선택 영역에 체크박스와 라벨을 추가
+        $.each(noticeKeys, function(index, key) {
+            var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+            var div = $('<div/>').addClass('text-teal-600 mr-3');
+            var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+            var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+            div.append(checkbox);
+            label.append(div, divText);
+            $('#columnSelection').append(label);
+        });
+
+        var accessToken = localStorage.getItem('accessToken');
+
+        // Notice 정보를 가져와서 테이블에 추가
+        $.ajax({
+            url: "/admin/layout/getNoticeInfo",
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + accessToken
+            },
+            success: function(data) {
+                var notices = data;
+                $.each(notices, function(i, notice) {
+                    var tr = $('<tr/>');
+                    tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + notice.noticeNum + "' data-noticeNum='" + notice.noticeNum + "'></label></td>");
+
+                    // noticeKeys 배열에 따라 순서대로 테이블에 데이터 추가
+                    $.each(noticeKeys, function(j, key) {
+                        var value = notice[key];
+                        if (value !== undefined) {
+                            if (key === 'noticeContent') {
+                                value = value.length > 10 ? value.substring(0, 10) + " • • •" : value;
+                            }
+
+                            tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                        }
+                    });
+                    $('table').append(tr);
+                });
+            }
+        });
 
     });
-
-$('.writeButton').click(function() {
-
-    // 'create' 상태 설정
-    $('form').data('state', 'create');
-
-    // CK에디터 보이게
-    $('#ck-editor-wrapper').show();
-
-    // viewContainer 영역 숨기기
-    $('#viewContainer').hide();
-    $('#tableContainer').hide();
-    $('#buttonContainer').hide();
-
-    // "공지 작성" 탭 클릭
-    $("#nav-1 li:contains('공지 작성') a").trigger('click');
-
-    // noticeNum 값을 지움
-   $("input[name='noticeNum']").remove();
-});
-
-    //
-    $(document).ready(function() {
-    $(".alert-success").delay(3000).fadeOut('slow');
-});
-
-
-
-// Notice 정보 키
-var noticeKeys = ['noticeNum', 'username', 'noticeTitle', 'noticeContent', 'noticeDate', 'noticeHits'];
-
-// 컬럼 선택 영역에 체크박스와 라벨을 추가
-$.each(noticeKeys, function(index, key) {
-    var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
-    var div = $('<div/>').addClass('text-teal-600 mr-3');
-    var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
-    var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
-
-    div.append(checkbox);
-    label.append(div, divText);
-    $('#columnSelection').append(label);
-});
-
-var accessToken = localStorage.getItem('accessToken');
-
-// Notice 정보를 가져와서 테이블에 추가
-$.ajax({
-    url: "/admin/layout/getNoticeInfo",
-    method: "GET",
-    headers: {
-        "Authorization": "Bearer " + accessToken
-    },
-    success: function(data) {
-        var notices = data;
-        $.each(notices, function(i, notice) {
-            var tr = $('<tr/>');
-            tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + notice.noticeNum + "' data-noticeNum='" + notice.noticeNum + "'></label></td>");
-
-            // noticeKeys 배열에 따라 순서대로 테이블에 데이터 추가
-            $.each(noticeKeys, function(j, key) {
-                var value = notice[key];
-                if (value !== undefined) {
-                    if (key === 'noticeContent') {
-                        value = value.length > 10 ? value.substring(0, 10) + " • • •" : value;
-                    }
-
-                    tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
-                }
-            });
-            $('table').append(tr);
-        });
-    }
-});
-
-
-
-
 </script>
+
+
 
 
 </body>

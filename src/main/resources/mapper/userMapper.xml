@@ -39,8 +39,8 @@
     <insert id="joinUser" parameterType="com.project.together.domain.User">
         INSERT INTO user (username, password, email, roles, user_real_name, user_gender, user_phone,
         user_birth, user_address, user_like_player, user_like_player_gb, user_marketing, provider, providerId)
-        VALUES (#{username}, #{password}, #{email}, #{roles}, #{user_real_name}, #{user_gender}, #{user_phone},
-        #{user_birth}, #{user_address}, #{user_like_player}, #{user_like_player_gb}, #{user_marketing}, #{provider},
+        VALUES (#{username}, #{password}, #{email}, #{roles}, #{userRealName}, #{userGender}, #{userPhone},
+        #{userBirth}, #{userAddress}, #{userLikePlayer}, #{userLikePlayerGb}, #{userMarketing}, #{provider},
         #{providerId})
     </insert>
 

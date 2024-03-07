@@ -68,5 +68,42 @@
 
     <!-- ==============  Notice and ============== -->
 
+    <!-- ==============  News Start ============== -->
+
+    <select id="getAllNews" resultType="com.project.together.domain.News">
+        SELECT * FROM news ORDER BY news_idx DESC
+    </select>
+
+    <select id="findNewsById" parameterType="int" resultType="com.project.together.domain.News">
+        SELECT * FROM news WHERE news_idx = #{newsIdx}
+    </select>
+
+    <insert id="insertNews" parameterType="com.project.together.domain.News">
+        INSERT INTO news (news_idx, username, news_title, news_regdate, news_hits, news_content)
+        VALUES (#{newsIdx}, #{username}, #{newsTitle}, #{newsRegdate}, #{newsHits}, #{newsContent})
+    </insert>
+
+    <update id="updateNews" parameterType="com.project.together.domain.News">
+        UPDATE news
+        SET news_title = #{newsTitle}, news_content = #{newsContent}, news_regdate = #{newsRegdate}
+        WHERE news_idx = #{newsIdx}
+    </update>
+
+    <delete id="deleteNews" parameterType="list">
+        DELETE FROM news WHERE news_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  News and ============== -->
+
+
+    <!-- ==============   Start ============== -->
+
+
+    <!-- ==============   and ============== -->
+
 
 </mapper>

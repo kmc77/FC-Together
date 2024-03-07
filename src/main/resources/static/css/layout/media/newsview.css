@@ -1,3 +1,7 @@
+.newsContent img {
+    max-width: 100%; /* 이미지의 최대 너비를 부모 요소에 맞게 조절합니다. */
+    height: auto; /* 이미지의 높이를 자동으로 조절하여 비율이 유지되도록 합니다. */
+}
 
 
 .newsContainer {

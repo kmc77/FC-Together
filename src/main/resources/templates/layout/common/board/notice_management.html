@@ -37,7 +37,6 @@
     </div>
 
 
-
     <!-- Main content -->
     <div class="adminTab">
         <ul id="nav-1">
@@ -85,15 +84,13 @@
         <form action="/admin/layout/noticePost" method="POST">
             <input type="hidden" name="noticeNum"> <!-- 고유값 -->
             <input type="hidden" name="noticeDate"> <!-- 현재 시각 -->
+            <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
             <input name="noticeTitle" type="text" placeholder="제목"/><br>
             <textarea name="noticeContent" id="content"></textarea><br>
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
             </div>
         </form>
-
-
-
         <script>
 
             ClassicEditor.create( document.querySelector( '#content' ), {
@@ -107,7 +104,6 @@
             } );
 
         </script>
-
     </div>
 
     <!-- CK Editor and -->
@@ -209,7 +205,6 @@
 
 </div>
 
-
 </div>
 
 <!-- Main footer -->
@@ -241,6 +236,9 @@
 
     // HTML 페이지에 사용자 이름 노출
     document.querySelector('.d-block').textContent = username + " 관리자";
+
+    // hidden input field에 username 설정
+    document.querySelector('#username').value = username;
 
     $(document).ready(function () {
         // 선택된 행들을 저장하는 배열

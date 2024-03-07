@@ -1,6 +1,7 @@
 package com.project.together.controller;
 
 import com.project.together.service.ImageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,12 @@ import java.util.Map;
 public class ImageController {
 
     private ImageService imageService;
+
+    @Autowired
+    public ImageController(ImageService imageService) {
+
+        this.imageService = imageService;
+    }
 
     @PostMapping("/upload")
     @ResponseBody

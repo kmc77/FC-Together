@@ -1,5 +1,6 @@
 package com.project.together.mapper;
 
+import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.domain.Qna;
 import com.project.together.domain.User;
@@ -32,4 +33,16 @@ public interface AdminMapper {
     void updateNotice(Notice notice);
 
     void deleteNotice(List<Integer> noticeNums);
+
+    /* ======================================= */
+
+    List<News> getAllNews();
+
+    News findNewsById(@Param("newsIdx") int newsIdx);
+
+    void insertNews(News news);
+
+    void updateNews(News news);
+
+    void deleteNews(List<Integer> newsIdxs);
 }

@@ -27,6 +27,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    // s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 
     //Mustache 템플릿 엔진
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
@@ -49,8 +52,7 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 
-    // s3
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 
 
 }

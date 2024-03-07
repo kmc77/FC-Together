@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.domain.Qna;
 import com.project.together.domain.User;
@@ -119,6 +120,62 @@ public class AdminService {
         adminMapper.deleteNotice(noticeNums);
     }
 
-
     // ================================== Notice and
+
+
+    // ================================== News start
+
+
+    public List<News> getAllNews() {
+        // 모든 News 정보를 가져옵니다.
+        return adminMapper.getAllNews();
+    }
+
+    public News findNewsById(int newsIdx) {
+        return adminMapper.findNewsById(newsIdx);
+    }
+
+    public void saveNews(News news) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        news.setNewsRegdate(nowStr);
+
+        adminMapper.insertNews(news);
+
+    }
+
+    public void updateNews(News news) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        news.setNewsRegdate(nowStr);
+
+        adminMapper.updateNews(news);
+
+    }
+
+    public void newsDelete(List<Integer> newsIdxs) {
+        //데이터베이스에서 해당 noticeNums 의 Notice 들을 찾는다.
+        for (int newsIdx : newsIdxs) {
+            News news = adminMapper.findNewsById(newsIdx);
+            if (news == null) {
+                throw new IllegalArgumentException("해당 News가 존재하지 않습니다. newsIdx: " + newsIdx);
+            }
+        }
+
+        //찾은 News 글을 삭제
+        adminMapper.deleteNews(newsIdxs);
+    }
+
+
+
+    // ================================== News start
 }

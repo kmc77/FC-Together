@@ -91,49 +91,57 @@
         });
 
         function loadNoticeList(start, limit) {
-            $.ajax({
-                url: '/media/news/list',
-                type: 'GET',
-                data: {
-                    start: start,
-                    limit: limit
-                },
-                dataType: 'json',
-                success: function(newsList) {
-                    // 더 이상 표시할 데이터가 없을 경우
-                    if (newsList.length === 0) {
-                        alert('더 이상 표시할 소식이 없습니다.');
-                        return;  // 함수를 종료합니다.
-                    }
+    $.ajax({
+        url: '/media/news/list',
+        type: 'GET',
+        data: {
+            start: start,
+            limit: limit
+        },
+        dataType: 'json',
+        success: function(newsList) {
+            // 더 이상 표시할 데이터가 없을 경우
+            if (newsList.length === 0) {
+                alert('더 이상 표시할 소식이 없습니다.');
+                return;  // 함수를 종료합니다.
+            }
 
-                    // newsList 배열을 반복하여 각 뉴스 아이템을 동적으로 생성합니다.
-                    $.each(newsList, function(index, news) {
-                    var newsItem = '<a href="/media/newsview?no=' + news.newsIdx + '">' +
-                        '<div class="news-detail">' +
-                            '<div class="news-thumbnail" style="background-image: url(\'/img/KakaoTalk_20240201_225719222.jpg\');"></div>' +
-                            '<div class="news-contents">' +
-                                '<div class="news-title">' +
-                                    '<p class="news-title">' + news.newsTitle + '</p>' +
-                                '</div>' +
-                                '<div class="news-date-and-hits">' +
-                                    '<p>' + news.newsRegdate + ' • ' + news.newsHits + '</p>' +
-                                '</div>' +
-                                '<div class="news-table">' +
-                                    '<p>' + news.tableGb + '</p>' +
-                                '</div>' +
+            // newsList 배열을 반복하여 각 뉴스 아이템을 동적으로 생성합니다.
+            $.each(newsList, function(index, news) {
+                // newsContent에서 이미지 태그의 src 속성을 추출합니다.
+                var srcRegex = /<img[^>]+src="([^">]+)"/;
+                var match = news.newsContent.match(srcRegex);
+                var imgSrc = match ? match[1] : '/img/FcTogether.jpg';  // 기본 이미지 URL
+
+
+
+                // newsThumbnail 요소의 배경 이미지를 설정합니다.
+                var newsItem = '<a href="/media/newsview?no=' + news.newsIdx + '">' +
+                    '<div class="news-detail">' +
+                        '<div class="news-thumbnail" style="background-image: url(\'' + imgSrc + '\');"></div>' +
+                        '<div class="news-contents">' +
+                            '<div class="news-title">' +
+                                '<p class="news-title">' + news.newsTitle + '</p>' +
+                            '</div>' +
+                            '<div class="news-date-and-hits">' +
+                                '<p>' + news.newsRegdate + ' • ' + news.newsHits + '</p>' +
+                            '</div>' +
+                            '<div class="news-table">' +
+                                '<p>' + news.tableGb + '</p>' +
                             '</div>' +
                         '</div>' +
-                    '</a>';
+                    '</div>' +
+                '</a>';
 
-                    // 생성한 뉴스 아이템을 웹 페이지에 추가합니다.
-                    $('.news-item-container').append(newsItem);
-                });
-                },
-                error: function(error) {
-                    console.error('뉴스를 가져오는데 실패했습니다.', error);
-                }
+                // 생성한 뉴스 아이템을 웹 페이지에 추가합니다.
+                $('.news-item-container').append(newsItem);
             });
+        },
+        error: function(error) {
+            console.error('뉴스를 가져오는데 실패했습니다.', error);
         }
+    });
+}
     });
 </script>
 

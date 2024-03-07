@@ -1,6 +1,7 @@
 package com.project.together.controller;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.domain.Qna;
 import com.project.together.service.AdminService;
@@ -122,8 +123,8 @@ public class AdminController {
     // 공지사항 작성
     @PostMapping("/layout/noticePost")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String postNotice(@ModelAttribute Notice notice, RedirectAttributes redirectAttributes) {
-
+    public String postNotice(@ModelAttribute Notice notice, @RequestParam String username, RedirectAttributes redirectAttributes) {
+        notice.setUsername(username);
         adminService.saveNotice(notice);
         redirectAttributes.addFlashAttribute("message", "공지사항이 성공적으로 추가되었습니다.");
         return "redirect:/admin/layout/notice_management";
@@ -156,6 +157,75 @@ public class AdminController {
     }
 
     // ================================== Notice and
+
+
+    // ================================== News start
+
+
+    // 구단뉴스 정보 가져오기
+    @GetMapping("/layout/getNewsInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<News>> getNewsInfo() {
+        List<News> newsList = adminService.getAllNews();
+        System.out.println("newsList = " + newsList);
+        return ResponseEntity.ok(newsList);
+    }
+
+
+    // 구단소식 상세 정보 가져오기
+    @GetMapping("/layout/newsView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<News> getNewsView(@RequestParam("newsIdx") int newsIdx, HttpServletResponse response) {
+        News news = adminService.findNewsById(newsIdx);
+        System.out.println("newsView = " + news);
+        if (news != null) {
+            return ResponseEntity.ok(news);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // 구단소식 작성
+    @PostMapping("/layout/newsPost")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String postNews(@ModelAttribute News news, @RequestParam String username, RedirectAttributes redirectAttributes) {
+        news.setUsername(username);
+        adminService.saveNews(news);
+        redirectAttributes.addFlashAttribute("message", "구단소식이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/news_management";
+    }
+
+    // 구단소식 수정
+    @PostMapping("/layout/newsUpdate/{newsIdx}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateNews(@PathVariable int newsIdx, @ModelAttribute News news, RedirectAttributes redirectAttributes) {
+
+        news.setNewsIdx(newsIdx);
+        adminService.updateNews(news);
+        redirectAttributes.addFlashAttribute("message", "구단소식이 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/news_management";
+    }
+
+    // 구단소식 삭제
+    @PostMapping("/layout/newsDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> newsDelete(@RequestParam("newsIdx") List<Integer> newsIdxs) {
+        try {
+            adminService.newsDelete(newsIdxs);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+    // ================================== News and
 
 
     // ================================== page 이동
@@ -222,7 +292,6 @@ public class AdminController {
 
     @GetMapping("/layout/news_management")
     public String newsManagement(Model model) {
-        model.addAttribute("content", "구단소식 관리 입장");
         model.addAttribute("currentPage", "news_management");
         return "layout/common/board/news_management";
     }

@@ -1,9 +1,6 @@
 package com.project.together.mapper;
 
-import com.project.together.domain.News;
-import com.project.together.domain.Notice;
-import com.project.together.domain.Qna;
-import com.project.together.domain.User;
+import com.project.together.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,4 +42,32 @@ public interface AdminMapper {
     void updateNews(News news);
 
     void deleteNews(List<Integer> newsIdxs);
+
+    /* ======================================= */
+
+    List<ClubPhoto> getAllClubPhoto();
+
+    ClubPhoto findClubPhotoById(@Param("cpIdx") int cpIdx);
+
+    void insertClubPhoto(ClubPhoto clubPhoto);
+
+    void updateClubPhoto(ClubPhoto clubPhoto);
+
+    void deleteClubPhoto(List<Integer> cpIdxs);
+
+    /* ======================================= */
+
+    List<ClubVideo> getAllClubVideo();
+
+    ClubVideo findClubVideoById(@Param("cvIdx") int cvIdx);
+
+    void insertClubVideo(ClubVideo clubVideo);
+
+    void updateClubVideo(ClubVideo clubVideo);
+
+    void deleteClubVideo(List<Integer> cvIdxs);
+
+    /* ======================================= */
+
+
 }

@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.domain.ClubPhoto;
+import com.project.together.domain.ClubVideo;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.mapper.MediaMapper;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,12 +52,37 @@ public class MediaService {
     }
 
     // 구단 사진 상세보기 페이지
-    public ClubPhoto photoViewPage(int photoNum) throws NotFoundException {
-        ClubPhoto clubPhoto = mediaMapper.findPhotosByPhotoNumber(photoNum);
+    public ClubPhoto photoViewPage(int cpIdx) throws NotFoundException {
+        ClubPhoto clubPhoto = mediaMapper.findPhotosByPhotoNumber(cpIdx);
         if (clubPhoto == null) {
-            throw new NotFoundException(photoNum + "번호의 구단 사진을 찾을 수 없습니다.");
+            throw new NotFoundException(cpIdx + "번호의 구단 사진을 찾을 수 없습니다.");
         }
         return clubPhoto;
     }
+
+    // 영상 목록
+    public List<ClubVideo> getClubVideoList(Map<String, Integer> params) {
+        return mediaMapper.getVideoList(params);
+    }
+
+    //구단 영상 상세보기 페이지
+    public ClubVideo videoViewPage(int cvIdx) throws NotFoundException {
+        ClubVideo clubVideo = mediaMapper.findVideosByVideoNumber(cvIdx);
+        if (clubVideo == null) {
+            throw new NotFoundException(cvIdx + "번호의 구단 영상을 찾을 수 없습니다.");
+        }
+        return clubVideo;
+    }
+
+    public List<ClubPhoto> getPhotos(int start, int limit) {
+        return mediaMapper.getPhotos(start, limit);
+    }
+
+
+    /* ============================================ */
+
+
+
+
 }
 

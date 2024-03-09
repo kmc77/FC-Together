@@ -1,6 +1,7 @@
 package com.project.together.controller;
 
 import com.project.together.domain.ClubPhoto;
+import com.project.together.domain.ClubVideo;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import com.project.together.service.MediaService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.print.Pageable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +101,13 @@ public class MediaController {
         model.addAttribute("news", news);
 
         // 이전 뉴스 불러오기
-        if (newsNum > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
-            News prevNews = mediaService.newsViewPage(newsNum - 1);
-            model.addAttribute("prevNews", prevNews);
+        if (newsNum > 1) { // 첫 번째 뉴스가 아닐 경우에만 이전 뉴스를 찾습니다.
+            try {
+                News prevNews = mediaService.newsViewPage(newsNum - 1);
+                model.addAttribute("prevNews", prevNews);
+            } catch (NotFoundException e) {
+                // newsNum -1에 해당하는 사진이 없을 경우 이전 사진을 불러오지 않습니다.
+            }
         }
 
         return "/layout/media/newsview";
@@ -122,18 +128,86 @@ public class MediaController {
 
     // 구단 사진 상세보기 페이지
     @GetMapping("/photoview")
-    public String photoViewPage(@RequestParam("no") int photoNum, Model model) throws NotFoundException {
+    public String photoViewPage(@RequestParam("no") int cpIdx, Model model) throws NotFoundException {
 
-        ClubPhoto clubPhoto = mediaService.photoViewPage(photoNum);
+        ClubPhoto clubPhoto = mediaService.photoViewPage(cpIdx);
         model.addAttribute("clubPhoto", clubPhoto);
 
         System.out.println("컨트롤러 clubPhoto = " + clubPhoto);
         // 이전글 불러오기
-        if (photoNum > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
-            ClubPhoto prevPhoto = mediaService.photoViewPage(photoNum - 1);
-            model.addAttribute("prevPhoto", prevPhoto);
+        if (cpIdx > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
+            try {
+                ClubPhoto prevPhoto = mediaService.photoViewPage(cpIdx - 1);
+                model.addAttribute("prevPhoto", prevPhoto);
+            } catch (NotFoundException e) {
+                // cpIdx -1에 해당하는 사진이 없을 경우 이전 사진 불러오지 않는다.
+            }
         }
 
         return "/layout/media/photoview";
     }
+
+    // 구단 영상 목록 조회
+    @GetMapping("/video/list")
+    public ResponseEntity<List<ClubVideo>> getClubVideoList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("start", start);
+        params.put("limit", limit);
+
+        List<ClubVideo> videoList = mediaService.getClubVideoList(params);
+
+        return new ResponseEntity<>(videoList, HttpStatus.OK);
+    }
+
+    // 구단 영상 상세보기 페이지
+    @GetMapping("/videoView")
+    public String videoViewPage(@RequestParam("no") int cvIdx, Model model) throws NotFoundException {
+
+        ClubVideo clubVideo = mediaService.videoViewPage(cvIdx);
+        model.addAttribute("clubVideo", clubVideo);
+
+        System.out.println("컨트롤러 clubVideo = " + clubVideo);
+        // 이전글 불러오기
+        if (cvIdx > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
+            try {
+                ClubVideo prevVideo = mediaService.videoViewPage(cvIdx - 1);
+                model.addAttribute("prevVideo", prevVideo);
+            } catch (NotFoundException e) {
+                // cvIdx -1에 해당하는 사진이 없을 경우 이전 사진 불러오지 않는다.
+            }
+        }
+
+        return "/layout/media/videoview";
+    }
+
+
+
+    // 미디어 전체 목록 조회
+    @GetMapping("/all/list")
+    public ResponseEntity<?> getAllMedia(@RequestParam(value = "start", defaultValue = "0") int start,
+                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        try {
+            Map<String, Object> response = new HashMap<>();
+
+            // 예시로 각 카테고리 별로 데이터를 가져오는 메서드를 호출합니다. 실제 구현은 데이터베이스 조회 등을 포함할 것입니다.
+            List<ClubPhoto> photos = mediaService.getPhotos(start, limit);
+          /*  List<News> news = mediaService.getNews(start, limit);
+            List<Notice> notices = mediaService.getNotices(start, limit);
+            List<ClubVideo> videos = mediaService.getVideos(start, limit);*/
+
+
+            response.put("photos", photos);
+         /*   response.put("news", news);
+            response.put("notices", notices);
+            response.put("videos", videos);*/
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // 예외 처리
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "정보를 가져오는데 실패했습니다.");
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
 }

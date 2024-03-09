@@ -107,9 +107,16 @@
 
                     // photoList 배열을 반복하여 각 뉴스 아이템을 동적으로 생성합니다.
                     $.each(photoList, function(index, photo) {
+                     // newsContent에서 이미지 태그의 src 속성을 추출합니다.
+                    var srcRegex = /<img[^>]+src="([^">]+)"/;
+                    var match = photo.cpContent.match(srcRegex);
+                    var imgSrc = match ? match[1] : '/img/FcTogether.jpg';  // 기본 이미지 URL
+
+
+                    // 요소의 배경 이미지를 설정합니다.
                     var photoItem = '<a href="/media/photoview?no=' + photo.cpIdx + '">' +
                         '<div class="news-detail">' +
-                            '<div class="news-thumbnail" style="background-image: url(\'/img/CD7FF8DF-6714-424F-9694-AF93791B2FBD.jpeg\');"></div>' +
+                           '<div class="news-thumbnail" style="background-image: url(\'' + imgSrc + '\');"></div>' +
                             '<div class="news-contents">' +
                                 '<div class="news-title">' +
                                     '<p class="news-title">' + photo.cpTitle + '</p>' +
@@ -124,12 +131,11 @@
                         '</div>' +
                     '</a>';
 
-                    // 생성한 뉴스 아이템을 웹 페이지에 추가합니다.
-                    $('.photo-item-container').append(photoItem);
-                });
+                        $('.photo-item-container').append(photoItem);
+                    });
                 },
                 error: function(error) {
-                    console.error('뉴스를 가져오는데 실패했습니다.', error);
+                    console.error('사진을 가져오는데 실패했습니다.', error);
                 }
             });
         }

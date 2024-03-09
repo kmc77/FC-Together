@@ -2,9 +2,9 @@
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>photo</title>
+    <title>video</title>
     <th:block th:include="layout/header"></th:block>
-    <link href="/css/layout/media/photoview.css" rel="stylesheet"/>
+    <link href="/css/layout/media/videoview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -12,17 +12,17 @@
 <div class="newsWrapper newsContainer">
     <div class="mediaRoomContainer">
         <div class="mediaRoomContents">
-            <div class="photoInformation">
-                <div class="titleBox"><p th:text="${clubPhoto.cpTitle}"></p>
+            <div class="videoInformation">
+                <div class="titleBox"><p th:text="${clubVideo.cvTitle}"></p>
                     <div>
                         <div class="titleInfo"><p>작성자</p>
-                            <p th:text="${clubPhoto.username}"></p></div>
+                            <p th:text="${clubVideo.username}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>작성일</p>
-                            <p th:text="${clubPhoto.cpRegdate}"></p></div>
+                            <p th:text="${clubVideo.cvDate}"></p></div>
                         <div class="line"></div>
                         <div class="titleInfo"><p>조회수</p>
-                            <p th:text="${clubPhoto.cpHits}"></p></div>
+                            <p th:text="${clubVideo.cvHits}"></p></div>
                     </div>
                 </div>
                 <div class="share">
@@ -37,14 +37,17 @@
                             alt=""></button>
                 </div>
             </div>
-            <div class="cpContent">
-                <div class="content"><p th:utext="${clubPhoto.cpContent}"></p>
-
+            <div class="cvContent">
+                <div class="content">
+                    <iframe width="1000" height="720" src="https://www.youtube.com/embed/${key}"
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                    </iframe>
+                    <p th:utext="${clubVideo.cvContent}"></p>
                 </div>
                 <div class="previous-post post-navigation">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}" th:text="${prevPhoto.cpTitle}">이전글 제목</a>
+                        <a class="title" th:href="@{/media/videoview(no=${prevVideo.cvIdx})}" th:text="${prevVideo.cvTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
@@ -57,20 +60,20 @@
     $(document).ready(function() {
     // URL에서 photoNum 추출
     var urlParams = new URLSearchParams(window.location.search);
-    var photoIdx = urlParams.get('no');
+    var videoIdx = urlParams.get('no');
 
-    // newsIdx 해당하는 뉴스 정보 로드
+    // cvIdx 해당하는 사진 정보 로드
     $.ajax({
-        url: '/media/photoview?no=' + cpIdx,
+        url: '/media/videoview?no=' + cvIdx,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
-            $('.newsInformation .titleBox p').text(data.cpTitle);
+            $('.videoInformation .titleBox p').text(data.cvTitle);
             $('.titleInfo p').eq(1).text(data.username);
-            $('.titleInfo p').eq(3).text(data.cpRegdate);
-            $('.titleInfo p').eq(5).text(data.cpHits);
-            $('.cpContent .content').html(data.cpContent);
+            $('.titleInfo p').eq(3).text(data.cvDate);
+            $('.titleInfo p').eq(5).text(data.cvHits);
+            $('.cvContent .content').html(data.cvContent);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
@@ -78,15 +81,15 @@
     });
 
  $.ajax({
-    url: '/media/photoview?no=' + (cpIdx - 1), // 이전글 번호
+    url: '/media/videoview?no=' + (cvIdx - 1), // 이전글 번호
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-        if(data.prevPhoto == null) { // 이전 뉴스가 없는 경우
+        if(data.prevVideo == null) { // 이전 사진이 없는 경우
             alert("이전글 없음");
         } else {
             // 서버에서 반환한 데이터를 사용하여 이전 글의 제목을 업데이트
-            var titleLink = '<a href="/media/prevPhoto?no=' + data.prevPhoto.cpIdx + '">' + data.prevPhoto.cpTitle + '</a>';
+            var titleLink = '<a href="/media/prevVideo?no=' + data.prevVideo.cvIdx + '">' + data.prevVideo.cvTitle + '</a>';
             $('.sc-bUTAii iQdlyk .title').html(titleLink);
         }
     },

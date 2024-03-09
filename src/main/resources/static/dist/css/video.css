@@ -1,0 +1,66 @@
+/* 기본 설정 */
+.cnt_bbs {
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;  
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: block;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    align-content: stretch;
+    justify-content: space-around;
+    overflow-y: auto; /* 스크롤 적용 */
+    max-height: 100vh; /* 높이 제한 */
+}
+
+/* 테이블 스타일 */
+.cnt_bbs .tb_write {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cnt_bbs .tb_write th, .cnt_bbs .tb_write td {
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+
+.cnt_bbs .tb_write th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+/* 입력 필드 스타일 */
+.cnt_bbs input[type="text"], .cnt_bbs textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 버튼 스타일 */
+.cnt_bbs .tb_btn {
+    padding: 0.5rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.cnt_bbs .tb_btn.blueM {
+    background-color: #007BFF;
+}
+
+.cnt_bbs .tb_btn.whiteM {
+    background-color: #ffffff;
+    color: #000;
+}
+
+.cnt_bbs .tb_btn:hover {
+    opacity: 0.8;
+}
+
+.mt_20.t_r {
+    margin-top: 20px; /* 20px 상단 마진 적용 */
+}
+

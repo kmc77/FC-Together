@@ -17,7 +17,7 @@
     margin-top: 77px;
 }
 
-.photoInformation {
+.videoInformation {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,14 +26,14 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.photoInformation .titleBox > p {
+.videoInformation .titleBox > p {
     font-size: 1.333rem;
     line-height: 2rem;
     font-weight: 700;
     max-width: 910px;
 }
 
-.photoInformation .titleBox > div {
+.videoInformation .titleBox > div {
     display: flex;
     font-size: 0.888rem;
     color: rgba(0, 0, 0, 0.5);
@@ -41,24 +41,24 @@
     align-items: center;
 }
 
-.photoInformation .titleBox > div .titleInfo {
+.videoInformation .titleBox > div .titleInfo {
     display: grid;
     grid-template-columns: 3.3em 1fr;
     font-weight: 400;
 }
 
-.photoInformation .titleBox > div .titleInfo p:first-child {
+.videoInformation .titleBox > div .titleInfo p:first-child {
     font-weight: 700;
 }
 
-.photoInformation .titleBox .line {
+.videoInformation .titleBox .line {
     width: 1px;
     height: 12px;
     background-color: rgba(0, 0, 0, 0.2);
     margin: 0px 1.111rem;
 }
 
-.photoInformation .share {
+.videoInformation .share {
     display: flex;
     gap: 0.667rem;
 }

@@ -33,12 +33,30 @@
     </select>
 
     <select id="findPhotosByPhotoNumber" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
-        SELECT * FROM ClubPhoto WHERE cp_idx = #{photoNum}
+        SELECT * FROM ClubPhoto WHERE cp_idx = #{cpIdx}
     </select>
 
 
+    <select id="getVideoList" resultType="com.project.together.domain.ClubVideo">
+        SELECT *
+        FROM ClubVideo
+        ORDER BY cv_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findVideosByVideoNumber" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo WHERE cv_idx = #{cvIdx}
+    </select>
 
 
+    <!-- ======================================= -->
+
+    <select id="getPhotos" resultType="com.project.together.domain.ClubPhoto">
+        SELECT *
+        FROM ClubPhoto
+        ORDER BY cp_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
 
 
 </mapper>

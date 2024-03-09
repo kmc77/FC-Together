@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="" xmlns:th="http://www.thymeleaf.org">
-<!--<head>
-    <meta charset="UTF-8">
-    <title>notice</title>
-    <th:block th:include="layout/header"></th:block>
-    <link href="/css/layout/media/notice.css" rel="stylesheet"/>
+<head>
+    <!-- <meta charset="UTF-8">
+     <title>notice</title>
+     <th:block th:include="layout/header"></th:block>-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>-->
+</head>
 <body>
 <div class="container">
     <div class="noticePage" id="content">
@@ -42,8 +41,104 @@
                 </div>
             </div>
         </div>
+        <div class="list-contents">
+            <div class="video-container">
+                <div class="video-board">
+                    <div class="video-item-container">
+                        <!-- <div class="news-detail">
+                             <div class="news-thumbnail" style="background-image: url('https://static.mims.kr/upload/suG3cOmTNpBUkM72CCXX20230925014050817314.jpg');"></div>
+                             <div class="news-contents">
+                                 <div class="news-title">
+                                     <p id="news-title"></p> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
+                                 </div>
+                                 <div class="news-date" id="news-date"> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
+                                 </div>
+                             </div>
+                         </div>-->
+
+                    </div>
+                </div>
+                <div class="formBtns">
+                    <button id="loadMore" class="btn btn-more">More</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+      var limit = 9; // 한 번에 로드할 비디오의 최대 개수
+      var start = 0; // 시작 지점
+
+      loadVideoList(start, limit); // 초기 비디오 목록 로딩
+
+      $("#loadMore").click(function() {
+          start += limit; // 다음 비디오 목록의 시작 지점 업데이트
+          loadVideoList(start, limit); // 추가 비디오 목록 로딩
+      });
+
+      var activeTab; // 현재 활성화된 탭
+
+      $("body").on("click", ".tabLink", function(e) {
+          activeTab = $(".tabLink.router-link-exact-active.router-link-active.current")[0];
+          if (this === activeTab) {
+              e.preventDefault(); // 같은 탭을 클릭하면 아무것도 하지 않음
+              return;
+          }
+      });
+
+      function loadVideoList(start, limit) {
+          $.ajax({
+              url: '/media/video/list',
+              type: 'GET',
+              data: {
+                  start: start,
+                  limit: limit
+              },
+              dataType: 'json',
+              success: function(videoList) {
+                  if (videoList.length === 0) {
+                      alert('더 이상 표시할 비디오가 없습니다.');
+                      return;
+                  }
+
+                  videoList.forEach(function(video) {
+                      let thumbnailUrl = '/img/FcTogether.jpg'; // 기본 썸네일 URL
+
+                      if (video.mvTheOriginUrl) {
+                          let videoKey = video.mvTheOriginUrl.substring(17); // YouTube URL에서 key 추출
+                          thumbnailUrl = `https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`; // 썸네일 URL 업데이트
+                      }
+
+                      let videoItem = `<a href="/media/videoView?no=${video.cvIdx}">
+                          <div class="video-detail">
+                              <div class="video-thumbnail" style="background-image: url('${thumbnailUrl}');"></div>
+                              <div class="video-contents">
+                                  <div class="video-title">
+                                      <p class="video-title">${video.cvTitle}</p>
+                                  </div>
+                                  <div class="video-date-and-hits">
+                                      <p>${video.cvDate} • ${video.cvHits}</p>
+                                  </div>
+                                  <div class="video-table">
+                                      <p>${video.tableGb}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </a>`;
+
+                      $('.video-item-container').append(videoItem);
+                  });
+              },
+              error: function(error) {
+                  console.error('비디오를 가져오는데 실패했습니다.', error);
+              }
+          });
+      }
+  });
+
+</script>
+
 
 </body>
 </html>

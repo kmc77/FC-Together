@@ -32,7 +32,7 @@
     </delete>
 
 
-    <!-- ==============  QnA Start ============== -->
+    <!-- ==============  QnA End ============== -->
 
 
     <!-- ==============  Notice Start ============== -->
@@ -66,7 +66,7 @@
     </delete>
 
 
-    <!-- ==============  Notice and ============== -->
+    <!-- ==============  Notice End ============== -->
 
     <!-- ==============  News Start ============== -->
 
@@ -97,13 +97,73 @@
     </delete>
 
 
-    <!-- ==============  News and ============== -->
+    <!-- ==============  News End ============== -->
 
 
-    <!-- ==============   Start ============== -->
+    <!-- ==============  ClubPhoto Start ============== -->
+
+    <select id="getAllClubPhoto" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto ORDER BY cp_idx DESC
+    </select>
+
+    <select id="findClubPhotoById" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto WHERE cp_idx = #{cpIdx}
+    </select>
+
+    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
+        INSERT INTO clubphoto (cp_idx, username, cp_title, cp_regdate, cp_hits, cp_content)
+        VALUES (#{cpIdx}, #{username}, #{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent})
+    </insert>
+
+    <update id="updateClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
+        UPDATE clubphoto
+        SET cp_title = #{cpTitle}, cp_content = #{cpContent}, cp_regdate = #{cpRegdate}
+        WHERE cp_idx = #{cpIdx}
+    </update>
+
+    <delete id="deleteClubPhoto" parameterType="list">
+        DELETE FROM clubphoto WHERE cp_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 
-    <!-- ==============   and ============== -->
+    <!-- ==============  ClubPhoto End ============== -->
+
+
+    <!-- ==============  ClubVideo Start ============== -->
+
+    <select id="getAllClubVideo" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo ORDER BY cv_idx DESC
+    </select>
+
+    <select id="findClubVideoById" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo WHERE cv_idx = #{cvIdx}
+    </select>
+
+    <insert id="insertClubVideo" parameterType="com.project.together.domain.ClubVideo">
+        INSERT INTO ClubVideo (cv_idx, username, cv_title, cv_date, cv_hits, mv_the_origin_url, cv_content)
+        VALUES (#{cvIdx}, #{username}, #{cvTitle}, #{cvDate}, #{cvHits}, #{mvTheOriginUrl}, #{cvContent})
+    </insert>
+
+    <update id="updateClubVideo" parameterType="com.project.together.domain.ClubVideo">
+        UPDATE ClubVideo
+        SET cv_title = #{cvTitle}, cv_content = #{cvContent}, cv_date = #{cvDate}, mv_the_origin_url = #{mvTheOriginUrl}
+        WHERE cv_idx = #{cvIdx}
+    </update>
+
+    <delete id="deleteClubVideo" parameterType="list">
+        DELETE FROM ClubVideo WHERE cv_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  ClubVideo End ============== -->
+
+
 
 
 </mapper>

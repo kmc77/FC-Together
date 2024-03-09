@@ -1,10 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.config.auth.PrincipalDetails;
-import com.project.together.domain.News;
-import com.project.together.domain.Notice;
-import com.project.together.domain.Qna;
-import com.project.together.domain.User;
+import com.project.together.domain.*;
 import com.project.together.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -175,7 +172,116 @@ public class AdminService {
         adminMapper.deleteNews(newsIdxs);
     }
 
+    // ================================== News and
 
 
-    // ================================== News start
+    // ================================== ClubPhoto start
+
+    public List<ClubPhoto> getAllClubPhoto() {
+        // 모든 ClubPhoto 정보를 가져옵니다.
+        return adminMapper.getAllClubPhoto();
+    }
+
+    public ClubPhoto findClubPhotoById(int cpIdx) {
+        return adminMapper.findClubPhotoById(cpIdx);
+    }
+
+    public void saveClubPhoto(ClubPhoto clubPhoto) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        clubPhoto.setCpRegdate(nowStr);
+
+        adminMapper.insertClubPhoto(clubPhoto);
+    }
+
+    public void updateClubPhoto(ClubPhoto clubPhoto) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        clubPhoto.setCpRegdate(nowStr);
+
+        adminMapper.updateClubPhoto(clubPhoto);
+    }
+
+    public void clubPhotoDelete(List<Integer> cpIdxs) {
+        //데이터베이스에서 해당 cpIdxs 의 clubPhoto 들을 찾는다.
+        for (int cpIdx : cpIdxs) {
+            ClubPhoto clubPhoto = adminMapper.findClubPhotoById(cpIdx);
+            if (clubPhoto == null) {
+                throw new IllegalArgumentException("해당 ClubPhoto가 존재하지 않습니다. cpIdx: " + cpIdx);
+            }
+        }
+
+        //찾은 clubPhoto 글을 삭제
+        adminMapper.deleteClubPhoto(cpIdxs);
+    }
+
+
+    // ================================== ClubPhoto and
+
+
+    // ================================== ClubVideo start
+
+
+    public List<ClubVideo> getAllClubVideo() {
+        return adminMapper.getAllClubVideo();
+    }
+
+    public ClubVideo findClubVideoById(int cvIdx) {
+        return adminMapper.findClubVideoById(cvIdx);
+    }
+
+    public void saveClubVideo(ClubVideo clubVideo) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        clubVideo.setCvDate(nowStr);
+
+        adminMapper.insertClubVideo(clubVideo);
+
+    }
+
+    public void updateClubVideo(ClubVideo clubVideo) {
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String nowStr = now.format(formatter);
+
+        clubVideo.setCvDate(nowStr);
+
+        adminMapper.updateClubVideo(clubVideo);
+    }
+
+    public void clubVideoDelete(List<Integer> cvIdxs) {
+        //데이터베이스에서 해당 cvIdxs 의 clubVideo 들을 찾는다.
+        for (int cvIdx : cvIdxs) {
+            ClubVideo clubVideo = adminMapper.findClubVideoById(cvIdx);
+            if (clubVideo == null) {
+                throw new IllegalArgumentException("해당 ClubVideo가 존재하지 않습니다. cvIdx: " + cvIdx);
+            }
+        }
+
+        //찾은 clubVideo 글을 삭제
+        adminMapper.deleteClubVideo(cvIdxs);
+    }
+
+
+
+
+    // ================================== ClubVideo and
+
+
 }

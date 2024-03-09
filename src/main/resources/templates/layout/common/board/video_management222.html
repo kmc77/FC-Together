@@ -19,12 +19,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">구단사진 관리 페이지</h1>
+                    <h1 class="m-0">구단영상 관리 페이지</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/admin/layout/adminpage">Home</a></li>
-                        <li class="breadcrumb-item active">구단사진 관리 페이지</li>
+                        <li class="breadcrumb-item active">구단영상 관리 페이지</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -105,7 +105,7 @@
         </script>
     </div>
 
-    <!-- CK Editor and -->
+    <!-- CK End -->
 
     <!-- 테이블 시작 -->
     <div id="tableContainer" class="container mx-auto py-6 px-4">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <!-- 테이블 검색 and -->
+            <!-- 테이블 검색 End -->
             <div>
                 <div class="shadow rounded-lg flex">
                     <div class="relative">
@@ -171,30 +171,23 @@
                             <input id="selectAllCheckbox" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
                         </label>
                     </th>
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpIdx">사진 번호</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvIdx">비디오 번호</th>
 
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs username">작성자명</th>
 
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpTitle">사진 제목</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvTitle">비디오 제목</th>
 
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpContent">사진 내용</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvDate">비디오 등록일</th>
 
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpRegdate">사진 등록일</th>
-
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpHits">사진 조회수</th>
-
-                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs tableGb">테이블 구분</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvHits">비디오 조회수</th>
                 </tr>
+                <!-- 테이블 항목 End -->
 
-
-
-                <!-- 테이블 항목 and -->
                 </thead>
             </table>
         </div>
     </div>
-    <!-- 테이블 and -->
-
+    <!-- 테이블 End -->
 
     <div class="buttonContainer" id="buttonContainer">
         <div class="leftContainer">
@@ -241,7 +234,8 @@
     // hidden input field에 username 설정
     document.querySelector('#username').value = username;
 
-     $(document).ready(function () {
+
+    $(document).ready(function () {
         // 선택된 행들을 저장하는 배열
         var selectedRows = [];
         // 표시 버튼의 상태 (열림/닫힘)
@@ -318,7 +312,7 @@
             updateSelectedCount();
         });
 
-       // "삭제" 버튼 클릭 이벤트
+     // "삭제" 버튼 클릭 이벤트
         $('.deleteButton').click(function() {
             if (selectedRows.length === 0) {
                 alert("삭제할 글을 선택해주세요.");
@@ -353,7 +347,7 @@
             }
         });
 
-        // "보기" 버튼 클릭 이벤트
+     // "보기" 버튼 클릭 이벤트
         $('.checkButton').click(function() {
             if (selectedRows.length === 0) {
                 alert("확인할 글을 선택해주세요.");
@@ -457,8 +451,8 @@
             }
         });
 
-    // ClubPhoto 정보 키
-        var ClubPhotoKeys = ['cpIdx', 'username', 'cpTitle', 'cpContent', 'cpRegdate', 'cpHits', 'tableGb'];
+        // ClubVideo 정보 키
+        var ClubVideoKeys = ['cpIdx', 'username', 'cvTitle', 'cvHits', 'cvDate'];
 
         // 컬럼 선택 영역에 체크박스와 라벨을 추가
         $.each(ClubPhotoKeys, function(index, key) {

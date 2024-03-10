@@ -22,22 +22,22 @@ public class MainController {
 
     @GetMapping("/club/clubpage")
     public String clubpage() {
-        return "/club/clubpage";
+        return "/layout/club/clubpage";
     }
 
     @GetMapping("/team/teampage")
     public String teampage() {
-        return "/team/teampage";
+        return "/layout/team/teampage";
     }
 
     @GetMapping("/match/matchpage")
     public String matchpage() {
-        return "/match/matchpage";
+        return "/layout/match/matchpage";
     }
 
     @GetMapping("/history/historypage")
     public String historypage() {
-        return "/history/historypage";
+        return "/layout/history/historypage";
     }
 
 

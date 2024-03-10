@@ -181,33 +181,8 @@ public class MediaController {
     }
 
 
-
     // 미디어 전체 목록 조회
-    @GetMapping("/all/list")
-    public ResponseEntity<?> getAllMedia(@RequestParam(value = "start", defaultValue = "0") int start,
-                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
-        try {
-            Map<String, Object> response = new HashMap<>();
-
-            // 예시로 각 카테고리 별로 데이터를 가져오는 메서드를 호출합니다. 실제 구현은 데이터베이스 조회 등을 포함할 것입니다.
-            List<ClubPhoto> photos = mediaService.getPhotos(start, limit);
-          /*  List<News> news = mediaService.getNews(start, limit);
-            List<Notice> notices = mediaService.getNotices(start, limit);
-            List<ClubVideo> videos = mediaService.getVideos(start, limit);*/
 
 
-            response.put("photos", photos);
-         /*   response.put("news", news);
-            response.put("notices", notices);
-            response.put("videos", videos);*/
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // 예외 처리
-            Map<String, String> error = new HashMap<>();
-            error.put("message", "정보를 가져오는데 실패했습니다.");
-            return ResponseEntity.badRequest().body(error);
-        }
-    }
 
 }

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="">
 <head>
-    <!-- <meta charset="UTF-8">
-     <title>notice</title>
-     <th:block th:include="layout/header"></th:block>-->
+    <<meta charset="UTF-8">
+     <title>photo</title>
+    <link href="/css/layout/media/photo.css" rel="stylesheet"/>
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
      <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <div class="container">
-    <div class="noticePage" id="content">
+    <div class="photoPage" id="content">
         <div class="subTop">
             <div class="top">
                 <div class="container">
@@ -71,6 +71,7 @@
         var limit = 9; // 한 번에 photo 목록을 조회할 개수
         var start = 0; // 조회 시작 위치
 
+
         // 최초 입장 시 노티스 탭이 선택되어 노티스 목록을 조회
         loadNoticeList(start, limit);
 
@@ -87,6 +88,27 @@
             if(this === activeTab) {
                 return;
             }
+
+          e.preventDefault();
+          var tabUrl = $(this).attr("href"); // 클릭한 탭의 URL을 가져옵니다.
+
+          // 클릭한 탭을 현재 활성화된 탭으로 설정합니다.
+          activeTab = this;
+
+
+          // 페이지의 일부만 동적으로 변경합니다.
+          $.ajax({
+              url: tabUrl,
+              type: 'get',
+              success: function(response) {
+                  // 페이지 내용을 동적으로 변경합니다.
+                  $("#content").html(response);
+
+                  // 브라우저의 히스토리 항목을 변경하여 URL을 업데이트합니다.
+                  history.pushState({}, null, tabUrl);
+              }
+          });
+
         });
 
         function loadNoticeList(start, limit) {
@@ -115,16 +137,16 @@
 
                     // 요소의 배경 이미지를 설정합니다.
                     var photoItem = '<a href="/media/photoview?no=' + photo.cpIdx + '">' +
-                        '<div class="news-detail">' +
-                           '<div class="news-thumbnail" style="background-image: url(\'' + imgSrc + '\');"></div>' +
-                            '<div class="news-contents">' +
-                                '<div class="news-title">' +
-                                    '<p class="news-title">' + photo.cpTitle + '</p>' +
+                        '<div class="photo-detail">' +
+                           '<div class="photo-thumbnail" style="background-image: url(\'' + imgSrc + '\');"></div>' +
+                            '<div class="photo-contents">' +
+                                '<div class="photo-title">' +
+                                    '<p class="photo-title">' + photo.cpTitle + '</p>' +
                                 '</div>' +
-                                '<div class="news-date-and-hits">' +
+                                '<div class="photo-date-and-hits">' +
                                     '<p>' + photo.cpRegdate + ' • ' + photo.cpHits + '</p>' +
                                 '</div>' +
-                                '<div class="news-table">' +
+                                '<div class="photo-table">' +
                                     '<p>' + photo.tableGb + '</p>' +
                                 '</div>' +
                             '</div>' +

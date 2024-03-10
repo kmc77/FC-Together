@@ -1,10 +1,8 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Match {
     private String teamName;
     private String matchResult;

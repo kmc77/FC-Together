@@ -5,7 +5,7 @@
 }
 
 
-.noticePage .top .topTitle {
+.photoPage .top .topTitle {
   padding-top: 0;
 }
 
@@ -14,7 +14,7 @@
   text-align: center;
 }
 
-.noticePage .top .topTitle .title {
+.photoPage .top .topTitle .title {
     margin-left: -90px;
     margin-right: -40px;
     padding-top: 110px;

@@ -14,7 +14,7 @@
   text-align: center;
 }
 
-.newsPage .top .topTitle .title {
+/*.newsPage .top .topTitle .title {
     margin-left: -90px;
     margin-right: -40px;
     padding-top: 110px;
@@ -22,6 +22,16 @@
     font-size: 32px;
     font-weight: 500;
     background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+}*/
+
+.newsPage .top .topTitle .title {
+    margin-left: -90px;
+    margin-right: -40px;
+    padding-top: 140px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
 
 * {

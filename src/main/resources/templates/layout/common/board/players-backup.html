@@ -44,9 +44,9 @@
             <li class="slide3"></li>
             <li class="slide4"></li>
             <li class="slide5"></li>
-            <li><a href="#/" data-player-type="K5">K5 선수 목록</a></li>
-            <li><a href="#/" data-player-type="K7">K7 선수 목록</a></li>
-            <li><a href="#/" data-player-type="S">S리그 선수 목록</a></li>
+            <li><a href="#/">K5 선수 목록</a></li>
+            <li><a href="#/">K7 선수 목록</a></li>
+            <li><a href="#/">S리그 선수 목록</a></li>
             <li><a href="#/">현역 선수 목록</a></li>
             <li><a href="#/">선수 등록</a></li>
         </ul>
@@ -111,7 +111,7 @@
         </div>
 
         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
-            <table id="playersTable" class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
                 <thead>
                 <!-- 테이블 항목 -->
                 <tr class="text-left">
@@ -194,7 +194,9 @@
     // HTML 페이지에 사용자 이름 노출
     document.querySelector('.d-block').textContent = username + " 관리자";
 
-    $(document).ready(function() {
+
+
+    $(document).ready(function () {
         // 선택된 행들을 저장하는 배열
         var selectedRows = [];
         // 표시 버튼의 상태 (열림/닫힘)
@@ -233,13 +235,13 @@
         });
 
         // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
-        $('#columnSelection').on('click', '.column-checkbox', function() {
+        $('#columnSelection').on('click', '.column-checkbox', function () {
             var key = $(this).attr('name');
             $('.' + key).toggleClass('hidden');
         });
 
         // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
-        $("#selectAllCheckbox").click(function() {
+        $("#selectAllCheckbox").click(function(){
             $(".rowCheckbox").prop('checked', $(this).prop('checked'));
             selectedRows = [];
             if ($(this).prop('checked')) {
@@ -251,7 +253,7 @@
         });
 
         // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
-        $(document).on('click', '.rowCheckbox', function() {
+        $(document).on('click', '.rowCheckbox', function(){
             var id = parseInt($(this).attr('name'));
             if ($(this).prop('checked')) {
                 selectedRows.push(id);
@@ -271,7 +273,7 @@
             updateSelectedCount();
         });
 
-        // "삭제" 버튼 클릭 이벤트
+     // "삭제" 버튼 클릭 이벤트
         $('.deleteButton').click(function() {
             if (selectedRows.length === 0) {
                 alert("삭제할 글을 선택해주세요.");
@@ -286,9 +288,7 @@
                     $.ajax({
                         url: "/admin/layout/clubVideoDelete",
                         method: "POST",
-                        data: {
-                            cvIdx: cvIdxs
-                        },
+                        data: { cvIdx: cvIdxs },
                         traditional: true, // 이 옵션은 배열을 올바른 형태로 전송하기 위해 필요합니다.
                         beforeSend: function(xhr) {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
@@ -308,7 +308,7 @@
             }
         });
 
-        // "보기" 버튼 클릭 이벤트
+     // "보기" 버튼 클릭 이벤트
         $('.checkButton').click(function() {
             if (selectedRows.length === 0) {
                 alert("확인할 글을 선택해주세요.");
@@ -319,39 +319,39 @@
                     var cvIdx = selectedRows[i];
                     var accessToken = localStorage.getItem('accessToken');
                     // 선택된 cvIdx 해당하는 글 뷰페이지로 이동
-                                        $.ajax({
+                    $.ajax({
                         url: "/admin/layout/clubVideoView",
                         method: "GET",
-                        data: {
-                            cvIdx: cvIdx
-                        },
+                        data: { cvIdx: cvIdx },
                         beforeSend: function(xhr) {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
                         },
-                        success: function(clubVideos) {
-                            // 'update' 상태 설정
-                            $('form').data('state', 'update');
+                       success: function(clubVideos) {
+                    // 'update' 상태 설정
+                    $('form').data('state', 'update');
 
-                            // 응답받은 데이터로 화면 갱신
-                            $('#num-value').text(clubVideos.cvIdx); // 번호
-                            $('#date-value').text(clubVideos.cvDate); // 등록일
-                            $('#title-value').text(clubVideos.cvTitle); // 제목
-                            $('#content-html-value').html(clubVideos.cvContent); // HTML 내용
-                            $('#tableGb-value').text(clubVideos.tableGb); // tableGb 값
-                            $('#mvTheOriginUrl-value').text(clubVideos.mvTheOriginUrl); // mvTheOriginUrl 값
+                    // 응답받은 데이터로 화면 갱신
+                        $('#num-value').text(clubVideos.cvIdx); // 번호
+                        $('#date-value').text(clubVideos.cvDate); // 등록일
+                        $('#title-value').text(clubVideos.cvTitle); // 제목
+                        $('#content-html-value').html(clubVideos.cvContent); // HTML 내용
+                        $('#tableGb-value').text(clubVideos.tableGb); // tableGb 값
+                        $('#mvTheOriginUrl-value').text(clubVideos.mvTheOriginUrl); // mvTheOriginUrl 값
 
-                            // "영상 등록" 탭 클릭
-                            $("#nav-1 li:contains('영상 등록') a").click();
+                        // "영상 등록" 탭 클릭
+                        $("#nav-1 li:contains('영상 등록') a").click();
 
-                            // Form submit 버튼의 텍스트를 "수정"으로 변경
-                            $(".mt_20.t_r .tb_btn.blueM").val("수정");
+                        // Form submit 버튼의 텍스트를 "수정"으로 변경
+                        $(".mt_20.t_r .tb_btn.blueM").val("수정");
 
-                            // 구단영상 수정을 위한 요청을 보내도록 폼의 action 속성 변경
-                            $('form').attr('action', '/admin/layout/clubVideoUpdate/' + clubVideos.cvIdx);
+                        // 구단영상 수정을 위한 요청을 보내도록 폼의 action 속성 변경
+                        $('form').attr('action', '/admin/layout/clubVideoUpdate/' + clubVideos.cvIdx);
 
-                            // cvIdx 값을 hidden input에 설정
-                            $("input[name='cvIdx']").val(clubVideos.cvIdx);
-                        },
+                        // cvIdx 값을 hidden input에 설정
+                        $("input[name='cvIdx']").val(clubVideos.cvIdx);
+                    },
+
+
                         error: function(error) {
                             // 에러 처리
                             console.log(error);
@@ -360,8 +360,7 @@
                 }
             }
         });
-
-        $('.writeButton').click(function() {
+     $('.writeButton').click(function() {
 
             // 'create' 상태 설정
             $('form').data('state', 'create');
@@ -381,112 +380,81 @@
             $("input[name='cvIdx']").remove();
         });
 
+        //
         $(document).ready(function() {
             $(".alert-success").delay(3000).fadeOut('slow');
         });
 
-        $('form[name="clubVideo"]').submit(function(e) {
-            var isEmpty = false;
-            // 폼 내의 모든 보이는 입력 필드를 검사합니다.
-            $(this).find('input[type="text"], textarea').each(function() {
-                if ($(this).val() === '') { // 값이 비어 있는지 확인합니다.
-                    isEmpty = true;
-                    return false; // each 루프를 종료합니다.
-                }
-            });
-
-            if (isEmpty) {
-                e.preventDefault(); // 폼 제출을 막습니다.
-                alert('모든 필드를 채워주세요.');
-            } else {
-                var buttonText = $(this).find('.tb_btn.blueM').val();
-                // 버튼의 텍스트에 따라 다른 확인 메시지를 띄웁니다.
-                if (buttonText === "수정") {
-                    if (!confirm("수정을 완료하시겠습니까?")) {
-                        e.preventDefault();
-                    }
-                } else if (buttonText === "등록") {
-                    if (!confirm("구단영상을 등록하시겠습니까?")) {
-                        e.preventDefault();
-                    }
-                }
+       $('form[name="clubVideo"]').submit(function(e) {
+        var isEmpty = false;
+        // 폼 내의 모든 보이는 입력 필드를 검사합니다.
+        $(this).find('input[type="text"], textarea').each(function() {
+            if ($(this).val() === '') { // 값이 비어 있는지 확인합니다.
+                isEmpty = true;
+                return false; // each 루프를 종료합니다.
             }
         });
 
-        // 플레이어 정보 키
-        var playerKeys = {
-            'K5Player': ['k5PlayerNum', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth'],
-            'K7Player': ['k7PlayerNum', 'k7PlayerName', 'k7PlayerCapYn', 'k7PlayerSubcapYn', 'k7PlayerPosition'],
-            'SPlayer': ['sPlayerNum', 'sPlayerName', 'sPlayerCapYn', 'sPlayerSubcapYn', 'sPlayerPosition']
-        };
-
-        // 플레이어 정보를 가져와서 테이블에 추가하는 함수
-        function addPlayersToTable(playerType, playerKeys) {
-            var accessToken = localStorage.getItem('accessToken');
-
-            $.ajax({
-                url: "/admin/layout/get" + playerType + "PlayerInfo",
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + accessToken
-                },
-                success: function(data) {
-                        var players = data;
-                        $.each(players, function(i, player) {
-                            var tr = $('<tr/>');
-
-                            tr.append(
-                                "<td class='border-dashed border-t border-gray-200 px-3'>" +
-                                "<label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'>" +
-                                "<input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" +
-                                player[playerType + 'Num'] + "' data-" + playerType + "Num='" +
-                                player[playerType + 'Num'] + "'></label></td>"
-                            );
-
-                            $.each(playerKeys, function(j, key) {
-                                var value = player[key];
-                                if (value !== undefined) {
-                                    tr.append(
-                                        "<td class='border-dashed border-t border-gray-200 " + key + "'>" +
-                                        "<span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>"
-                                    );
-                                }
-                            });
-
-                            $('table').append(tr);
-                        });
-                    }
-            });
+        if (isEmpty) {
+            e.preventDefault(); // 폼 제출을 막습니다.
+            alert('모든 필드를 채워주세요.');
+        } else {
+            var buttonText = $(this).find('.tb_btn.blueM').val();
+            // 버튼의 텍스트에 따라 다른 확인 메시지를 띄웁니다.
+            if (buttonText === "수정") {
+                if (!confirm("수정을 완료하시겠습니까?")) {
+                    e.preventDefault();
+                }
+            } else if (buttonText === "등록") {
+                if (!confirm("구단영상을 등록하시겠습니까?")) {
+                    e.preventDefault();
+                }
+            }
         }
+    });
 
-        // 각 플레이어 타입에 대해 컬럼 선택 영역에 체크박스와 라벨 추가
-        $.each(playerKeys, function(playerType, keys) {
-            $.each(keys, function(index, key) {
-                var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
-                var div = $('<div/>').addClass('text-teal-600 mr-3');
-                var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
-                var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+       // k5Player 정보 키
+var k5PlayerKeys = ['k5PlayerNum', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth'];
 
-                div.append(checkbox);
-                label.append(div, divText);
-                $('#columnSelection').append(label);
+// 컬럼 선택 영역에 체크박스와 라벨을 추가
+$.each(k5PlayerKeys, function(index, key) {
+    var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+    var div = $('<div/>').addClass('text-teal-600 mr-3');
+    var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+    var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+    div.append(checkbox);
+    label.append(div, divText);
+    $('#columnSelection').append(label);
+});
+
+var accessToken = localStorage.getItem('accessToken');
+
+// K5Player 정보를 가져와서 테이블에 추가
+$.ajax({
+    url: "/admin/layout/getK5PlayerInfo",
+    method: "GET",
+    headers: {
+        "Authorization": "Bearer " + accessToken
+    },
+    success: function(data) {
+        var k5Players = data;
+        $.each(k5Players, function(i, K5_Player) {
+            var tr = $('<tr/>');
+            tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + K5_Player.k5PlayerNum + "' data-k5PlayerNum='" + K5_Player.k5PlayerNum + "'></label></td>");
+
+            // k5PlayerKeys 배열에 따라 순서대로 테이블에 데이터 추가
+            $.each(k5PlayerKeys, function(j, key) {
+                var value = K5_Player[key];
+                if (value !== undefined) {
+                    tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                }
             });
+            $('table').append(tr);
         });
-
-       $('li>a[data-player-type]').on('click', function(e) {
-        e.preventDefault();
-        var playerType = $(this).attr('data-player-type');
-        $('#playersTable').empty(); // 테이블을 비우고 새로운 데이터로 채웁니다.
-        addPlayersToTable(playerType, playerKeys[playerType + 'Player']);
+    }
+});
     });
-
-    // 페이지 로딩 시 기본적으로 K5 플레이어 정보를 테이블에 추가
-    addPlayersToTable("K5", playerKeys["K5Player"]);
-
-
-
-    });
-
 
 
 </script>

@@ -164,6 +164,23 @@
     <!-- ==============  ClubVideo End ============== -->
 
 
+    <!-- ==============  K5_Player Start ============== -->
+
+
+    <select id="getK5Player" resultType="com.project.together.domain.K5_Player">
+        SELECT * FROM K5_Player ORDER BY k5_player_num DESC
+    </select>
+
+    <select id="getK7Player" resultType="com.project.together.domain.K7_Player">
+        SELECT * FROM K7_Player ORDER BY k7_player_num DESC
+    </select>
+
+    <select id="getSPlayer" resultType="com.project.together.domain.S_Player">
+        SELECT * FROM S_Player ORDER BY s_player_num DESC
+    </select>
+
+
+    <!-- ==============  K5_Player End ============== -->
 
 
 </mapper>

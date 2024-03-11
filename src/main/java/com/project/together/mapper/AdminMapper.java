@@ -67,7 +67,12 @@ public interface AdminMapper {
 
     void deleteClubVideo(List<Integer> cvIdxs);
 
+
     /* ======================================= */
 
+    List<K5_Player> getK5Player();
 
+    List<K7_Player> getK7Player();
+
+    List<S_Player> getSPlayer();
 }

@@ -279,9 +279,25 @@ public class AdminService {
     }
 
 
-
-
     // ================================== ClubVideo and
 
 
+    // ================================== K5_Player start
+
+
+    public List<K5_Player> getK5Player() {
+        return adminMapper.getK5Player();
+    }
+
+    public List<K7_Player> getK7Player() {
+        return adminMapper.getK7Player();
+    }
+
+    public List<S_Player> getSPlayer() {
+        return adminMapper.getSPlayer();
+
+    }
+
+
+    // ================================== K5_Player and
 }

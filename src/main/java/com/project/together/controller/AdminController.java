@@ -359,6 +359,47 @@ public class AdminController {
     // ================================== ClubVideo End
 
 
+    // ================================== players start
+
+
+    // K5 선수 정보 가져오기
+    @GetMapping("/layout/getK5PlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<K5_Player>> getgetK5PlayerInfo() {
+        List<K5_Player> k5Players = adminService.getK5Player();
+        System.out.println("k5Players = " + k5Players);
+        return ResponseEntity.ok(k5Players);
+    }
+
+    // K7 선수 정보 가져오기
+    @GetMapping("/layout/getK7PlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<K7_Player>> getK7PlayerInfo() {
+        List<K7_Player> k7Players = adminService.getK7Player();
+        System.out.println("k7Players = " + k7Players);
+        return ResponseEntity.ok(k7Players);
+    }
+
+    // S리그 선수 정보 가져오기
+    @GetMapping("/layout/getSPlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<S_Player>> getsPlayerInfo() {
+        List<S_Player> sPlayers = adminService.getSPlayer();
+        System.out.println("sPlayers = " + sPlayers);
+        return ResponseEntity.ok(sPlayers);
+    }
+
+
+
+
+
+
+
+
+
+    // ================================== players End
+
+
 
 
 
@@ -383,7 +424,6 @@ public class AdminController {
 
     @GetMapping("/layout/players")
     public String players(Model model) {
-        model.addAttribute("content", "선수단 관리 입장");
         model.addAttribute("currentPage", "players");
         return "layout/common/board/players";
     }

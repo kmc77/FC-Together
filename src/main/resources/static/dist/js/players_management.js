@@ -8,10 +8,22 @@ $(document).ready(function() {
     var width = $(this).parent().width();
     $("#nav-1 .slide1").css({ opacity: 1, left: +position.left, width: width });
 
-    // 여기서 특정 조건에 따른 로직을 삭제했습니다.
-    $('#cnt_bbs').hide();
+    // 기본적으로 모든 탭을 클릭했을 때 보이는 요소들
     $('.container').show();
     $('#buttonContainer').show();
+
+    // "선수 등록" 탭을 클릭했을 때의 동작
+    if($(this).parent().attr("id") === "register-player") {
+      $('#cnt_bbs').show();
+      $('#tableContainer').hide();
+      $('#buttonContainer').hide();
+    }
+
+  // "K5, K7, S 선수 목록" 탭 클릭 시의 동작
+  if($(this).data('player-type') === "k5" || $(this).data('player-type') === "s" || $(this).data('player-type') === "k7") {
+    $('#cnt_bbs').hide();
+  }
+
   });
 
   $("#nav-1 a").on("mouseover", function() {

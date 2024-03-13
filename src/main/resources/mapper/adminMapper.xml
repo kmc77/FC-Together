@@ -164,7 +164,7 @@
     <!-- ==============  ClubVideo End ============== -->
 
 
-    <!-- ==============  K5_Player Start ============== -->
+    <!-- ==============  Player Start ============== -->
 
 
     <select id="getK5Player" resultType="com.project.together.domain.K5_Player">
@@ -180,7 +180,11 @@
     </select>
 
 
-    <!-- ==============  K5_Player End ============== -->
+    <select id="find_k5PlayerByNum" parameterType="int" resultType="com.project.together.domain.K5_Player">
+        SELECT * FROM K5_Player WHERE k5_player_num = #{k5PlayerNum}
+    </select>
+
+    <!-- ==============  Player End ============== -->
 
 
 </mapper>

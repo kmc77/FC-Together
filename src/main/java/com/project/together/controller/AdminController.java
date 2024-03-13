@@ -363,31 +363,57 @@ public class AdminController {
 
 
     // K5 선수 정보 가져오기
-    @GetMapping("/layout/getK5PlayerInfo")
+    @GetMapping("/layout/get_k5PlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<K5_Player>> getgetK5PlayerInfo() {
+    public ResponseEntity<List<K5_Player>> get_k5PlayerInfo() {
         List<K5_Player> k5Players = adminService.getK5Player();
         System.out.println("k5Players = " + k5Players);
         return ResponseEntity.ok(k5Players);
     }
 
     // K7 선수 정보 가져오기
-    @GetMapping("/layout/getK7PlayerInfo")
+    @GetMapping("/layout/get_k7PlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<K7_Player>> getK7PlayerInfo() {
+    public ResponseEntity<List<K7_Player>> get_k7PlayerInfo() {
         List<K7_Player> k7Players = adminService.getK7Player();
         System.out.println("k7Players = " + k7Players);
         return ResponseEntity.ok(k7Players);
     }
 
     // S리그 선수 정보 가져오기
-    @GetMapping("/layout/getSPlayerInfo")
+    @GetMapping("/layout/get_sPlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<S_Player>> getsPlayerInfo() {
+    public ResponseEntity<List<S_Player>> get_sPlayerInfo() {
         List<S_Player> sPlayers = adminService.getSPlayer();
         System.out.println("sPlayers = " + sPlayers);
         return ResponseEntity.ok(sPlayers);
     }
+
+    // k5 선수 상세 정보 가져오기
+    @GetMapping("/layout/k5PlayerView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<K5_Player> getK5PlayerView(@RequestParam("k5PlayerNum") int k5PlayerNum, HttpServletResponse response) {
+        System.out.println("======= k5PlayerNum = " + k5PlayerNum);
+        K5_Player k5Player = adminService.find_k5PlayerByNum(k5PlayerNum);
+        System.out.println("k5PlayerView = " + k5Player);
+        if (k5Player != null) {
+            return ResponseEntity.ok(k5Player);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // 선수 등록
+    @PostMapping("/layout/updatePlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updatePlayerInfo(@ModelAttribute ClubPhoto clubPhoto, @RequestParam String username, RedirectAttributes redirectAttributes) {
+        clubPhoto.setUsername(username);
+        adminService.saveClubPhoto(clubPhoto);
+        redirectAttributes.addFlashAttribute("message", "구단사진이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/photo_management";
+    }
+
+
 
 
 

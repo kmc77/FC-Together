@@ -64,3 +64,10 @@
     margin-top: 20px; /* 20px 상단 마진 적용 */
 }
 
+.submit-btn {
+  display: block; /* 블록 레벨 요소로 만들어 줍니다 */
+  margin-left: auto; /* 왼쪽 마진을 자동으로 설정하여 오른쪽 정렬을 합니다 */
+  margin-right: 0; /* 오른쪽 마진을 0으로 설정 */
+}
+
+

@@ -198,7 +198,7 @@
     </div>
 
     <div class="tab-content" id="tab1-content">
-       notice
+        notice
     </div>
 
     <div class="tab-content" id="tab2-content">
@@ -277,65 +277,12 @@
             showSlide2(currentIndex2 + 1);
         }
 
-     $(document).ready(function(){
-          $('.center').slick({
-            centerMode: true,
-            centerPadding: '60px',
-            slidesToShow: 3,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  centerPadding: '40px',
-                  slidesToShow: 3
-                }
-              },
-              {
-                breakpoint: 480,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  centerPadding: '40px',
-                  slidesToShow: 1
-                }
-              }
-            ]
-          });
-        });
-
-    <!--섹션3-->
-
-        let currentIndexVideo = 0;
-        const slidesVideo = document.querySelectorAll('.slider-item');
-        const totalSlidesVideo = slidesVideo.length;
-        const sliderWrapperVideo = document.querySelector('.slider');
-
-        function showSlideVideo(index) {
-            if (index < 0 || index >= totalSlidesVideo) {
-                return;
-            }
-
-            const translateValue = -index * 100 + '%';
-            sliderWrapperVideo.style.transform = 'translateX(' + translateValue + ')';
-            currentIndexVideo = index;
-        }
-
-        function prevSlide() {
-            showSlideVideo(currentIndexVideo - 1);
-        }
-
-        function nextSlide() {
-            showSlideVideo(currentIndexVideo + 1);
-        }
 
     <!--    섹션3-->
         console.clear();
 
     // animation on scroll
     AOS.init({
-        //once:true,
         duration:800,
         easing: 'ease',
     });

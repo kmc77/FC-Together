@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/layout/match/matchpage.css}" rel="stylesheet"/>
     <th:block th:include="layout/header"></th:block>
 </head>
 <body>
+
+<div class="subTop">
+    <div class="top">
+        <div class="container">
+            <div class="topTitle">
+                <p class="title">
+                    <span class="mobileBreak"><strong>경기 일정/결과</strong></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
 
 </body>
 </html>

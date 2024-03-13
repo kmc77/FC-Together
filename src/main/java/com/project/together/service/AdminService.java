@@ -282,7 +282,7 @@ public class AdminService {
     // ================================== ClubVideo and
 
 
-    // ================================== K5_Player start
+    // ================================== Player start
 
 
     public List<K5_Player> getK5Player() {
@@ -298,6 +298,10 @@ public class AdminService {
 
     }
 
+    public K5_Player find_k5PlayerByNum(int k5PlayerNum) {
+        return adminMapper.find_k5PlayerByNum(k5PlayerNum);
+    }
 
-    // ================================== K5_Player and
+
+    // ================================== Player and
 }

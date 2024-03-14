@@ -14,3 +14,6 @@ public class K5_Player {
     private String k5PlayerWeight; //추가
     private String k5PlayerBirth;  //추가
 }
+
+
+

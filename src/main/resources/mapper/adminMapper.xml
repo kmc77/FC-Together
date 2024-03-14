@@ -179,10 +179,24 @@
         SELECT * FROM S_Player ORDER BY s_player_num DESC
     </select>
 
-
     <select id="find_k5PlayerByNum" parameterType="int" resultType="com.project.together.domain.K5_Player">
         SELECT * FROM K5_Player WHERE k5_player_num = #{k5PlayerNum}
     </select>
+
+
+
+    <insert id="registerK5Player" parameterType="com.project.together.domain.K5_Player">
+        INSERT INTO K5_Player (k5_player_num, k5_player_name, k5_player_en_name, k5_player_cap_yn, k5_player_subcap_yn, k5_player_position, k5_player_height, k5_player_weight, k5_player_birth)
+        VALUES (#{k5PlayerNum}, #{k5PlayerName}, #{k5PlayerEnName}, #{k5PlayerCapYn}, #{k5PlayerSubCapYn}, #{k5PlayerPosition}, #{k5PlayerHeight}, #{k5PlayerWeight}, #{k5PlayerBirth})
+    </insert>
+
+    <insert id="registerK7Player" parameterType="com.project.together.domain.K7_Player">
+        INSERT INTO K7_Player (k7_player_num, k7_player_name, k7_player_en_name, k7_player_cap_yn, k7_player_subcap_yn, k7_player_position, k7_player_height, k7_player_weight, k7_player_birth)
+        VALUES (#{k7PlayerNum}, #{k7PlayerName}, #{k7PlayerEnName}, #{k7PlayerCapYn}, #{k7PlayerSubCapYn}, #{k7PlayerPosition}, #{k7PlayerHeight}, #{k7PlayerWeight}, #{k7PlayerBirth})
+    </insert>
+
+
+
 
     <!-- ==============  Player End ============== -->
 

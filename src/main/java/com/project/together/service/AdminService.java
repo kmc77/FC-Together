@@ -4,16 +4,13 @@ import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -303,5 +300,79 @@ public class AdminService {
     }
 
 
-    // ================================== Player and
+    // 리그에 맞게 선수 등록
+    public void registerPlayer(Map<String, Object> paramMap, String playerType) {
+        switch (playerType.toLowerCase()) {
+            case "k5":
+                K5_Player k5_player = createK5Player(paramMap);
+                adminMapper.registerK5Player(k5_player);
+                break;
+            case "k7":
+                K7_Player k7_player = createK7Player(paramMap);
+                adminMapper.registerK7Player(k7_player);
+                break;
+            case "s":
+                S_Player s_player = createSPlayer(paramMap);
+                adminMapper.registerSPlayer(s_player);
+                break;
+            default:
+                throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
+        }
+    }
+
+    private K5_Player createK5Player(Map<String, Object> paramMap) {
+        K5_Player k5_player = new K5_Player();
+
+        try {
+            k5_player.setK5PlayerNum(Integer.parseInt(paramMap.getOrDefault("k5PlayerNum", "0").toString()));
+            k5_player.setK5PlayerName(paramMap.getOrDefault("k5PlayerName", "").toString());
+            k5_player.setK5PlayerEnName(paramMap.getOrDefault("k5PlayerEnName", "").toString());
+            k5_player.setK5PlayerCapYn(paramMap.getOrDefault("k5PlayerCapYn", "").toString());
+            k5_player.setK5PlayerSubCapYn(paramMap.getOrDefault("k5PlayerSubCapYn", "").toString());
+            k5_player.setK5PlayerPosition(paramMap.getOrDefault("k5PlayerPosition", "").toString());
+            k5_player.setK5PlayerHeight(paramMap.getOrDefault("k5PlayerHeight", "").toString());
+            k5_player.setK5PlayerWeight(paramMap.getOrDefault("k5PlayerWeight", "").toString());
+            k5_player.setK5PlayerBirth(paramMap.getOrDefault("k5PlayerBirth", "").toString());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
+        }
+
+        return k5_player;
+    }
+
+
+
+    private K7_Player createK7Player(Map<String, Object> paramMap) {
+        K7_Player k7_player = new K7_Player();
+        // paramMap을 사용하여 k7_player의 필드를 채웁니다.
+
+        try {
+            k7_player.setK7PlayerNum(Integer.parseInt(paramMap.getOrDefault("k7PlayerNum", "0").toString()));
+            k7_player.setK7PlayerName(paramMap.getOrDefault("k7PlayerName", "").toString());
+            k7_player.setK7PlayerEnName(paramMap.getOrDefault("k7PlayerEnName", "").toString());
+            k7_player.setK7PlayerCapYn(paramMap.getOrDefault("k7PlayerCapYn", "").toString());
+            k7_player.setK7PlayerSubCapYn(paramMap.getOrDefault("k7PlayerSubCapYn", "").toString());
+            k7_player.setK7PlayerPosition(paramMap.getOrDefault("k7PlayerPosition", "").toString());
+            k7_player.setK7PlayerHeight(paramMap.getOrDefault("k7PlayerHeight", "").toString());
+            k7_player.setK7PlayerWeight(paramMap.getOrDefault("k7PlayerWeight", "").toString());
+            k7_player.setK7PlayerBirth(paramMap.getOrDefault("k7PlayerBirth", "").toString());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
+        }
+        return k7_player;
+    }
+
+    private S_Player createSPlayer(Map<String, Object> paramMap) {
+        S_Player s_player = new S_Player();
+        // paramMap을 사용하여 s_player의 필드를 채웁니다.
+
+        return s_player;
+    }
+
+
+
+
+// ================================== Player and
 }
+
+

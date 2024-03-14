@@ -77,4 +77,11 @@ public interface AdminMapper {
     List<S_Player> getSPlayer();
 
     K5_Player find_k5PlayerByNum(int k5PlayerNum);
+
+
+    void registerK5Player(K5_Player k5Player);
+
+    void registerK7Player(K7_Player k7Player);
+
+    void registerSPlayer(S_Player sPlayer);
 }

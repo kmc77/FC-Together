@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -403,15 +405,38 @@ public class AdminController {
         }
     }
 
-    // 선수 등록
+    // k5, k7, s리그 선수 등록
     @PostMapping("/layout/updatePlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updatePlayerInfo(@ModelAttribute ClubPhoto clubPhoto, @RequestParam String username, RedirectAttributes redirectAttributes) {
-        clubPhoto.setUsername(username);
-        adminService.saveClubPhoto(clubPhoto);
-        redirectAttributes.addFlashAttribute("message", "구단사진이 성공적으로 추가되었습니다.");
-        return "redirect:/admin/layout/photo_management";
+    public String updatePlayerInfo(@RequestBody Map<String, Object> requestData,
+                                   RedirectAttributes redirectAttributes) {
+
+        String selectedPlayerType = (String) requestData.get("selectedPlayerType");
+        Map<String, Object> dataToSend = (Map<String, Object>) requestData.get("dataToSend");
+
+        System.out.println("===== dataToSend = " + dataToSend);
+        System.out.println("===== selectedPlayerType = " + selectedPlayerType);
+
+        try {
+            adminService.registerPlayer(dataToSend, selectedPlayerType);
+            System.out.println("선수등록 성공!!");
+            redirectAttributes.addFlashAttribute("message", "선수 등록이 성공적으로 완료되었습니다.");
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/layout/";
+        }
+
+        return "redirect:/admin/layout/players";
     }
+
+
+
+
+
+
+
+
 
 
 

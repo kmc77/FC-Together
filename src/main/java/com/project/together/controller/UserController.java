@@ -145,8 +145,8 @@ public class UserController {
         } else if (league.equals("K7_Player")) {
             List<K7_Player> playerList = userService.getK7Players();
             return ResponseEntity.ok(playerList);
-        } else if (league.equals("S_Player")) {
-            List<S_Player> playerList = userService.getSPlayers();
+        } else if (league.equals("W_Player")) {
+            List<W_Player> playerList = userService.getWPlayers();
             return ResponseEntity.ok(playerList);
         } else {
             return ResponseEntity.badRequest().body("Invalid league parameter");

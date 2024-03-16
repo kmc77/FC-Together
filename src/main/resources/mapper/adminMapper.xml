@@ -175,13 +175,46 @@
         SELECT * FROM K7_Player ORDER BY k7_player_num DESC
     </select>
 
-    <select id="getSPlayer" resultType="com.project.together.domain.S_Player">
-        SELECT * FROM S_Player ORDER BY s_player_num DESC
+    <select id="getWPlayer" resultType="com.project.together.domain.W_Player">
+        SELECT * FROM W_Player ORDER BY w_player_num DESC
     </select>
 
     <select id="find_k5PlayerByNum" parameterType="int" resultType="com.project.together.domain.K5_Player">
-        SELECT * FROM K5_Player WHERE k5_player_num = #{k5PlayerNum}
+        SELECT * FROM K5_Player WHERE k5_player_num = #{playerNum}
     </select>
+
+    <select id="find_k7PlayerByNum" parameterType="int" resultType="com.project.together.domain.K7_Player">
+        SELECT * FROM K7_Player WHERE k7_player_num = #{playerNum}
+    </select>
+
+    <select id="find_wPlayerByNum" parameterType="int" resultType="com.project.together.domain.W_Player">
+        SELECT * FROM W_Player WHERE w_player_num = #{playerNum}
+    </select>
+
+
+    <delete id="deleteK5playerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM K5_Player
+        WHERE k5_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
+
+    <delete id="deleteK7playerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM K7_Player
+        WHERE k7_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
+
+    <delete id="deleteWplayerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM W_Player
+        WHERE w_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
 
 
 
@@ -194,7 +227,6 @@
         INSERT INTO K7_Player (k7_player_num, k7_player_name, k7_player_en_name, k7_player_cap_yn, k7_player_subcap_yn, k7_player_position, k7_player_height, k7_player_weight, k7_player_birth)
         VALUES (#{k7PlayerNum}, #{k7PlayerName}, #{k7PlayerEnName}, #{k7PlayerCapYn}, #{k7PlayerSubCapYn}, #{k7PlayerPosition}, #{k7PlayerHeight}, #{k7PlayerWeight}, #{k7PlayerBirth})
     </insert>
-
 
 
 

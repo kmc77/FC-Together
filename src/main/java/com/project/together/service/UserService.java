@@ -47,8 +47,8 @@ public class UserService {
         return userMapper.getK7Players();
     }
 
-    public List<S_Player> getSPlayers() {
-        return userMapper.getSPlayers();
+    public List<W_Player> getWPlayers() {
+        return userMapper.getWPlayers();
     }
 
 

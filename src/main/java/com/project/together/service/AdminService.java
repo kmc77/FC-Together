@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +19,13 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private final AdminMapper adminMapper;
+
+    // 날짜 포맷팅을 위한 메소드
+    private String getCurrentFormattedTime() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return now.format(formatter);
+    }
 
     public List<PrincipalDetails> getAllUsers() {
         // 모든 사용자 정보를 가져옵니다.
@@ -67,6 +75,7 @@ public class AdminService {
 
     // ================================== Notice start
 
+
     public List<Notice> getAllNotice() {
         // 모든 Notice 정보를 가져옵니다.
         return adminMapper.getAllNotice();
@@ -77,27 +86,12 @@ public class AdminService {
     }
 
     public void saveNotice(Notice notice) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        notice.setNoticeDate(nowStr);
-
+        notice.setNoticeDate(getCurrentFormattedTime());
         adminMapper.insertNotice(notice);
     }
 
     public void updateNotice(Notice notice) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        notice.setNoticeDate(nowStr);
-
+        notice.setNoticeDate(getCurrentFormattedTime());
         adminMapper.updateNotice(notice);
     }
 
@@ -130,28 +124,13 @@ public class AdminService {
     }
 
     public void saveNews(News news) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        news.setNewsRegdate(nowStr);
-
+        news.setNewsRegdate(getCurrentFormattedTime()); // getCurrentFormattedTime 메서드 호출
         adminMapper.insertNews(news);
 
     }
 
     public void updateNews(News news) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        news.setNewsRegdate(nowStr);
-
+        news.setNewsRegdate(getCurrentFormattedTime());
         adminMapper.updateNews(news);
 
     }
@@ -184,27 +163,12 @@ public class AdminService {
     }
 
     public void saveClubPhoto(ClubPhoto clubPhoto) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        clubPhoto.setCpRegdate(nowStr);
-
+        clubPhoto.setCpRegdate(getCurrentFormattedTime());
         adminMapper.insertClubPhoto(clubPhoto);
     }
 
     public void updateClubPhoto(ClubPhoto clubPhoto) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        clubPhoto.setCpRegdate(nowStr);
-
+        clubPhoto.setCpRegdate(getCurrentFormattedTime());
         adminMapper.updateClubPhoto(clubPhoto);
     }
 
@@ -237,28 +201,13 @@ public class AdminService {
     }
 
     public void saveClubVideo(ClubVideo clubVideo) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        clubVideo.setCvDate(nowStr);
-
+        clubVideo.setCvDate(getCurrentFormattedTime());
         adminMapper.insertClubVideo(clubVideo);
 
     }
 
     public void updateClubVideo(ClubVideo clubVideo) {
-        // 현재 시간을 가져옴
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        // 시각을 'YYYY-MM-DD HH:MM:SS' 형식의 문자열로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String nowStr = now.format(formatter);
-
-        clubVideo.setCvDate(nowStr);
-
+        clubVideo.setCvDate(getCurrentFormattedTime());
         adminMapper.updateClubVideo(clubVideo);
     }
 
@@ -290,13 +239,17 @@ public class AdminService {
         return adminMapper.getK7Player();
     }
 
-    public List<S_Player> getSPlayer() {
-        return adminMapper.getSPlayer();
+    public List<W_Player> getWPlayer() {
+        return adminMapper.getWPlayer();
 
     }
 
-    public K5_Player find_k5PlayerByNum(int k5PlayerNum) {
-        return adminMapper.find_k5PlayerByNum(k5PlayerNum);
+    public K5_Player find_k5PlayerByNum(int playerNum) {
+        return adminMapper.find_k5PlayerByNum(playerNum);
+    }
+
+    public K7_Player find_k7PlayerByNum(int playerNum) {
+        return adminMapper.find_k7PlayerByNum(playerNum);
     }
 
 
@@ -311,9 +264,9 @@ public class AdminService {
                 K7_Player k7_player = createK7Player(paramMap);
                 adminMapper.registerK7Player(k7_player);
                 break;
-            case "s":
-                S_Player s_player = createSPlayer(paramMap);
-                adminMapper.registerSPlayer(s_player);
+            case "w":
+                W_Player w_player = createWPlayer(paramMap);
+                adminMapper.registerWPlayer(w_player);
                 break;
             default:
                 throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
@@ -341,7 +294,6 @@ public class AdminService {
     }
 
 
-
     private K7_Player createK7Player(Map<String, Object> paramMap) {
         K7_Player k7_player = new K7_Player();
         // paramMap을 사용하여 k7_player의 필드를 채웁니다.
@@ -362,12 +314,52 @@ public class AdminService {
         return k7_player;
     }
 
-    private S_Player createSPlayer(Map<String, Object> paramMap) {
-        S_Player s_player = new S_Player();
-        // paramMap을 사용하여 s_player의 필드를 채웁니다.
+    private W_Player createWPlayer(Map<String, Object> paramMap) {
+        W_Player w_player = new W_Player();
+        // paramMap을 사용하여 w_player의 필드를 채웁니다.
 
-        return s_player;
+        return w_player;
     }
+
+    public void playerDelete(List<Integer> playerNums, String playerType) {
+        boolean playerExists = false;
+
+        for (Integer playerNum : playerNums) {
+            switch (playerType) {
+                case "k5":
+                    K5_Player k5Player = adminMapper.find_k5PlayerByNum(playerNum);
+                    if (k5Player != null) {
+                        adminMapper.deleteK5playerByPlayerNum(Collections.singletonList(k5Player.getK5PlayerNum()));
+                        playerExists = true;
+                    }
+                    break;
+                case "k7":
+                    K7_Player k7Player = adminMapper.find_k7PlayerByNum(playerNum);
+                    if (k7Player != null) {
+                        adminMapper.deleteK7playerByPlayerNum(Collections.singletonList(k7Player.getK7PlayerNum()));
+                        playerExists = true;
+                    }
+                    break;
+                case "w":
+                    W_Player wPlayer = adminMapper.find_wPlayerByNum(playerNum);
+                    if (wPlayer != null) {
+                        adminMapper.deleteWplayerByPlayerNum(Collections.singletonList(wPlayer.getWPlayerNum()));
+                        playerExists = true;
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("잘못된 playerType 입니다. playerType: " + playerType);
+            }
+
+        }
+
+        // 모든 playerNums 처리 후, playerExists가 false라면 예외 발생
+        if (!playerExists) {
+            throw new IllegalArgumentException("해당 선수 번호에 해당하는 선수가 존재하지 않습니다. playerNums: " + playerNums);
+        }
+    }
+
+
 
 
 

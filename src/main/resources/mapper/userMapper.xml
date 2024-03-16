@@ -31,8 +31,8 @@
         SELECT k7_player_num, k7_player_name FROM K7_Player
     </select>
 
-    <select id="getSPlayers" resultType="com.project.together.domain.S_Player">
-        SELECT s_player_num, s_player_name FROM S_Player
+    <select id="getWPlayers" resultType="com.project.together.domain.W_Player">
+        SELECT w_player_num, w_player_name FROM W_Player
     </select>
 
 

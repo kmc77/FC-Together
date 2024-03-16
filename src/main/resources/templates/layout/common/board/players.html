@@ -46,7 +46,7 @@
             <li class="slide5"></li>
             <li><a href="#/" data-player-type="k5">K5 선수 목록</a></li>
             <li><a href="#/" data-player-type="k7">K7 선수 목록</a></li>
-            <li><a href="#/" data-player-type="s">S리그 선수 목록</a></li>
+            <li><a href="#/" data-player-type="w">W리그 선수 목록</a></li>
             <li id="active-players"><a href="#/">현역 선수 목록</a></li>
             <li id="register-player"><a href="#/">선수 등록</a></li>
         </ul>
@@ -219,6 +219,7 @@
 
 
 
+
 </div>
 
 <!-- Main footer -->
@@ -338,6 +339,14 @@
         });
 
 
+        // 페이지 최초 로딩 시 selectedPlayerType 값이 없는 경우 또는 k5가 아닌 경우에만 k5를 기본값으로 설정
+        $(document).ready(function() {
+            var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+            if (!selectedPlayerType || selectedPlayerType !== 'k5') {
+                localStorage.setItem('selectedPlayerType', 'k5');
+            }
+        });
+
         $(document).ready(function() {
             $(".alert-success").delay(3000).fadeOut('slow');
         });
@@ -443,88 +452,91 @@
                updateSelectedCount();
            });
 
-           // "삭제" 버튼 클릭 이벤트
-           $('.deleteButton').click(function() {
-               if (selectedRows.length === 0) {
-                   alert("삭제할 글을 선택해주세요.");
-               } else {
-                   // 확인 메시지를 보여주고 "확인" 버튼을 눌렀는지 확인한다.
-                   var confirmMessage = selectedRows.length > 1 ? "선택한 글을 모두 삭제 하겠습니까?" : "글을 삭제 하겠습니까?";
-                   if (confirm(confirmMessage)) {
-                       var cvIdxs = selectedRows;
-                       var accessToken = localStorage.getItem('accessToken');
+        // "삭제" 버튼 클릭 이벤트
+        $('.deleteButton').click(function() {
+            if (selectedRows.length === 0) {
+                alert("삭제할 글을 선택해주세요.");
+            } else {
+                var confirmMessage = selectedRows.length > 1 ? "선택한 글을 모두 삭제 하겠습니까?" : "글을 삭제 하겠습니까?";
+                if (confirm(confirmMessage)) {
+                    var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                    var accessToken = localStorage.getItem('accessToken');
+                    var url = "/admin/layout/playerDelete";
 
-                       // 선택된 cpIdxs에 해당하는 글 삭제
-                       $.ajax({
-                           url: "/admin/layout/clubVideoDelete",
-                           method: "POST",
-                           data: {
-                               cvIdx: cvIdxs
-                           },
-                           traditional: true, // 이 옵션은 배열을 올바른 형태로 전송하기 위해 필요합니다.
-                           beforeSend: function(xhr) {
-                               xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-                           },
-                           success: function(data) {
-                               // 서버 응답 처리
-                               alert("선택한 글이 모두 삭제되었습니다.");
-                               location.reload();
-                           },
-                           error: function(error) {
-                               // 에러 처리
-                               console.log(error);
-                               alert("글 삭제에 실패하였습니다.");
-                           }
-                       });
-                   }
-               }
-           });
+                    // 선택된 모든 행을 한 번의 요청으로 서버로 보냅니다.
+                    $.ajax({
+                        url: url,
+                        method: "POST",
+                        data: {
+                            playerNums: selectedRows, // 여기를 수정하여 배열 전체를 보냅니다.
+                            playerType: selectedPlayerType,
+                        },
+                        traditional: true,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        },
+                        success: function(data) {
+                            alert("선택한 글이 모두 삭제되었습니다.");
+                            location.reload();
+                        },
+                        error: function(error) {
+                            console.log(error);
+                            alert("글 삭제에 실패하였습니다.");
+                        }
+                    });
+                }
+            }
+        });
+
+
 
            // "보기" 버튼 클릭 이벤트
-           $('.checkButton').click(function() {
-               if (selectedRows.length === 0) {
-                   alert("확인할 글을 선택해주세요.");
-               } else if (selectedRows.length > 1) {
-                   alert("확인할 글을 하나만 선택해주세요.");
-               } else {
-                   for (var i = 0; i < selectedRows.length; i++) {
-                       var k5PlayerNum = selectedRows[i];
-                       console.log("현재 선택된 k5PlayerNum:", k5PlayerNum); // 반복문 내에서 현재 선택된 k5PlayerNum 출력
+          $('.checkButton').click(function() {
+                if (selectedRows.length === 0) {
+                    alert("확인할 글을 선택해주세요.");
+                } else if (selectedRows.length > 1) {
+                    alert("확인할 글을 하나만 선택해주세요.");
+                } else {
+                    var selectedPlayerType = localStorage.getItem('selectedPlayerType'); // selectedPlayerType 값을 로컬 스토리지에서 가져옵니다.
+                    for (var i = 0; i < selectedRows.length; i++) {
+                        var playerNumKey = selectedPlayerType + "PlayerNum"; // 동적으로 변수 이름 생성 (예: "k5PlayerNum")
+                        var playerNum = selectedRows[0]; // 선택된 행의 번호를 가져옵니다.
 
-                       var accessToken = localStorage.getItem('accessToken');
-                       // 선택된 k5PlayerNum 해당하는 뷰페이지로 이동
-                                           $.ajax({
-                           url: "/admin/layout/k5PlayerView",
-                           method: "GET",
-                           data: {
-                               k5PlayerNum: k5PlayerNum
-                           },
-                           beforeSend: function(xhr) {
-                               xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-                           },
-                           success: function(k5Player) {
-                               // 'update' 상태 설정
-                               $('form').data('state', 'update');
+                        var accessToken = localStorage.getItem('accessToken');
+                        var url = "/admin/layout/" + selectedPlayerType + "PlayerView"; // 예: "/admin/layout/k5PlayerView"
 
-                               // 응답받은 데이터로 화면 갱신
-                               $('#PlayerNum-value').text(k5Player.k5PlayerNum); // 선수번호
-                               $('#PlayerName-value').text(k5Player.k5PlayerName); // 이름
-                               $('#PlayerEnName-value').text(k5Player.k5PlayerEnName); // 영문이름
-                               $('#PlayerCapYn-value').text(k5Player.k5PlayerCapYn); // 주장여부
-                               $('#PlayerSubCapYn-value').text(k5Player.k5PlayerSubCapYn); // 부주장여부
-                               $('#PlayerPosition-value').text(k5Player.k5PlayerPosition); // 포지션
-                               $('#PlayerHeight-value').text(k5Player.k5PlayerHeight); // 키
-                               $('#PlayerWeight-value').text(k5Player.k5PlayerWeight); // 체중
-                               $('#PlayerBirth-value').text(k5Player.k5PlayerBirth); // 생년월일
+                           $.ajax({
+                            url: url,
+                            method: "GET",
+                            data: {
+                                 playerNum: playerNum,
+                            },
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                            },
+                          success: function(playerData) {
+                                // 'update' 상태 설정
+                                $('form').data('state', 'update');
 
-                               // "선수 등록" 탭 클릭
-                               $("#register-player a").trigger('click');
+                                // localStorage에서 selectedPlayerType 값을 가져옵니다.
+                                var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                                var playerTypePrefix = selectedPlayerType + 'Player'; // 예: "k5Player"
 
-                               // 구단영상 수정을 위한 요청을 보내도록 폼의 action 속성 변경
-                               $('form').attr('action', '/admin/layout/clubVideoUpdate/' + clubVideos.cvIdx);
+                                // 응답받은 데이터로 화면 갱신
+                                $('#PlayerNum-value').text(playerData[playerTypePrefix + 'Num']); // 선수번호
+                                $('#PlayerName-value').text(playerData[playerTypePrefix + 'Name']); // 이름
+                                $('#PlayerEnName-value').text(playerData[playerTypePrefix + 'EnName']); // 영문이름
+                                $('#PlayerCapYn-value').text(playerData[playerTypePrefix + 'CapYn']); // 주장여부
+                                $('#PlayerSubCapYn-value').text(playerData[playerTypePrefix + 'SubCapYn']); // 부주장여부
+                                $('#PlayerPosition-value').text(playerData[playerTypePrefix + 'Position']); // 포지션
+                                $('#PlayerHeight-value').text(playerData[playerTypePrefix + 'Height']); // 키
+                                $('#PlayerWeight-value').text(playerData[playerTypePrefix + 'Weight']); // 체중
+                                $('#PlayerBirth-value').text(playerData[playerTypePrefix + 'Birth']); // 생년월일
 
-                               // cvIdx 값을 hidden input에 설정
-                               $("input[name='cvIdx']").val(clubVideos.cvIdx);
+                                // "선수 등록" 탭 클릭
+                                $("#register-player a").trigger('click');
+
+
                            },
                            error: function(error) {
                                // 에러 처리
@@ -541,7 +553,7 @@
            var playerKeys = {
              'k5Player': ['k5PlayerNum', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth'],
              'k7Player': ['k7PlayerNum', 'k7PlayerName', 'k7PlayerEnName', 'k7PlayerCapYn', 'k7PlayerSubCapYn', 'k7PlayerPosition', 'k7PlayerHeight', 'k7PlayerWeight', 'k7PlayerBirth'],
-             'sPlayer': ['sPlayerNum', 'sPlayerName', 'sPlayerEnName', 'sPlayerCapYn', 'sPlayerSubCapYn', 'sPlayerPosition', 'sPlayerHeight', 'sPlayerWeight', 'sPlayerBirth']
+             'wPlayer': ['wPlayerNum', 'wPlayerName', 'wPlayerEnName', 'wPlayerCapYn', 'wPlayerSubCapYn', 'wPlayerPosition', 'wPlayerHeight', 'wPlayerWeight', 'wPlayerBirth']
            };
 
            // 각 플레이어 타입에 대해 컬럼 선택 영역에 체크박스와 라벨 추가
@@ -644,8 +656,8 @@
                 playerTypeName = 'k5 선수 목록';
             } else if(playerType === 'k7') {
                 playerTypeName = 'k7 선수 목록';
-            } else if(playerType === 's') {
-                playerTypeName = 's리그 선수 목록';
+            } else if(playerType === 'w') {
+                playerTypeName = 'w리그 선수 목록';
             }
 
             // h1 태그의 텍스트를 업데이트합니다.

@@ -382,13 +382,13 @@ public class AdminController {
         return ResponseEntity.ok(k7Players);
     }
 
-    // W리그 선수 정보 가져오기
-    @GetMapping("/layout/get_wPlayerInfo")
+    // W1리그 선수 정보 가져오기
+    @GetMapping("/layout/get_w1PlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<W_Player>> get_wPlayerInfo() {
-        List<W_Player> wPlayers = adminService.getWPlayer();
-        System.out.println("wPlayers = " + wPlayers);
-        return ResponseEntity.ok(wPlayers);
+    public ResponseEntity<List<W1_Player>> get_w1PlayerInfo() {
+        List<W1_Player> w1Players = adminService.getW1Player();
+        System.out.println("w1Players = " + w1Players);
+        return ResponseEntity.ok(w1Players);
     }
 
     // k5 선수 상세 정보 가져오기
@@ -414,6 +414,19 @@ public class AdminController {
         System.out.println("k5PlayerView = " + k7Player);
         if (k7Player != null) {
             return ResponseEntity.ok(k7Player);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // w1 선수 상세 정보 가져오기
+    @GetMapping("/layout/w1PlayerView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<W1_Player> getW1PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
+        W1_Player w1Player = adminService.find_w1PlayerByNum(playerNum);
+        System.out.println("W1PlayerView = " + w1Player);
+        if (w1Player != null) {
+            return ResponseEntity.ok(w1Player);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class K7_Player {
     private int k7PlayerNum;
+    private String k7filePath;
     private String k7PlayerName;
     private String k7PlayerEnName; //추가
     private String k7PlayerCapYn;

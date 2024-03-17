@@ -239,8 +239,8 @@ public class AdminService {
         return adminMapper.getK7Player();
     }
 
-    public List<W_Player> getWPlayer() {
-        return adminMapper.getWPlayer();
+    public List<W1_Player> getW1Player() {
+        return adminMapper.getW1Player();
 
     }
 
@@ -250,6 +250,10 @@ public class AdminService {
 
     public K7_Player find_k7PlayerByNum(int playerNum) {
         return adminMapper.find_k7PlayerByNum(playerNum);
+    }
+
+    public W1_Player find_w1PlayerByNum(int playerNum) {
+        return adminMapper.find_w1PlayerByNum(playerNum);
     }
 
 
@@ -264,9 +268,9 @@ public class AdminService {
                 K7_Player k7_player = createK7Player(paramMap);
                 adminMapper.registerK7Player(k7_player);
                 break;
-            case "w":
-                W_Player w_player = createWPlayer(paramMap);
-                adminMapper.registerWPlayer(w_player);
+            case "w1":
+                W1_Player w1_player = createW1Player(paramMap);
+                adminMapper.registerW1Player(w1_player);
                 break;
             default:
                 throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
@@ -314,11 +318,24 @@ public class AdminService {
         return k7_player;
     }
 
-    private W_Player createWPlayer(Map<String, Object> paramMap) {
-        W_Player w_player = new W_Player();
-        // paramMap을 사용하여 w_player의 필드를 채웁니다.
+    private W1_Player createW1Player(Map<String, Object> paramMap) {
+        W1_Player w1_player = new W1_Player();
+        // paramMap을 사용하여 w1_player의 필드를 채웁니다.
 
-        return w_player;
+        try {
+            w1_player.setW1PlayerNum(Integer.parseInt(paramMap.getOrDefault("w1PlayerNum", "0").toString()));
+            w1_player.setW1PlayerName(paramMap.getOrDefault("w1PlayerName", "").toString());
+            w1_player.setW1PlayerEnName(paramMap.getOrDefault("w1PlayerEnName", "").toString());
+            w1_player.setW1PlayerCapYn(paramMap.getOrDefault("w1PlayerCapYn", "").toString());
+            w1_player.setW1PlayerSubCapYn(paramMap.getOrDefault("w1PlayerSubCapYn", "").toString());
+            w1_player.setW1PlayerPosition(paramMap.getOrDefault("w1PlayerPosition", "").toString());
+            w1_player.setW1PlayerHeight(paramMap.getOrDefault("w1PlayerHeight", "").toString());
+            w1_player.setW1PlayerWeight(paramMap.getOrDefault("w1PlayerWeight", "").toString());
+            w1_player.setW1PlayerBirth(paramMap.getOrDefault("w1PlayerBirth", "").toString());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
+        }
+        return w1_player;
     }
 
     public void playerDelete(List<Integer> playerNums, String playerType) {
@@ -340,10 +357,10 @@ public class AdminService {
                         playerExists = true;
                     }
                     break;
-                case "w":
-                    W_Player wPlayer = adminMapper.find_wPlayerByNum(playerNum);
+                case "w1":
+                    W1_Player wPlayer = adminMapper.find_w1PlayerByNum(playerNum);
                     if (wPlayer != null) {
-                        adminMapper.deleteWplayerByPlayerNum(Collections.singletonList(wPlayer.getWPlayerNum()));
+                        adminMapper.deleteW1playerByPlayerNum(Collections.singletonList(wPlayer.getW1PlayerNum()));
                         playerExists = true;
                     }
                     break;
@@ -358,8 +375,6 @@ public class AdminService {
             throw new IllegalArgumentException("해당 선수 번호에 해당하는 선수가 존재하지 않습니다. playerNums: " + playerNums);
         }
     }
-
-
 
 
 

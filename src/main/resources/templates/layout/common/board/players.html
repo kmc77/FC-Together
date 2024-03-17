@@ -46,7 +46,7 @@
             <li class="slide5"></li>
             <li><a href="#/" data-player-type="k5">K5 선수 목록</a></li>
             <li><a href="#/" data-player-type="k7">K7 선수 목록</a></li>
-            <li><a href="#/" data-player-type="w">W리그 선수 목록</a></li>
+            <li><a href="#/" data-player-type="w1">Woman 선수 목록</a></li>
             <li id="active-players"><a href="#/">현역 선수 목록</a></li>
             <li id="register-player"><a href="#/">선수 등록</a></li>
         </ul>
@@ -66,6 +66,10 @@
                             <dl class="flex-align-center">
                                 <dt id="PlayerNum-label">선수번호</dt>
                                 <dd id="PlayerNum-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="filePath-label">선수사진</dt>
+                                <dd id="filePath-value"></dd>
                             </dl>
                             <dl>
                                 <dt id="PlayerName-label">이름</dt>
@@ -179,6 +183,8 @@
                 </th>
                 <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerNum">플레이어 번호</th>
 
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5filePath">플레이어 프로필</th>
+
                 <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerName">플레이어 이름</th>
 
                 <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerEnName">플레이어 영문 이름</th>
@@ -269,6 +275,7 @@
             setTimeout(function() {
                 // 각 입력 필드를 추가하는 함수 호출
                 addInputField('PlayerNum-value', '선수 번호', selectedPlayerType + 'PlayerNum');
+                <!--addInputField('filePath-value', '선수 사진', selectedPlayerType + 'filePath');-->
                 addInputField('PlayerName-value', '이름', selectedPlayerType + 'PlayerName');
                 addInputField('PlayerEnName-value', '영문 이름', selectedPlayerType + 'PlayerEnName');
                 addInputField('PlayerCapYn-value', 'Y 또는 N', selectedPlayerType + 'PlayerCapYn');
@@ -524,6 +531,7 @@
 
                                 // 응답받은 데이터로 화면 갱신
                                 $('#PlayerNum-value').text(playerData[playerTypePrefix + 'Num']); // 선수번호
+                                $('#filePath-value').text(playerData[playerTypePrefix + 'filePath']); // 선수프로필
                                 $('#PlayerName-value').text(playerData[playerTypePrefix + 'Name']); // 이름
                                 $('#PlayerEnName-value').text(playerData[playerTypePrefix + 'EnName']); // 영문이름
                                 $('#PlayerCapYn-value').text(playerData[playerTypePrefix + 'CapYn']); // 주장여부
@@ -551,9 +559,9 @@
 
 
            var playerKeys = {
-             'k5Player': ['k5PlayerNum', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth'],
-             'k7Player': ['k7PlayerNum', 'k7PlayerName', 'k7PlayerEnName', 'k7PlayerCapYn', 'k7PlayerSubCapYn', 'k7PlayerPosition', 'k7PlayerHeight', 'k7PlayerWeight', 'k7PlayerBirth'],
-             'wPlayer': ['wPlayerNum', 'wPlayerName', 'wPlayerEnName', 'wPlayerCapYn', 'wPlayerSubCapYn', 'wPlayerPosition', 'wPlayerHeight', 'wPlayerWeight', 'wPlayerBirth']
+             'k5Player': ['k5PlayerNum', 'k5filePath', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth'],
+             'k7Player': ['k7PlayerNum', 'k7filePath', 'k7PlayerName', 'k7PlayerEnName', 'k7PlayerCapYn', 'k7PlayerSubCapYn', 'k7PlayerPosition', 'k7PlayerHeight', 'k7PlayerWeight', 'k7PlayerBirth'],
+             'w1Player': ['w1PlayerNum', 'w1filePath', 'w1PlayerName', 'w1PlayerEnName', 'w1PlayerCapYn', 'w1PlayerSubCapYn', 'w1PlayerPosition', 'w1PlayerHeight', 'w1PlayerWeight', 'w1PlayerBirth']
            };
 
            // 각 플레이어 타입에 대해 컬럼 선택 영역에 체크박스와 라벨 추가
@@ -656,8 +664,8 @@
                 playerTypeName = 'k5 선수 목록';
             } else if(playerType === 'k7') {
                 playerTypeName = 'k7 선수 목록';
-            } else if(playerType === 'w') {
-                playerTypeName = 'w리그 선수 목록';
+            } else if(playerType === 'w1') {
+                playerTypeName = 'Woman 선수 목록';
             }
 
             // h1 태그의 텍스트를 업데이트합니다.

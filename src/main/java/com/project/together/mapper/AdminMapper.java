@@ -74,24 +74,24 @@ public interface AdminMapper {
 
     List<K7_Player> getK7Player();
 
-    List<W_Player> getWPlayer();
+    List<W1_Player> getW1Player();
 
     K5_Player find_k5PlayerByNum(int playerNum);
 
     K7_Player find_k7PlayerByNum(int playerNum);
 
-    W_Player find_wPlayerByNum(int playerNum);
+    W1_Player find_w1PlayerByNum(int playerNum);
 
 
     void registerK5Player(K5_Player k5Player);
 
     void registerK7Player(K7_Player k7Player);
 
-    void registerWPlayer(W_Player wPlayer);
+    void registerW1Player(W1_Player w1Player);
 
     void deleteK5playerByPlayerNum(List<Integer> playerNums);
 
     void deleteK7playerByPlayerNum(List<Integer> playerNums);
 
-    void deleteWplayerByPlayerNum(List<Integer> playerNums);
+    void deleteW1playerByPlayerNum(List<Integer> playerNums);
 }

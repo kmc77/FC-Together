@@ -21,7 +21,7 @@ public interface UserMapper {
 
     List<K7_Player> getK7Players();
 
-    List<W_Player> getWPlayers();
+    List<W1_Player> getW1Players();
 
     void delete(User user);
 

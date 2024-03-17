@@ -17,10 +17,12 @@ $(document).ready(function() {
       $('#cnt_bbs').show();
       $('#tableContainer').hide();
       $('#buttonContainer').hide();
+
+
     }
 
-  // "K5, K7, S 선수 목록" 탭 클릭 시의 동작
-  if($(this).data('player-type') === "k5" || $(this).data('player-type') === "s" || $(this).data('player-type') === "k7") {
+  // "K5, K7, W1 선수 목록" 탭 클릭 시의 동작
+  if($(this).data('player-type') === "k5" || $(this).data('player-type') === "w1" || $(this).data('player-type') === "k7") {
     $('#cnt_bbs').hide();
   }
 

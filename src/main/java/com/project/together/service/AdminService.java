@@ -257,26 +257,6 @@ public class AdminService {
     }
 
 
-    // 리그에 맞게 선수 등록
-    public void registerPlayer(Map<String, Object> paramMap, String playerType) {
-        switch (playerType.toLowerCase()) {
-            case "k5":
-                K5_Player k5_player = createK5Player(paramMap);
-                adminMapper.registerK5Player(k5_player);
-                break;
-            case "k7":
-                K7_Player k7_player = createK7Player(paramMap);
-                adminMapper.registerK7Player(k7_player);
-                break;
-            case "w1":
-                W1_Player w1_player = createW1Player(paramMap);
-                adminMapper.registerW1Player(w1_player);
-                break;
-            default:
-                throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
-        }
-    }
-
     private K5_Player createK5Player(Map<String, Object> paramMap) {
         K5_Player k5_player = new K5_Player();
 
@@ -338,6 +318,26 @@ public class AdminService {
         return w1_player;
     }
 
+    // 리그에 맞게 선수 등록
+    public void registerPlayer(Map<String, Object> paramMap, String playerType) {
+        switch (playerType.toLowerCase()) {
+            case "k5":
+                K5_Player k5_player = createK5Player(paramMap);
+                adminMapper.registerK5Player(k5_player);
+                break;
+            case "k7":
+                K7_Player k7_player = createK7Player(paramMap);
+                adminMapper.registerK7Player(k7_player);
+                break;
+            case "w1":
+                W1_Player w1_player = createW1Player(paramMap);
+                adminMapper.registerW1Player(w1_player);
+                break;
+            default:
+                throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
+        }
+    }
+
     public void playerDelete(List<Integer> playerNums, String playerType) {
         boolean playerExists = false;
 
@@ -375,8 +375,6 @@ public class AdminService {
             throw new IllegalArgumentException("해당 선수 번호에 해당하는 선수가 존재하지 않습니다. playerNums: " + playerNums);
         }
     }
-
-
 
 
 // ================================== Player and

@@ -1,5 +1,7 @@
 package com.project.together.service;
 
+import com.project.together.domain.K5_Player;
+import com.project.together.domain.K7_Player;
 import com.project.together.domain.TeamStaff;
 import com.project.together.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,4 +14,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamService {
 
+    private final TeamMapper teamMapper;
+
+
+    public List<K5_Player> getK5Player() {
+        return teamMapper.getK5Player();
+    }
+
+    public List<K7_Player> getK7Player() {
+        return teamMapper.getK7Player();
+    }
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 public class TeamStaff {
     private String teamName;
     private String teamStaffName;
+    private String teamStaffEnName;
     private String teamStaffRole;
     private String teamLeagueGb;
 }

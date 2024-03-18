@@ -2,5 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.TeamMapper">
 
+    <select id="getK5Player" resultType="com.project.together.domain.K5_Player">
+        SELECT * FROM K5_Player ORDER BY k5_player_num DESC
+    </select>
+
+    <select id="getK7Player" resultType="com.project.together.domain.K7_Player">
+        SELECT * FROM K7_Player ORDER BY k7_player_num DESC
+    </select>
+
 
 </mapper>

@@ -531,7 +531,7 @@
 
                                 // 응답받은 데이터로 화면 갱신
                                 $('#PlayerNum-value').text(playerData[playerTypePrefix + 'Num']); // 선수번호
-                                $('#filePath-value').text(playerData[playerTypePrefix + 'filePath']); // 선수프로필
+                                $('#filePath-value').html(`<img src="${playerData[playerTypePrefix + 'filePath']}" alt="선수 프로필 사진" style="max-width: 100%; height: auto;">`); // 선수프로필
                                 $('#PlayerName-value').text(playerData[playerTypePrefix + 'Name']); // 이름
                                 $('#PlayerEnName-value').text(playerData[playerTypePrefix + 'EnName']); // 영문이름
                                 $('#PlayerCapYn-value').text(playerData[playerTypePrefix + 'CapYn']); // 주장여부

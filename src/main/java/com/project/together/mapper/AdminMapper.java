@@ -94,4 +94,14 @@ public interface AdminMapper {
     void deleteK7playerByPlayerNum(List<Integer> playerNums);
 
     void deleteW1playerByPlayerNum(List<Integer> playerNums);
+
+    /* ======================================= */
+
+    List<TeamStaff> getTeamStaff();
+
+    void insertTeamStaff(TeamStaff teamStaff);
+
+    void deleteTeamStaff(List<Integer> teamStaffNum);
+
+    TeamStaff findTeamStaffByNum(int teamStaffNum);
 }

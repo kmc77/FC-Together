@@ -451,8 +451,6 @@ public class AdminController {
     }
 
 
-
-
     // k5, k7, w리그 선수 등록
     @PostMapping("/layout/updatePlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -461,9 +459,6 @@ public class AdminController {
 
         String selectedPlayerType = (String) requestData.get("selectedPlayerType");
         Map<String, Object> dataToSend = (Map<String, Object>) requestData.get("dataToSend");
-
-        System.out.println("===== dataToSend = " + dataToSend);
-        System.out.println("===== selectedPlayerType = " + selectedPlayerType);
 
         try {
             adminService.registerPlayer(dataToSend, selectedPlayerType);
@@ -479,24 +474,82 @@ public class AdminController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // ================================== players End
+
+
+    // ================================== staff start
+
+    // 스태프 선수 정보 가져오기
+    @GetMapping("/layout/get_staffInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<TeamStaff>> get_staffInfo() {
+        List<TeamStaff> teamStaffs = adminService.getTeamStaff();
+        System.out.println("teamStaffs = " + teamStaffs);
+        return ResponseEntity.ok(teamStaffs);
+    }
+
+
+    // 구단 Staff 상세 정보 가져오기
+    @GetMapping("/layout/teamStaffView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<TeamStaff> teamStaffView(@RequestParam("teamStaffNum") int teamStaffNum, HttpServletResponse response) {
+        TeamStaff teamStaff = adminService.findTeamStaffByNum(teamStaffNum);
+        System.out.println("컨트롤러 teamStaff = " + teamStaff);
+        if (teamStaff != null) {
+            return ResponseEntity.ok(teamStaff);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    // 선수 삭제
+    @PostMapping("/layout/teamStaffDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> teamStaffDelete(@RequestParam("teamStaffNum") List<Integer> teamStaffNum, HttpServletResponse response) {
+        System.out.println("컨트롤러 teamStaffNum = " + teamStaffNum );
+        try {
+            // 한 번의 호출로 모든 번호 처리
+            adminService.teamStaffDelete(teamStaffNum);
+            System.out.println("TeamStaff 삭제 완료!!");
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+    // 구단 스태프 등록
+    @PostMapping("/layout/teamStaffUpdate")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String teamStaffUpdate(@RequestBody TeamStaff teamStaff, RedirectAttributes redirectAttributes) {
+
+        System.out.println("컨트롤러 teamStaff = " + teamStaff);
+
+        // 예를 들어, teamStaffService.save(teamStaff); 와 같이 사용할 수 있습니다.
+        adminService.save(teamStaff);
+
+
+        // 데이터베이스에 저장하는 과정은 생략하고, 성공적으로 처리되었다고 가정합시다.
+        // 성공 메시지를 리다이렉트 속성에 추가합니다.
+        redirectAttributes.addFlashAttribute("message", "스태프 정보가 성공적으로 추가되었습니다.");
+
+        // 스태프 관리 페이지로 리다이렉트합니다.
+        return "redirect:/admin/layout/staff";
+    }
+
+
+
+
+
+
+    // ================================== staff End
 
 
 

@@ -58,14 +58,6 @@
                 <!-- 팀 멤버 섹션 끝 -->
             </div>
 
-            <div class="tab__content">
-                <!-- 팀 멤버 섹션 시작 -->
-                <section class="team-member section">
-
-                </section>
-                <!-- 팀 멤버 섹션 끝 -->
-            </div>
-
 
 
            <!-- <section class="team-member section">
@@ -219,9 +211,8 @@
                 playerTypes = ['w1'];
                 break;
             case 4:
-                // 코칭스태프 탭 클릭 시 코칭스태프 데이터 로드 함수 직접 호출
-                loadCoachingStaffData();
-                return; // 코칭스태프 데이터 로드 후 해당 케이스에서 함수 종료
+                playerTypes = ['t1'];
+                break;
             default:
                 playerTypes = [];
         }
@@ -229,10 +220,9 @@
         playerTypes.forEach(function(playerType) {
             addPlayersToTable(playerType, tabNum);
         });
-
     }
 
-    function addPlayersToTable(playerType, tabNum) {
+       function addPlayersToTable(playerType, tabNum) {
         var accessToken = localStorage.getItem('accessToken');
 
         $.ajax({
@@ -282,7 +272,7 @@
                                         <div class="team-member__data">
                                             <div class="team-member__data-unit">
                                                 <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
-                                                <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
+                                                <p class="team-member__position">${player[playerType + 'PlayerPosition']}</p>
                                             </div>
                                             <div class="team-member__data-unit">
                                                 <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
@@ -306,69 +296,6 @@
                     }
                 });
            }
-        });
-    }
-
-    // 코칭스태프 데이터를 로드하는 함수
-    function loadCoachingStaffData() {
-    var accessToken = localStorage.getItem('accessToken');
-
-        // 코칭스태프 데이터를 가져오기 위한 AJAX 요청
-        $.ajax({
-            url: "/team/layout/get_teamStaffInfo",
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + accessToken
-            },
-            success: function(data) {
-                var teamStaff = data; // 서버로부터 받은 코칭스태프 데이터
-
-                // 코칭스태프 섹션 생성
-                var sectionHtml = `
-                    <section class="team-member section">
-                        <h3 class="title title--underline">Staff</h3>
-                        <ul class="team-member__list team-member__list--staff">
-                `;
-
-                // 코칭스태프 목록 생성
-                teamStaff.forEach(function(teamStaff) {
-                    var defaultImg = "/img/teamstaffimg/test2.jpg";
-                    var staffImgSrc = teamStaff.filePath ? "/wp-content/uploads/coaching_staff_photo/1/" + teamStaff.teamStaffFilePath + ".png" : defaultImg;
-                    var staffHtml = `
-                        <li class="team-member__item">
-                           <a class="team-member__link" href="/en/topteam/detail/?id=${teamStaff.teamStaffNum}">
-                            <div class="team-member__img-holder">
-                                <img class="team-member__img lozad"
-                                    src="${staffImgSrc}"
-                                    data-src="${staffImgSrc}"
-                                    alt="${teamStaff.teamStaffName}"
-                                    data-loaded="true">
-                            </div>
-                            <div class="team-member__data">
-                                <div class="team-member__data-unit">
-                                    <p class="team-member__role">${teamStaff.teamStaffRole} / ${teamStaff.teamLeagueGb}</p>
-                                    <p class="team-member__name-ja" wovn-ignore="true">${teamStaff.teamStaffName}
-                                    <p class="team-member__name-en">${teamStaff.teamStaffEnName}</p>
-                                    <p class="team-member__text">${teamStaff.teamStaffBirth}</p>
-                                </div>
-                            </div>
-                           </a>
-                        </li>
-                    `;
-                    sectionHtml += staffHtml; // 섹션 HTML에 코칭스태프 HTML 추가
-                });
-
-                sectionHtml += `
-                        </ul>
-                    </section>
-                `;
-
-                // 생성된 코칭스태프 섹션 HTML을 문서에 추가
-                $('.tab__content').append(sectionHtml);
-
-                 // 성공적으로 데이터를 로드한 후 서브탭 숨기기
-               <!-- $('.sub_tabMenu').hide();-->
-            }
         });
     }
 

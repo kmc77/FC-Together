@@ -134,6 +134,7 @@
 
     <!-- ==============  ClubVideo Start ============== -->
 
+
     <select id="getAllClubVideo" resultType="com.project.together.domain.ClubVideo">
         SELECT * FROM ClubVideo ORDER BY cv_idx DESC
     </select>
@@ -217,7 +218,6 @@
     </delete>
 
 
-
     <insert id="registerK5Player" parameterType="com.project.together.domain.K5_Player">
         INSERT INTO K5_Player (k5_player_num, k5_file_path, k5_player_name, k5_player_en_name, k5_player_cap_yn, k5_player_subcap_yn, k5_player_position, k5_player_height, k5_player_weight, k5_player_birth)
         VALUES (#{k5PlayerNum}, #{k5filePath}, #{k5PlayerName}, #{k5PlayerEnName}, #{k5PlayerCapYn}, #{k5PlayerSubCapYn}, #{k5PlayerPosition}, #{k5PlayerHeight}, #{k5PlayerWeight}, #{k5PlayerBirth})
@@ -236,6 +236,38 @@
 
 
     <!-- ==============  Player End ============== -->
+
+
+    <!-- ==============  TeamStaff Start ============== -->
+
+    <select id="getTeamStaff" resultType="com.project.together.domain.TeamStaff">
+        SELECT * FROM TeamStaff ORDER BY team_staff_num DESC
+    </select>
+
+    <insert id="insertTeamStaff" parameterType="com.project.together.domain.TeamStaff">
+        INSERT INTO TeamStaff (team_staff_file_path, team_staff_name, team_staff_en_name, team_birth, team_staff_role, team_league_gb)
+        VALUES (#{teamStaffFilePath}, #{teamStaffName}, #{teamStaffEnName}, #{teamStaffBirth}, #{teamStaffRole}, #{teamLeagueGb})
+    </insert>
+
+    <select id="findTeamStaffByNum" parameterType="int" resultType="com.project.together.domain.TeamStaff">
+        SELECT * FROM TeamStaff WHERE team_staff_num = #{teamStaffNum}
+    </select>
+
+
+
+    <delete id="deleteTeamStaff" parameterType="java.util.List">
+        DELETE FROM TeamStaff
+        WHERE team_staff_num IN
+        <foreach item="teamStaffNum" collection="list" open="(" separator="," close=")">
+            #{teamStaffNum}
+        </foreach>
+    </delete>
+
+
+
+
+
+    <!-- ==============  TeamStaff End ============== -->
 
 
 </mapper>

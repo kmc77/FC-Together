@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+
 body {
   height: 100%;
   /*overflow: hidden;*/
@@ -348,6 +349,8 @@ a {
 
  /* Profile card text */
 
+
+
  html {
    font-size: 62.5%;
  }
@@ -385,7 +388,7 @@ a {
 
  @media (min-width: 737px) {
    .section {
-     padding: 110px 0;
+     padding: 20px 0;
    }
  }
 
@@ -544,6 +547,7 @@ a {
    max-width: 100%;
    font-family: "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
  }
+
 
  .team-member__item {
    background-color: #fff;

@@ -2,6 +2,8 @@ package com.project.together.controller;
 
 import com.project.together.domain.K5_Player;
 import com.project.together.domain.K7_Player;
+import com.project.together.domain.TeamStaff;
+import com.project.together.domain.W1_Player;
 import com.project.together.service.TeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,7 +39,7 @@ public class TeamController {
         return ResponseEntity.ok(k7Players);
     }
 
-    /*// W1리그 선수 정보 가져오기
+    // W1리그 선수 정보 가져오기
     @GetMapping("/layout/get_w1PlayerInfo")
     public ResponseEntity<List<W1_Player>> get_w1PlayerInfo() {
         List<W1_Player> w1Players = teamService.getW1Player();
@@ -46,13 +48,12 @@ public class TeamController {
     }
 
     // TeamStaff 정보 가져오기
-    @GetMapping("/layout/get_t1PlayerInfo")
-    public ResponseEntity<List<TeamStaff>> get_t1PlayerInfo() {
+    @GetMapping("/layout/get_teamStaffInfo")
+    public ResponseEntity<List<TeamStaff>> get_coachingStaffInfo() {
         List<TeamStaff> teamStaffs = teamService.getTeamStaff();
         System.out.println("teamStaffs = " + teamStaffs);
         return ResponseEntity.ok(teamStaffs);
     }
-*/
 
 
 }

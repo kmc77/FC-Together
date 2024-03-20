@@ -377,7 +377,44 @@ public class AdminService {
     }
 
 
+
 // ================================== Player and
+
+
+// ================================== Staff start
+
+    public List<TeamStaff> getTeamStaff() {
+        return adminMapper.getTeamStaff();
+    }
+
+    public void save(TeamStaff teamStaff) {
+        adminMapper.insertTeamStaff(teamStaff);
+    }
+
+    public void teamStaffDelete(List<Integer> teamStaffNum) {
+
+        for (int StaffNum : teamStaffNum) {
+            TeamStaff teamStaff = adminMapper.findTeamStaffByNum(StaffNum);
+            if (teamStaff == null) {
+                throw new IllegalArgumentException("해당 StaffNum가 존재하지 않습니다. teamStaff: " + teamStaff);
+            }
+        }
+
+        //찾은 글을 삭제
+        adminMapper.deleteTeamStaff(teamStaffNum);
+    }
+
+    public TeamStaff findTeamStaffByNum(int teamStaffNum) {
+        return adminMapper.findTeamStaffByNum(teamStaffNum);
+    }
+
+
+// ================================== Staff and
+
+
+
+
+
 }
 
 

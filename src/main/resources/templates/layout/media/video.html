@@ -97,39 +97,42 @@
               },
               dataType: 'json',
               success: function(videoList) {
-                  if (videoList.length === 0) {
-                      alert('더 이상 표시할 비디오가 없습니다.');
-                      return;
-                  }
+                    if (videoList.length === 0) {
+                        alert('더 이상 표시할 비디오가 없습니다.');
+                        return;
+                    }
 
-                  videoList.forEach(function(video) {
-                      let thumbnailUrl = '/img/FcTogether.jpg'; // 기본 썸네일 URL
+                    videoList.forEach(function(video) {
+                        let thumbnailUrl = '/img/FcTogether.jpg'; // 기본 썸네일 URL
 
-                      if (video.mvTheOriginUrl) {
-                          let videoKey = video.mvTheOriginUrl.substring(17); // YouTube URL에서 key 추출
-                          thumbnailUrl = `https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`; // 썸네일 URL 업데이트
-                      }
+                        if (video.mvTheOriginUrl) {
+                            // YouTube 임베드 URL에서 비디오 키 추출
+                            let urlParts = video.mvTheOriginUrl.split('/');
+                            let videoKey = urlParts[urlParts.length - 1]; // URL 마지막 부분이 비디오 키
+                            thumbnailUrl = `https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`; // 썸네일 URL 업데이트
+                        }
 
-                      let videoItem = `<a href="/media/videoView?no=${video.cvIdx}">
-                          <div class="video-detail">
-                              <div class="video-thumbnail" style="background-image: url('${thumbnailUrl}');"></div>
-                              <div class="video-contents">
-                                  <div class="video-title">
-                                      <p class="video-title">${video.cvTitle}</p>
-                                  </div>
-                                  <div class="video-date-and-hits">
-                                      <p>${video.cvDate} • ${video.cvHits}</p>
-                                  </div>
-                                  <div class="video-table">
-                                      <p>${video.tableGb}</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>`;
+                        let videoItem = `<a href="/media/videoView?no=${video.cvIdx}">
+                            <div class="video-detail">
+                                <div class="video-thumbnail" style="background-image: url('${thumbnailUrl}');"></div>
+                                <div class="video-contents">
+                                    <div class="video-title">
+                                        <p class="video-title">${video.cvTitle}</p>
+                                    </div>
+                                    <div class="video-date-and-hits">
+                                        <p>${video.cvDate} • ${video.cvHits}</p>
+                                    </div>
+                                    <div class="video-table">
+                                        <p>${video.tableGb}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>`;
 
-                      $('.video-item-container').append(videoItem);
-                  });
-              },
+                        $('.video-item-container').append(videoItem);
+                    });
+                },
+
               error: function(error) {
                   console.error('비디오를 가져오는데 실패했습니다.', error);
               }

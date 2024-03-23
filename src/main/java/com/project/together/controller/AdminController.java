@@ -1,5 +1,7 @@
 package com.project.together.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.service.AdminService;
@@ -10,10 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -313,7 +318,7 @@ public class AdminController {
     }
 
 
-    // 구단영상 업로드
+/*    // 구단영상 업로드
     @PostMapping("/layout/youtube")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView youtube(@ModelAttribute ClubVideo clubVideo, @RequestParam String username) throws Exception {
@@ -327,10 +332,10 @@ public class AdminController {
         mav.addObject("clubVideo", clubVideo); // 뷰에 전달할 데이터 설정
 
         return mav;
-    }
+    }*/
 
 
-    // 구단영상 수정
+      /* // 구단영상 수정
     @PostMapping("/layout/clubVideoUpdate/{cvIdx}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateClubVideo(@PathVariable int cvIdx, @ModelAttribute ClubVideo clubVideo, RedirectAttributes redirectAttributes) {
@@ -340,7 +345,45 @@ public class AdminController {
         adminService.updateClubVideo(clubVideo);
         redirectAttributes.addFlashAttribute("message", "구단영상이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/video_management";
+    }*/
+
+
+
+    // 구단영상 업로드
+    @PostMapping("/layout/youtube")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView youtube(@ModelAttribute ClubVideo clubVideo, @RequestParam String username) throws Exception {
+        clubVideo.setUsername(username);
+        // 사용자로부터 받은 영상 ID를 임베드 URL 형식으로 변환하여 저장
+        String embedUrl = "https://www.youtube.com/embed/" + clubVideo.getMvTheOriginUrl();
+        clubVideo.setMvTheOriginUrl(embedUrl);
+
+        adminService.saveClubVideo(clubVideo);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/admin/layout/video_management");
+        mav.addObject("clubVideo", clubVideo); // 뷰에 전달할 데이터 설정
+
+        return mav;
     }
+
+    // 구단영상 수정
+    @PostMapping("/layout/clubVideoUpdate/{cvIdx}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateClubVideo(@PathVariable int cvIdx, @ModelAttribute ClubVideo clubVideo, RedirectAttributes redirectAttributes) {
+        clubVideo.setCvIdx(cvIdx);
+        // 사용자로부터 받은 영상 ID를 임베드 URL 형식으로 변환하여 저장
+        String embedUrl = "https://www.youtube.com/embed/" + clubVideo.getMvTheOriginUrl();
+        clubVideo.setMvTheOriginUrl(embedUrl);
+        System.out.println("clubVideo = " + clubVideo.getMvTheOriginUrl());
+        adminService.updateClubVideo(clubVideo);
+        redirectAttributes.addFlashAttribute("message", "구단영상이 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/video_management";
+    }
+
+
+
+
 
     // 구단영상 삭제
     @PostMapping("/layout/clubVideoDelete")
@@ -451,7 +494,28 @@ public class AdminController {
     }
 
 
-    // k5, k7, w리그 선수 등록
+    @PostMapping("/layout/updatePlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updatePlayerInfo(@RequestBody Map<String, Object> requestData) {
+
+        String selectedPlayerType = (String) requestData.get("selectedPlayerType");
+        Map<String, Object> dataToSend = (Map<String, Object>) requestData.get("dataToSend");
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            adminService.registerPlayer(dataToSend, selectedPlayerType);
+            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            response.put("errorMessage", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+
+
+   /*  // k5, k7, w리그 선수 등록
     @PostMapping("/layout/updatePlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updatePlayerInfo(@RequestBody Map<String, Object> requestData,
@@ -472,7 +536,7 @@ public class AdminController {
 
         return "redirect:/admin/layout/players";
     }
-
+*/
 
     // ================================== players End
 

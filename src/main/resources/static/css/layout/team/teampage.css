@@ -82,7 +82,7 @@ body {
 }
 
 .indicator {
-  width: 190px;
+  width: auto;
   height: 3px;
   background: #078f0c;
   position: absolute;
@@ -93,7 +93,7 @@ body {
 }
 
 .sub-indicator {
-  width: 150px;
+  width: auto;
    height: 3px;
    background: #078f0c;
    position: absolute;
@@ -371,12 +371,12 @@ a {
 
 /* 좌우 레이아웃 영향 */
 
-/* @media (min-width: 1024px) {
+@media (min-width: 1024px) {
    .container {
      width: 94%;
      max-width: 1260px;
    }
- }*/
+ }
 
  @media (min-width: 1024px) {
    .container--narrow {
@@ -385,6 +385,11 @@ a {
  }
 
 /* section padding */
+
+.section {
+  padding: 65px 0;
+  overflow: hidden;
+}
 
  @media (min-width: 737px) {
    .section {
@@ -843,6 +848,8 @@ a {
  .team-member__note a {
    text-decoration: underline;
  }
+
+
 
  /* profile card end */
 

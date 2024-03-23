@@ -260,7 +260,7 @@
      });
  });
 
-         // "등록" 버튼 클릭 이벤트
+       // "등록" 버튼 클릭 이벤트
         $('.writeButton').click(function() {
             // 'create' 상태 설정
             $('form').data('state', 'create');
@@ -275,7 +275,8 @@
             setTimeout(function() {
                 // 각 입력 필드를 추가하는 함수 호출
                 addInputField('PlayerNum-value', '선수 번호', selectedPlayerType + 'PlayerNum');
-                <!--addInputField('filePath-value', '선수 사진', selectedPlayerType + 'filePath');-->
+                // 사진 업로드 필드 추가 함수 호출
+                addFileUploadField('filePath-value', selectedPlayerType + 'filePath');
                 addInputField('PlayerName-value', '이름', selectedPlayerType + 'PlayerName');
                 addInputField('PlayerEnName-value', '영문 이름', selectedPlayerType + 'PlayerEnName');
                 addInputField('PlayerCapYn-value', 'Y 또는 N', selectedPlayerType + 'PlayerCapYn');
@@ -286,6 +287,14 @@
                 addInputField('PlayerBirth-value', 'YYYY-MM-DD 형식', selectedPlayerType + 'PlayerBirth');
             }, 100);
         });
+
+       function addFileUploadField(containerId, name) {
+            // filePath-value 영역에 파일 업로드 필드만 추가
+            var fileUploadHTML = '<input type="file" id="' + name + '" name="' + name + '" accept="image/*">';
+            $('#' + containerId).html(fileUploadHTML);
+        }
+
+
 
         // 입력 필드를 추가하는 함수에 힌트 텍스트 매개변수 추가
         function addInputField(id, hint, name) {
@@ -300,50 +309,41 @@
             }
         }
 
-        $('.submit-btn button').click(function(e) {
+       $('.submit-btn button').click(function(e) {
             e.preventDefault(); // 기본 폼 제출 동작을 막습니다.
 
-            var isEmpty = false;
-            var dataToSend = {}; // 서버로 전송할 데이터 객체
+            var form = $('form[action="/admin/layout/updatePlayerInfo"]')[0];
+            var formData = new FormData(form); // FormData 객체 생성
 
-            $('form[action="/admin/layout/updatePlayerInfo"]').find('input[type!="hidden"], textarea').each(function() {
-                var name = $(this).attr('name');
-                var value = $(this).val();
-
-                if (value === '') {
-                    isEmpty = true;
-                    return false; // 루프 종료
-                }
-
-                dataToSend[name] = value; // 데이터 객체에 입력 값 추가
+            $('form[action="/admin/layout/updatePlayerInfo"]').find('input[type="file"]').each(function() {
+                var fileInput = $(this)[0];
+                var file = fileInput.files[0];
+                formData.append(fileInput.name, file); // 파일 데이터 추가
             });
 
-            // 입력 필드가 비어있는 경우
-            if (isEmpty) {
-                alert('모든 필드를 입력해주세요.');
-            } else {
-                // localStorage에서 selectedPlayerType 값을 가져와 dataToSend 객체에 추가
-                var selectedPlayerType = localStorage.getItem('selectedPlayerType');
-                dataToSend['selectedPlayerType'] = selectedPlayerType;
+            var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+            formData.append('selectedPlayerType', selectedPlayerType); // selectedPlayerType 추가
 
-              // AJAX를 사용하여 서버에 데이터를 비동기적으로 전송
-                $.ajax({
-                    url: '/admin/layout/updatePlayerInfo',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ dataToSend: dataToSend, selectedPlayerType: selectedPlayerType }), // 데이터를 JSON 문자열로 변환하여 전송
-                    success: function(response) {
-                        // 요청이 성공한 경우 실행될 콜백 함수
-                        console.log('서버 응답:', response);
-                        window.location.href = '/admin/layout/players';
-                    },
-                    error: function(xhr, status, error) {
-                        // 요청이 실패한 경우 실행될 콜백 함수
-                        console.error('에러 발생:', error);
-                    }
-                });
-            }
+            // AJAX를 사용하여 서버에 데이터를 비동기적으로 전송
+            $.ajax({
+                url: '/admin/layout/updatePlayerInfo',
+                type: 'POST',
+                processData: false, // FormData를 사용할 때 필요
+                contentType: false, // FormData를 사용할 때 필요
+                data: formData, // FormData 객체를 데이터로 사용
+                success: function(response) {
+                    // 요청이 성공한 경우 실행될 콜백 함수
+                    console.log('서버 응답:', response);
+                    window.location.href = '/admin/layout/players';
+                },
+                error: function(xhr, status, error) {
+                    // 요청이 실패한 경우 실행될 콜백 함수
+                    console.error('에러 발생:', error);
+                }
+            });
         });
+
+
 
 
         // 페이지 최초 로딩 시 selectedPlayerType 값이 없는 경우 또는 k5가 아닌 경우에만 k5를 기본값으로 설정
@@ -528,10 +528,12 @@
                                 // localStorage에서 selectedPlayerType 값을 가져옵니다.
                                 var selectedPlayerType = localStorage.getItem('selectedPlayerType');
                                 var playerTypePrefix = selectedPlayerType + 'Player'; // 예: "k5Player"
+                                var playerImg = selectedPlayerType; // 예: "k5"
+
 
                                 // 응답받은 데이터로 화면 갱신
                                 $('#PlayerNum-value').text(playerData[playerTypePrefix + 'Num']); // 선수번호
-                                $('#filePath-value').html(`<img src="${playerData[playerTypePrefix + 'filePath']}" alt="선수 프로필 사진" style="max-width: 100%; height: auto;">`); // 선수프로필
+                                $('#filePath-value').html(`<img src="${playerData[playerImg + 'filePath']}" alt="선수 프로필 사진" style="max-width: 100%; height: auto;">`); // 선수프로필
                                 $('#PlayerName-value').text(playerData[playerTypePrefix + 'Name']); // 이름
                                 $('#PlayerEnName-value').text(playerData[playerTypePrefix + 'EnName']); // 영문이름
                                 $('#PlayerCapYn-value').text(playerData[playerTypePrefix + 'CapYn']); // 주장여부

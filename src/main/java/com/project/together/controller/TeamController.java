@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/team")
@@ -23,37 +25,28 @@ public class TeamController {
     }
 
 
-    // K5 선수 정보 가져오기
-    @GetMapping("/layout/get_k5PlayerInfo")
-    public ResponseEntity<List<K5_Player>> get_k5PlayerInfo() {
-        List<K5_Player> k5Players = teamService.getK5Player();
-        System.out.println("k5Players = " + k5Players);
-        return ResponseEntity.ok(k5Players);
+    // k5, k7, w1 정보 가져오기
+
+    @GetMapping("/layout/get_allPlayerInfo")
+    public ResponseEntity<Map<String, List<?>>> get_allPlayerInfo() {
+        Map<String, List<?>> allPlayersData = new HashMap<>();
+        allPlayersData.put("k5", teamService.getK5Player());
+        allPlayersData.put("k7", teamService.getK7Player());
+        allPlayersData.put("w1", teamService.getW1Player());
+        System.out.println("allPlayersData = " + allPlayersData);
+        return ResponseEntity.ok(allPlayersData);
     }
 
-    // K7 선수 정보 가져오기
-    @GetMapping("/layout/get_k7PlayerInfo")
-    public ResponseEntity<List<K7_Player>> get_k7PlayerInfo() {
-        List<K7_Player> k7Players = teamService.getK7Player();
-        System.out.println("k7Players = " + k7Players);
-        return ResponseEntity.ok(k7Players);
-    }
-
-    // W1리그 선수 정보 가져오기
-    @GetMapping("/layout/get_w1PlayerInfo")
-    public ResponseEntity<List<W1_Player>> get_w1PlayerInfo() {
-        List<W1_Player> w1Players = teamService.getW1Player();
-        System.out.println("w1Players = " + w1Players);
-        return ResponseEntity.ok(w1Players);
-    }
 
     // TeamStaff 정보 가져오기
+
     @GetMapping("/layout/get_teamStaffInfo")
     public ResponseEntity<List<TeamStaff>> get_coachingStaffInfo() {
         List<TeamStaff> teamStaffs = teamService.getTeamStaff();
         System.out.println("teamStaffs = " + teamStaffs);
         return ResponseEntity.ok(teamStaffs);
     }
+
 
 
 }

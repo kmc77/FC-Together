@@ -308,11 +308,6 @@ button#loadMore.btn.btn-more {
 
 
 
-
-
-
-/* ClubPhoto tab start */
-
 .photo-item-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -328,6 +323,11 @@ button#loadMore.btn.btn-more {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.photo-detail:hover {
+    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
 }
 
 .photo-detail .photo-pinned {
@@ -372,13 +372,14 @@ button#loadMore.btn.btn-more {
 .photo-table p {
     display: inline-block;
     padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
-    border: 2px solid #9c27b0;  /* 테두리를 추가합니다. */
+    border: 2px solid #00bcd4;  /* 테두리를 추가합니다. */
     border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
 }
 
 .photo-table {
     padding-top: 10px;  /* 위쪽 패딩을 추가합니다. 원하는 값으로 조절하세요. */
 }
+
 
 
 /* ClubPhoto tab and */

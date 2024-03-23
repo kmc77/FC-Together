@@ -1,10 +1,8 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class File {
     private String filePath;
     private int tableIdx;

@@ -82,12 +82,11 @@
                     <dl>
                         <dt id="content-label">영상내용</dt>
                         <dd>
-                            <iframe width="1000" height="720" src="https://www.youtube.com/embed/${key}"
+                            <iframe id="content-html-value" width="1000" height="720" src=""
                                     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                             </iframe>
-                            <div class="notice-cont ql-editor" id="content-html-value"></div>
+                            <div class="notice-cont ql-editor" ></div>
                         </dd>
-
                     </dl>
                 </div>
 
@@ -112,11 +111,10 @@
                         <th scope="row">유튜브 주소 ID</th>
                         <td>
                             <div>
-                                <span class="line_h35">https://youtu.be/  </span>
+                                <span class="line_h35">https://www.youtube.com/embed/  </span>
                                 <input type="text" name="mvTheOriginUrl" id="mvTheOriginUrl" style="width:150px"/>
                             </div>
                             <p class="mt_10">*ID를 정확히 입력해야 Player 및 썸네일 이미지가 정상적으로 출력이 됩니다.</p>
-                            <p>유튜브 주소 ID를 입력하지 않으면 기존에 등록한 썸네일 이미지로 출력이 됩니다.</p>
                         </td>
                     </tr>
                     <tr>
@@ -411,7 +409,7 @@
                         $('#title-value').text(clubVideos.cvTitle); // 제목
                         $('#content-html-value').html(clubVideos.cvContent); // HTML 내용
                         $('#tableGb-value').text(clubVideos.tableGb); // tableGb 값
-                        $('#mvTheOriginUrl-value').text(clubVideos.mvTheOriginUrl); // mvTheOriginUrl 값
+                        $('#content-html-value').attr('src', clubVideos.mvTheOriginUrl);
 
                         // "영상 등록" 탭 클릭
                         $("#nav-1 li:contains('영상 등록') a").click();

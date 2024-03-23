@@ -39,7 +39,7 @@
             </div>
             <div class="cvContent">
                 <div class="content">
-                    <iframe width="1000" height="720" src="https://www.youtube.com/embed/${key}"
+                    <iframe width="1000" height="720" src=""
                             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                     </iframe>
                     <p th:utext="${clubVideo.cvContent}"></p>
@@ -68,12 +68,14 @@
         type: 'GET',
         dataType: 'json',
         success: function(data) {
+        console.log(data.mvTheOriginUrl);
             // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
             $('.videoInformation .titleBox p').text(data.cvTitle);
             $('.titleInfo p').eq(1).text(data.username);
             $('.titleInfo p').eq(3).text(data.cvDate);
             $('.titleInfo p').eq(5).text(data.cvHits);
             $('.cvContent .content').html(data.cvContent);
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);

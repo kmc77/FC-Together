@@ -264,10 +264,39 @@
     </delete>
 
 
-
-
-
     <!-- ==============  TeamStaff End ============== -->
 
+
+    <!-- ==============  Rule Start ============== -->
+
+    <select id="getAllRule" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule ORDER BY rule_num DESC
+    </select>
+
+    <select id="findRuleById" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <insert id="insertRule" parameterType="com.project.together.domain.Rule">
+        INSERT INTO Rule (rule_num, username, rule_title, rule_date, rule_hits, rule_content)
+        VALUES (#{ruleNum}, #{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent})
+    </insert>
+
+    <update id="updateRule" parameterType="com.project.together.domain.Rule">
+        UPDATE Rule
+        SET rule_title = #{ruleTitle}, rule_content = #{ruleContent}, rule_date = #{ruleDate}
+        WHERE rule_num = #{ruleNum}
+    </update>
+
+    <delete id="deleteRule" parameterType="list">
+        DELETE FROM Rule WHERE rule_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+    <!-- ==============  Rule End ============== -->
 
 </mapper>

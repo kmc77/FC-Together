@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/management/management_customer_support.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="teamPage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle">
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>경영/고객 지원</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- 메인 탭 메뉴 -->
+            <div class="tabMenu">
+                <div class="container">
+                    <ul class="tab-bar">
+                        <li data-num="1" class="tab wave dark main-tab"><a href="#">규정</a></li>
+                        <li data-num="2" class="tab wave dark main-tab"><a href="#">경영공시</a></li>
+                        <li data-num="3" class="tab wave dark main-tab"><a href="#">FAQ</a></li>
+                        <li data-num="4" class="tab wave dark main-tab"><a href="#">훈련일정</a></li>
+                        <div class="indicator"></div>
+                    </ul>
+                </div>
+            </div>
+
+            <section class="rule">
+                <!-- board seach area -->
+                <div id="board-search">
+                    <div class="container">
+                        <div class="search-window">
+                            <form action="">
+                                <div class="search-wrap">
+                                    <label for="search" class="blind">공지사항 내용 검색</label>
+                                    <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
+                                    <button type="submit" class="btn btn-dark">검색</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- board list area -->
+                <div id="board-list">
+                    <div class="container">
+                        <table class="board-table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="th-num">번호</th>
+                                <th scope="col" class="th-title">제목</th>
+                                <th scope="col" class="th-date">등록일</th>
+                                <th scope="col" class="th-name">작성자</th>
+                                <th scope="col" class="th-hit">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="rule : ${ruleList}">
+                                <td th:text="${rule.ruleNum}">번호</td>
+                                <th><a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a></th>
+                                <td th:text="${rule.ruleDate}">등록일</td>
+                                <td th:text="${rule.username}">작성자</td>
+                                <td th:text="${rule.ruleHits}">조회수</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+</div>
+<script>
+    var waveBtnInit = function () {
+        // 메인 탭만 선택
+        var mainTabs = document.querySelectorAll('.main-tab.wave');
+        var mainIndicator = document.querySelector('.tab-bar .indicator');
+
+        // 인디케이터 위치 업데이트 함수
+        function updateIndicator(indicator, index, tabs) {
+            var totalWidth = tabs.length * tabs[0].offsetWidth; // 탭의 개수 * 탭 하나의 너비
+            var tabWidth = tabs[0].offsetWidth; // 탭 하나의 너비
+            var offset = (totalWidth - tabWidth) / (tabs.length - 1); // 간격 계산
+            var marginLeft = index * offset; // 인디케이터의 왼쪽 여백 계산
+
+            indicator.style.width = tabWidth + 'px'; // 인디케이터 너비 업데이트
+            indicator.style.marginLeft = marginLeft + 'px'; // 인디케이터 왼쪽 여백 업데이트
+        }
+
+        // 탭 클릭 이벤트 핸들러
+        function addWaveEffect(tabs, indicator) {
+            tabs.forEach(function(tab, index) {
+                tab.addEventListener('click', function(e) {
+                    var newRound = document.createElement('div');
+                    var x = e.pageX - tab.offsetLeft;
+                    var y = e.pageY - tab.offsetTop;
+
+                    newRound.className = 'cercle anim';
+                    newRound.style.left = x + "px";
+                    newRound.style.top = y + "px";
+                    tab.appendChild(newRound);
+
+                    // 인디케이터 위치 업데이트
+                    updateIndicator(indicator, index, tabs);
+
+                    // 애니메이션이 완료된 후 newRound 요소 제거
+                    setTimeout(function() {
+                        newRound.remove();
+                    }, 1200);
+                });
+            });
+        }
+
+        // 첫 번째 탭에 대한 인디케이터 위치 초기화
+        if (mainTabs.length > 0) updateIndicator(mainIndicator, 0, mainTabs);
+
+        // 메인 탭에 대한 이벤트 리스너 추가
+        addWaveEffect(mainTabs, mainIndicator);
+    };
+
+    // 페이지 로드 시 함수 실행
+    waveBtnInit();
+
+
+</script>
+
+
+
+</body>
+</html>

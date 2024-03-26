@@ -586,9 +586,6 @@ public class AdminController {
     }
 
 
-
-
-
     // 구단 스태프 등록
     @PostMapping("/layout/teamStaffUpdate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -610,19 +607,72 @@ public class AdminController {
 
 
 
-
-
-
     // ================================== staff End
 
+    // ================================== rule start
 
 
+    // 규정 정보 가져오기
+    @GetMapping("/layout/getRuleInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Rule>> getRuleInfo() {
+        List<Rule> rules = adminService.getAllRule();
+        System.out.println("rules = " + rules);
+        return ResponseEntity.ok(rules);
+    }
+
+    // 규정 상세 정보 가져오기
+    @GetMapping("/layout/ruleView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Rule> getRuleView(@RequestParam("ruleNum") int ruleNum, HttpServletResponse response) {
+        Rule rule = adminService.findRuleById(ruleNum);
+        System.out.println("ruleview = " + rule);
+        if (rule != null) {
+            return ResponseEntity.ok(rule);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // 규정 작성
+    @PostMapping("/layout/rulePost")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String postRule(@ModelAttribute Rule rule, @RequestParam String username, RedirectAttributes redirectAttributes) {
+        rule.setUsername(username);
+        adminService.saveRule(rule);
+        redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/rule_management";
+    }
+
+    // 규정 수정
+    @PostMapping("/layout/ruleUpdate/{ruleNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateRule(@PathVariable int ruleNum, @ModelAttribute Rule rule, RedirectAttributes redirectAttributes) {
+
+        rule.setRuleNum(ruleNum);
+        adminService.updateRule(rule);
+        redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/rule_management";
+    }
 
 
+    // 규정 삭제
+    @PostMapping("/layout/ruleDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
+        try {
+            adminService.ruleDelete(ruleNums);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
-
-
+    // ================================== rule End
 
     // ================================== page 이동
 
@@ -713,6 +763,19 @@ public class AdminController {
     }
 
 
+    @GetMapping("/layout/rule_management")
+    public String ruleManagement(Model model) {
+        model.addAttribute("content", "규정 관리 입장");
+        model.addAttribute("currentPage", "rule_management");
+        return "layout/common/board/rule_management";
+    }
+
+    @GetMapping("/layout/operation_management")
+    public String operationManagement(Model model) {
+        model.addAttribute("content", "경영 공시 관리 입장");
+        model.addAttribute("currentPage", "operation_management");
+        return "layout/common/board/operation_management";
+    }
 
     @GetMapping("/layout/faq_management")
     public String faqManagement(Model model) {

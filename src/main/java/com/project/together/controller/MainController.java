@@ -41,7 +41,9 @@ public class MainController {
     }
 
 
-    @GetMapping("/test/login")
+
+
+ /*   @GetMapping("/test/login")
     public @ResponseBody String testLogin(Authentication authentication,
                                           @AuthenticationPrincipal UserDetails userDetails) {
         System.out.println("/test/login ========");
@@ -59,6 +61,6 @@ public class MainController {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         System.out.println("authentication : " + oauth2User.getAttributes());
         return "OAuth 세션 ! 정보 확인하기";
-    }
+    }*/
 
 }

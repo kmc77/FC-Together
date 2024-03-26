@@ -5,7 +5,6 @@ import com.project.together.domain.*;
 import com.project.together.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -532,10 +531,46 @@ public class AdminService {
     }
 
 
+
 // ================================== Staff and
 
 
+// ================================== Rule start
 
+    public List<Rule> getAllRule() {
+        return adminMapper.getAllRule();
+    }
+
+    public Rule findRuleById(int ruleNum) {
+        return adminMapper.findRuleById(ruleNum);
+    }
+
+    public void saveRule(Rule rule) {
+        rule.setRuleDate(getCurrentFormattedTime());
+        adminMapper.insertRule(rule);
+    }
+
+    public void updateRule(Rule rule) {
+        rule.setRuleDate(getCurrentFormattedTime());
+        adminMapper.updateRule(rule);
+    }
+
+
+    public void ruleDelete(List<Integer> ruleNums) {
+        //데이터베이스에서 해당 ruleNums 의 rule 들을 찾는다.
+        for (int ruleNum : ruleNums) {
+            Rule rule = adminMapper.findRuleById(ruleNum);
+            if (rule == null) {
+                throw new IllegalArgumentException("해당 rule가 존재하지 않습니다. ruleNum: " + ruleNum);
+            }
+        }
+
+        //찾은 rule 글을 삭제
+        adminMapper.deleteRule(ruleNums);
+    }
+
+
+// ================================== Rule and
 
 
 }

@@ -104,4 +104,16 @@ public interface AdminMapper {
     void deleteTeamStaff(List<Integer> teamStaffNum);
 
     TeamStaff findTeamStaffByNum(int teamStaffNum);
+
+    /* ======================================= */
+
+    List<Rule> getAllRule();
+
+    Rule findRuleById(@Param("ruleNum") int ruleNum);
+
+    void insertRule(Rule rule);
+
+    void updateRule(Rule rule);
+
+    void deleteRule(List<Integer> ruleNums);
 }

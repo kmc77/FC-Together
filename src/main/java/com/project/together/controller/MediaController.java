@@ -177,7 +177,7 @@ public class MediaController {
             }
         }
 
-        return "/layout/media/videoview";
+        return "layout/media/videoview";
     }
 
 

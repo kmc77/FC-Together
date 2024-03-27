@@ -44,15 +44,18 @@
                 <div class="previous-post post-navigation">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}" th:text="${prevPhoto.cpTitle}">이전글 제목</a>
+                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}"
+                           th:text="${prevPhoto.cpTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
-                    <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
+                    <a id="default_butt" href="/media/photo" class="btn btn-default">목록</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 <script>
     $(document).ready(function() {
     // URL에서 photoNum 추출
@@ -98,6 +101,8 @@
 
 });
 </script>
-
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

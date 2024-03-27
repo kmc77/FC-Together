@@ -3,6 +3,7 @@
 <head>
      <meta charset="UTF-8">
      <title>news</title>
+   <!-- <th:block th:include="layout/header"></th:block>-->
     <link href="/css/layout/media/news.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -65,7 +66,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     $(document).ready(function() {
@@ -137,7 +137,7 @@
         }
 
         // 뉴스 아이템 생성 함수
-        function createNewsItem(news) {
+       function createNewsItem(news) {
             var srcRegex = /<img[^>]+src="([^">]+)"/;
             var match = news.newsContent.match(srcRegex);
             var imgSrc = match ? match[1] : '/img/FcTogether.jpg'; // 기본 이미지 사용
@@ -148,6 +148,10 @@
                     '<div class="news-contents">' +
                         '<div class="news-title">' + news.newsTitle + '</div>' +
                         '<div class="news-date-and-hits">' + news.newsRegdate + ' • ' + news.newsHits + '</div>' +
+                        // 여기에 새로운 영역을 추가합니다.
+                        '<div class="news-table">' +
+                            '<p>' + news.tableGb + '</p>' +
+                        '</div>' +
                     '</div>' +
                 '</div>' +
             '</a>';
@@ -156,8 +160,5 @@
         }
     });
 </script>
-
-
-
 </body>
 </html>

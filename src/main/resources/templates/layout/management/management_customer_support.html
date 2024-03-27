@@ -73,7 +73,49 @@
                                 <td th:text="${rule.ruleHits}">조회수</td>
                             </tr>
                             </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
+            <section class="management">
+                <!-- board seach area -->
+                <div id="management_board-search">
+                    <div class="container">
+                        <div class="search-window">
+                            <form action="">
+                                <div class="search-wrap">
+                                    <label for="search" class="blind">공지사항 내용 검색</label>
+                                    <input id="management_search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
+                                    <button type="submit" class="btn btn-dark">검색</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- management_board list area -->
+                <div id="management_board-list">
+                    <div class="container">
+                        <table class="board-table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="th-num">번호</th>
+                                <th scope="col" class="th-title">제목</th>
+                                <th scope="col" class="th-date">등록일</th>
+                                <th scope="col" class="th-name">작성자</th>
+                                <th scope="col" class="th-hit">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="rule : ${ruleList}">
+                                <td th:text="${rule.ruleNum}">번호</td>
+                                <th><a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a></th>
+                                <td th:text="${rule.ruleDate}">등록일</td>
+                                <td th:text="${rule.username}">작성자</td>
+                                <td th:text="${rule.ruleHits}">조회수</td>
+                            </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -135,8 +177,8 @@
 
 
 </script>
-
-
-
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

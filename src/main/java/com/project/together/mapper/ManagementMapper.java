@@ -2,7 +2,9 @@ package com.project.together.mapper;
 
 import com.project.together.domain.Rule;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,5 +15,7 @@ public interface ManagementMapper {
 
     Rule findRuleByRuleNum(int ruleNum);
 
+    Rule findPrevRuleByCurrentRuleDate(LocalDate currentRuleDate);
 
+    void updateRuleHits(@Param("ruleNum") int ruleNum, @Param("hits") int hits);
 }

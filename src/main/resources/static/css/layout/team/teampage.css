@@ -39,7 +39,7 @@ body {
 
 .tab {
   width: 150px;
-  padding: 20px 0;
+  padding: 17px 0;
   background: white;
   color: #607D8B;
   overflow: hidden;
@@ -59,7 +59,7 @@ body {
 
 .sub-tab {
   width: 150px;
-  padding: 20px 0;
+  padding: 17px 0;
   background: white;
   color: #607D8B;
   overflow: hidden;
@@ -367,6 +367,12 @@ a {
    body {
      font-size: 1.5rem;
    }
+ }
+
+ @media (min-width: 737px) {
+     body  ul  li  a {
+         font-size: 1.7rem;
+     }
  }
 
 /* 좌우 레이아웃 영향 */

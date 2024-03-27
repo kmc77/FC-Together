@@ -27,6 +27,8 @@ public class AdminService {
         return now.format(formatter);
     }
 
+
+
     public List<PrincipalDetails> getAllUsers() {
         // 모든 사용자 정보를 가져옵니다.
         List<User> users = adminMapper.getAllUsers();
@@ -529,7 +531,6 @@ public class AdminService {
     public TeamStaff findTeamStaffByNum(int teamStaffNum) {
         return adminMapper.findTeamStaffByNum(teamStaffNum);
     }
-
 
 
 // ================================== Staff and

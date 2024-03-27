@@ -2,6 +2,7 @@ package com.project.together.domain;
 
 import lombok.Data;
 
+
 @Data
 public class Notice {
     private int noticeNum;

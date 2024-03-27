@@ -37,7 +37,7 @@
             <div class="cvContent">
                 <!-- 글 내용 -->
                 <div class="content">
-                    <p th:text="${rule.ruleContent}">Content</p>
+                    <p th:utext="${rule.ruleContent}">Content</p>
                 </div>
                 <!-- 이전 글 링크 -->
                 <div class="previous-post post-navigation" th:if="${prevRule != null}">
@@ -56,5 +56,8 @@
         </div>
     </div>
 </div>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

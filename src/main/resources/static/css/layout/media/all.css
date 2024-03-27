@@ -5,7 +5,7 @@
 }
 
 
-.photoPage .top .topTitle {
+.noticePage .top .topTitle {
   padding-top: 0;
 }
 
@@ -14,7 +14,7 @@
   text-align: center;
 }
 
-/*.photoPage .top .topTitle .title {
+/*.noticePage .top .topTitle .title {
     margin-left: -90px;
     margin-right: -40px;
     padding-top: 110px;
@@ -24,7 +24,7 @@
     background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
 }*/
 
-.photoPage .top .topTitle .title {
+.noticePage .top .topTitle .title {
     margin-left: -90px;
     margin-right: -40px;
     padding-top: 140px;
@@ -33,6 +33,7 @@
     font-weight: 500;
     background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
+
 
 * {
   margin: 0;
@@ -295,7 +296,7 @@ button#loadMore.btn.btn-more {
 .news-table p {
     display: inline-block;
     padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
-    border: 2px solid #00bcd4;  /* 테두리를 추가합니다. */
+    border: 2px solid #795548;  /* 테두리를 추가합니다. */
     border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
 }
 
@@ -307,6 +308,11 @@ button#loadMore.btn.btn-more {
 /*News 탭 and*/
 
 
+
+
+
+
+/* ClubPhoto tab start */
 
 .photo-item-container {
     display: grid;
@@ -323,11 +329,6 @@ button#loadMore.btn.btn-more {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.photo-detail:hover {
-    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
 }
 
 .photo-detail .photo-pinned {
@@ -379,7 +380,6 @@ button#loadMore.btn.btn-more {
 .photo-table {
     padding-top: 10px;  /* 위쪽 패딩을 추가합니다. 원하는 값으로 조절하세요. */
 }
-
 
 
 /* ClubPhoto tab and */

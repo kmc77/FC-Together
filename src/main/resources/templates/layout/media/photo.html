@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <<meta charset="UTF-8">
      <title>photo</title>
@@ -114,7 +114,7 @@
                     limit: limit
                 },
                 dataType: 'json',
-                success: function(photoList) {
+               success: function(photoList) {
                     if (photoList.length === 0) {
                         alert('더 이상 표시할 구단 사진이 없습니다.');
                         return;
@@ -134,6 +134,10 @@
                             '<div class="photo-contents">' +
                             '<div class="photo-title">' + photo.cpTitle + '</div>' +
                             '<div class="photo-date-and-hits">' + photo.cpRegdate + ' • ' + photo.cpHits + '</div>' +
+                            // 여기에 새로운 영역을 추가합니다.
+                            '<div class="photo-table">' +
+                                '<p>' + photo.tableGb + '</p>' +
+                            '</div>' +
                             '</div>' +
                             '</div>' +
                             '</a>';
@@ -147,8 +151,5 @@
         }
     });
 </script>
-
-
-
 </body>
 </html>

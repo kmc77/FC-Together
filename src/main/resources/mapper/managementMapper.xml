@@ -12,14 +12,19 @@
         SELECT * FROM Rule WHERE rule_num = #{ruleNum}
     </select>
 
-   <!-- <select id="findPrevRuleByCurrentRuleDate" parameterType="String" resultType="com.project.together.domain.Rule">
+    <select id="findPrevRuleByCurrentRuleDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Rule">
         <![CDATA[
         SELECT * FROM Rule
-        WHERE rule_date < #{ruleDate}
+        WHERE rule_date < #{currentRuleDate}
         ORDER BY rule_date DESC
         LIMIT 1
     ]]>
-    </select>-->
+    </select>
+
+    <update id="updateRuleHits">
+        UPDATE Rule SET rule_hits = #{hits} WHERE rule_num = #{ruleNum}
+    </update>
+
 
 
 

@@ -85,6 +85,7 @@
 
             e.preventDefault();
             activeTabHref = clickedTabHref; // 클릭된 탭의 href를 새로운 활성화된 탭으로 업데이트
+            $("th:block").hide();
 
             $.ajax({
                 url: clickedTabHref,
@@ -137,7 +138,8 @@
         loadNoticeList(start, limit);
     });
 </script>
-
-
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

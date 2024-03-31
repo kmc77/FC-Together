@@ -5,7 +5,9 @@ import com.project.together.domain.ClubVideo;
 import com.project.together.domain.News;
 import com.project.together.domain.Notice;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,8 @@ public interface MediaMapper {
     List<Notice> findAll(Map<String, Integer> params);
 
     Notice findNoticeByNoticeNum(int noticeNum);
+
+    Notice findPrevNoticeByCurrentNoticeDate(LocalDate currentNoticeDate);
 
     List<News> getNewsList(Map<String, Integer> params);
 
@@ -27,6 +31,8 @@ public interface MediaMapper {
 
     ClubVideo findVideosByVideoNumber(int cvIdx);
 
-
-    List<ClubPhoto> getPhotos(int start, int limit);
+    void updateNoticeHits(@Param("noticeNum") int noticeNum, @Param("hits") int hits);
+    void updateNewsHits(@Param("newsIdx") int newsIdx, @Param("hits") int hits);
+    void updatePhotoHits(@Param("photoNum") int photoNum, @Param("hits") int hits);
+    void updateVideoHits(@Param("cvIdx") int cvIdx, @Param("hits") int hits);
 }

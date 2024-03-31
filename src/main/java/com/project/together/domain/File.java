@@ -9,4 +9,5 @@ public class File {
     private String fileName;
     private String tableGb;
     private int fileIdx;
+
 }

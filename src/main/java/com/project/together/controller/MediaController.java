@@ -14,8 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.awt.print.Pageable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -77,10 +80,23 @@ public class MediaController {
     // 공지사항 상세보기 페이지
     @GetMapping("/noticeview")
     public String noticeViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
+        mediaService.increaseNoticeHits(noticeNum); // 조회수 증가
         Notice notice = mediaService.getNotice(noticeNum);
+        if (notice == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notice not found with id: " + noticeNum);
+        }
         model.addAttribute("notice", notice);
-        return "/layout/media/noticeview";
+
+        // 현재 공지사항의 날짜를 기준으로 이전 공지사항을 찾습니다.
+        LocalDate currentNoticeDate = LocalDate.parse(notice.getNoticeDate());
+        Notice prevNotice = mediaService.findPrevNoticeByCurrentNoticeDate(currentNoticeDate);
+        if (prevNotice != null) {
+            model.addAttribute("prevNotice", prevNotice);
+        }
+
+        return "layout/media/noticeview";
     }
+
 
     // 구단 뉴스 목록 조회
     @GetMapping("/news/list")
@@ -97,6 +113,7 @@ public class MediaController {
     @GetMapping("/newsview")
     public String newsViewPage(@RequestParam("no") int newsNum, Model model) throws NotFoundException {
 
+        mediaService.increaseNewsHits(newsNum); //조회수 증가
         News news = mediaService.newsViewPage(newsNum);
         model.addAttribute("news", news);
 
@@ -130,6 +147,7 @@ public class MediaController {
     @GetMapping("/photoview")
     public String photoViewPage(@RequestParam("no") int cpIdx, Model model) throws NotFoundException {
 
+        mediaService.increasePhotoHits(cpIdx);
         ClubPhoto clubPhoto = mediaService.photoViewPage(cpIdx);
         model.addAttribute("clubPhoto", clubPhoto);
 
@@ -163,6 +181,7 @@ public class MediaController {
     @GetMapping("/videoView")
     public String videoViewPage(@RequestParam("no") int cvIdx, Model model) throws NotFoundException {
 
+        mediaService.increaseVideoHits(cvIdx);
         ClubVideo clubVideo = mediaService.videoViewPage(cvIdx);
         model.addAttribute("clubVideo", clubVideo);
 
@@ -177,12 +196,11 @@ public class MediaController {
             }
         }
 
-        return "/layout/media/videoview";
+        return "layout/media/videoview";
     }
 
 
     // 미디어 전체 목록 조회
-
 
 
 }

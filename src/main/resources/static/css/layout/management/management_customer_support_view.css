@@ -1,4 +1,4 @@
-.newsContent img {
+.cpContent img {
     max-width: 70%; /* 이미지의 최대 너비를 70%로 제한합니다. */
     height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지합니다. */
     display: block; /* 이미지를 블록 요소로 설정하여 가로 중앙 정렬을 적용합니다. */
@@ -17,7 +17,7 @@
     margin-top: 77px;
 }
 
-.newsInformation {
+.videoInformation {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,14 +26,14 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.newsInformation .titleBox > p {
+.videoInformation .titleBox > p {
     font-size: 1.333rem;
     line-height: 2rem;
     font-weight: 700;
     max-width: 910px;
 }
 
-.newsInformation .titleBox > div {
+.videoInformation .titleBox > div {
     display: flex;
     font-size: 0.888rem;
     color: rgba(0, 0, 0, 0.5);
@@ -41,38 +41,37 @@
     align-items: center;
 }
 
-.newsInformation .titleBox > div .titleInfo {
+.videoInformation .titleBox > div .titleInfo {
     display: grid;
     grid-template-columns: 3.3em 1fr;
     font-weight: 400;
 }
 
-.newsInformation .titleBox > div .titleInfo p:first-child {
+.videoInformation .titleBox > div .titleInfo p:first-child {
     font-weight: 700;
 }
 
-.newsInformation .titleBox .line {
+.videoInformation .titleBox .line {
     width: 1px;
     height: 12px;
     background-color: rgba(0, 0, 0, 0.2);
     margin: 0px 1.111rem;
 }
 
-.newsInformation .share {
+.videoInformation .share {
     display: flex;
     gap: 0.667rem;
 }
 
-.newsContent {
+.cvContent {
    /* border-bottom: 1px solid rgb(0, 0, 0);*/
     font-weight: 400;
 }
 
-.newsContent .content {
+.cvContent .content {
     padding: 3.111rem 2.111rem;
-    font-size: 1rem; /* 기본 글자 크기를 16px(1rem)로 설정 */
-    letter-spacing: 0.05em; /* 글자 간격을 적당히 늘림 */
-    line-height: 1.6; /* 줄 간격을 글자 크기의 1.6배로 설정 */
+    font-size: 0.944rem;
+    letter-spacing: -0.6px;
 }
 
 .post-navigation {
@@ -135,6 +134,44 @@
 }
 
 
+.attachments {
+    /*margin-top: 20px;*/
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.attachments h3 {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.attachments ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.attachments li {
+    margin-bottom: 5px;
+    background-color: white; /* 배경색을 흰색으로 설정 */
+    padding: 10px;
+    border: 1px solid #eee; /* 경계선을 추가하여 각 항목을 구분 */
+    border-radius: 5px; /* 경계선의 모서리를 둥글게 처리 */
+}
+
+
+.attachments a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.attachments a:hover {
+    text-decoration: underline;
+}
 
 
 

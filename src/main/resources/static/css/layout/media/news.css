@@ -295,7 +295,7 @@ button#loadMore.btn.btn-more {
 .news-table p {
     display: inline-block;
     padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
-    border: 2px solid #00bcd4;  /* 테두리를 추가합니다. */
+    border: 2px solid #795548;  /* 테두리를 추가합니다. */
     border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
 }
 

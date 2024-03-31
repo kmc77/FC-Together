@@ -12,6 +12,20 @@
         SELECT * FROM Notice WHERE notice_num = #{noticeNum}
     </select>
 
+    <select id="findPrevNoticeByCurrentNoticeDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Notice">
+        <![CDATA[
+            SELECT * FROM Notice
+            WHERE notice_date < #{currentNoticeDate}
+            ORDER BY notice_date DESC
+            LIMIT 1
+        ]]>
+    </select>
+
+    <update id="updateNoticeHits">
+        UPDATE Notice SET notice_hits = #{hits} WHERE notice_num = #{noticeNum}
+    </update>
+
+    <!-- ======================================= -->
 
     <select id="getNewsList" resultType="com.project.together.domain.News">
         SELECT *
@@ -24,6 +38,11 @@
         SELECT * FROM News WHERE news_idx = #{newsNum}
     </select>
 
+    <update id="updateNewsHits">
+        UPDATE News SET news_hits = #{hits} WHERE news_idx = #{newsIdx}
+    </update>
+
+    <!-- ======================================= -->
 
     <select id="getClubPhotoList" resultType="com.project.together.domain.ClubPhoto">
         SELECT *
@@ -36,6 +55,11 @@
         SELECT * FROM ClubPhoto WHERE cp_idx = #{cpIdx}
     </select>
 
+    <update id="updatePhotoHits">
+        UPDATE ClubPhoto SET cp_hits = #{hits} WHERE cp_idx = #{photoNum}
+    </update>
+
+    <!-- ======================================= -->
 
     <select id="getVideoList" resultType="com.project.together.domain.ClubVideo">
         SELECT *
@@ -49,14 +73,15 @@
     </select>
 
 
+    <update id="updateVideoHits">
+        UPDATE ClubVideo SET cv_hits = #{hits} WHERE cv_idx = #{cvIdx}
+    </update>
+
+
+
     <!-- ======================================= -->
 
-    <select id="getPhotos" resultType="com.project.together.domain.ClubPhoto">
-        SELECT *
-        FROM ClubPhoto
-        ORDER BY cp_idx DESC
-        LIMIT #{start}, #{limit}
-    </select>
+
 
 
 </mapper>

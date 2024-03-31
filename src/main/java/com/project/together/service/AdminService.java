@@ -4,9 +4,14 @@ import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -21,12 +26,17 @@ public class AdminService {
 
     private final AdminMapper adminMapper;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     // 날짜 포맷팅을 위한 메소드
     private String getCurrentFormattedTime() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return now.format(formatter);
     }
+
+
 
     public List<PrincipalDetails> getAllUsers() {
         // 모든 사용자 정보를 가져옵니다.
@@ -535,8 +545,100 @@ public class AdminService {
 // ================================== Staff and
 
 
+// ================================== Rule start
+
+    public List<Rule> getAllRule() {
+        return adminMapper.getAllRule();
+    }
+
+    public Rule findRuleById(int ruleNum) {
+        return adminMapper.findRuleById(ruleNum);
+    }
+
+    public List<File> findFilesByRuleNum(int ruleNum) {
+        return adminMapper.findFilesByRuleNum(ruleNum);
+    }
+
+   /* public void saveRule(Rule rule) {
+        rule.setRuleDate(getCurrentFormattedTime());
+        adminMapper.insertRule(rule);
+    }*/
 
 
+
+    public void updateRule(Rule rule) {
+        rule.setRuleDate(getCurrentFormattedTime());
+        adminMapper.updateRule(rule);
+    }
+
+
+    public void ruleDelete(List<Integer> ruleNums) {
+        //데이터베이스에서 해당 ruleNums 의 rule 들을 찾는다.
+        for (int ruleNum : ruleNums) {
+            Rule rule = adminMapper.findRuleById(ruleNum);
+            if (rule == null) {
+                throw new IllegalArgumentException("해당 rule가 존재하지 않습니다. ruleNum: " + ruleNum);
+            }
+        }
+
+        //찾은 rule 글을 삭제
+        adminMapper.deleteRule(ruleNums);
+    }
+
+    public int saveRule(Rule rule) {
+        rule.setRuleDate(getCurrentFormattedTime());
+        adminMapper.insertRule(rule);
+        return rule.getRuleNum(); // MyBatis의 selectKey를 사용하여 생성된 ruleNum 반환
+    }
+
+
+    public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
+        // ruleNum을 기반으로 한 디렉토리 경로 생성
+        String ruleSpecificPath = "ruleFiles/" + ruleNum + "/";
+        Path rulePath = Paths.get(ruleSpecificPath);
+
+        try {
+            // 해당 경로에 디렉토리가 없으면 생성
+            Files.createDirectories(rulePath);
+        } catch (IOException e) {
+            throw new RuntimeException("업로드할 디렉터리를 생성할 수 없습니다!", e);
+        }
+
+        files.forEach(file -> {
+            try {
+                // 파일의 원래 이름 가져오기
+                String fileName = file.getOriginalFilename();
+                // 최종 파일 저장 경로 설정
+                Path destinationFilePath = rulePath.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
+                // 파일 저장
+                file.transferTo(destinationFilePath);
+
+                // 파일 메타데이터 저장 로직 (데이터베이스)
+                File fileEntity = new File();
+                fileEntity.setFilePath(destinationFilePath.toString());
+                fileEntity.setTableIdx(ruleNum);
+                fileEntity.setFileName(fileName);
+                fileEntity.setTableGb(tableGb);
+                adminMapper.insertFile(fileEntity);
+            } catch (IOException e) {
+                throw new RuntimeException("파일을 저장할 수 없습니다. " + file.getOriginalFilename(), e);
+            }
+        });
+    }
+
+
+// ================================== Rule and
+
+
+// ================================== 경영공시 start
+    public List<Operation> getAllOperation() {
+        return adminMapper.getAllOperation();
+    }
+
+
+
+
+// ================================== 경영공시 and
 
 }
 

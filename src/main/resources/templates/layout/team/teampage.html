@@ -46,61 +46,12 @@
                     </ul>
                 </div>
             </div>
-
-
             <div class="tab__content">
                 <!-- 팀 멤버 섹션 시작 -->
                 <section class="team-member section">
-
                 </section>
                 <!-- 팀 멤버 섹션 끝 -->
             </div>
-
-
-
-
-           <!-- <section class="team-member section">
-                <h3 class="title title&#45;&#45;underline">DF</h3>
-                <ul class="team-member__list">
-                    <li class="team-member__item">
-                        <a class="team-member__link" href="/en/topteam/detail/?id=347">
-                            <div class="team-member__img-holder">
-                                <img class="team-member__img lozad" src="/wp-content/uploads/player_photo/1/347.png" data-src="/wp-content/uploads/player_photo/1/347.png" alt="Hiroki Sakai" data-wovn-src:-original-alt="酒井 宏樹" data-loaded="true">
-                            </div>
-                            <div class="team-member__data">
-                                <div class="team-member__data-unit">
-                                    <p class="team-member__number">2</p>
-                                    <p class="team-member__position">DF</p>
-                                </div>
-                                <div class="team-member__data-unit">
-                                    <p class="team-member__name-ja" wovn-ignore="true">酒井 宏樹</p>
-                                    <p class="team-member__name-en">&lt;!&ndash;wovn-src:SAKAI Hiroki&ndash;&gt;SAKAI Hiroki</p>
-                                    <p class="team-member__text">&lt;!&ndash;wovn-src:1990年4月12日&ndash;&gt;April 12, 1990<br>&lt;!&ndash;wovn-src:185cm / 78kg&ndash;&gt;185cm / 78kg</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="team-member__item">
-                        <a class="team-member__link" href="/en/topteam/detail/?id=349">
-                            <div class="team-member__img-holder">
-                                <img class="team-member__img lozad" src="/wp-content/uploads/player_photo/1/349.png" data-src="/wp-content/uploads/player_photo/1/349.png" alt="Hirokazu Ishihara" data-wovn-src:-original-alt="石原 広教" data-loaded="true">
-                            </div>
-                            <div class="team-member__data">
-                                <div class="team-member__data-unit">
-                                    <p class="team-member__number">4</p>
-                                    <p class="team-member__position">DF</p>
-                                </div>
-                                <div class="team-member__data-unit">
-                                    <p class="team-member__name-ja" wovn-ignore="true">石原 広教</p>
-                                    <p class="team-member__name-en">ISHIHARA&nbsp;Hirokazu</p>
-                                    <p class="team-member__text">&lt;!&ndash;wovn-src:1999年2月26日&ndash;&gt;February 26, 1999<br>&lt;!&ndash;wovn-src:169cm / 65kg&ndash;&gt;169cm / 65kg</p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </section>-->
-
         </div>
     </div>
 
@@ -166,7 +117,7 @@
 
 
 
-  $(document).ready(function() {
+ $(document).ready(function() {
     var allPlayersData = null;
 
     // 최초로 k5 탭 데이터를 불러오도록 추가한 코드
@@ -174,9 +125,16 @@
 
     $('.main-tab').on('click', function() {
         var selectedTabNum = $(this).data('num');
+
+        // 코칭스태프 탭이 선택되었는지 확인하고 서브 탭 메뉴를 숨기거나 표시
+        if (selectedTabNum === 4) {
+            $('.sub_tabMenu').hide();
+        } else {
+            $('.sub_tabMenu').show();
+        }
+
         clearTableData();
         displayPlayersByTab(selectedTabNum);
-        $('.sub-tab[data-num="1"]').click();
         resetSubTabInfo();
         $('html, body').animate({
             scrollTop: $(this).offset().top
@@ -244,57 +202,50 @@
         }
     }
 
-   function addPlayersToTable(players, playerType) { // playerType 파라미터를 여기서 받습니다.
+    function addPlayersToTable(players, playerType) {
         var orderedPositions = ['GK', 'DF', 'MF', 'FW'];
         orderedPositions.forEach(function(position) {
             var playersInSection = players.filter(function(player) {
-                return player[playerType + 'PlayerPosition'] === position; // 여기서 playerType 변수를 사용합니다.
+                return player[playerType + 'PlayerPosition'] === position;
             });
             if (playersInSection.length > 0) {
-                var sectionHtml = `
-                    <section class="team-member section">
-                        <h3 class="title title--underline">${position}</h3>
-                        <ul class="team-member__list">
-                `;
+                var sectionHtml = `<section class="team-member section">
+                                      <h3 class="title title--underline">${position}</h3>
+                                      <ul class="team-member__list">`;
+
                 playersInSection.forEach(function(player) {
-                    var defaultImg = "/img/playersimg/" + playerType + "/test2.jpeg";
-                    var playerImgSrc = player[playerType + 'filePath'];
-                    var playerHtml = `
-                        <li class="team-member__item">
-                            <a class="team-member__link" href="/en/topteam/detail/?id=${player[playerType + 'PlayerNum']}">
-                                <div class="team-member__img-holder">
-                                    <img class="team-member__img lozad"
-                                         src="${playerImgSrc}"
-                                         data-src="${playerImgSrc}"
-                                         alt="${player[playerType + 'PlayerEnName']}"
-                                         data-loaded="true">
-                                </div>
-                                <div class="team-member__data">
-                                    <div class="team-member__data-unit">
-                                        <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
-                                        <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
-                                    </div>
-                                    <div class="team-member__data-unit">
-                                        <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
-                                        <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
-                                        <p class="team-member__text">${player[playerType + 'PlayerBirth']}<br>${player[playerType + 'PlayerHeight']} / ${player[playerType + 'PlayerWeight']}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    `;
+                    var playerHtml = `<li class="team-member__item">
+                                        <a class="team-member__link" href="/en/topteam/detail/?id=${player[playerType + 'PlayerNum']}">
+                                            <div class="team-member__img-holder">
+                                                <img class="team-member__img lozad"
+                                                     src="${player[playerType + 'filePath']}"
+                                                     alt="${player[playerType + 'PlayerEnName']}"
+                                                     data-loaded="true">
+                                            </div>
+                                            <div class="team-member__data">
+                                                <div class="team-member__data-unit">
+                                                    <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
+                                                    <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
+                                                </div>
+                                                <div class="team-member__data-unit">
+                                                    <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
+                                                    <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
+                                                    <p class="team-member__text">${player[playerType + 'PlayerBirth']}<br>${player[playerType + 'PlayerHeight']} / ${player[playerType + 'PlayerWeight']}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                       </li>`;
                     sectionHtml += playerHtml;
                 });
-                sectionHtml += `
-                        </ul>
-                    </section>
-                `;
+
+                sectionHtml += `</ul></section>`;
                 $('.tab__content').append(sectionHtml);
             }
         });
     }
 
-    function loadCoachingStaffData() {
+
+   function loadCoachingStaffData() {
         $.ajax({
             url: "/team/layout/get_teamStaffInfo",
             method: "GET",
@@ -303,45 +254,39 @@
                 var sectionHtml = `
                     <section class="team-member section">
                         <h3 class="title title--underline">Staff</h3>
-                        <ul class="team-member__list team-member__list--staff">
-                `;
-                teamStaff.forEach(function(teamStaff) {
-                    var defaultImg = "/img/teamstaffimg/test2.jpg";
-                    var staffImgSrc = teamStaff['teamStaffFilePath'];
+                        <ul class="team-member__list team-member__list--staff">`;
+
+                teamStaff.forEach(function(staff) {
                     var staffHtml = `
                         <li class="team-member__item">
-                            <a class="team-member__link" href="/en/topteam/detail/?id=${teamStaff.teamStaffNum}">
+                            <a class="team-member__link" href="/en/topteam/detail/?id=${staff.teamStaffNum}">
                                 <div class="team-member__img-holder">
                                     <img class="team-member__img lozad"
-                                        src="${staffImgSrc}"
-                                        data-src="${staffImgSrc}"
-                                        alt="${teamStaff.teamStaffEnName}"
-                                        data-loaded="true">
+                                         src="${staff.teamStaffFilePath}"
+                                         alt="${staff.teamStaffEnName}"
+                                         data-loaded="true">
                                 </div>
                                 <div class="team-member__data">
                                     <div class="team-member__data-unit">
-                                        <p class="team-member__role">${teamStaff.teamStaffRole} / ${teamStaff.teamLeagueGb}</p>
-                                        <p class="team-member__name-ja" wovn-ignore="true">${teamStaff.teamStaffName}</p>
-                                        <p class="team-member__name-en">${teamStaff.teamStaffEnName}</p>
-                                        <p class="team-member__text">${teamStaff.teamStaffBirth}</p>
+                                        <p class="team-member__role">${staff.teamStaffRole} / ${staff.teamLeagueGb}</p>
+                                        <p class="team-member__name-ja" wovn-ignore="true">${staff.teamStaffName}</p>
+                                        <p class="team-member__name-en">${staff.teamStaffEnName}</p>
+                                        <p class="team-member__text">${staff.teamStaffBirth}</p>
                                     </div>
                                 </div>
                             </a>
-                        </li>
-                    `;
+                        </li>`;
                     sectionHtml += staffHtml;
                 });
+
                 sectionHtml += `
                         </ul>
-                    </section>
-                `;
+                    </section>`;
                 $('.tab__content').append(sectionHtml);
-
-                 // 서브 탭 가리기
-               <!-- $('.sub_tabMenu').hide();-->
             }
         });
     }
+
 
     function clearTableData() {
         $('.tab__content').empty();
@@ -352,19 +297,19 @@
         var positionMap = {1: 'GK', 2: 'DF', 3: 'MF', 4: 'FW'};
         var selectedPosition = positionMap[positionNum];
         $('.team-member.section').each(function() {
-            var section = $(this);
-            if (section.find('.title--underline').text() === selectedPosition) {
-                section.show();
+            if ($(this).find('.title--underline').text() === selectedPosition) {
+                $(this).show();
             }
         });
     }
 
-    loadAllPlayersData();
+    loadAllPlayersData(); // 페이지 로딩 시 모든 플레이어 데이터 로드
 });
 
 
 </script>
-
-
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

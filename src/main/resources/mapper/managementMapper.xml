@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.ManagementMapper">
+
+    <select id="findAll" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule
+        ORDER BY rule_num DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findRuleByRuleNum" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <select id="findPrevRuleByCurrentRuleDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Rule">
+        <![CDATA[
+        SELECT * FROM Rule
+        WHERE rule_date < #{currentRuleDate}
+        ORDER BY rule_date DESC
+        LIMIT 1
+    ]]>
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByRuleNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
+    <update id="updateRuleHits">
+        UPDATE Rule SET rule_hits = #{hits} WHERE rule_num = #{ruleNum}
+    </update>
+
+
+
+
+
+
+
+
+</mapper>

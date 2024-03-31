@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- <meta charset="UTF-8">
-     <title>notice</title>
-     <th:block th:include="layout/header"></th:block>-->
+    <meta charset="UTF-8">
+    <title>all</title>
+    <link href="/css/layout/media/all.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -164,8 +164,10 @@
                      let thumbnailUrl = '/img/FcTogether.jpg'; // 기본 썸네일 URL
 
                      if (video.mvTheOriginUrl) {
-                         let videoKey = video.mvTheOriginUrl.substring(17); // YouTube URL에서 key 추출
-                         thumbnailUrl = `https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`; // 썸네일 URL 업데이트
+                         // YouTube 임베드 URL에서 비디오 키 추출
+                            let urlParts = video.mvTheOriginUrl.split('/');
+                            let videoKey = urlParts[urlParts.length - 1]; // URL 마지막 부분이 비디오 키
+                            thumbnailUrl = `https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`; // 썸네일 URL 업데이트
                      }
 
                      let videoItem = `<a href="/media/videoView?no=${video.cvIdx}">

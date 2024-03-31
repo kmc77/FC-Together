@@ -67,7 +67,10 @@
                             <tbody>
                             <tr th:each="rule : ${ruleList}">
                                 <td th:text="${rule.ruleNum}">번호</td>
-                                <th><a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a></th>
+                                <th>
+                                    <a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a>
+                                    <span th:if="${filePresenceMap[rule.ruleNum]}" class="file-icon">📎</span> <!-- 파일이 있는 경우 아이콘 표시 -->
+                                </th>
                                 <td th:text="${rule.ruleDate}">등록일</td>
                                 <td th:text="${rule.username}">작성자</td>
                                 <td th:text="${rule.ruleHits}">조회수</td>
@@ -78,15 +81,15 @@
                 </div>
             </section>
 
-            <section class="management">
+            <section class="operation">
                 <!-- board seach area -->
-                <div id="management_board-search">
+                <div id="operation_board-search">
                     <div class="container">
                         <div class="search-window">
                             <form action="">
                                 <div class="search-wrap">
                                     <label for="search" class="blind">공지사항 내용 검색</label>
-                                    <input id="management_search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
+                                    <input id="operation_search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
                                     <button type="submit" class="btn btn-dark">검색</button>
                                 </div>
                             </form>
@@ -94,8 +97,8 @@
                     </div>
                 </div>
 
-                <!-- management_board list area -->
-                <div id="management_board-list">
+                <!-- operation_board list area -->
+                <div id="operation_board-list">
                     <div class="container">
                         <table class="board-table">
                             <thead>
@@ -110,11 +113,15 @@
                             <tbody>
                             <tr th:each="rule : ${ruleList}">
                                 <td th:text="${rule.ruleNum}">번호</td>
-                                <th><a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a></th>
+                                <th>
+                                    <a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a>
+                                    <span th:if="${filePresenceMap[rule.ruleNum]}" class="file-icon">📎</span> <!-- 파일이 있는 경우 아이콘 표시 -->
+                                </th>
                                 <td th:text="${rule.ruleDate}">등록일</td>
                                 <td th:text="${rule.username}">작성자</td>
                                 <td th:text="${rule.ruleHits}">조회수</td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>

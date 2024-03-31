@@ -1,5 +1,6 @@
 package com.project.together.mapper;
 
+import com.project.together.domain.File;
 import com.project.together.domain.Rule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,4 +19,7 @@ public interface ManagementMapper {
     Rule findPrevRuleByCurrentRuleDate(LocalDate currentRuleDate);
 
     void updateRuleHits(@Param("ruleNum") int ruleNum, @Param("hits") int hits);
+
+    List<File> findFilesByRuleNum(int ruleNum);
+
 }

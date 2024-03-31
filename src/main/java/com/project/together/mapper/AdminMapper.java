@@ -111,9 +111,17 @@ public interface AdminMapper {
 
     Rule findRuleById(@Param("ruleNum") int ruleNum);
 
-    void insertRule(Rule rule);
+    /*void insertRule(Rule rule);*/
 
     void updateRule(Rule rule);
 
     void deleteRule(List<Integer> ruleNums);
+
+    void insertFile(File file);
+
+    void insertRule(Rule rule);
+
+    List<Operation> getAllOperation();
+
+    List<File> findFilesByRuleNum(int ruleNum);
 }

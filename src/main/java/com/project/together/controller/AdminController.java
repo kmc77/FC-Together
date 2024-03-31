@@ -1,16 +1,14 @@
 package com.project.together.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.service.AdminService;
+import com.project.together.service.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,9 +25,11 @@ import java.util.Map;
 public class AdminController {
 
     private final AdminService adminService;
+    private final FileService fileService;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, FileService fileService) {
         this.adminService = adminService;
+        this.fileService = fileService;
     }
 
     // 사용자 정보 가져오기
@@ -538,10 +538,10 @@ public class AdminController {
     }
 */
 
-    // ================================== players End
+    // ================================== Players End
 
 
-    // ================================== staff start
+    // ================================== Staff start
 
     // 스태프 선수 정보 가져오기
     @GetMapping("/layout/get_staffInfo")
@@ -607,9 +607,9 @@ public class AdminController {
 
 
 
-    // ================================== staff End
+    // ================================== Staff End
 
-    // ================================== rule start
+    // ================================== Rule start
 
 
     // 규정 정보 가져오기
@@ -621,39 +621,90 @@ public class AdminController {
         return ResponseEntity.ok(rules);
     }
 
-    // 규정 상세 정보 가져오기
-    @GetMapping("/layout/ruleView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Rule> getRuleView(@RequestParam("ruleNum") int ruleNum, HttpServletResponse response) {
-        Rule rule = adminService.findRuleById(ruleNum);
-        System.out.println("ruleview = " + rule);
-        if (rule != null) {
-            return ResponseEntity.ok(rule);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
 
-    // 규정 작성
+    // 규정 작성 (업로드 기능 추가)
     @PostMapping("/layout/rulePost")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String postRule(@ModelAttribute Rule rule, @RequestParam String username, RedirectAttributes redirectAttributes) {
+    public String postRule(@ModelAttribute Rule rule,
+                           @RequestParam String username,
+                           @RequestParam("files") List<MultipartFile> files,
+                           RedirectAttributes redirectAttributes) {
         rule.setUsername(username);
-        adminService.saveRule(rule);
+        int ruleNum = adminService.saveRule(rule); // 규정을 저장하고 그 ID를 가져옵니다.
+
+        if (!files.isEmpty()) {
+            // FileService를 이용하여 S3에 파일을 업로드하고 메타데이터를 저장
+            fileService.uploadFilesToS3AndSaveMetadata(files, ruleNum, "ruleFiles");
+        }
+
         redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 추가되었습니다.");
         return "redirect:/admin/layout/rule_management";
     }
 
-    // 규정 수정
+
+
+    // 규정 상세 정보 가져오기(업로드 파일 추가)
+    @GetMapping("/layout/ruleView/{ruleNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getRuleDetails(@PathVariable int ruleNum) {
+        Rule rule = adminService.findRuleById(ruleNum);
+        if (rule == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        List<File> files = adminService.findFilesByRuleNum(ruleNum); // 규정 번호에 해당하는 파일 목록 조회
+
+        // 규정 정보와 파일 목록을 포함하는 객체 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("rule", rule);
+        response.put("files", files);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    /*// 규정 수정
     @PostMapping("/layout/ruleUpdate/{ruleNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateRule(@PathVariable int ruleNum, @ModelAttribute Rule rule, RedirectAttributes redirectAttributes) {
+    public String updateRule(@PathVariable int ruleNum,
+                             @ModelAttribute Rule rule,
+                             @RequestParam("files") List<MultipartFile> files,
+                             RedirectAttributes redirectAttributes) {
 
         rule.setRuleNum(ruleNum);
-        adminService.updateRule(rule);
+        adminService.updateRule(rule); // 기존 규정 정보 업데이트
+
+        // 파일이 존재하는 경우, 새롭게 업로드된 파일 처리
+        if (!files.isEmpty()) {
+            adminService.saveFiles(files, ruleNum, "Rule");
+        }
+
+        redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/rule_management";
+    }*/
+
+    @PostMapping("/layout/ruleUpdate/{ruleNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateRule(@PathVariable int ruleNum,
+                             @ModelAttribute Rule rule,
+                             @RequestParam("files") List<MultipartFile> files,
+                             RedirectAttributes redirectAttributes) {
+        rule.setRuleNum(ruleNum);
+        adminService.updateRule(rule); // 기존 규정 정보 업데이트
+
+        // 기존 파일 정보 삭제 또는 업데이트 로직
+        // 예: adminService.deleteFilesByRuleNum(ruleNum);
+        // 또는 기존 파일 정보를 업데이트하는 로직 구현
+
+        // 새로운 파일 처리
+        if (!files.isEmpty()) {
+            adminService.saveFiles(files, ruleNum, "Rule");
+        }
+
         redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/rule_management";
     }
+
 
 
     // 규정 삭제
@@ -672,9 +723,24 @@ public class AdminController {
     }
 
 
-    // ================================== rule End
+    // ================================== Rule End
 
-    // ================================== page 이동
+    // ================================== Operation start
+
+    // 경영공시 목록 가져오기
+    @GetMapping("/layout/getOperationInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Operation>> getOperationInfo() {
+        List<Operation> operations = adminService.getAllOperation();
+        System.out.println("operations = " + operations);
+        return ResponseEntity.ok(operations);
+    }
+
+
+
+    // ================================== Operation End
+
+    // ================================== Page 이동
 
     @GetMapping("/layout/adminpage")
     public String adminPage(Model model) {

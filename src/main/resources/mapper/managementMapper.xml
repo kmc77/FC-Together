@@ -21,9 +21,16 @@
     ]]>
     </select>
 
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByRuleNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
     <update id="updateRuleHits">
         UPDATE Rule SET rule_hits = #{hits} WHERE rule_num = #{ruleNum}
     </update>
+
 
 
 

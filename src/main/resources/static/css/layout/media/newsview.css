@@ -70,8 +70,9 @@
 
 .newsContent .content {
     padding: 3.111rem 2.111rem;
-    font-size: 0.944rem;
-    letter-spacing: -0.6px;
+    font-size: 1rem; /* 기본 글자 크기를 16px(1rem)로 설정 */
+    letter-spacing: 0.05em; /* 글자 간격을 적당히 늘림 */
+    line-height: 1.6; /* 줄 간격을 글자 크기의 1.6배로 설정 */
 }
 
 .post-navigation {

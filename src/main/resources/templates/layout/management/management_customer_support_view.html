@@ -39,6 +39,16 @@
                 <div class="content">
                     <p th:utext="${rule.ruleContent}">Content</p>
                 </div>
+                <!-- 첨부 파일 목록 -->
+                <div class="attachments">
+                    <h3>첨부 파일</h3>
+                    <ul>
+                        <li th:each="file : ${files}">
+                            <a th:href="@{${file.filePath}}" th:text="${file.fileName}">File Name</a>
+                        </li>
+                    </ul>
+                </div>
+
                 <!-- 이전 글 링크 -->
                 <div class="previous-post post-navigation" th:if="${prevRule != null}">
                     <div>

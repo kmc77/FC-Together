@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class MediaService {
         return mediaMapper.findAll(params);
     }
 
+
     // 공지사항 상세보기 페이지
     public Notice getNotice(int noticeNum) throws NotFoundException {
         Notice notice = mediaMapper.findNoticeByNoticeNum(noticeNum);
@@ -32,15 +34,27 @@ public class MediaService {
         return notice;
     }
 
+    // 공지사항 이전글 찾기
+    public Notice findPrevNoticeByCurrentNoticeDate(LocalDate currentNoticeDate) {
+        return mediaMapper.findPrevNoticeByCurrentNoticeDate(currentNoticeDate);
+    }
+
+    // 공지사항 조회수 증가
+    public void increaseNoticeHits(int noticeNum) throws NotFoundException {
+        Notice notice = mediaMapper.findNoticeByNoticeNum(noticeNum);
+        if (notice == null) {
+            throw new NotFoundException("공지사항을 찾을 수 없습니다: " + noticeNum);
+        }
+        notice.setNoticeHits(notice.getNoticeHits() + 1);
+        mediaMapper.updateNoticeHits(notice.getNoticeNum(), notice.getNoticeHits());
+    }
+
+
     // 뉴스 목록
     public List<News> getNewsList(Map<String, Integer> params) {
         return mediaMapper.getNewsList(params);
     }
 
-    // 사진 목록
-    public List<ClubPhoto> getClubPhotoList(Map<String, Integer> params) {
-        return mediaMapper.getClubPhotoList(params);
-    }
 
     //뉴스 상세보기 페이지
     public News newsViewPage(int newsNum) throws NotFoundException {
@@ -51,6 +65,22 @@ public class MediaService {
         return news;
     }
 
+    // 뉴스 조회수 증가
+    public void increaseNewsHits(int newsNum) throws NotFoundException {
+        News news = mediaMapper.findNewsByNewsNumber(newsNum);
+        if (news == null) {
+            throw new NotFoundException("뉴스를 찾을 수 없습니다: " + newsNum);
+        }
+        news.setNewsHits(news.getNewsHits() + 1);
+        mediaMapper.updateNewsHits(news.getNewsIdx(), news.getNewsHits());
+    }
+
+
+    // 사진 목록
+    public List<ClubPhoto> getClubPhotoList(Map<String, Integer> params) {
+        return mediaMapper.getClubPhotoList(params);
+    }
+
     // 구단 사진 상세보기 페이지
     public ClubPhoto photoViewPage(int cpIdx) throws NotFoundException {
         ClubPhoto clubPhoto = mediaMapper.findPhotosByPhotoNumber(cpIdx);
@@ -58,6 +88,16 @@ public class MediaService {
             throw new NotFoundException(cpIdx + "번호의 구단 사진을 찾을 수 없습니다.");
         }
         return clubPhoto;
+    }
+
+    // 사진 조회수 증가
+    public void increasePhotoHits(int photoNum) throws NotFoundException {
+        ClubPhoto photo = mediaMapper.findPhotosByPhotoNumber(photoNum);
+        if (photo == null) {
+            throw new NotFoundException("사진을 찾을 수 없습니다: " + photoNum);
+        }
+        photo.setCpHits(photo.getCpHits() + 1);
+        mediaMapper.updatePhotoHits(photo.getCpIdx(), photo.getCpHits());
     }
 
     // 영상 목록
@@ -74,9 +114,22 @@ public class MediaService {
         return clubVideo;
     }
 
-    public List<ClubPhoto> getPhotos(int start, int limit) {
-        return mediaMapper.getPhotos(start, limit);
+    public void increaseVideoHits(int cvIdx) throws NotFoundException {
+        ClubVideo clubVideo = mediaMapper.findVideosByVideoNumber(cvIdx);
+        if (clubVideo == null) {
+            throw new NotFoundException(cvIdx + "번 구단 영상을 찾을 수 없습니다.");
+        }
+        clubVideo.setCvHits(clubVideo.getCvHits() + 1); // 조회수 1 증가
+        mediaMapper.updateVideoHits(clubVideo.getCvIdx(), clubVideo.getCvHits());
     }
+
+
+
+
+
+
+
+
 
 
     /* ============================================ */

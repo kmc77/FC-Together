@@ -179,16 +179,32 @@
                     </ul>
                 </li>
                 <li class="nav-item"
-                    th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' ? 'menu-open' : ''}">
+                    th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' || currentPage == 'rule_management' || currentPage == 'operation_management' ? 'menu-open' : ''}">
                     <a href="#" class="nav-link"
-                       th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' ? 'active' : ''}">
+                       th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' || currentPage == 'rule_management' || currentPage == 'operation_management' ? 'active' : ''}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            고객지원
+                            경영/고객 지원
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="./rule_management"
+                               th:classappend="${currentPage == 'rule_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>규정</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./operation_management"
+                               th:classappend="${currentPage == 'operation_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>경영공시</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="./faq_management"
                                th:classappend="${currentPage == 'faq_management' ? 'active' : ''}"

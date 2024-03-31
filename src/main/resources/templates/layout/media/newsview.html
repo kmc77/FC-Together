@@ -40,15 +40,17 @@
             <div class="newsContent">
                 <div class="content"><p th:utext="${news.newsContent}"></p>
 
-            </div>
+                </div>
                 <div class="previous-post post-navigation">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}" th:text="${prevNews.newsTitle}">이전글 제목</a>
+                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}"
+                           th:text="${prevNews.newsTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
-                <a id="default_butt" href="http://localhost:8081/media/notice" class="btn btn-default">목록</a>
+                    <a id="default_butt" href="/media/news" class="btn btn-default">목록</a>
+                </div>
             </div>
         </div>
     </div>
@@ -93,10 +95,11 @@
     error: function(jqXHR, textStatus, errorThrown) {
         console.log(textStatus, errorThrown);
     }
-});
-
-
+  });
 });
 </script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

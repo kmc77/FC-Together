@@ -264,10 +264,72 @@
     </delete>
 
 
-
-
-
     <!-- ==============  TeamStaff End ============== -->
+
+
+    <!-- ==============  Rule Start ============== -->
+
+    <select id="getAllRule" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule ORDER BY rule_num DESC
+    </select>
+
+    <select id="findRuleById" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByRuleNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
+
+    <!--    <insert id="insertRule" parameterType="com.project.together.domain.Rule">
+            INSERT INTO Rule (rule_num, username, rule_title, rule_date, rule_hits, rule_content)
+            VALUES (#{ruleNum}, #{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent})
+        </insert>-->
+
+    <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
+        INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)
+        VALUES (#{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent}, #{tableGb})
+    </insert>
+
+    <insert id="insertFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+
+
+    <update id="updateRule" parameterType="com.project.together.domain.Rule">
+        UPDATE Rule
+        SET rule_title = #{ruleTitle}, rule_content = #{ruleContent}, rule_date = #{ruleDate}
+        WHERE rule_num = #{ruleNum}
+    </update>
+
+    <delete id="deleteRule" parameterType="list">
+        DELETE FROM Rule WHERE rule_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+    <!-- ==============  Rule End ============== -->
+
+
+    <!-- ==============  경영공시 Start ============== -->
+
+    <select id="getAllOperation" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation ORDER BY operation_num DESC
+    </select>
+
+
+
+    <!-- ==============  경영공시 End ============== -->
+
+
 
 
 </mapper>

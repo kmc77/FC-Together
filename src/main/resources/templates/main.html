@@ -184,13 +184,19 @@
 <!--섹션4-->
 <div class="tab-container">
 
+
     <p class="feeds"><strong>투게더 소식</strong></p>
 
-    <div class="tab-buttons">
-        <button onclick="showTab('all')">전체</button>
-        <button onclick="showTab('tab1')">탭 1</button>
-        <button onclick="showTab('tab2')">탭 2</button>
-        <button onclick="showTab('tab3')">탭 3</button>
+    <div class="gnbBox">
+        <ul class="mainMenuBox" id="nav-1">
+            <li class="slide1"></li>
+            <li class="slide2"></li>
+            <li class="mainMenu"><a onclick="showTab('all')">전체</a></li>
+            <li class="mainMenu"><a onclick="showTab('tab1')">탭 1</a></li>
+            <li class="mainMenu"><a onclick="showTab('tab2')">탭 2</a></li>
+            <li class="mainMenu"><a onclick="showTab('tab3')">탭 3</a></li>
+        </ul>
+        <script src="/dist/js/header.js"></script>
     </div>
 
     <div class="tab-content" id="all-content">
@@ -341,6 +347,32 @@
         $('.tab-content').removeClass('active');
         $('#' + tabName + '-content').addClass('active');
     }
+
+    $(document).ready(function() {
+    var firstTabPosition = { left: 0 };
+    var firstTabWidth = 0;
+
+    $("#nav-1 .slide1").css({ opacity: 0, left: firstTabPosition.left, width: firstTabWidth });
+
+    $("#nav-1 a").on("click", function() {
+        var position = $(this).parent().position();
+        var width = $(this).parent().width();
+        $("#nav-1 .slide1").css({ opacity: 1, left: position.left, width: width });
+    });
+
+    $("#nav-1 a").on("mouseover", function() {
+        var position = $(this).parent().position();
+        var width = $(this).parent().width();
+        $("#nav-1 .slide2").css({
+            opacity: 1, left: position.left, width: width
+        }).addClass("squeeze");
+    });
+
+    $("#nav-1 a").on("mouseout", function() {
+        $("#nav-1 .slide2").css({ opacity: 0 }).removeClass("squeeze");
+    });
+});
+
 </script>
 
 </body>

@@ -1,40 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link th:href="@{/css/layout/match/matchpage.css}" rel="stylesheet"/>
-    <th:block th:include="layout/header"></th:block>
+    <title>타임리프 예제</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
-<div class="subTop">
-    <div class="top">
-        <div class="container">
-            <div class="topTitle">
-                <p class="title">
-                    <span class="mobileBreak"><strong>경기 일정/결과</strong></span>
-                </p>
+<div class="teamPage" id="content">
+    <div class="subTop">
+        <div class="top">
+            <div class="container">
+                <div class="topTitle">
+                    <p class="title">
+                        <span class="mobileBreak"><strong></strong>경기 일정 / 결과</span>
+                    </p>
+                </div>
             </div>
+        </div>
+        <!-- 메인 탭 메뉴 -->
+        <div class="tabMenu">
+            <div class="container">
+                <ul class="tab-bar">
+                    <li data-num="1" class="tab wave dark main-tab"><a href="#" th:onclick="'loadTeamData(\'K5\')'">K5 선수단</a></li>
+                    <li data-num="2" class="tab wave dark main-tab"><a href="#" th:onclick="'loadTeamData(\'K7\')'">K7 선수단</a></li>
+                    <li data-num="3" class="tab wave dark main-tab"><a href="#" th:onclick="'loadTeamData(\'W\')'">W리그 선수단</a></li>
+                    <div class="indicator"></div>
+                </ul>
+            </div>
+        </div>
+        <!-- 서브 탭 메뉴 -->
+        <div class="sub_tabMenu">
+            <div class="sub_container">
+                <ul class="sub-tab-bar">
+                    <li data-num="1" class="sub-tab wave dark sub-tab"><a href="#" th:onclick="'loadTabData(\'schedule\')'">경기 일정</a></li>
+                    <li data-num="4" class="sub-tab wave dark sub-tab"><a href="#" th:onclick="'loadTabData(\'results\')'">경기 결과</a></li>
+                    <div class="sub-indicator"></div>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="tab__content">
+
+            <section class="team-member section">
+                <div id="teamData" th:text="${teamData}"></div>
+            </section>
+
         </div>
     </div>
 </div>
 
-<script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
+<script th:inline="javascript">
+    function loadTeamData(team) {
+        var teamData = "예시 데이터: " + team + " 선수단 데이터";
+        document.getElementById("teamData").innerText = teamData;
+    }
+
+    function loadTabData(tab) {
+        var tabData = "예시 데이터: " + tab + " 데이터";
+        document.getElementById("teamData").innerText = tabData;
     }
 </script>
-
 </body>
 </html>

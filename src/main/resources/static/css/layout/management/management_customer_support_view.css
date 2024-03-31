@@ -134,6 +134,44 @@
 }
 
 
+.attachments {
+    /*margin-top: 20px;*/
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.attachments h3 {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.attachments ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.attachments li {
+    margin-bottom: 5px;
+    background-color: white; /* 배경색을 흰색으로 설정 */
+    padding: 10px;
+    border: 1px solid #eee; /* 경계선을 추가하여 각 항목을 구분 */
+    border-radius: 5px; /* 경계선의 모서리를 둥글게 처리 */
+}
+
+
+.attachments a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.attachments a:hover {
+    text-decoration: underline;
+}
 
 
 

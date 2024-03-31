@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.domain.ClubVideo;
+import com.project.together.domain.File;
 import com.project.together.domain.Rule;
 import com.project.together.mapper.ManagementMapper;
 import com.project.together.mapper.MediaMapper;
@@ -47,5 +48,8 @@ public class ManagementService {
     }
 
 
+    public List<File> findFilesByRuleNum(int ruleNum) {
+        return managementMapper.findFilesByRuleNum(ruleNum);
+    }
 
 }

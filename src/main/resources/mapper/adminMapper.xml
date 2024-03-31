@@ -277,10 +277,29 @@
         SELECT * FROM Rule WHERE rule_num = #{ruleNum}
     </select>
 
-    <insert id="insertRule" parameterType="com.project.together.domain.Rule">
-        INSERT INTO Rule (rule_num, username, rule_title, rule_date, rule_hits, rule_content)
-        VALUES (#{ruleNum}, #{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent})
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByRuleNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
+
+    <!--    <insert id="insertRule" parameterType="com.project.together.domain.Rule">
+            INSERT INTO Rule (rule_num, username, rule_title, rule_date, rule_hits, rule_content)
+            VALUES (#{ruleNum}, #{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent})
+        </insert>-->
+
+    <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
+        INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)
+        VALUES (#{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent}, #{tableGb})
     </insert>
+
+    <insert id="insertFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+
 
     <update id="updateRule" parameterType="com.project.together.domain.Rule">
         UPDATE Rule
@@ -298,5 +317,19 @@
 
 
     <!-- ==============  Rule End ============== -->
+
+
+    <!-- ==============  경영공시 Start ============== -->
+
+    <select id="getAllOperation" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation ORDER BY operation_num DESC
+    </select>
+
+
+
+    <!-- ==============  경영공시 End ============== -->
+
+
+
 
 </mapper>

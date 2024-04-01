@@ -692,18 +692,18 @@ public class AdminController {
         rule.setRuleNum(ruleNum);
         adminService.updateRule(rule); // 기존 규정 정보 업데이트
 
-        // 기존 파일 정보 삭제 또는 업데이트 로직
-        // 예: adminService.deleteFilesByRuleNum(ruleNum);
-        // 또는 기존 파일 정보를 업데이트하는 로직 구현
+        // 기존 파일 정보 삭제
+        fileService.deleteFilesByRuleNum(ruleNum);
 
         // 새로운 파일 처리
         if (!files.isEmpty()) {
-            adminService.saveFiles(files, ruleNum, "Rule");
+            fileService.uploadFilesToS3AndSaveMetadata(files, ruleNum, "ruleFiles");
         }
 
         redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/rule_management";
     }
+
 
 
 

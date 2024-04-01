@@ -299,13 +299,15 @@
         VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
 
-
-
     <update id="updateRule" parameterType="com.project.together.domain.Rule">
         UPDATE Rule
         SET rule_title = #{ruleTitle}, rule_content = #{ruleContent}, rule_date = #{ruleDate}
         WHERE rule_num = #{ruleNum}
     </update>
+
+    <delete id="deleteFilesByRuleNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </delete>
 
     <delete id="deleteRule" parameterType="list">
         DELETE FROM Rule WHERE rule_num IN

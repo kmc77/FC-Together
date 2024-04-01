@@ -124,4 +124,6 @@ public interface AdminMapper {
     List<Operation> getAllOperation();
 
     List<File> findFilesByRuleNum(int ruleNum);
+
+    void deleteFilesByRuleNum(int ruleNum);
 }

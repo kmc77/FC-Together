@@ -559,12 +559,6 @@ public class AdminService {
         return adminMapper.findFilesByRuleNum(ruleNum);
     }
 
-   /* public void saveRule(Rule rule) {
-        rule.setRuleDate(getCurrentFormattedTime());
-        adminMapper.insertRule(rule);
-    }*/
-
-
 
     public void updateRule(Rule rule) {
         rule.setRuleDate(getCurrentFormattedTime());
@@ -592,7 +586,7 @@ public class AdminService {
     }
 
 
-    public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
+   /* public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
         // ruleNum을 기반으로 한 디렉토리 경로 생성
         String ruleSpecificPath = "ruleFiles/" + ruleNum + "/";
         Path rulePath = Paths.get(ruleSpecificPath);
@@ -624,7 +618,7 @@ public class AdminService {
                 throw new RuntimeException("파일을 저장할 수 없습니다. " + file.getOriginalFilename(), e);
             }
         });
-    }
+    }*/
 
 
 // ================================== Rule and

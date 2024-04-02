@@ -882,34 +882,43 @@ a {
  }
 
  #board-search .search-window,
- #operation_board-search .search-window {
+ #operation_board-search .search-window,
+ #training_board-search .search-window { /* 훈련일정 검색 창 추가 */
    padding: 15px 0;
    background-color: #f9f7f9;
  }
+
  #board-search .search-window .search-wrap,
- #operation_board-search .search-window .search-wrap {
+ #operation_board-search .search-window .search-wrap,
+ #training_board-search .search-window .search-wrap { /* 훈련일정 검색 래퍼 추가 */
    position: relative;
    padding-right: 124px;
    margin: 0 auto;
    width: 80%;
    max-width: 564px;
  }
+
  #board-search .search-window .search-wrap input,
- #operation_board-search .search-window .search-wrap input {
+ #operation_board-search .search-window .search-wrap input,
+ #training_board-search .search-window .search-wrap input { /* 훈련일정 입력 필드 추가 */
    height: 40px;
    width: 100%;
    font-size: 14px;
    padding: 7px 14px;
    border: 1px solid #ccc;
  }
+
  #board-search .search-window .search-wrap input:focus,
- #operation_board-search .search-window .search-wrap input:focus {
+ #operation_board-search .search-window .search-wrap input:focus,
+ #training_board-search .search-window .search-wrap input:focus { /* 훈련일정 입력 필드 포커스 추가 */
    border-color: #333;
    outline: 0;
    border-width: 1px;
  }
+
  #board-search .search-window .search-wrap .btn,
- #operation_board-search .search-window .search-wrap .btn {
+ #operation_board-search .search-window .search-wrap .btn,
+ #training_board-search .search-window .search-wrap .btn { /* 훈련일정 버튼 추가 */
    position: absolute;
    right: 0;
    top: 0;
@@ -918,6 +927,7 @@ a {
    padding: 0;
    font-size: 16px;
  }
+
 
 
  .board-table {
@@ -1051,11 +1061,51 @@ a {
    height: 1px;
  }
 
+/* faq css */
 
+.faq-item-tit {display:block; position:relative; padding:17px 25px 16px 0}
+.faq-item-tit::after {content:''; position:absolute; top:50%; right:10px; display:inline-block; width:8px; height:8px; border-bottom:1px solid #121212; border-right:1px solid #121212; transform:rotate(45deg) translateY(-50%)}
+.faq-item-tit:hover {text-decoration:none}
+.faq-item-tit .faq-q {display:block; line-height:1.5; font-size:17px}
+.faq-item-tit .faq-category {display:inline-block; min-width:70px; height:23px; margin-bottom:5px; padding:0px 5px; border-radius:5px; line-height:25px; color:#fff; font-size:12px; text-align:center; white-space:nowrap; box-sizing:border-box}
+.faq-item-tit .faq-category.faq-cate1 {background:#f71b73}
+.faq-item-tit .faq-category.faq-cate2 {background:#35c876}
+.faq-item-tit .faq-category.faq-cate3 {background:#8623e2}
+.faq-item-tit .faq-category.faq-cate4 {background:#3b9dd6}
+.faq-item-tit .faq-category.faq-cate5 {background:#edac44}
+.faq-item-tit .is-file {margin-left:2px}
 
+.faq-item-cont {display:none;padding:15px;}
+.faq-item-cont .down-list {display:flex;flex-direction:column;margin-top:20px;}
+.faq-item-cont .down-list li {margin-bottom:5px}
+.faq-item-cont .down-list .btn-file {display:inline-block; padding:11px 15px 9px 34px; border:1px solid #ddd; border-radius:10px; background:#fff url('https://static.hankyung.com/resource/common/img/icon/icon-download.svg') no-repeat 15px center/15px 15px}
+/* as-is file icon: background:#fff url('https://static.hankyung.com/resource/www/help/img/icon-down.svg') no-repeat 15px center/11px 13px */
 
+.faq-list {border-top:2px solid #121212}
+.faq-list .faq-item {border-bottom:1px solid #ddd}
+.faq-list .faq-item.on .faq-item-cont {display:block;font-size:17px;background-color:#f8f8f8;}
+.faq-list .faq-item.on .faq-item-tit .faq-q {font-weight:bold}
+.faq-list .faq-item.on .faq-item-tit::after {top:calc(50% + 3px); border:none; border-top:1px solid #121212; border-left:1px solid #121212}
 
+.faq-list.type2 {margin-top:20px}
+.faq-list.type2 .faq-item-tit, .faq-list.type2 .faq-item.on .faq-cont-area {display:flex;}
+.faq-list.type2 .faq-item.on .faq-item-cont {padding-right:12px; font-size:17px}
+.faq-list.type2 .faq-qna {display:inline-block; flex:0 0 auto; width:25px; height:25px; margin-right:10px; padding:5px 0; border-radius:50%; line-height:1; font-weight:700; color:#fff; font-size:15px; text-align:center; box-sizing:border-box}
+.faq-list.type2 .faq-cate-q {background-color:#121212}
+.faq-list.type2 .faq-cate-a {background-color:#ddd}
+.faq-list.type2 .faq-item-cont .down-list {padding-left:35px; box-sizing:border-box}
 
+/* 에디터 영역 */
+.editor-area {line-height:1.5;font-size:16px;word-break:break-all}
+.editor-area p + p {margin-top:30px}
+.editor-area li {padding-left:15px; text-indent:-15px}
+.editor-area .btns {margin-top:10px}
+
+i,em,address,optgroup {
+    font-style: normal;
+}
+
+/* faq css End */
 
 
 

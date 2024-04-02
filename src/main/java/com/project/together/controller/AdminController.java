@@ -688,23 +688,6 @@ public class AdminController {
     }
 
 
-
-
-/*    // 규정 삭제
-    @PostMapping("/layout/ruleDelete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
-        try {
-            adminService.ruleDelete(ruleNums);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-
     // 규정 삭제
     @PostMapping("/layout/ruleDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -714,7 +697,7 @@ public class AdminController {
             // 먼저 각 규정 번호에 해당하는 파일을 S3에서 삭제합니다.
             ruleNums.forEach(fileService::deleteFilesByRuleNum);
             // 각 규정 번호에 해당하는 이미지 파일을 S3에서 삭제
-            ruleNums.forEach(imageService::deleteImageByRuleNum); // 이 메서드는 별도로 구현해야 합니다.
+            ruleNums.forEach(imageService::deleteImageByRuleNum);
 
             // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
             adminService.ruleDelete(ruleNums);
@@ -725,7 +708,6 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 
 

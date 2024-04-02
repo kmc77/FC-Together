@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -80,7 +81,7 @@ public class ImageService {
     public void deleteImageByRuleNum(int ruleNum) {
         // 규정 번호에 해당하는 모든 이미지 URL을 데이터베이스에서 조회
         List<String> imageUrls = adminMapper.findImageUrlsByRuleNum(ruleNum);
-
+        System.out.println("이미지서비스 -========= imageUrls = " + imageUrls);
         // 조회된 모든 이미지 URL에 대하여 삭제를 수행
         for (String imageUrl : imageUrls) {
             deleteImageByUrl(imageUrl);
@@ -88,21 +89,21 @@ public class ImageService {
     }
 
     public void deleteImageByUrl(String imageUrl) {
-        String fileKey = extractFileKeyFromUrl(imageUrl);
+        String fileKey = getImageKeyFromUrl(imageUrl);
         if (!fileKey.isEmpty()) {
             amazonS3.deleteObject(bucketName, fileKey);
         }
     }
 
-    private String extractFileKeyFromUrl(String url) {
+    private String getImageKeyFromUrl(String fileUrl) {
         try {
-            URL fileUrl = new URL(url);
-            String path = fileUrl.getPath();
-            return path.substring(1); // 첫 번째 '/'를 제외한 나머지 부분
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Invalid URL format", e);
+            URL url = new URL(fileUrl);
+            String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
+            // URL 디코딩 적용
+            return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Error extracting file key from URL", e);
         }
     }
-
 
 }

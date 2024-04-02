@@ -81,7 +81,7 @@
                 </div>
             </section>
 
-            <section class="operation">
+            <section class="operation" style="display: none;">
                 <!-- board seach area -->
                 <div id="operation_board-search">
                     <div class="container">
@@ -127,44 +127,139 @@
                     </div>
                 </div>
             </section>
+
+            <section class="faq" style="display: none;">
+                <div class="faq-list ">
+                    <div class="faq-item" data-no="1"> <!-- 활성화 .on -->
+                        <a role="button" class="faq-item-tit">
+                            <span class="faq-category faq-cate2">회원가입</span>
+                            <em class="faq-q">
+                                회원가입은 어떻게 하나요?
+
+                            </em>
+                        </a>
+
+                        <div class="faq-item-cont">
+                            <div class="faq-cont-area">
+                                <div class="faq-a editor-area">
+
+                                    웹사이트 우측 상단 로그인 옆 회원가입 버튼을 통해 회원가입을 할 수 있습니다.<br>
+                                    1) 이메일로 회원가입: 이메일주소를 아이디로 하며 이메일 소유 인증 후 가입됩니다.<br>
+                                    2) 소셜로 회원가입: 사용하는 SNS계정 정보를 이용하여 간편하게 회원가입이 진행됩니다.
+                                </div>
+                            </div>
+                            <ul class="down-list">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-no="2"> <!-- 활성화 .on -->
+                        <a role="button" class="faq-item-tit">
+                            <span class="faq-category faq-cate2">회원가입</span>
+                            <em class="faq-q">
+                                아이디가 유효하지 않는다고 뜹니다.
+
+                            </em>
+                        </a>
+
+                        <div class="faq-item-cont">
+                            <div class="faq-cont-area">
+                                <div class="faq-a editor-area">
+
+                                    [이메일로 회원가입]시 @를 포함한 이메일 형식으로 입력해야 합니다. 올바르게 입력했을 경우 "사용 가능한 아이디 입니다"라는 안내 문구가
+                                    나타납니다. <br>
+                                    예) hkinfo@hankyung.com
+                                </div>
+                            </div>
+                            <ul class="down-list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="training-schedule" style="display: none;">
+                <div id="training_board-search">
+                    <div class="container">
+                        <div class="search-window">
+                            <form action="">
+                                <div class="search-wrap">
+                                    <label for="training_search" class="blind">훈련일정 내용 검색</label>
+                                    <input id="training_search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
+                                    <button type="submit" class="btn btn-dark">검색</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="training_board-list">
+                    <div class="container">
+                        <table class="board-table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="th-num">번호</th>
+                                <th scope="col" class="th-title">훈련명</th>
+                                <th scope="col" class="th-date">훈련 일정</th>
+                                <th scope="col" class="th-name">담당자</th>
+                                <th scope="col" class="th-hit">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- 훈련일정 목록 항목 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </div>
 
 </div>
 <script>
     var waveBtnInit = function () {
-        // 메인 탭만 선택
         var mainTabs = document.querySelectorAll('.main-tab.wave');
         var mainIndicator = document.querySelector('.tab-bar .indicator');
+        var sections = document.querySelectorAll('section'); // 모든 섹션 선택
+
+        // 섹션 표시 함수
+        function showSection(index) {
+            sections.forEach((section, i) => {
+                if (i === index) {
+                    section.style.display = 'block'; // 해당 섹션만 표시
+                } else {
+                    section.style.display = 'none'; // 나머지 섹션 숨김
+                }
+            });
+        }
 
         // 인디케이터 위치 업데이트 함수
         function updateIndicator(indicator, index, tabs) {
-            var totalWidth = tabs.length * tabs[0].offsetWidth; // 탭의 개수 * 탭 하나의 너비
-            var tabWidth = tabs[0].offsetWidth; // 탭 하나의 너비
-            var offset = (totalWidth - tabWidth) / (tabs.length - 1); // 간격 계산
-            var marginLeft = index * offset; // 인디케이터의 왼쪽 여백 계산
+            var totalWidth = tabs.length * tabs[0].offsetWidth;
+            var tabWidth = tabs[0].offsetWidth;
+            var offset = (totalWidth - tabWidth) / (tabs.length - 1);
+            var marginLeft = index * offset;
 
-            indicator.style.width = tabWidth + 'px'; // 인디케이터 너비 업데이트
-            indicator.style.marginLeft = marginLeft + 'px'; // 인디케이터 왼쪽 여백 업데이트
+            indicator.style.width = tabWidth + 'px';
+            indicator.style.marginLeft = marginLeft + 'px';
         }
 
-        // 탭 클릭 이벤트 핸들러
+        // 탭 클릭 이벤트 핸들러 및 웨이브 효과
         function addWaveEffect(tabs, indicator) {
             tabs.forEach(function(tab, index) {
                 tab.addEventListener('click', function(e) {
+                    e.preventDefault(); // 링크 기본 동작 방지
                     var newRound = document.createElement('div');
-                    var x = e.pageX - tab.offsetLeft;
-                    var y = e.pageY - tab.offsetTop;
+                    var x = e.clientX - tab.getBoundingClientRect().left; // 수정된 좌표 계산
+                    var y = e.clientY - tab.getBoundingClientRect().top; // 수정된 좌표 계산
 
                     newRound.className = 'cercle anim';
                     newRound.style.left = x + "px";
                     newRound.style.top = y + "px";
                     tab.appendChild(newRound);
 
-                    // 인디케이터 위치 업데이트
                     updateIndicator(indicator, index, tabs);
+                    showSection(index); // 클릭된 탭에 해당하는 섹션 표시
 
-                    // 애니메이션이 완료된 후 newRound 요소 제거
                     setTimeout(function() {
                         newRound.remove();
                     }, 1200);
@@ -172,18 +267,25 @@
             });
         }
 
-        // 첫 번째 탭에 대한 인디케이터 위치 초기화
-        if (mainTabs.length > 0) updateIndicator(mainIndicator, 0, mainTabs);
+        if (mainTabs.length > 0) {
+            updateIndicator(mainIndicator, 0, mainTabs);
+            showSection(0); // 페이지 로드 시 첫 번째 섹션 표시
+        }
 
-        // 메인 탭에 대한 이벤트 리스너 추가
         addWaveEffect(mainTabs, mainIndicator);
     };
 
-    // 페이지 로드 시 함수 실행
     waveBtnInit();
 
+     $(function (){
+        $('.faq-item-tit').click(function() {
+            // 해당 FAQ 항목의 활성화/비활성화 상태를 토글
+            $(this).parents('.faq-item').toggleClass('on');
+        });
+    });
 
 </script>
+
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

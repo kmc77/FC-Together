@@ -1,6 +1,5 @@
 package com.project.together.service;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.project.together.mapper.AdminMapper;
 import com.project.together.domain.File;
-import com.amazonaws.services.s3.model.DeleteObjectRequest; // Import statement 추가
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 
 
 import java.net.URLDecoder;

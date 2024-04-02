@@ -283,11 +283,11 @@
         WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
     </select>
 
-
-    <!--    <insert id="insertRule" parameterType="com.project.together.domain.Rule">
-            INSERT INTO Rule (rule_num, username, rule_title, rule_date, rule_hits, rule_content)
-            VALUES (#{ruleNum}, #{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent})
-        </insert>-->
+    <!-- 이미지 파일 URL 조회 -->
+    <select id="findImageUrlsByRuleNum" parameterType="int" resultType="string">
+        SELECT file_path FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
 
     <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
         INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)

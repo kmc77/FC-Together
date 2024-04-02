@@ -574,7 +574,7 @@ public class AdminService {
                 throw new IllegalArgumentException("해당 rule가 존재하지 않습니다. ruleNum: " + ruleNum);
             }
         }
-
+        System.out.println("admin서비스 =========== ruleNums = " + ruleNums);
         //찾은 rule 글을 삭제
         adminMapper.deleteRule(ruleNums);
     }

@@ -15,6 +15,8 @@ import com.project.together.domain.File;
 import com.amazonaws.services.s3.model.DeleteObjectRequest; // Import statement 추가
 
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,8 +44,9 @@ public class FileService {
                     // S3에 업로드할 파일 이름 생성
                     String originalFilename = file.getOriginalFilename();
                     String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-                    String filePath = directory + "/" + fileName;
+                    String filePath = directory + "/" + "ruleNum - " + ruleNum + "/" + fileName;
 
+                    System.out.println("파일 서비스 ==== filePath = " + filePath);
                     // S3에 파일 업로드
                     amazonS3.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), null)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
@@ -66,34 +69,25 @@ public class FileService {
     }
 
     public void deleteFilesByRuleNum(int ruleNum) {
-        // 규칙 번호에 해당하는 파일 메타데이터 조회
         List<File> filesToDelete = adminMapper.findFilesByRuleNum(ruleNum);
 
-        // S3에서 파일 삭제
         for (File file : filesToDelete) {
             String fileKey = getFileKeyFromUrl(file.getFilePath());
             if (fileKey != null && !fileKey.isEmpty()) {
-                // DeleteObjectRequest를 사용하여 파일 삭제 요청
                 amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
             }
         }
-
-        // 데이터베이스에서 파일 메타데이터 삭제
         adminMapper.deleteFilesByRuleNum(ruleNum);
     }
 
     private String getFileKeyFromUrl(String fileUrl) {
-        // URL에서 파일 키 추출 로직 구현
-        // 예: https://your-bucket-name.s3.amazonaws.com/ruleFiles/1/uuid_filename.ext
-        // 위 URL에서 'ruleFiles/1/uuid_filename.ext' 부분을 추출
         try {
             URL url = new URL(fileUrl);
-            String path = url.getPath();
-            // S3 객체 키는 첫 슬래시를 제외한 나머지 경로
-            return path.substring(1);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
+            String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
+            // URL 디코딩 적용
+            return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Error extracting file key from URL", e);
         }
     }
 }

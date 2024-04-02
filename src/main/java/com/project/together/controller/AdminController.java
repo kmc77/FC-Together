@@ -4,6 +4,7 @@ import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.service.AdminService;
 import com.project.together.service.FileService;
+import com.project.together.service.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +26,12 @@ public class AdminController {
 
     private final AdminService adminService;
     private final FileService fileService;
+    private final ImageService imageService;
 
-    public AdminController(AdminService adminService, FileService fileService) {
+    public AdminController(AdminService adminService, FileService fileService, ImageService imageService) {
         this.adminService = adminService;
         this.fileService = fileService;
+        this.imageService = imageService;
     }
 
     // 사용자 정보 가져오기
@@ -663,26 +665,7 @@ public class AdminController {
     }
 
 
-    /*// 규정 수정
-    @PostMapping("/layout/ruleUpdate/{ruleNum}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateRule(@PathVariable int ruleNum,
-                             @ModelAttribute Rule rule,
-                             @RequestParam("files") List<MultipartFile> files,
-                             RedirectAttributes redirectAttributes) {
-
-        rule.setRuleNum(ruleNum);
-        adminService.updateRule(rule); // 기존 규정 정보 업데이트
-
-        // 파일이 존재하는 경우, 새롭게 업로드된 파일 처리
-        if (!files.isEmpty()) {
-            adminService.saveFiles(files, ruleNum, "Rule");
-        }
-
-        redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 업데이트되었습니다.");
-        return "redirect:/admin/layout/rule_management";
-    }*/
-
+    // 규정 수정
     @PostMapping("/layout/ruleUpdate/{ruleNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateRule(@PathVariable int ruleNum,
@@ -707,7 +690,7 @@ public class AdminController {
 
 
 
-    // 규정 삭제
+/*    // 규정 삭제
     @PostMapping("/layout/ruleDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
@@ -720,7 +703,32 @@ public class AdminController {
 
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }*/
+
+    // 규정 삭제
+    @PostMapping("/layout/ruleDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
+        System.out.println("칸트롤러 입장");
+        try {
+            // 먼저 각 규정 번호에 해당하는 파일을 S3에서 삭제합니다.
+            ruleNums.forEach(fileService::deleteFilesByRuleNum);
+            // 각 규정 번호에 해당하는 이미지 파일을 S3에서 삭제
+            ruleNums.forEach(imageService::deleteImageByRuleNum); // 이 메서드는 별도로 구현해야 합니다.
+
+            // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
+            adminService.ruleDelete(ruleNums);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
+
 
 
     // ================================== Rule End

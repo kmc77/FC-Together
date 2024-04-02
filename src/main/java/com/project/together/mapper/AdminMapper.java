@@ -126,4 +126,6 @@ public interface AdminMapper {
     List<File> findFilesByRuleNum(int ruleNum);
 
     void deleteFilesByRuleNum(int ruleNum);
+
+    List<String> findImageUrlsByRuleNum(int ruleNum);
 }

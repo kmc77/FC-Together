@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- board list area -->
-                <div id="rule_board-list">
+                <div id="board-list">
                     <div class="container">
                         <table class="board-table">
                             <thead>
@@ -65,16 +65,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                          <!--  <tr th:each="rule : ${ruleList}">
+                            <tr th:each="rule : ${ruleList}">
                                 <td th:text="${rule.ruleNum}">번호</td>
                                 <th>
                                     <a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a>
-                                    <span th:if="${filePresenceMap[rule.ruleNum]}" class="file-icon">📎</span> &lt;!&ndash; 파일이 있는 경우 아이콘 표시 &ndash;&gt;
+                                    <span th:if="${filePresenceMap[rule.ruleNum]}" class="file-icon">📎</span> <!-- 파일이 있는 경우 아이콘 표시 -->
                                 </th>
                                 <td th:text="${rule.ruleDate}">등록일</td>
                                 <td th:text="${rule.username}">작성자</td>
                                 <td th:text="${rule.ruleHits}">조회수</td>
-                            </tr>-->
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -111,16 +111,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                           <!-- <tr th:each="operation : ${operationList}">
+                            <tr th:each="operation : ${operationList}">
                                 <td th:text="${operation.operationNum}">번호</td>
                                 <th>
                                     <a th:href="@{/management/management_customer_support_view(no=${operation.operationNum})}" th:text="${operation.operationTitle}">제목</a>
-                                    <span th:if="${filePresenceMap[operation.operationNum]}" class="file-icon">📎</span> &lt;!&ndash; 파일이 있는 경우 아이콘 표시 &ndash;&gt;
+                                    <span th:if="${filePresenceMap[operation.operationNum]}" class="file-icon">📎</span> <!-- 파일이 있는 경우 아이콘 표시 -->
                                 </th>
                                 <td th:text="${operation.operationDate}">등록일</td>
                                 <td th:text="${operation.username}">작성자</td>
                                 <td th:text="${operation.operationHits}">조회수</td>
-                            </tr>-->
+                            </tr>
 
                             </tbody>
                         </table>
@@ -215,210 +215,120 @@
                 <div class="container">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <!-- 페이지네이션 컨텐츠는 JavaScript에 의해 동적으로 생성될 것입니다 -->
+                            <!-- 이전 페이지 링크 -->
+                            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                                <a class="page-link" th:href="${currentPage > 1} ? @{/management/management_content(page=${currentPage - 1}, limit=${limit}, section=${currentSection})} : '#'" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- 페이지 번호 -->
+                            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''">
+                                <a class="page-link" th:text="${i}" th:href="@{/management/management_content(page=${i}, limit=${limit}, section=${currentSection})}"></a>
+                            </li>
+
+                            <!-- 다음 페이지 링크 -->
+                            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                <a class="page-link" th:href="${currentPage < totalPages} ? @{/management/management_content(page=${currentPage + 1}, limit=${limit}, section=${currentSection})} : '#'" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
             </div>
+
+
+
 
         </div>
     </div>
 
 </div>
 <script>
-    $(document).ready(function() {
-        var sectionDataCache = {};
+    var waveBtnInit = function () {
+        var mainTabs = document.querySelectorAll('.main-tab.wave');
+        var mainIndicator = document.querySelector('.tab-bar .indicator');
+        var sections = document.querySelectorAll('section'); // 모든 섹션 선택
+        var mobileBreakElement = document.querySelector('.mobileBreak strong'); // mobileBreak 요소 선택
 
-        function loadSectionData(sectionName, page = 0) {
-            if (sectionDataCache[sectionName] && sectionDataCache[sectionName].page === page) {
-                updateSectionHTML(sectionName, sectionDataCache[sectionName].data);
-                updatePagination(sectionName, sectionDataCache[sectionName].pageInfo);
-                return;
-            }
-
-            $.ajax({
-                url: `/management/get${sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}Data?page=${page}`,
-                type: 'GET',
-                success: function(response) {
-                    console.log(response); // 응답 구조 확인
-
-                    // 섹션 이름에 따른 데이터 처리
-                    let data;
-                    if (sectionName === 'rule' || sectionName === 'operation') {
-                        data = response[sectionName + 's']; // 'rules' 또는 'operations'
-                        data.forEach(item => item.file = response.filePresenceMap[item[`${sectionName}Num`]]);
-                    } else {
-                        data = response.data; // 'faq' 또는 'training-schedule'에 대한 기본 처리
-                    }
-
-                    sectionDataCache[sectionName] = {data: data, pageInfo: response.pageInfo};
-                    updateSectionHTML(sectionName, data);
-                    updatePagination(sectionName, response.pageInfo);
-                },
-                error: function(xhr, status, error) {
-                    console.error(`Failed to load ${sectionName} data:`, error);
-                }
+        // 섹션 표시 함수
+        function showSection(index) {
+            sections.forEach((section, i) => {
+                section.style.display = i === index ? 'block' : 'none';
             });
+            updateIndicator(mainIndicator, index, mainTabs); // 인디케이터 업데이트
+            updateMobileBreakText(index); // mobileBreak 텍스트 업데이트
         }
 
-        function updateSectionHTML(sectionName, data) {
-            var htmlContent = '';
-            if (sectionName === 'rule') {
-                data.forEach(function(item) {
-                    var num = item.ruleNum; // ruleNum
-                    var title = item.ruleTitle; // ruleTitle
-                    var date = item.ruleDate; // ruleDate
-                    var hits = item.ruleHits; // ruleHits
+        // 인디케이터 위치 업데이트 함수
+        function updateIndicator(indicator, index, tabs) {
+            var tabWidth = tabs[index].offsetWidth; // 선택된 탭의 너비
+            var marginLeft = tabs[index].offsetLeft; // 선택된 탭의 왼쪽 마진
 
-                    htmlContent += `<tr>
-                                        <td>${num}</td>
-                                        <th><a href="/management/management_customer_support_view?no=${num}">${title}</a>${item.file ? ' <span class="file-icon">📎</span>' : ''}</th>
-                                        <td>${date}</td>
-                                        <td>${item.username}</td>
-                                        <td>${hits}</td>
-                                    </tr>`;
-                });
-            } else if (sectionName === 'operation') {
-                data.forEach(function(item) {
-                    var num = item.operationNum; // operationNum
-                    var title = item.operationTitle; // operationTitle
-                    var date = item.operationDate; // operationDate
-                    var hits = item.operationHits; // operationHits
-
-                    htmlContent += `<tr>
-                                        <td>${num}</td>
-                                        <th><a href="/management/management_customer_support_operation_view?no=${num}">${title}</a>${item.file ? ' <span class="file-icon">📎</span>' : ''}</th>
-                                        <td>${date}</td>
-                                        <td>${item.username}</td>
-                                        <td>${hits}</td>
-                                    </tr>`;
-                });
-            } else if (sectionName === 'faq') {
-                data.forEach(function(item) {
-                    var id = item.id; // FAQ ID
-                    var question = item.question; // FAQ 질문
-                    var answer = item.answer; // FAQ 답변
-
-                    htmlContent += `<tr>
-                                        <td>${id}</td>
-                                        <td>${question}</td>
-                                        <td>${answer}</td>
-                                    </tr>`;
-                });
-            } else if (sectionName === 'training-schedule') {
-                data.forEach(function(item) {
-                    var scheduleNum = item.scheduleNum; // 스케줄 번호
-                    var name = item.name; // 훈련명
-                    var startDate = item.startDate; // 시작 날짜
-                    var endDate = item.endDate; // 종료 날짜
-                    var instructor = item.instructor; // 강사명
-                    var registered = item.registered; // 등록 인원
-                    var capacity = item.capacity; // 수용 인원
-
-                    htmlContent += `<tr>
-                                        <td>${scheduleNum}</td>
-                                        <td>${name}</td>
-                                        <td>${startDate} - ${endDate}</td>
-                                        <td>${instructor}</td>
-                                        <td>${registered}/${capacity}</td>
-                                    </tr>`;
-                });
-            }
-
-            // 섹션별로 HTML 컨텐츠를 업데이트합니다.
-            $(`#${sectionName}_board-list table tbody`).html(htmlContent);
+            indicator.style.width = tabWidth + 'px';
+            indicator.style.marginLeft = marginLeft + 'px';
         }
 
-
-        function updatePagination(sectionName, pageInfo) {
-            var paginationHtml = '<ul class="pagination justify-content-center">';
-            if (pageInfo.currentPage > 0) {
-                paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadSectionData('${sectionName}', ${pageInfo.currentPage - 1})">&laquo; Previous</a></li>`;
-            }
-            for (let i = 0; i < pageInfo.totalPages; i++) {
-                paginationHtml += `<li class="page-item ${i === pageInfo.currentPage ? 'active' : ''}"><a class="page-link" href="#" onclick="loadSectionData('${sectionName}', ${i})">${i + 1}</a></li>`;
-            }
-            if (pageInfo.currentPage < pageInfo.totalPages - 1) {
-                paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadSectionData('${sectionName}', ${pageInfo.currentPage + 1})">Next &raquo;</a></li>`;
-            }
-            paginationHtml += '</ul>';
-            $(`#${sectionName}_pagination`).html(paginationHtml);
-        }
-
-
-        var waveBtnInit = function () {
-            var mainTabs = document.querySelectorAll('.main-tab.wave');
-            var mainIndicator = document.querySelector('.tab-bar .indicator');
-            var sections = document.querySelectorAll('section');
-
-            // 인디케이터 위치 업데이트 함수
-            function updateIndicator(indicator, tabIndex) {
-                var tab = mainTabs[tabIndex];
-                var tabWidth = tab.offsetWidth;
-                var tabOffset = tab.offsetLeft;
-                indicator.style.width = `${tabWidth}px`;
-                indicator.style.transform = `translateX(${tabOffset}px)`;
-            }
-
-            // 섹션 표시 및 인디케이터 업데이트 함수
-            function showSection(index) {
-                sections.forEach((section, i) => {
-                    section.style.display = i === index ? 'block' : 'none';
-                });
-                updateIndicator(mainIndicator, index); // 인디케이터 위치 업데이트
-                var sectionNames = ['rule', 'operation', 'faq', 'training-schedule'];
-                var sectionName = sectionNames[index];
-                loadSectionData(sectionName); // AJAX로 섹션 데이터 로드
-                updateMobileBreakText(index); // mobileBreak 텍스트 업데이트
-            }
-
-            // 탭 클릭 이벤트 핸들러 및 웨이브 효과
-            function addWaveEffect(tabs) {
-                tabs.forEach((tab, index) => {
-                    tab.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        var newRound = document.createElement('div');
-                        var x = e.clientX - tab.getBoundingClientRect().left;
-                        var y = e.clientY - tab.getBoundingClientRect().top;
-
-                        newRound.className = 'cercle anim';
-                        newRound.style.left = x + "px";
-                        newRound.style.top = y + "px";
-                        tab.appendChild(newRound);
-
-                        window.location.hash = tab.dataset.num; // 해시 업데이트
-                        showSection(index); // 섹션 표시
-
-                        setTimeout(() => newRound.remove(), 1200);
-                    });
-                });
-            }
-
-            // mobileBreak 텍스트 업데이트 함수
+        // mobileBreak 텍스트 업데이트 함수
         function updateMobileBreakText(index) {
             var selectedTabText = mainTabs[index].querySelector('a').textContent.trim(); // 선택된 탭의 텍스트
             // mobileBreakElement의 대상을 .mobileBreak의 직접적인 텍스트로 업데이트
             document.querySelector('.mobileBreak').textContent = selectedTabText;
         }
 
-            function init() {
-                addWaveEffect(mainTabs); // 웨이브 이펙트 및 탭 클릭 이벤트 추가
-                var hash = window.location.hash.replace('#', '');
-                var tabIndex = hash ? Array.from(mainTabs).findIndex(tab => tab.dataset.num === hash) : 0;
-                showSection(tabIndex >= 0 ? tabIndex : 0); // 초기 섹션 표시
+        // 해시 기반으로 탭 상태 복원
+        function restoreTabFromHash() {
+            var hash = window.location.hash.replace('#', '');
+            var tabIndex = Array.from(mainTabs).findIndex(tab => tab.dataset.num === hash);
+            tabIndex = tabIndex >= 0 ? tabIndex : 0;
+            showSection(tabIndex);
+        }
+
+        // 탭 클릭 이벤트 핸들러 및 웨이브 효과
+        function addWaveEffect(tabs, indicator) {
+            tabs.forEach(function(tab, index) {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var newRound = document.createElement('div');
+                    var x = e.clientX - tab.getBoundingClientRect().left;
+                    var y = e.clientY - tab.getBoundingClientRect().top;
+
+                    newRound.className = 'cercle anim';
+                    newRound.style.left = x + "px";
+                    newRound.style.top = y + "px";
+                    tab.appendChild(newRound);
+
+                    // URL 해시 업데이트
+                    window.location.hash = tab.dataset.num;
+                    showSection(index);
+
+                    setTimeout(() => newRound.remove(), 1200);
+                });
+            });
+        }
+
+        // 초기화 함수
+        function init() {
+            if (mainTabs.length > 0) {
+                addWaveEffect(mainTabs, mainIndicator);
+                restoreTabFromHash(); // 페이지 로드 시 탭 상태 복원
             }
+        }
 
-            init();
-        };
+        init();
+    };
 
-        waveBtnInit(); // 웨이브 버튼 초기화 함수 실행
+    waveBtnInit();
 
+    $(function (){
         // FAQ 항목 토글
         $('.faq-item-tit').click(function() {
             $(this).parents('.faq-item').toggleClass('on');
         });
     });
 </script>
+
 
 <footer>
     <th:block th:include="layout/footer"></th:block>

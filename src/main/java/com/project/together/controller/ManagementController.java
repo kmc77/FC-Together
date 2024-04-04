@@ -1,14 +1,17 @@
 package com.project.together.controller;
 
 import com.project.together.domain.File;
+import com.project.together.domain.Operation;
 import com.project.together.domain.Rule;
 import com.project.together.service.ManagementService;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,7 +20,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/management")
@@ -30,49 +32,96 @@ public class ManagementController {
         this.managementService = managementService;
     }
 
-   /* @GetMapping("/management_customer_support")
-    public String getRuleList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "8") int limit, Model model) {
-        Map<String, Integer> params = new HashMap<>();
-        params.put("start", start);
-        params.put("limit", limit);
-        List<Rule> ruleList = managementService.findAll(params);
-        model.addAttribute("ruleList", ruleList);
 
-        return "layout/management/management_customer_support";
-    }*/
+    // 각 섹션 데이터 로드
+    @GetMapping("/get{sectionName}Data")
+    public ResponseEntity<?> getSectionData(@PathVariable String sectionName,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int offset = page * size;
+            switch (sectionName.toLowerCase()) {
+                case "rule":
+                    List<Rule> rules = managementService.getRuleData(offset, size);
+                    int totalRules = managementService.countRules();
+                    Map<Integer, Boolean> filePresenceMapForRules = new HashMap<>();
+                    for (Rule rule : rules) {
+                        List<File> filesForRule = managementService.findFilesByRuleNum(rule.getRuleNum());
+                        filePresenceMapForRules.put(rule.getRuleNum(), !filesForRule.isEmpty());
+                    }
+                    response.put("rules", rules);
+                    response.put("totalRules", totalRules);
+                    response.put("filePresenceMap", filePresenceMapForRules);
+                    response.put("pageInfo", createPageInfo(page, size, totalRules));
+                    break;
+                case "operation":
+                    List<Operation> operations = managementService.getOperationData(offset, size);
+                    int totalOperations = managementService.countOperations();
+                    Map<Integer, Boolean> filePresenceMapForOperations = new HashMap<>();
+                    for (Operation operation : operations) {
+                        List<File> filesForOperation = managementService.findFilesByOperationNum(operation.getOperationNum());
+                        filePresenceMapForOperations.put(operation.getOperationNum(), !filesForOperation.isEmpty());
+                    }
+                    response.put("operations", operations);
+                    response.put("totalOperations", totalOperations);
+                    response.put("filePresenceMap", filePresenceMapForOperations);
+                    response.put("pageInfo", createPageInfo(page, size, totalOperations));
+                    break;
+                // FAQ and TrainingSchedule 처리
+                default:
+                    return ResponseEntity.badRequest().body("Invalid section name");
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error fetching data for section: " + sectionName + ", error: " + e.getMessage());
+        }
+    }
+
+    private Map<String, Object> createPageInfo(int currentPage, int size, int totalElements) {
+        Map<String, Object> pageInfo = new HashMap<>();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        pageInfo.put("currentPage", currentPage);
+        pageInfo.put("totalPages", totalPages);
+        pageInfo.put("totalElements", totalElements);
+        pageInfo.put("size", size);
+        return pageInfo;
+    }
 
 
+    // 규정 목록
     @GetMapping("/management_customer_support")
-    public String getRuleList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "8") int limit, Model model) {
+    public String getRuleList(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "8") int limit, Model model) {
+        int start = (page - 1) * limit;
+
         Map<String, Integer> params = new HashMap<>();
         params.put("start", start);
         params.put("limit", limit);
-        List<Rule> ruleList = managementService.findAll(params);
 
-        // 각 Rule 객체의 ID를 키로 하고, 파일 존재 여부(Boolean)를 값으로 하는 Map 생성
+        List<Rule> ruleList = managementService.findAllRules(params);
+        int totalRules = managementService.countRules();
+        int totalPages = (int) Math.ceil((double) totalRules / limit);
+
         Map<Integer, Boolean> filePresenceMap = new HashMap<>();
-
         for (Rule rule : ruleList) {
             List<File> filesForRule = managementService.findFilesByRuleNum(rule.getRuleNum());
-            // 파일이 존재하면 true, 그렇지 않으면 false
-            System.out.println("======= filesForRule = " + filesForRule);
             filePresenceMap.put(rule.getRuleNum(), !filesForRule.isEmpty());
         }
 
         model.addAttribute("ruleList", ruleList);
         model.addAttribute("filePresenceMap", filePresenceMap);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
         return "layout/management/management_customer_support";
     }
-
-
-
-
 
     // 규정 상세보기 페이지
     @GetMapping("/management_customer_support_view")
     public String supportViewPage(@RequestParam("no") int ruleNum, Model model) throws NotFoundException {
         managementService.increaseRuleHits(ruleNum);
-        Rule rule = managementService.supportViewPage(ruleNum);
+        Rule rule = managementService.viewRuleSupportPage(ruleNum);
         if (rule == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rule not found with id: " + ruleNum);
         }
@@ -94,7 +143,31 @@ public class ManagementController {
         return "layout/management/management_customer_support_view";
     }
 
+    // 경영공시 상세보기 페이지
+    @GetMapping("/management_customer_support_operation_view")
+    public String operationViewPage(@RequestParam("no") int operationNum, Model model) throws NotFoundException {
+        managementService.increaseOperationHits(operationNum);
+        Operation operation = managementService.viewOperationSupportPage(operationNum);
+        if (operation == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + operationNum);
+        }
 
+        // 규정 번호에 해당하는 파일 목록 조회
+        List<File> files = managementService.findFilesByOperationNum(operationNum);
+
+        // 모델에 규정 상세 정보와 파일 목록 추가
+        model.addAttribute("operation", operation);
+        model.addAttribute("files", files); // 파일 목록을 모델에 추가
+
+        // 현재 규정의 날짜를 기준으로 이전 규정을 찾습니다.
+        LocalDate currentOperationDate = LocalDate.parse(operation.getOperationDate());
+        Operation prevOperation = managementService.findPrevOperationByCurrentOperationDate(currentOperationDate);
+        if (prevOperation != null) {
+            model.addAttribute("prevOperation", prevOperation);
+        }
+
+        return "layout/management/management_customer_support_operation_view";
+    }
 
 
 }

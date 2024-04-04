@@ -2,14 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.ManagementMapper">
 
-    <select id="findAll" resultType="com.project.together.domain.Rule">
+    <!-- 임시 -->
+    <select id="findAllRules" resultType="com.project.together.domain.Rule">
         SELECT * FROM Rule
         ORDER BY rule_num DESC
         LIMIT #{start}, #{limit}
     </select>
 
+    <select id="findRules" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule
+        ORDER BY rule_num DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
     <select id="findRuleByRuleNum" parameterType="int" resultType="com.project.together.domain.Rule">
         SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <!-- 전체 규정의 개수를 조회하는 쿼리 -->
+    <select id="countRules" resultType="int">
+        SELECT COUNT(*) FROM Rule
     </select>
 
     <select id="findPrevRuleByCurrentRuleDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Rule">
@@ -28,11 +40,58 @@
     </select>
 
     <update id="updateRuleHits">
-        UPDATE Rule SET rule_hits = #{hits} WHERE rule_num = #{ruleNum}
+        UPDATE Rule SET rule_hits = #{ruleHits} WHERE rule_num = #{ruleNum}
+    </update>
+
+    <!-- ================================== Rule End -->
+
+
+    <!-- ================================== 경영공시 start -->
+
+
+    <!-- 경영공시 목록 조회 -->
+    <select id="findAllOperations" parameterType="java.util.Map" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation
+        ORDER BY operation_num DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findOperations" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation
+        ORDER BY operation_num DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="findOperationByRuleNum" parameterType="int" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation WHERE operation_num = #{operationNum}
+    </select>
+
+    <!-- 전체 경영공시의 개수를 조회하는 쿼리 -->
+    <select id="countOperations" resultType="int">
+        SELECT COUNT(*) FROM Operation
+    </select>
+
+    <select id="findPrevOperationByCurrentOperationDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Operation">
+        <![CDATA[
+        SELECT * FROM Operation
+        WHERE operation_date < #{currentOperationDate}
+        ORDER BY operation_date DESC
+        LIMIT 1
+    ]]>
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByOperationNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </select>
+
+    <update id="updateOperationHits">
+        UPDATE Operation SET operation_hits = #{operationHits} WHERE operation_num = #{operationNum}
     </update>
 
 
-
+    <!-- ================================== 경영공시 End -->
 
 
 

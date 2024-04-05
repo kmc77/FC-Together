@@ -65,6 +65,14 @@
         </foreach>
     </delete>
 
+    <select id="findNoticesByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM Notice WHERE notice_num = #{noticeNum}
+    </select>
+
+    <update id="updateNoticeHits">
+        UPDATE Notice SET notice_hits = #{noticeHits} WHERE notice_num = #{noticeNum}
+    </update>
+
 
     <!-- ==============  Notice End ============== -->
 
@@ -294,7 +302,7 @@
         VALUES (#{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent}, #{tableGb})
     </insert>
 
-    <insert id="insertFile" parameterType="com.project.together.domain.File">
+    <insert id="insertRuleFile" parameterType="com.project.together.domain.File">
         INSERT INTO File (file_path, table_idx, file_name, table_gb)
         VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
@@ -316,6 +324,13 @@
         </foreach>
     </delete>
 
+    <select id="findRuleByRuleNum" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <update id="updateRuleHits">
+        UPDATE Rule SET rule_hits = #{ruleHits} WHERE rule_num = #{ruleNum}
+    </update>
 
 
     <!-- ==============  Rule End ============== -->
@@ -326,6 +341,58 @@
     <select id="getAllOperation" resultType="com.project.together.domain.Operation">
         SELECT * FROM Operation ORDER BY operation_num DESC
     </select>
+
+    <select id="findOperationById" parameterType="int" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation WHERE operation_num = #{operationNum}
+    </select>
+
+    <insert id="insertOperation" parameterType="com.project.together.domain.Operation" useGeneratedKeys="true" keyProperty="operationNum">
+        INSERT INTO Operation (username, operation_title, operation_date, operation_hits, operation_content, table_gb)
+        VALUES (#{username}, #{operationTitle}, #{operationDate}, #{operationHits}, #{operationContent}, #{tableGb})
+    </insert>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByOperationNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </select>
+
+    <!-- 이미지 파일 URL 조회 -->
+    <select id="findImageUrlsByOperationNum" parameterType="int" resultType="string">
+        SELECT file_path FROM File
+        WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </select>
+
+    <delete id="deleteFilesByOperationNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </delete>
+
+    <insert id="insertOperationFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <update id="updateOperation" parameterType="com.project.together.domain.Operation">
+        UPDATE Operation
+        SET operation_title = #{operationTitle}, operation_content = #{operationContent}, operation_date = #{operationDate}
+        WHERE operation_num = #{operationNum}
+    </update>
+
+    <delete id="deleteOperation" parameterType="list">
+        DELETE FROM Operation WHERE operation_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findOperationByOperationNum" parameterType="int" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation WHERE Operation_num = #{operationNum}
+    </select>
+
+    <update id="updateOperationHits">
+        UPDATE Operation SET operation_hits = #{operationHits} WHERE operation_num = #{operationNum}
+    </update>
+
 
 
 

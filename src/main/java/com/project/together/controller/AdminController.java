@@ -5,6 +5,7 @@ import com.project.together.domain.*;
 import com.project.together.service.AdminService;
 import com.project.together.service.FileService;
 import com.project.together.service.ImageService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -114,7 +115,8 @@ public class AdminController {
     // 공지사항 상세 정보 가져오기
     @GetMapping("/layout/noticeView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Notice> getNoticeView(@RequestParam("noticeNum") int noticeNum, HttpServletResponse response) {
+    public ResponseEntity<Notice> getNoticeView(@RequestParam("noticeNum") int noticeNum, HttpServletResponse response) throws NotFoundException {
+        adminService.increaseNoticeHits(noticeNum);
         Notice notice = adminService.findNoticesById(noticeNum);
         System.out.println("noticeview = " + notice);
         if (notice != null) {
@@ -644,11 +646,11 @@ public class AdminController {
     }
 
 
-
     // 규정 상세 정보 가져오기(업로드 파일 추가)
     @GetMapping("/layout/ruleView/{ruleNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getRuleDetails(@PathVariable int ruleNum) {
+    public ResponseEntity<?> getRuleDetails(@PathVariable int ruleNum) throws NotFoundException {
+        adminService.increaseRuleHits(ruleNum);
         Rule rule = adminService.findRuleById(ruleNum);
         if (rule == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -710,9 +712,6 @@ public class AdminController {
     }
 
 
-
-
-
     // ================================== Rule End
 
     // ================================== Operation start
@@ -726,9 +725,100 @@ public class AdminController {
         return ResponseEntity.ok(operations);
     }
 
+    // 경영공시 작성 (업로드 기능 추가)
+    @PostMapping("/layout/operationPost")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String postOperation(@ModelAttribute Operation operation,
+                           @RequestParam String username,
+                           @RequestParam("files") List<MultipartFile> files,
+                           RedirectAttributes redirectAttributes) {
+        operation.setUsername(username);
+        int operationNum = adminService.saveOperation(operation); // 저장하고 그 ID를 가져옵니다.
+
+        if (!files.isEmpty()) {
+            // FileService를 이용하여 S3에 파일을 업로드하고 메타데이터를 저장
+            fileService.uploadOperationFilesToS3AndSaveMetadata(files, operationNum, "operationFiles");
+        }
+
+        redirectAttributes.addFlashAttribute("message", "규정이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/operation_management";
+    }
+
+    // 경영공시 상세 정보 가져오기(업로드 파일 추가)
+    @GetMapping("/layout/operationView/{operationNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getOperationDetails(@PathVariable int operationNum) throws NotFoundException {
+        adminService.increaseOperationHits(operationNum);
+        Operation operation = adminService.findOperationById(operationNum);
+        if (operation == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        List<File> files = adminService.findFilesByOperationNum(operationNum);
+
+        // 규정 정보와 파일 목록을 포함하는 객체 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("operation", operation);
+        response.put("files", files);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 경영공시 수정
+    @PostMapping("/layout/operationUpdate/{operationNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateOperation(@PathVariable int operationNum,
+                             @ModelAttribute Operation operation,
+                             @RequestParam("files") List<MultipartFile> files,
+                             RedirectAttributes redirectAttributes) {
+        operation.setOperationNum(operationNum);
+        adminService.updateOperation(operation); // 기존 규정 정보 업데이트
+
+        // 기존 파일 정보 삭제
+        fileService.deleteFilesByOperationNum(operationNum);
+
+        // 새로운 파일 처리
+        if (!files.isEmpty()) {
+            fileService.uploadOperationFilesToS3AndSaveMetadata(files, operationNum, "ruleFiles");
+        }
+
+        redirectAttributes.addFlashAttribute("message", "경영공시가 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/operation_management";
+    }
+
+    // 경영공시 삭제
+    @PostMapping("/layout/operationDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> operationDelete(@RequestParam("operationNum") List<Integer> operationNums) {
+        System.out.println("칸트롤러 입장");
+        try {
+            // 먼저 각 번호에 해당하는 파일을 S3에서 삭제합니다.
+            operationNums.forEach(fileService::deleteFilesByOperationNum);
+            // 각 번호에 해당하는 이미지 파일을 S3에서 삭제
+            operationNums.forEach(imageService::deleteImageByOperationNum);
+
+            // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
+            adminService.operationDelete(operationNums);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     // ================================== Operation End
+
+
+
+
+
+
+
+
+
+
 
     // ================================== Page 이동
 

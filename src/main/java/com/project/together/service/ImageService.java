@@ -88,6 +88,16 @@ public class ImageService {
         }
     }
 
+    public void deleteImageByOperationNum(int operationNum) {
+        // 번호에 해당하는 모든 이미지 URL을 데이터베이스에서 조회
+        List<String> imageUrls = adminMapper.findImageUrlsByOperationNum(operationNum);
+        System.out.println("이미지서비스 -========= imageUrls = " + imageUrls);
+        // 조회된 모든 이미지 URL에 대하여 삭제를 수행
+        for (String imageUrl : imageUrls) {
+            deleteImageByUrl(imageUrl);
+        }
+    }
+
     public void deleteImageByUrl(String imageUrl) {
         String fileKey = getImageKeyFromUrl(imageUrl);
         if (!fileKey.isEmpty()) {

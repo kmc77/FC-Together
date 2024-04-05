@@ -346,7 +346,7 @@
         }
 
 
-        var waveBtnInit = function () {
+        var waveBtnInit = function() {
             var mainTabs = document.querySelectorAll('.main-tab.wave');
             var mainIndicator = document.querySelector('.tab-bar .indicator');
             var sections = document.querySelectorAll('section');
@@ -386,7 +386,7 @@
                         newRound.style.top = y + "px";
                         tab.appendChild(newRound);
 
-                        window.location.hash = tab.dataset.num; // 해시 업데이트
+                        window.location.hash = 'tab' + (index + 1); // 해시 업데이트
                         showSection(index); // 섹션 표시
 
                         setTimeout(() => newRound.remove(), 1200);
@@ -395,18 +395,24 @@
             }
 
             // mobileBreak 텍스트 업데이트 함수
-        function updateMobileBreakText(index) {
-            var selectedTabText = mainTabs[index].querySelector('a').textContent.trim(); // 선택된 탭의 텍스트
-            // mobileBreakElement의 대상을 .mobileBreak의 직접적인 텍스트로 업데이트
-            document.querySelector('.mobileBreak').textContent = selectedTabText;
-        }
+            function updateMobileBreakText(index) {
+                var selectedTabText = mainTabs[index].querySelector('a').textContent.trim(); // 선택된 탭의 텍스트
+                document.querySelector('.mobileBreak').textContent = selectedTabText;
+            }
 
             function init() {
-                addWaveEffect(mainTabs); // 웨이브 이펙트 및 탭 클릭 이벤트 추가
-                var hash = window.location.hash.replace('#', '');
-                var tabIndex = hash ? Array.from(mainTabs).findIndex(tab => tab.dataset.num === hash) : 0;
-                showSection(tabIndex >= 0 ? tabIndex : 0); // 초기 섹션 표시
+            // URL 해시를 기반으로 해당 섹션을 표시하는 로직
+            var hash = window.location.hash;
+            var tabIndex = 0; // Default to first tab
+            if (hash) {
+                var tabsArray = Array.from(mainTabs); // NodeList를 배열로 변환
+                var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
+                tabIndex = match >= 0 ? match : 0;
             }
+            addWaveEffect(mainTabs); // 웨이브 이펙트 및 탭 클릭 이벤트 추가
+            showSection(tabIndex); // 기반 URL 해시에 따른 탭 활성화
+        }
+
 
             init();
         };

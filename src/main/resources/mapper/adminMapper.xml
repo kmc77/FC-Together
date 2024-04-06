@@ -394,9 +394,43 @@
     </update>
 
 
-
-
     <!-- ==============  경영공시 End ============== -->
+
+
+    <!-- ==============  FAQ Start ============== -->
+
+
+    <select id="getAllFaq" resultType="com.project.together.domain.Faq">
+        SELECT * FROM Faq ORDER BY faq_category DESC, faq_id DESC
+    </select>
+
+    <select id="findFaqById" parameterType="int" resultType="com.project.together.domain.Faq">
+        SELECT * FROM Faq WHERE faq_id = #{faqId}
+    </select>
+
+    <insert id="insertFaq" parameterType="com.project.together.domain.Faq">
+        INSERT INTO Faq (faq_category, faq_question, faq_answer)
+        VALUES (#{faqCategory}, #{faqQuestion}, #{faqAnswer})
+    </insert>
+
+    <update id="updateFaq" parameterType="com.project.together.domain.Faq">
+        UPDATE Faq
+        SET faq_category = #{faqCategory},
+        faq_question = #{faqQuestion},
+        faq_answer = #{faqAnswer}
+        WHERE faq_id = #{faqId}
+    </update>
+
+    <delete id="deleteFaq" parameterType="list">
+        DELETE FROM Faq WHERE faq_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+    <!-- ==============  FAQ End ============== -->
 
 
 

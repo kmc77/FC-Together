@@ -1,9 +1,6 @@
 package com.project.together.service;
 
-import com.project.together.domain.ClubVideo;
-import com.project.together.domain.File;
-import com.project.together.domain.Operation;
-import com.project.together.domain.Rule;
+import com.project.together.domain.*;
 import com.project.together.mapper.ManagementMapper;
 import com.project.together.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
@@ -106,8 +103,17 @@ public class ManagementService {
         return managementMapper.findPrevOperationByCurrentOperationDate(currentOperationDate);
     }
 
+
     // ================================== 경영공시 End
 
+    // ================================== Faq start
+
+    public List<Faq> getAllFaqData() {
+        return managementMapper.getAllFaqData();
+    }
+
+
+    // ================================== Faq End
 
 
 

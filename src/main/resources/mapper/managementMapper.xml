@@ -93,6 +93,18 @@
 
     <!-- ================================== 경영공시 End -->
 
+    <!-- ================================== Faq start -->
+
+    <select id="getAllFaqData" resultType="com.project.together.domain.Faq">
+        SELECT faq_id, faq_category, faq_question, faq_answer
+        FROM faq
+        ORDER BY faq_id DESC;
+    </select>
+
+
+
+    <!-- ================================== Faq End -->
+
 
 
 

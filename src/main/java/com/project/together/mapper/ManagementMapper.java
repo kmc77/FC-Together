@@ -1,5 +1,6 @@
 package com.project.together.mapper;
 
+import com.project.together.domain.Faq;
 import com.project.together.domain.File;
 import com.project.together.domain.Operation;
 import com.project.together.domain.Rule;
@@ -52,8 +53,15 @@ public interface ManagementMapper {
     int countOperations();
 
 
+
     // ================================== 경영공시 End
 
+    // ================================== Faq start
+
+    List<Faq> getAllFaqData();
+
+
+    // ================================== Faq End
 
 
 

@@ -691,6 +691,40 @@ public class AdminService {
 
 // ================================== 경영공시 and
 
+
+// ================================== Faq start
+
+    public List<Faq> getAllFaq() {
+        return adminMapper.getAllFaq();
+    }
+
+    public Faq findFaqById(int faqId) {
+        return adminMapper.findFaqById(faqId);
+    }
+
+    public void saveFaq(Faq faq) {
+        adminMapper.insertFaq(faq);
+    }
+
+    public void updateFaq(Faq faq) {
+        adminMapper.updateFaq(faq);
+    }
+
+    public void faqDelete(List<Integer> faqIds) {
+        for (int faqId : faqIds) {
+            Faq faq = adminMapper.findFaqById(faqId);
+            if (faq == null) {
+                throw new IllegalArgumentException("해당 Faq가 존재하지 않습니다. faqId: " + faqId);
+            }
+        }
+        adminMapper.deleteFaq(faqIds);
+    }
+
+
+
+// ================================== Faq and
+
+
 }
 
 

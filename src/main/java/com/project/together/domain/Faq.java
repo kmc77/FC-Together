@@ -1,12 +1,11 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Faq {
-    private String faqCategoryId;
+    private int faqId;
+    private String faqCategory;
     private String faqQuestion;
     private String faqAnswer;
 }

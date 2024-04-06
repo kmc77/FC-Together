@@ -161,4 +161,16 @@ public interface AdminMapper {
     Operation findOperationByOperationNum(int operationNum);
 
     void updateOperationHits(@Param("operationNum") int operationNum, @Param("operationHits") int operationHits);
+
+    /* ======================================= */
+
+    List<Faq> getAllFaq();
+
+    Faq findFaqById(@Param("faqId") int faqId);
+
+    void insertFaq(Faq faq);
+
+    void updateFaq(Faq faq);
+
+    void deleteFaq(List<Integer> faqIds);
 }

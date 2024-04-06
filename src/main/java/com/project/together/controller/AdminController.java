@@ -811,6 +811,82 @@ public class AdminController {
     // ================================== Operation End
 
 
+    // ================================== Faq start
+
+
+    // FAQ 정보 가져오기
+    @GetMapping("/layout/getFaqInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Faq>> getFaqInfo() {
+        List<Faq> faqs = adminService.getAllFaq();
+        System.out.println("faqs = " + faqs);
+        return ResponseEntity.ok(faqs);
+    }
+
+
+    // Faq 등록
+    @PostMapping("/layout/faqPost")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String faqPost(@ModelAttribute Faq faq,
+                          RedirectAttributes redirectAttributes) {
+        adminService.saveFaq(faq);
+        redirectAttributes.addFlashAttribute("message", "FAQ가 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/faq_management";
+    }
+
+
+    // FAQ 상세 정보 보기
+    @GetMapping("/layout/faqView/{faqId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getFaqDetails(@PathVariable int faqId) throws NotFoundException {
+        Faq faq = adminService.findFaqById(faqId);
+        if (faq == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("faq", faq);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // FAQ 수정
+    @PostMapping("/layout/faqUpdate/{faqId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateFaq(@PathVariable int faqId,
+                             @ModelAttribute Faq faq,
+                             RedirectAttributes redirectAttributes) {
+        faq.setFaqId(faqId);
+        adminService.updateFaq(faq); // 기존 규정 정보 업데이트
+
+
+        redirectAttributes.addFlashAttribute("message", "Faq가 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/faq_management";
+    }
+
+    // FAQ 삭제
+    @PostMapping("/layout/faqDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> faqDelete(@RequestParam("faqId") List<Integer> faqIds) {
+        try {
+            adminService.faqDelete(faqIds);
+            return ResponseEntity.ok().body("선택한 글이 모두 삭제되었습니다.");
+        } catch (Exception e) {
+            // 실패 시, 에러 메시지와 함께 BadRequest를 반환합니다.
+            return ResponseEntity.badRequest().body("글 삭제에 실패하였습니다. " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+    // ================================== Faq End
+
+
+
+
 
 
 

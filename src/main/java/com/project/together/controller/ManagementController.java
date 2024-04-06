@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+import com.project.together.domain.Faq;
 import com.project.together.domain.File;
 import com.project.together.domain.Operation;
 import com.project.together.domain.Rule;
@@ -30,6 +31,35 @@ public class ManagementController {
     @Autowired
     public ManagementController(ManagementService managementService) {
         this.managementService = managementService;
+    }
+
+
+    // 규정 목록
+    @GetMapping("/management_customer_support")
+    public String getRuleList(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "8") int limit, Model model) {
+        int start = (page - 1) * limit;
+
+        Map<String, Integer> params = new HashMap<>();
+        params.put("start", start);
+        params.put("limit", limit);
+
+        List<Rule> ruleList = managementService.findAllRules(params);
+        int totalRules = managementService.countRules();
+        int totalPages = (int) Math.ceil((double) totalRules / limit);
+
+        Map<Integer, Boolean> filePresenceMap = new HashMap<>();
+        for (Rule rule : ruleList) {
+            List<File> filesForRule = managementService.findFilesByRuleNum(rule.getRuleNum());
+            filePresenceMap.put(rule.getRuleNum(), !filesForRule.isEmpty());
+        }
+
+        model.addAttribute("ruleList", ruleList);
+        model.addAttribute("filePresenceMap", filePresenceMap);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "layout/management/management_customer_support";
     }
 
 
@@ -68,7 +98,10 @@ public class ManagementController {
                     response.put("filePresenceMap", filePresenceMapForOperations);
                     response.put("pageInfo", createPageInfo(page, size, totalOperations));
                     break;
-                // FAQ and TrainingSchedule 처리
+                case "faq":
+                    List<Faq> faqs = managementService.getAllFaqData(); // 모든 FAQ 데이터 조회
+                    response.put("faqs", faqs);
+                    break;
                 default:
                     return ResponseEntity.badRequest().body("Invalid section name");
             }
@@ -89,33 +122,6 @@ public class ManagementController {
     }
 
 
-    // 규정 목록
-    @GetMapping("/management_customer_support")
-    public String getRuleList(@RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "8") int limit, Model model) {
-        int start = (page - 1) * limit;
-
-        Map<String, Integer> params = new HashMap<>();
-        params.put("start", start);
-        params.put("limit", limit);
-
-        List<Rule> ruleList = managementService.findAllRules(params);
-        int totalRules = managementService.countRules();
-        int totalPages = (int) Math.ceil((double) totalRules / limit);
-
-        Map<Integer, Boolean> filePresenceMap = new HashMap<>();
-        for (Rule rule : ruleList) {
-            List<File> filesForRule = managementService.findFilesByRuleNum(rule.getRuleNum());
-            filePresenceMap.put(rule.getRuleNum(), !filesForRule.isEmpty());
-        }
-
-        model.addAttribute("ruleList", ruleList);
-        model.addAttribute("filePresenceMap", filePresenceMap);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-
-        return "layout/management/management_customer_support";
-    }
 
     // 규정 상세보기 페이지
     @GetMapping("/management_customer_support_view")
@@ -168,6 +174,9 @@ public class ManagementController {
 
         return "layout/management/management_customer_support_operation_view";
     }
+
+
+
 
 
 }

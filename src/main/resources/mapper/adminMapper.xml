@@ -433,6 +433,43 @@
     <!-- ==============  FAQ End ============== -->
 
 
+    <!-- ==============  훈련일정 Start ============== -->
+
+
+    <select id="getAllTrainingSchedule" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule ORDER BY schedule_num DESC
+    </select>
+
+    <insert id="insertTrainingSchedule" parameterType="com.project.together.domain.TrainingSchedule" useGeneratedKeys="true" keyProperty="scheduleNum">
+        INSERT INTO Training_Schedule (username, schedule_title, schedule_date, schedule_hits, schedule_content, table_gb)
+        VALUES (#{username}, #{scheduleTitle}, #{scheduleDate}, #{scheduleHits}, #{scheduleContent}, #{tableGb})
+    </insert>
+
+    <select id="findScheduleByScheduleNum" parameterType="int" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule WHERE schedule_num = #{scheduleNum}
+    </select>
+
+    <update id="updateTrainingScheduleHits">
+        UPDATE Training_Schedule SET schedule_hits = #{scheduleHits} WHERE schedule_num = #{scheduleNum}
+    </update>
+
+    <update id="updateTrainingSchedule" parameterType="com.project.together.domain.TrainingSchedule">
+        UPDATE Training_Schedule
+        SET schedule_title = #{scheduleTitle}, schedule_content = #{scheduleContent}, schedule_date = #{scheduleDate}
+        WHERE schedule_num = #{scheduleNum}
+    </update>
+
+    <delete id="deleteTrainingSchedule" parameterType="list">
+        DELETE FROM Training_Schedule WHERE schedule_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  훈련일정 End ============== -->
+
+
 
 
 </mapper>

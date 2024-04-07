@@ -352,7 +352,6 @@ public class AdminController {
     }*/
 
 
-
     // 구단영상 업로드
     @PostMapping("/layout/youtube")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -384,9 +383,6 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("message", "구단영상이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/video_management";
     }
-
-
-
 
 
     // 구단영상 삭제
@@ -575,7 +571,7 @@ public class AdminController {
     @PostMapping("/layout/teamStaffDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> teamStaffDelete(@RequestParam("teamStaffNum") List<Integer> teamStaffNum, HttpServletResponse response) {
-        System.out.println("컨트롤러 teamStaffNum = " + teamStaffNum );
+        System.out.println("컨트롤러 teamStaffNum = " + teamStaffNum);
         try {
             // 한 번의 호출로 모든 번호 처리
             adminService.teamStaffDelete(teamStaffNum);
@@ -608,7 +604,6 @@ public class AdminController {
         // 스태프 관리 페이지로 리다이렉트합니다.
         return "redirect:/admin/layout/staff";
     }
-
 
 
     // ================================== Staff End
@@ -729,9 +724,9 @@ public class AdminController {
     @PostMapping("/layout/operationPost")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String postOperation(@ModelAttribute Operation operation,
-                           @RequestParam String username,
-                           @RequestParam("files") List<MultipartFile> files,
-                           RedirectAttributes redirectAttributes) {
+                                @RequestParam String username,
+                                @RequestParam("files") List<MultipartFile> files,
+                                RedirectAttributes redirectAttributes) {
         operation.setUsername(username);
         int operationNum = adminService.saveOperation(operation); // 저장하고 그 ID를 가져옵니다.
 
@@ -768,9 +763,9 @@ public class AdminController {
     @PostMapping("/layout/operationUpdate/{operationNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateOperation(@PathVariable int operationNum,
-                             @ModelAttribute Operation operation,
-                             @RequestParam("files") List<MultipartFile> files,
-                             RedirectAttributes redirectAttributes) {
+                                  @ModelAttribute Operation operation,
+                                  @RequestParam("files") List<MultipartFile> files,
+                                  RedirectAttributes redirectAttributes) {
         operation.setOperationNum(operationNum);
         adminService.updateOperation(operation); // 기존 규정 정보 업데이트
 
@@ -854,8 +849,8 @@ public class AdminController {
     @PostMapping("/layout/faqUpdate/{faqId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateFaq(@PathVariable int faqId,
-                             @ModelAttribute Faq faq,
-                             RedirectAttributes redirectAttributes) {
+                            @ModelAttribute Faq faq,
+                            RedirectAttributes redirectAttributes) {
         faq.setFaqId(faqId);
         adminService.updateFaq(faq); // 기존 규정 정보 업데이트
 
@@ -876,6 +871,81 @@ public class AdminController {
             return ResponseEntity.badRequest().body("글 삭제에 실패하였습니다. " + e.getMessage());
         }
     }
+
+
+    // ================================== Faq End
+
+    // ================================== Faq start
+
+    // 훈련일정 목록 가져오기
+    @GetMapping("/layout/getTrainingScheduleInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<TrainingSchedule>> getTrainingScheduleInfo() {
+        List<TrainingSchedule> trainingSchedules = adminService.getAllTrainingSchedule();
+        System.out.println("trainingSchedules = " + trainingSchedules);
+        return ResponseEntity.ok(trainingSchedules);
+    }
+
+
+    // 훈련일정 작성
+    @PostMapping("/layout/trainingSchedulePost")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String postTrainingSchedule(@ModelAttribute TrainingSchedule trainingSchedule,
+                                       @RequestParam String username,
+                                       RedirectAttributes redirectAttributes) {
+        trainingSchedule.setUsername(username);
+        int scheduleNum = adminService.saveTrainingSchedule(trainingSchedule); // 저장하고 그 ID를 가져옵니다.
+
+
+        redirectAttributes.addFlashAttribute("message", "일정이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/trainingSchedule_management";
+    }
+
+
+    // 훈련일정 상세 정보 가져오기
+    @GetMapping("/layout/trainingScheduleView/{scheduleNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getTrainingScheduleDetails(@PathVariable int scheduleNum) throws NotFoundException {
+        adminService.increaseTrainingSchedule(scheduleNum);
+        TrainingSchedule trainingSchedule = adminService.findTrainingScheduleByNum(scheduleNum);
+        if (trainingSchedule == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("trainingSchedule", trainingSchedule);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 훈련일정 수정
+    @PostMapping("/layout/trainingScheduleUpdate/{scheduleNum}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateTrainingSchedule(@PathVariable int scheduleNum,
+                                         @ModelAttribute TrainingSchedule trainingSchedule,
+                                         RedirectAttributes redirectAttributes) {
+        trainingSchedule.setScheduleNum(scheduleNum);
+        adminService.updateTrainingSchedule(trainingSchedule);
+
+        redirectAttributes.addFlashAttribute("message", "훈련일정이 성공적으로 업데이트되었습니다.");
+        return "redirect:/admin/layout/trainingSchedule_management";
+    }
+
+    // 훈련일정 삭제
+    @PostMapping("/layout/trainingScheduleDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> trainingScheduleDelete(@RequestParam("scheduleNum") List<Integer> scheduleNums) {
+        try {
+            adminService.trainingScheduleDelete(scheduleNums);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 
 
 

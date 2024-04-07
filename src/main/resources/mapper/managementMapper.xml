@@ -102,8 +102,41 @@
     </select>
 
 
-
     <!-- ================================== Faq End -->
+
+    <!-- ================================== 훈련일정 start -->
+
+    <select id="findTrainingSchedules" parameterType="java.util.Map" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule
+        ORDER BY schedule_num DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countTrainingSchedules" resultType="int">
+        SELECT COUNT(*) FROM Training_Schedule
+    </select>
+
+    <select id="findScheduleByScheduleNum" parameterType="int" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule WHERE schedule_num = #{scheduleNum}
+    </select>
+
+    <update id="updateScheduleHits">
+        UPDATE Training_Schedule SET schedule_hits = #{scheduleHits} WHERE schedule_num = #{scheduleNum}
+    </update>
+
+
+    <select id="findPrevScheduleByCurrentScheduleDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.TrainingSchedule">
+        <![CDATA[
+        SELECT * FROM Training_Schedule
+        WHERE schedule_date < #{currentScheduleDate}
+        ORDER BY schedule_date DESC
+        LIMIT 1
+    ]]>
+    </select>
+
+
+
+    <!-- ================================== 훈련일정 End -->
 
 
 

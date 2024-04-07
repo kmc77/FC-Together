@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.together.mapper.MatchMapper">
+    <select id="selectResult" resultType="com.project.together.domain.Match">
+        SELECT m.*
+        FROM matches m
+        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
+        WHERE ts.team_league_gb = 'K5'and m.match_result is not null and m.match_score is not null
+    </select>
+
+    <select id="selectSchedule" resultType="com.project.together.domain.Match">
+        SELECT m.*
+        FROM matches m
+        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
+        WHERE ts.team_league_gb = 'K5' and m.match_result is null and m.match_score is null
+    </select>
 </mapper>

@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/team")
+
+
 public class TeamController {
 
     private final TeamService teamService;

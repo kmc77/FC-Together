@@ -31,6 +31,11 @@ public interface AdminMapper {
 
     void deleteNotice(List<Integer> noticeNums);
 
+    Notice findNoticesByNoticeNum(int noticeNum);
+
+    void updateNoticeHits(@Param("noticeNum") int noticeNum, @Param("noticeHits") int noticeHits);
+
+
     /* ======================================= */
 
     List<News> getAllNews();
@@ -117,11 +122,55 @@ public interface AdminMapper {
 
     void deleteRule(List<Integer> ruleNums);
 
-    void insertFile(File file);
+    void insertRuleFile(File file);
 
     void insertRule(Rule rule);
 
+    List<File> findFilesByRuleNum(int ruleNum);
+
+    void deleteFilesByRuleNum(int ruleNum);
+
+    List<String> findImageUrlsByRuleNum(int ruleNum);
+
+    Rule findRuleByRuleNum(int ruleNum);
+
+    void updateRuleHits(@Param("ruleNum") int ruleNum, @Param("ruleHits") int ruleHits);
+
+
+    /* ======================================= */
+
     List<Operation> getAllOperation();
 
-    List<File> findFilesByRuleNum(int ruleNum);
+    Operation findOperationById(@Param("operationNum") int operationNum);
+
+    void updateOperation(Operation operation);
+
+    void deleteOperation(List<Integer> operationNums);
+
+    void insertOperation(Operation operation);
+
+    List<File> findFilesByOperationNum(int operationNum);
+
+    void deleteFilesByOperationNum(int operationNum);
+
+    void insertOperationFile(File fileMetadata);
+
+
+    List<String> findImageUrlsByOperationNum(int operationNum);
+
+    Operation findOperationByOperationNum(int operationNum);
+
+    void updateOperationHits(@Param("operationNum") int operationNum, @Param("operationHits") int operationHits);
+
+    /* ======================================= */
+
+    List<Faq> getAllFaq();
+
+    Faq findFaqById(@Param("faqId") int faqId);
+
+    void insertFaq(Faq faq);
+
+    void updateFaq(Faq faq);
+
+    void deleteFaq(List<Integer> faqIds);
 }

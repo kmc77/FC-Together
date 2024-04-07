@@ -4,6 +4,7 @@ import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -118,6 +119,16 @@ public class AdminService {
         //찾은 Notice 글을 삭제
         adminMapper.deleteNotice(noticeNums);
     }
+
+    public void increaseNoticeHits(int noticeNum) throws NotFoundException {
+        Notice notice = adminMapper.findNoticesByNoticeNum(noticeNum);
+        if (notice == null) {
+            throw new NotFoundException(noticeNum + "번 공지를 찾지 못 했습니다.");
+        }
+        notice.setNoticeHits(notice.getNoticeHits() + 1);
+        adminMapper.updateNoticeHits(notice.getNoticeNum(), notice.getNoticeHits());
+    }
+
 
     // ================================== Notice and
 
@@ -559,12 +570,6 @@ public class AdminService {
         return adminMapper.findFilesByRuleNum(ruleNum);
     }
 
-   /* public void saveRule(Rule rule) {
-        rule.setRuleDate(getCurrentFormattedTime());
-        adminMapper.insertRule(rule);
-    }*/
-
-
 
     public void updateRule(Rule rule) {
         rule.setRuleDate(getCurrentFormattedTime());
@@ -580,7 +585,7 @@ public class AdminService {
                 throw new IllegalArgumentException("해당 rule가 존재하지 않습니다. ruleNum: " + ruleNum);
             }
         }
-
+        System.out.println("admin서비스 =========== ruleNums = " + ruleNums);
         //찾은 rule 글을 삭제
         adminMapper.deleteRule(ruleNums);
     }
@@ -591,8 +596,18 @@ public class AdminService {
         return rule.getRuleNum(); // MyBatis의 selectKey를 사용하여 생성된 ruleNum 반환
     }
 
+    public void increaseRuleHits(int ruleNum) throws NotFoundException {
+        Rule rule = adminMapper.findRuleByRuleNum(ruleNum);
+        if (rule == null) {
+            throw new NotFoundException(ruleNum + "번 규정을 찾을 수 없습니다.");
+        }
+        rule.setRuleHits(rule.getRuleHits() + 1);
+        adminMapper.updateRuleHits(rule.getRuleNum(), rule.getRuleHits());
+    }
 
-    public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
+
+
+   /* public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
         // ruleNum을 기반으로 한 디렉토리 경로 생성
         String ruleSpecificPath = "ruleFiles/" + ruleNum + "/";
         Path rulePath = Paths.get(ruleSpecificPath);
@@ -624,7 +639,7 @@ public class AdminService {
                 throw new RuntimeException("파일을 저장할 수 없습니다. " + file.getOriginalFilename(), e);
             }
         });
-    }
+    }*/
 
 
 // ================================== Rule and
@@ -635,10 +650,80 @@ public class AdminService {
         return adminMapper.getAllOperation();
     }
 
+    public Operation findOperationById(int operationNum) {
+        return adminMapper.findOperationById(operationNum);
+    }
 
+    public List<File> findFilesByOperationNum(int operationNum) {
+        return adminMapper.findFilesByOperationNum(operationNum);
+    }
+
+    public void updateOperation(Operation operation) {
+        operation.setOperationDate(getCurrentFormattedTime());
+        adminMapper.updateOperation(operation);
+    }
+
+    public void operationDelete(List<Integer> operationNums) {
+        for (int operationNum : operationNums) {
+            Operation operation = adminMapper.findOperationById(operationNum);
+            if (operation == null) {
+                throw new IllegalArgumentException("해당 operation가 존재하지 않습니다. operationNum: " + operationNum);
+            }
+        }
+        adminMapper.deleteOperation(operationNums);
+    }
+
+    public int saveOperation(Operation operation) {
+        operation.setOperationDate(getCurrentFormattedTime());
+        adminMapper.insertOperation(operation);
+        return operation.getOperationNum();
+    }
+
+    public void increaseOperationHits(int operationNum) throws NotFoundException {
+        Operation operation = adminMapper.findOperationByOperationNum(operationNum);
+        if (operation == null) {
+            throw new NotFoundException(operationNum + "번 공시를 찾을 수 없습니다.");
+        }
+        operation.setOperationHits(operation.getOperationHits() + 1);
+        adminMapper.updateOperationHits(operation.getOperationNum(), operation.getOperationHits());
+    }
 
 
 // ================================== 경영공시 and
+
+
+// ================================== Faq start
+
+    public List<Faq> getAllFaq() {
+        return adminMapper.getAllFaq();
+    }
+
+    public Faq findFaqById(int faqId) {
+        return adminMapper.findFaqById(faqId);
+    }
+
+    public void saveFaq(Faq faq) {
+        adminMapper.insertFaq(faq);
+    }
+
+    public void updateFaq(Faq faq) {
+        adminMapper.updateFaq(faq);
+    }
+
+    public void faqDelete(List<Integer> faqIds) {
+        for (int faqId : faqIds) {
+            Faq faq = adminMapper.findFaqById(faqId);
+            if (faq == null) {
+                throw new IllegalArgumentException("해당 Faq가 존재하지 않습니다. faqId: " + faqId);
+            }
+        }
+        adminMapper.deleteFaq(faqIds);
+    }
+
+
+
+// ================================== Faq and
+
 
 }
 

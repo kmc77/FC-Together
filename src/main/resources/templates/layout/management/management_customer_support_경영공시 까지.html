@@ -129,8 +129,51 @@
             </section>
 
             <section class="faq" style="display: none;">
-                <div class="faq-list">
-                     <!-- Faq 데이터 목록 -->
+                <div class="faq-list ">
+                    <div class="faq-item" data-no="1"> <!-- 활성화 .on -->
+                        <a role="button" class="faq-item-tit">
+                            <span class="faq-category faq-cate2">회원가입</span>
+                            <em class="faq-q">
+                                회원가입은 어떻게 하나요?
+
+                            </em>
+                        </a>
+
+                        <div class="faq-item-cont">
+                            <div class="faq-cont-area">
+                                <div class="faq-a editor-area">
+
+                                    웹사이트 우측 상단 로그인 옆 회원가입 버튼을 통해 회원가입을 할 수 있습니다.<br>
+                                    1) 이메일로 회원가입: 이메일주소를 아이디로 하며 이메일 소유 인증 후 가입됩니다.<br>
+                                    2) 소셜로 회원가입: 사용하는 SNS계정 정보를 이용하여 간편하게 회원가입이 진행됩니다.
+                                </div>
+                            </div>
+                            <ul class="down-list">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-no="2"> <!-- 활성화 .on -->
+                        <a role="button" class="faq-item-tit">
+                            <span class="faq-category faq-cate2">회원가입</span>
+                            <em class="faq-q">
+                                아이디가 유효하지 않는다고 뜹니다.
+
+                            </em>
+                        </a>
+
+                        <div class="faq-item-cont">
+                            <div class="faq-cont-area">
+                                <div class="faq-a editor-area">
+
+                                    [이메일로 회원가입]시 @를 포함한 이메일 형식으로 입력해야 합니다. 올바르게 입력했을 경우 "사용 가능한 아이디 입니다"라는 안내 문구가
+                                    나타납니다. <br>
+                                    예) hkinfo@hankyung.com
+                                </div>
+                            </div>
+                            <ul class="down-list">
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -201,14 +244,11 @@
 
                     // 섹션 이름에 따른 데이터 처리
                     let data;
-                      if (sectionName === 'rule' || sectionName === 'operation') {
+                    if (sectionName === 'rule' || sectionName === 'operation') {
                         data = response[sectionName + 's']; // 'rules' 또는 'operations'
                         data.forEach(item => item.file = response.filePresenceMap[item[`${sectionName}Num`]]);
-                    } else if (sectionName === 'faq') {
-                        // 'faq' 섹션 데이터 처리
-                        data = response.faqs; // 서버로부터 받은 FAQ 데이터
                     } else {
-                        data = response.data; // 기타 섹션 데이터 처리
+                        data = response.data; // 'faq' 또는 'training-schedule'에 대한 기본 처리
                     }
 
                     sectionDataCache[sectionName] = {data: data, pageInfo: response.pageInfo};
@@ -253,35 +293,18 @@
                                         <td>${hits}</td>
                                     </tr>`;
                 });
-             } else if (sectionName === 'faq') {
-                // FAQ 데이터를 카테고리별로 분류
-                let categories = {};
+            } else if (sectionName === 'faq') {
                 data.forEach(function(item) {
-                    if (!categories[item.faqCategory]) {
-                        categories[item.faqCategory] = [];
-                    }
-                    categories[item.faqCategory].push(item);
-                });
+                    var id = item.id; // FAQ ID
+                    var question = item.question; // FAQ 질문
+                    var answer = item.answer; // FAQ 답변
 
-                // 각 카테고리별로 HTML 컨텐츠 생성
-                Object.keys(categories).forEach(function(category) {
-                    htmlContent += `<div class="faq-category-title" aria-hidden="true" style="display:none;">${category}</div>`;
-                    categories[category].forEach(function(item) {
-                        htmlContent += `<div class="faq-item" data-no="${item.faqId}">
-                                            <a role="button" class="faq-item-tit">
-                                                <span class="faq-category faq-cate">${item.faqCategory}</span>
-                                                <em class="faq-q">${item.faqQuestion}</em>
-                                            </a>
-                                            <div class="faq-item-cont">
-                                                <div class="faq-cont-area">
-                                                    <div class="faq-a editor-area">${item.faqAnswer}</div>
-                                                </div>
-                                            </div>
-                                        </div>`;
-                    });
+                    htmlContent += `<tr>
+                                        <td>${id}</td>
+                                        <td>${question}</td>
+                                        <td>${answer}</td>
+                                    </tr>`;
                 });
-
-                $('.faq-list').html(htmlContent);
             } else if (sectionName === 'training-schedule') {
                 data.forEach(function(item) {
                     var scheduleNum = item.scheduleNum; // 스케줄 번호
@@ -302,10 +325,8 @@
                 });
             }
 
-           // 섹션별로 HTML 컨텐츠를 업데이트합니다.
-            if (sectionName !== 'faq') { // FAQ 섹션은 별도로 처리되었으므로, 다시 확인하지 않습니다.
-                $(`#${sectionName}_board-list table tbody`).html(htmlContent);
-            }
+            // 섹션별로 HTML 컨텐츠를 업데이트합니다.
+            $(`#${sectionName}_board-list table tbody`).html(htmlContent);
         }
 
 
@@ -398,9 +419,9 @@
 
         waveBtnInit(); // 웨이브 버튼 초기화 함수 실행
 
-       // 동적으로 생성된 FAQ 항목에 대한 토글 기능
-        $(document).on('click', '.faq-item-tit', function() {
-            $(this).parent('.faq-item').toggleClass('on');
+        // FAQ 항목 토글
+        $('.faq-item-tit').click(function() {
+            $(this).parents('.faq-item').toggleClass('on');
         });
     });
 </script>

@@ -1,9 +1,6 @@
 package com.project.together.mapper;
 
-import com.project.together.domain.Faq;
-import com.project.together.domain.File;
-import com.project.together.domain.Operation;
-import com.project.together.domain.Rule;
+import com.project.together.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,9 +58,22 @@ public interface ManagementMapper {
     List<Faq> getAllFaqData();
 
 
+
     // ================================== Faq End
 
+    // ================================== 훈련일정 start
+    List<TrainingSchedule> findTrainingSchedules(@Param("offset") int offset, @Param("size") int size);
 
+    int countTrainingSchedules();
+
+    TrainingSchedule findScheduleByScheduleNum(int scheduleNum);
+
+    void updateScheduleHits(@Param("scheduleNum") int scheduleNum, @Param("scheduleHits") int scheduleHits);
+
+    TrainingSchedule findPrevScheduleByCurrentScheduleDate(LocalDate currentScheduleDate);
+
+
+    // ================================== 훈련일정 End
 
 
 }

@@ -173,4 +173,18 @@ public interface AdminMapper {
     void updateFaq(Faq faq);
 
     void deleteFaq(List<Integer> faqIds);
+
+    /* ======================================= */
+
+    List<TrainingSchedule> getAllTrainingSchedule();
+
+    void insertTrainingSchedule(TrainingSchedule trainingSchedule);
+
+    TrainingSchedule findScheduleByScheduleNum(int scheduleNum);
+
+    void updateTrainingScheduleHits(@Param("scheduleNum") int scheduleNum, @Param("scheduleHits") int scheduleHits);
+
+    void updateTrainingSchedule(TrainingSchedule trainingSchedule);
+
+    void deleteTrainingSchedule(List<Integer> scheduleNums);
 }

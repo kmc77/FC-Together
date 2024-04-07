@@ -1,13 +1,14 @@
 package com.project.together.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class TrainingSchedule {
-    private String tTitle;
-    private String tRegdate;
-    private int tHits;
-    private String tContent;
+    private int scheduleNum; // tsNum -> scheduleNum
+    private String username;
+    private String scheduleTitle; // tsTitle -> scheduleTitle
+    private String scheduleDate; // tsDate -> scheduleDate
+    private int scheduleHits; // tsHits -> scheduleHits
+    private String scheduleContent; // tsContent -> scheduleContent
+    private String tableGb;
 }

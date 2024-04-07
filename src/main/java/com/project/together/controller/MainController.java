@@ -30,10 +30,10 @@ public class MainController {
         return "/layout/team/teampage";
     }
 
-    @GetMapping("/match/matchpage")
-    public String matchpage() {
-        return "/layout/match/matchpage";
-    }
+//    @GetMapping("/match/matchpage")
+//    public String matchpage() {
+//        return "/layout/match/matchpage";
+//    }
 
     @GetMapping("/history/historypage")
     public String historypage() {

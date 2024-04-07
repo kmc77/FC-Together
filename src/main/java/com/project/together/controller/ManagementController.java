@@ -1,9 +1,6 @@
 package com.project.together.controller;
 
-import com.project.together.domain.Faq;
-import com.project.together.domain.File;
-import com.project.together.domain.Operation;
-import com.project.together.domain.Rule;
+import com.project.together.domain.*;
 import com.project.together.service.ManagementService;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +66,7 @@ public class ManagementController {
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size) {
         Map<String, Object> response = new HashMap<>();
+        System.out.println("1 ========== sectionName = " + sectionName);
         try {
             int offset = page * size;
             switch (sectionName.toLowerCase()) {
@@ -102,6 +100,13 @@ public class ManagementController {
                     List<Faq> faqs = managementService.getAllFaqData(); // 모든 FAQ 데이터 조회
                     response.put("faqs", faqs);
                     break;
+                case "schedule": // 변경된 부분
+                    List<TrainingSchedule> schedules = managementService.getTrainingScheduleData(offset, size);
+                    int totalSchedules = managementService.countTrainingSchedules();
+                    response.put("schedules", schedules);
+                    response.put("totalSchedules", totalSchedules);
+                    response.put("pageInfo", createPageInfo(page, size, totalSchedules));
+                    break;
                 default:
                     return ResponseEntity.badRequest().body("Invalid section name");
             }
@@ -124,7 +129,7 @@ public class ManagementController {
 
 
     // 규정 상세보기 페이지
-    @GetMapping("/management_customer_support_view")
+    @GetMapping("/management_customer_support_rule_view")
     public String supportViewPage(@RequestParam("no") int ruleNum, Model model) throws NotFoundException {
         managementService.increaseRuleHits(ruleNum);
         Rule rule = managementService.viewRuleSupportPage(ruleNum);
@@ -146,7 +151,7 @@ public class ManagementController {
             model.addAttribute("prevRule", prevRule);
         }
 
-        return "layout/management/management_customer_support_view";
+        return "layout/management/management_customer_support_rule_view";
     }
 
     // 경영공시 상세보기 페이지
@@ -173,6 +178,28 @@ public class ManagementController {
         }
 
         return "layout/management/management_customer_support_operation_view";
+    }
+
+    // 훈련일정 상세보기 페이지
+    @GetMapping("/management_customer_support_schedule_view")
+    public String scheduleViewPage(@RequestParam("no") int scheduleNum, Model model) throws NotFoundException {
+        managementService.increaseScheduleHits(scheduleNum);
+        TrainingSchedule trainingSchedule = managementService.viewSchedulePage(scheduleNum);
+        if (trainingSchedule == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + scheduleNum);
+        }
+
+        // 모델에 규정 상세 정보와 파일 목록 추가
+        model.addAttribute("trainingSchedule", trainingSchedule);
+
+        // 현재 규정의 날짜를 기준으로 이전 규정을 찾습니다.
+        LocalDate currentScheduleDate = LocalDate.parse(trainingSchedule.getScheduleDate());
+        TrainingSchedule prevSchedule = managementService.findPrevScheduleByCurrentScheduleDate(currentScheduleDate);
+        if (prevSchedule != null) {
+            model.addAttribute("prevSchedule", prevSchedule);
+        }
+
+        return "layout/management/management_customer_support_schedule_view";
     }
 
 

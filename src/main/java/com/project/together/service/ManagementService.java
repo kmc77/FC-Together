@@ -65,10 +65,6 @@ public class ManagementService {
     // ================================== 경영공시 start
 
 
-    public List<Operation> findAllOperations(Map<String, Integer> params) {
-        return managementMapper.findAllOperations(params);
-    }
-
     public List<Operation> getOperationData(int offset, int size) {
         return managementMapper.findOperations(offset, size);
     }
@@ -115,8 +111,39 @@ public class ManagementService {
 
     // ================================== Faq End
 
+    // ================================== 훈련일정 start
+
+    public List<TrainingSchedule> getTrainingScheduleData(int offset, int size) {
+        System.out.println("서비스 offset = " + offset);
+        return managementMapper.findTrainingSchedules(offset, size);
+    }
+
+    public int countTrainingSchedules() {
+        return managementMapper.countTrainingSchedules();
+    }
+
+    public TrainingSchedule viewSchedulePage(int scheduleNum) throws NotFoundException {
+        TrainingSchedule trainingSchedule = managementMapper.findScheduleByScheduleNum(scheduleNum);
+        if (trainingSchedule == null) {
+            throw new NotFoundException(scheduleNum + "번호의 훈련일정을 찾을 수 없습니다.");
+        }
+        return trainingSchedule;
+    }
+
+    public void increaseScheduleHits(int scheduleNum) throws NotFoundException {
+        TrainingSchedule trainingSchedule = managementMapper.findScheduleByScheduleNum(scheduleNum);
+        if (trainingSchedule == null) {
+            throw new NotFoundException(scheduleNum + "번 데이터를 찾을 수 없습니다.");
+        }
+        trainingSchedule.setScheduleHits(trainingSchedule.getScheduleHits() + 1);
+        managementMapper.updateScheduleHits(trainingSchedule.getScheduleNum(), trainingSchedule.getScheduleHits());
+    }
+
+    public TrainingSchedule findPrevScheduleByCurrentScheduleDate(LocalDate currentScheduleDate) {
+        return managementMapper.findPrevScheduleByCurrentScheduleDate(currentScheduleDate);
+    }
 
 
-
+    // ================================== 훈련일정 End
 
 }

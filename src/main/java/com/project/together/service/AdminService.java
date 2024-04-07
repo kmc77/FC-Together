@@ -721,10 +721,51 @@ public class AdminService {
     }
 
 
-
 // ================================== Faq and
 
+// ================================== 훈련일정 start
 
+
+    public List<TrainingSchedule> getAllTrainingSchedule() {
+        return adminMapper.getAllTrainingSchedule();
+    }
+
+    public int saveTrainingSchedule(TrainingSchedule trainingSchedule) {
+        trainingSchedule.setScheduleDate(getCurrentFormattedTime());
+        adminMapper.insertTrainingSchedule(trainingSchedule);
+        return trainingSchedule.getScheduleNum();
+    }
+
+    public void increaseTrainingSchedule(int scheduleNum) throws NotFoundException {
+        TrainingSchedule trainingSchedule = adminMapper.findScheduleByScheduleNum(scheduleNum);
+        if (trainingSchedule == null) {
+            throw new NotFoundException(scheduleNum + "번 일정을 찾을 수 없습니다");
+        }
+        trainingSchedule.setScheduleHits(trainingSchedule.getScheduleHits() + 1);
+        adminMapper.updateTrainingScheduleHits(trainingSchedule.getScheduleNum(), trainingSchedule.getScheduleHits());
+    }
+
+    public TrainingSchedule findTrainingScheduleByNum(int scheduleNum) {
+        return adminMapper.findScheduleByScheduleNum(scheduleNum);
+    }
+
+    public void updateTrainingSchedule(TrainingSchedule trainingSchedule) {
+        trainingSchedule.setScheduleDate(getCurrentFormattedTime());
+        adminMapper.updateTrainingSchedule(trainingSchedule);
+    }
+
+    public void trainingScheduleDelete(List<Integer> scheduleNums) {
+        for (int scheduleNum : scheduleNums) {
+            TrainingSchedule trainingSchedule = adminMapper.findScheduleByScheduleNum(scheduleNum);
+            if (trainingSchedule == null) {
+                throw new IllegalArgumentException("해당 scheduleNum가 존재하지 않습니다. scheduleNum: " + scheduleNum);
+            }
+        }
+        adminMapper.deleteTrainingSchedule(scheduleNums);
+    }
+
+
+// ================================== 훈련일정 and
 }
 
 

@@ -32,7 +32,7 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-    <!-- 공지사항 처리 결과 얼럿 -->
+    <!-- 처리 결과 얼럿 -->
     <div th:if="${message}" class="alert alert-success" role="alert">
         <p th:text="${message}"></p>
     </div>
@@ -69,7 +69,7 @@
                     <dl>
                         <dt id="title-label">규정제목</dt>
                         <dd>
-                            <em class="notice-cont-tit" id="title-value"></em>
+                            <em id="title-value"></em>
                         </dd>
                     </dl>
                     <dl>
@@ -103,7 +103,7 @@
                 language: "ko",
                         ckfinder : {
 
-                    uploadUrl: "/image/upload",
+                    uploadUrl: "/image/ruleUpload",
                     withCredentials: true
                 }
             } );
@@ -129,8 +129,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="mb-4 flex justify-between items-center">
             <!-- 테이블 검색 -->
             <div class="flex-1 pr-4">
@@ -434,6 +432,8 @@
             }
         }
     });
+
+
 
     var ruleKeys = ['ruleNum', 'username', 'ruleTitle', 'ruleContent', 'ruleDate', 'ruleHits'];
 

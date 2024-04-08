@@ -25,7 +25,11 @@ public interface AdminMapper {
 
     Notice findNoticesById(@Param("noticeNum") int noticeNum);
 
+    List<File> findFilesByNoticeNum(int noticeNum);
+
     void insertNotice(Notice notice);
+
+    void insertNoticeFile(File file);
 
     void updateNotice(Notice notice);
 
@@ -34,6 +38,8 @@ public interface AdminMapper {
     Notice findNoticesByNoticeNum(int noticeNum);
 
     void updateNoticeHits(@Param("noticeNum") int noticeNum, @Param("noticeHits") int noticeHits);
+
+    void deleteFilesByNoticeNum(int noticeNum);
 
 
     /* ======================================= */
@@ -187,4 +193,6 @@ public interface AdminMapper {
     void updateTrainingSchedule(TrainingSchedule trainingSchedule);
 
     void deleteTrainingSchedule(List<Integer> scheduleNums);
+
+
 }

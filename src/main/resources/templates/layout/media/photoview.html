@@ -30,11 +30,11 @@
                 <div class="content"><p th:utext="${clubPhoto.cpContent}"></p>
 
                 </div>
-                <div class="previous-post post-navigation">
+                <div class="previous-post post-navigation" th:if="${prevClubPhoto != null}">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/photoview(no=${prevPhoto.cpIdx})}"
-                           th:text="${prevPhoto.cpTitle}">이전글 제목</a>
+                        <a class="title" th:href="@{/media/photoview(no=${prevClubPhoto.cpIdx})}"
+                           th:text="${prevClubPhoto.cpTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
@@ -45,51 +45,6 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-    // URL에서 photoNum 추출
-    var urlParams = new URLSearchParams(window.location.search);
-    var photoIdx = urlParams.get('no');
-
-    // newsIdx 해당하는 뉴스 정보 로드
-    $.ajax({
-        url: '/media/photoview?no=' + cpIdx,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
-            $('.newsInformation .titleBox p').text(data.cpTitle);
-            $('.titleInfo p').eq(1).text(data.username);
-            $('.titleInfo p').eq(3).text(data.cpRegdate);
-            $('.titleInfo p').eq(5).text(data.cpHits);
-            $('.cpContent .content').html(data.cpContent);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
-    });
-
- $.ajax({
-    url: '/media/photoview?no=' + (cpIdx - 1), // 이전글 번호
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-        if(data.prevPhoto == null) { // 이전 뉴스가 없는 경우
-            alert("이전글 없음");
-        } else {
-            // 서버에서 반환한 데이터를 사용하여 이전 글의 제목을 업데이트
-            var titleLink = '<a href="/media/prevPhoto?no=' + data.prevPhoto.cpIdx + '">' + data.prevPhoto.cpTitle + '</a>';
-            $('.sc-bUTAii iQdlyk .title').html(titleLink);
-        }
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.log(textStatus, errorThrown);
-    }
-});
-
-
-});
-</script>
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

@@ -70,8 +70,6 @@
         });
 
         function loadMediaList(start, limit) {
-            loadNotice(start, limit);
-
             // 사진 데이터 로딩
             loadPhotos(start, limit);
 
@@ -127,21 +125,6 @@
             });
         }
 
-        function loadNotice(start, limit) {
-            $.ajax({
-                url: '/media/notice/list',
-                type: 'GET',
-                data: { start: start, limit: limit },
-                dataType: 'json',
-                success: function(noticeList) {
-                    appendMediaItems(noticeList, 'notice');
-                },
-                error: function(error) {
-                    console.error('공지사항을 가져오는데 실패했습니다.', error);
-                }
-            });
-        }
-
     function appendMediaItems(items, type) {
             var container = $('.media-item-container');
 
@@ -182,46 +165,21 @@
                     tableGb = item.tableGb;
                     imgUrl = match ? match[1] : '/img/FcTogether.jpg'; // 기본 이미지 URL
                     detailUrl = `http://localhost:8081/media/newsview?no=${item.newsIdx}`;
-                } else if (type === 'notice') {
-                    // 공지사항 타입 별도 처리 로직
-                    title = item.noticeTitle;
-                    regdate = item.noticeDate;
-                    hits = item.noticeHits;
-                    tableGb = item.tableGb;
-                    imgUrl = '/img/FcTogether.jpg'; // 공지사항에는 항상 기본 이미지 사용
-                    detailUrl = `http://localhost:8081/media/noticeview?no=${item.noticeNum}`;
-
-                    // 공지사항 아이템 생성 로직
-                    var noticeItem = $(`<a href="${detailUrl}" class="notice-detail">
-                        <div class="notice-thumbnail" style="background-image: url('${imgUrl}');"></div>
-                        <div class="notice-contents">
-                            <p class="notice-title">${title}</p>
-                            <div class="notice-date-and-hits">${regdate} • ${hits}</div>
-                            <div class="notice-table">
-                                <p>${tableGb}</p>
-                            </div>
-                        </div>
-                    </a>`);
-
-                    container.append(noticeItem);
-                    return; // 공지사항 처리 후 바로 forEach 루프를 종료
                 }
 
-                // 공지사항이 아닐 경우에만 실행되는 공통 아이템 생성 로직
-                if (type !== 'notice') {
-                    var mediaItem = $(`<a href="${detailUrl}" class="${type}-detail">
-                        <div class="${type}-thumbnail" style="background-image: url('${imgUrl}');"></div>
-                        <div class="${type}-contents">
-                            <p class="${type}-title">${title}</p>
-                            <div class="${type}-date-and-hits">${regdate} • ${hits}</div>
-                            <div class="${type}-table">
-                                <p>${tableGb}</p>
-                            </div>
+                // 공통 아이템 생성 로직
+                var mediaItem = $(`<a href="${detailUrl}" class="${type}-detail">
+                    <div class="${type}-thumbnail" style="background-image: url('${imgUrl}');"></div>
+                    <div class="${type}-contents">
+                        <p class="${type}-title">${title}</p>
+                        <div class="${type}-date-and-hits">${regdate} • ${hits}</div>
+                        <div class="${type}-table">
+                            <p>${tableGb}</p>
                         </div>
-                    </a>`);
+                    </div>
+                </a>`);
 
-                    container.append(mediaItem);
-                }
+                container.append(mediaItem);
             });
         }
     });

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title th:text="${rule.ruleTitle}">Title</title>
     <th:block th:include="layout/header"></th:block>
-    <link href="/css/layout/management/management_customer_support_view.css" rel="stylesheet"/>
+    <link href="/css/layout/management/management_customer_support_rule_view.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="cvContent">
+            <div class="ruleContent">
                 <!-- 글 내용 -->
                 <div class="content">
                     <p th:utext="${rule.ruleContent}">Content</p>

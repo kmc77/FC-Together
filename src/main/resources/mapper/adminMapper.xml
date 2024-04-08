@@ -42,14 +42,30 @@
         SELECT * FROM notice ORDER BY notice_num DESC
     </select>
 
-
     <select id="findNoticesById" parameterType="int" resultType="com.project.together.domain.Notice">
         SELECT * FROM notice WHERE notice_num = #{noticeNum}
     </select>
 
-    <insert id="insertNotice" parameterType="com.project.together.domain.Notice">
-        INSERT INTO notice (notice_num, username, notice_title, notice_date, notice_hits, notice_content, table_gb)
-        VALUES (#{noticeNum}, #{username}, #{noticeTitle}, #{noticeDate}, #{noticeHits}, #{noticeContent}, #{tableGb})
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByNoticeNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
+    </select>
+
+
+    <delete id="deleteFilesByNoticeNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
+    </delete>
+
+    <insert id="insertNotice" parameterType="com.project.together.domain.Notice" useGeneratedKeys="true" keyProperty="noticeNum">
+        INSERT INTO notice (notice_num, username, notice_title, notice_date, notice_hits, notice_content)
+        VALUES (#{noticeNum}, #{username}, #{noticeTitle}, #{noticeDate}, #{noticeHits}, #{noticeContent})
+    </insert>
+
+
+    <insert id="insertNoticeFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
 
     <update id="updateNotice" parameterType="com.project.together.domain.Notice">

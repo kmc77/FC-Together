@@ -27,10 +27,10 @@
                 </div>
             </div>
             <div class="newsContent">
-                <div class="content"><p th:utext="${news.newsContent}"></p>
-
+                <div class="content">
+                    <p th:utext="${news.newsContent}"></p>
                 </div>
-                <div class="previous-post post-navigation">
+                <div class="previous-post post-navigation" th:if="${prevNews != null}">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
                         <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}"
@@ -44,49 +44,7 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-    // URL에서 noticeNum 추출
-    var urlParams = new URLSearchParams(window.location.search);
-    var newsIdx = urlParams.get('no');
 
-    // newsIdx 해당하는 뉴스 정보 로드
-    $.ajax({
-        url: '/media/newsview?no=' + newsIdx,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // 서버에서 반환한 데이터를 사용하여 뉴스의 제목, 날짜, 내용을 업데이트
-            $('.newsInformation .titleBox p').text(data.newsTitle);
-            $('.titleInfo p').eq(1).text(data.username);
-            $('.titleInfo p').eq(3).text(data.newsRegdate);
-            $('.titleInfo p').eq(5).text(data.newsHits);
-            $('.newsContent .content').html(data.newsContent);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
-    });
-
- $.ajax({
-    url: '/media/newsview?no=' + (newsIdx - 1), // 이전 뉴스 번호
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-        if(data.prevNews == null) { // 이전 뉴스가 없는 경우
-            alert("이전글 없음");
-        } else {
-            // 서버에서 반환한 데이터를 사용하여 이전 뉴스의 제목을 업데이트
-            var titleLink = '<a href="/media/newsview?no=' + data.prevNews.newsIdx + '">' + data.prevNews.newsTitle + '</a>';
-            $('.sc-bUTAii iQdlyk .title').html(titleLink);
-        }
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.log(textStatus, errorThrown);
-    }
-  });
-});
-</script>
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

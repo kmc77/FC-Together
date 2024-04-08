@@ -78,15 +78,20 @@
                             <div class="notice-cont ql-editor" id="content-html-value"></div> <!-- ID 변경 -->
                         </dd>
                     </dl>
+                    <dl>
+                        <dt id="attachments-label">첨부파일</dt>
+                        <dd id="attachments-value"></dd>
+                    </dl>
                 </div>
             </div>
         </div>
-        <form action="/admin/layout/noticePost" method="POST">
+        <form action="/admin/layout/noticePost" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="noticeNum"> <!-- 고유값 -->
             <input type="hidden" name="noticeDate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
             <input name="noticeTitle" type="text" placeholder="제목"/><br>
             <textarea name="noticeContent" id="content"></textarea><br>
+            <input type="file" name="files" multiple><br> <!-- 파일 선택 입력 필드 추가 -->
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
             </div>
@@ -352,54 +357,41 @@
             }
         });
 
-        // "보기" 버튼 클릭 이벤트
-        $('.checkButton').click(function() {
+         $('.checkButton').click(function() {
             if (selectedRows.length === 0) {
-                alert("확인할 공지 글을 선택해주세요.");
+                alert("확인할 글을 선택해주세요.");
             } else if (selectedRows.length > 1) {
-                alert("확인할 공지 글을 하나만 선택해주세요.");
+                alert("확인할 글을 하나만 선택해주세요.");
             } else {
-                for (var i = 0; i < selectedRows.length; i++) {
-                    var noticeNum = selectedRows[i];
-                    var accessToken = localStorage.getItem('accessToken');
-                    // 선택된 noticeNum 해당하는 문의글 뷰페이지로 이동
-                    $.ajax({
-                        url: "/admin/layout/noticeView",
-                        method: "GET",
-                        data: { noticeNum: noticeNum },
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-                        },
-                        success: function(notice) {
+                var noticeNum = selectedRows[0];
+                $.ajax({
+                    url: "/admin/layout/noticeView/" + noticeNum,
+                    method: "GET",
+                    success: function(data) {
+                        // 규정 상세 정보 표시
+                        $('#num-value').text(data.notice.noticeNum);
+                        $('#date-value').text(data.notice.noticeDate);
+                        $('#title-value').text(data.notice.noticeTitle);
+                        $('#content-html-value').html(data.notice.noticeContent);
 
-                            // 'update' 상태 설정
-                            $('form').data('state', 'update');
+                        // 공지 작성 탭으로 이동하고 버튼 텍스트를 "수정"으로 변경
+                        $("#nav-1 li:contains('공지 작성') a").click();
+                        $(".btn-perspective .btn").text("수정");
+                        $('form').attr('action', '/admin/layout/noticeUpdate/' + data.notice.noticeNum);
+                        $("input[name='noticeNum']").val(data.notice.noticeNum);
 
-                            // 응답받은 데이터로 화면 갱신
-                            $('#num-value').text(notice.noticeNum); // 공지번호
-                            $('#date-value').text(notice.noticeDate); // 등록일
-                            $('#title-value').text(notice.noticeTitle); // 공지제목
-                            $('#content-html-value').html(notice.noticeContent); // HTML 공지내용
-
-                            // "공지 작성" 탭 클릭
-                            $("#nav-1 li:contains('공지 작성') a").click();
-
-                            // Form submit 버튼의 텍스트를 "수정"으로 변경
-                            $(".btn-perspective .btn").text("수정");
-
-                            // 공지사항 수정을 위한 요청을 보내도록 폼의 action 속성 변경
-                            $('form').attr('action', '/admin/layout/noticeUpdate/' + notice.noticeNum);
-
-                            // noticeNum 값을 hidden input에 설정
-                            $("input[name='noticeNum']").val(notice.noticeNum);
-                        },
-
-                        error: function(error) {
-                            // 에러 처리
-                            console.log(error);
-                        }
-                    });
-                }
+                        // 첨부파일 목록 업데이트
+                        var attachmentsHtml = '<ul>';
+                        data.files.forEach(function(file) {
+                            attachmentsHtml += '<li><a href="' + file.filePath + '" target="_blank">' + file.fileName + '</a></li>';
+                        });
+                        attachmentsHtml += '</ul>';
+                        $('#attachments-value').html(attachmentsHtml); // 첨부파일 목록을 표시할 요소의 ID를 'attachments-value'로 수정
+                    },
+                    error: function(error) {
+                        console.error("Error: ", error);
+                    }
+                });
             }
         });
 

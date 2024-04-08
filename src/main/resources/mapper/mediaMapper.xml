@@ -12,13 +12,19 @@
         SELECT * FROM Notice WHERE notice_num = #{noticeNum}
     </select>
 
-    <select id="findPrevNoticeByCurrentNoticeDate" parameterType="java.time.LocalDate" resultType="com.project.together.domain.Notice">
+    <select id="findPrevNoticeByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
         <![CDATA[
-            SELECT * FROM Notice
-            WHERE notice_date < #{currentNoticeDate}
-            ORDER BY notice_date DESC
-            LIMIT 1
-        ]]>
+        SELECT * FROM Notice
+        WHERE notice_num < #{noticeNum}
+        ORDER BY notice_num DESC
+        LIMIT 1
+    ]]>
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByNoticeNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
     </select>
 
     <update id="updateNoticeHits">
@@ -42,6 +48,15 @@
         UPDATE News SET news_hits = #{hits} WHERE news_idx = #{newsIdx}
     </update>
 
+    <select id="findPrevNewsByNewsNum" parameterType="int" resultType="com.project.together.domain.News">
+        <![CDATA[
+            SELECT * FROM News
+            WHERE news_idx < #{newsNum}
+            ORDER BY news_idx DESC
+            LIMIT 1
+        ]]>
+    </select>
+
     <!-- ======================================= -->
 
     <select id="getClubPhotoList" resultType="com.project.together.domain.ClubPhoto">
@@ -58,6 +73,15 @@
     <update id="updatePhotoHits">
         UPDATE ClubPhoto SET cp_hits = #{hits} WHERE cp_idx = #{photoNum}
     </update>
+
+    <select id="findPrevClubPhotoByCpIdx" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        <![CDATA[
+             SELECT * FROM ClubPhoto
+                WHERE cp_idx < #{cpIdx}
+                ORDER BY cp_idx DESC
+                LIMIT 1
+        ]]>
+    </select>
 
     <!-- ======================================= -->
 
@@ -76,6 +100,15 @@
     <update id="updateVideoHits">
         UPDATE ClubVideo SET cv_hits = #{hits} WHERE cv_idx = #{cvIdx}
     </update>
+
+    <select id="findPrevClubVideoByCvIdx" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        <![CDATA[
+            SELECT * FROM ClubVideo
+            WHERE cv_idx < #{cvIdx}
+            ORDER BY cv_idx DESC
+            LIMIT 1
+        ]]>
+    </select>
 
 
 

@@ -38,11 +38,11 @@
                     <iframe id="videoPlayer" width="1000" height="720" th:src="${clubVideo.mvTheOriginUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <p th:utext="${clubVideo.cvContent}">Video Content</p>
                 </div>
-                <div class="previous-post post-navigation">
+                <div class="previous-post post-navigation" th:if="${prevClubVideo != null}">
                     <div>
                         <p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/videoView(no=${prevVideo?.cvIdx})}" th:text="${prevVideo?.cvTitle}">Previous Video Title</a>
+                        <a class="title" th:href="@{/media/videoView(no=${prevClubVideo?.cvIdx})}" th:text="${prevClubVideo?.cvTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">

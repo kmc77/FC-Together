@@ -112,26 +112,42 @@ public class AdminController {
         return ResponseEntity.ok(notices);
     }
 
-    // 공지사항 상세 정보 가져오기
-    @GetMapping("/layout/noticeView")
+    // 공지사항 상세 정보 가져오기(업로드 파일 추가)
+    @GetMapping("/layout/noticeView/{noticeNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Notice> getNoticeView(@RequestParam("noticeNum") int noticeNum, HttpServletResponse response) throws NotFoundException {
+    public ResponseEntity<?> getNoticeDetails(@PathVariable int noticeNum) throws NotFoundException {
+        System.out.println("컨트롤러 noticeNum = " + noticeNum);
         adminService.increaseNoticeHits(noticeNum);
         Notice notice = adminService.findNoticesById(noticeNum);
-        System.out.println("noticeview = " + notice);
-        if (notice != null) {
-            return ResponseEntity.ok(notice);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (notice == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        List<File> files = adminService.findFilesByNoticeNum(noticeNum); // 공지사항 번호에 해당하는 파일 목록 조회
+
+        // 공지사항 정보와 파일 목록을 포함하는 객체 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("notice", notice);
+        response.put("files", files);
+
+        return ResponseEntity.ok(response);
     }
+
 
     // 공지사항 작성
     @PostMapping("/layout/noticePost")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String postNotice(@ModelAttribute Notice notice, @RequestParam String username, RedirectAttributes redirectAttributes) {
+    public String postNotice(@ModelAttribute Notice notice,
+                             @RequestParam String username,
+                             @RequestParam("files") List<MultipartFile> files,
+                             RedirectAttributes redirectAttributes) {
         notice.setUsername(username);
-        adminService.saveNotice(notice);
+        int noticeNum = adminService.saveNotice(notice);
+        System.out.println("컨트롤러 noticeNum = " + noticeNum);
+        if (!files.isEmpty()) {
+            // FileService를 이용하여 S3에 파일을 업로드하고 메타데이터를 저장
+            fileService.uploadNoticeFilesToS3AndSaveMetadata(files, noticeNum, "noticeFiles");
+        }
         redirectAttributes.addFlashAttribute("message", "공지사항이 성공적으로 추가되었습니다.");
         return "redirect:/admin/layout/notice_management";
     }
@@ -139,15 +155,48 @@ public class AdminController {
     // 공지사항 수정
     @PostMapping("/layout/noticeUpdate/{noticeNum}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateNotice(@PathVariable int noticeNum, @ModelAttribute Notice notice, RedirectAttributes redirectAttributes) {
-
+    public String updateNotice(@PathVariable int noticeNum,
+                               @ModelAttribute Notice notice,
+                               @RequestParam("files") List<MultipartFile> files,
+                               RedirectAttributes redirectAttributes) {
         notice.setNoticeNum(noticeNum);
         adminService.updateNotice(notice);
+
+        // 기존 파일 정보 삭제
+        fileService.deleteFilesByNoticeNum(noticeNum);
+
+        // 새로운 파일 처리
+        if (!files.isEmpty()) {
+            fileService.uploadNoticeFilesToS3AndSaveMetadata(files, noticeNum, "noticeFiles");
+        }
+
         redirectAttributes.addFlashAttribute("message", "공지사항이 성공적으로 업데이트되었습니다.");
         return "redirect:/admin/layout/notice_management";
     }
 
+
+
     // 공지사항 삭제
+    @PostMapping("/layout/noticeDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> noticeDelete(@RequestParam("noticeNum") List<Integer> noticeNums) {
+        try {
+            // 먼저 각 번호에 해당하는 파일을 S3에서 삭제합니다.
+            noticeNums.forEach(fileService::deleteFilesByNoticeNum);
+            // 각 번호에 해당하는 이미지 파일을 S3에서 삭제
+            /*noticeNums.forEach(imageService::deleteImageByNoticeNum);*/
+
+            adminService.noticeDelete(noticeNums);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /* // 공지사항 삭제
     @PostMapping("/layout/noticeDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> noticeDelete(@RequestParam("noticeNum") List<Integer> noticeNums) {
@@ -160,7 +209,7 @@ public class AdminController {
 
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     // ================================== Notice End
 
@@ -785,7 +834,6 @@ public class AdminController {
     @PostMapping("/layout/operationDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> operationDelete(@RequestParam("operationNum") List<Integer> operationNums) {
-        System.out.println("칸트롤러 입장");
         try {
             // 먼저 각 번호에 해당하는 파일을 S3에서 삭제합니다.
             operationNums.forEach(fileService::deleteFilesByOperationNum);

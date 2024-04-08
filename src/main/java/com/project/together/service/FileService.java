@@ -79,6 +79,52 @@ public class FileService {
         adminMapper.deleteFilesByRuleNum(ruleNum);
     }
 
+    //공지사항 첨부파일
+    public void uploadNoticeFilesToS3AndSaveMetadata(List<MultipartFile> files, int noticeNum, String directory) {
+        System.out.println("파일서비스 noticeNum = " + noticeNum);
+        for (MultipartFile file : files) {
+            // 파일이 비어있지 않은지 확인
+            if (!file.isEmpty()) {
+                try {
+                    // S3에 업로드할 파일 이름 생성
+                    String originalFilename = file.getOriginalFilename();
+                    String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                    String filePath = directory + "/" + "noticeNum - " + noticeNum + "/" + fileName;
+
+                    System.out.println("파일 서비스 ==== filePath = " + filePath);
+                    // S3에 파일 업로드
+                    amazonS3.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), null)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                    // 업로드된 파일의 URL 생성
+                    String fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+                    // 업로드된 파일의 메타데이터를 DB에 저장
+                    File fileMetadata = new File();
+                    fileMetadata.setFilePath(fileUrl);
+                    fileMetadata.setTableIdx(noticeNum);
+                    fileMetadata.setFileName(originalFilename);
+                    fileMetadata.setTableGb("Notice");
+                    adminMapper.insertNoticeFile(fileMetadata);
+                } catch (Exception e) {
+                    throw new RuntimeException("File upload failed: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    // 공지사항 파일을 삭제하는 메서드
+    public void deleteFilesByNoticeNum(int noticeNum) {
+        List<File> filesToDelete = adminMapper.findFilesByNoticeNum(noticeNum);
+
+        for (File file : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(file.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+        adminMapper.deleteFilesByNoticeNum(noticeNum);
+    }
 
     public void uploadOperationFilesToS3AndSaveMetadata(List<MultipartFile> files, int operationNum, String directory) {
         for (MultipartFile file : files) {

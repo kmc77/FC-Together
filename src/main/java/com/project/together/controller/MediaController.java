@@ -1,9 +1,6 @@
 package com.project.together.controller;
 
-import com.project.together.domain.ClubPhoto;
-import com.project.together.domain.ClubVideo;
-import com.project.together.domain.News;
-import com.project.together.domain.Notice;
+import com.project.together.domain.*;
 import com.project.together.service.MediaService;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,11 +82,15 @@ public class MediaController {
         if (notice == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notice not found with id: " + noticeNum);
         }
-        model.addAttribute("notice", notice);
 
-        // 현재 공지사항의 날짜를 기준으로 이전 공지사항을 찾습니다.
-        LocalDate currentNoticeDate = LocalDate.parse(notice.getNoticeDate());
-        Notice prevNotice = mediaService.findPrevNoticeByCurrentNoticeDate(currentNoticeDate);
+        // 공지사항 번호에 해당하는 파일 목록 조회
+        List<File> files = mediaService.findFilesByNoticeNum(noticeNum);
+
+        model.addAttribute("notice", notice);
+        model.addAttribute("files", files); // 파일 목록을 모델에 추가
+
+        Notice prevNotice = mediaService.findPrevNoticeByNoticeNum(noticeNum);
+        System.out.println("======== 컨트롤러 prevNotice = " + prevNotice);
         if (prevNotice != null) {
             model.addAttribute("prevNotice", prevNotice);
         }
@@ -109,25 +110,26 @@ public class MediaController {
         return new ResponseEntity<>(newsList, HttpStatus.OK);
     }
 
+
     // 구단 뉴스 상세보기 페이지
     @GetMapping("/newsview")
     public String newsViewPage(@RequestParam("no") int newsNum, Model model) throws NotFoundException {
 
         mediaService.increaseNewsHits(newsNum); //조회수 증가
         News news = mediaService.newsViewPage(newsNum);
-        model.addAttribute("news", news);
 
-        // 이전 뉴스 불러오기
-        if (newsNum > 1) { // 첫 번째 뉴스가 아닐 경우에만 이전 뉴스를 찾습니다.
-            try {
-                News prevNews = mediaService.newsViewPage(newsNum - 1);
-                model.addAttribute("prevNews", prevNews);
-            } catch (NotFoundException e) {
-                // newsNum -1에 해당하는 사진이 없을 경우 이전 사진을 불러오지 않습니다.
-            }
+        if (news == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "News not found with id: " + newsNum);
         }
 
-        return "/layout/media/newsview";
+        model.addAttribute("news", news);
+
+        News prevNews = mediaService.findPrevNewsByNewsNum(newsNum);
+        if (prevNews != null) {
+            model.addAttribute("prevNews", prevNews);
+        }
+
+        return "layout/media/newsview";
     }
 
 
@@ -143,26 +145,24 @@ public class MediaController {
         return new ResponseEntity<>(photoList, HttpStatus.OK);
     }
 
-    // 구단 사진 상세보기 페이지
+
     @GetMapping("/photoview")
     public String photoViewPage(@RequestParam("no") int cpIdx, Model model) throws NotFoundException {
-
-        mediaService.increasePhotoHits(cpIdx);
+        mediaService.increasePhotoHits(cpIdx); // 조회수 증가
+        // 현재 사진 조회
         ClubPhoto clubPhoto = mediaService.photoViewPage(cpIdx);
+        if (clubPhoto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ClubPhoto not found with id: " + cpIdx);
+        }
         model.addAttribute("clubPhoto", clubPhoto);
 
-        System.out.println("컨트롤러 clubPhoto = " + clubPhoto);
-        // 이전글 불러오기
-        if (cpIdx > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
-            try {
-                ClubPhoto prevPhoto = mediaService.photoViewPage(cpIdx - 1);
-                model.addAttribute("prevPhoto", prevPhoto);
-            } catch (NotFoundException e) {
-                // cpIdx -1에 해당하는 사진이 없을 경우 이전 사진 불러오지 않는다.
-            }
+        // 이전 사진 조회
+        ClubPhoto prevClubPhoto = mediaService.findPrevClubPhotoByCpIdx(cpIdx);
+        if (prevClubPhoto != null) {
+            model.addAttribute("prevClubPhoto", prevClubPhoto);
         }
 
-        return "/layout/media/photoview";
+        return "layout/media/photoview";
     }
 
     // 구단 영상 목록 조회
@@ -185,22 +185,12 @@ public class MediaController {
         ClubVideo clubVideo = mediaService.videoViewPage(cvIdx);
         model.addAttribute("clubVideo", clubVideo);
 
-        System.out.println("컨트롤러 clubVideo = " + clubVideo);
-        // 이전글 불러오기
-        if (cvIdx > 1) { // 첫 번째 뉴스가 아닐 경우만 이전 뉴스를 찾는다.
-            try {
-                ClubVideo prevVideo = mediaService.videoViewPage(cvIdx - 1);
-                model.addAttribute("prevVideo", prevVideo);
-            } catch (NotFoundException e) {
-                // cvIdx -1에 해당하는 사진이 없을 경우 이전 사진 불러오지 않는다.
-            }
+        // 이전 영상 조회
+        ClubVideo prevClubVideo = mediaService.findPrevClubVideoByCvIdx(cvIdx);
+        if (prevClubVideo != null) {
+            model.addAttribute("prevClubVideo", prevClubVideo);
         }
 
         return "layout/media/videoview";
     }
-
-
-    // 미디어 전체 목록 조회
-
-
 }

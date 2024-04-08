@@ -1,4 +1,4 @@
-.cpContent img {
+.content img {
     max-width: 70%; /* 이미지의 최대 너비를 70%로 제한합니다. */
     height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지합니다. */
     display: block; /* 이미지를 블록 요소로 설정하여 가로 중앙 정렬을 적용합니다. */
@@ -63,12 +63,12 @@
     gap: 0.667rem;
 }
 
-.cvContent {
+.ruleContent {
    /* border-bottom: 1px solid rgb(0, 0, 0);*/
     font-weight: 400;
 }
 
-.cvContent .content {
+.ruleContent .content {
     padding: 3.111rem 2.111rem;
     font-size: 0.944rem;
     letter-spacing: -0.6px;

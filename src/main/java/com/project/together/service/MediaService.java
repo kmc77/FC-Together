@@ -1,16 +1,12 @@
 package com.project.together.service;
 
-import com.project.together.domain.ClubPhoto;
-import com.project.together.domain.ClubVideo;
-import com.project.together.domain.News;
-import com.project.together.domain.Notice;
+import com.project.together.domain.*;
 import com.project.together.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +30,12 @@ public class MediaService {
         return notice;
     }
 
+
     // 공지사항 이전글 찾기
-    public Notice findPrevNoticeByCurrentNoticeDate(LocalDate currentNoticeDate) {
-        return mediaMapper.findPrevNoticeByCurrentNoticeDate(currentNoticeDate);
+    public Notice findPrevNoticeByNoticeNum(int noticeNum) {
+        return mediaMapper.findPrevNoticeByNoticeNum(noticeNum);
     }
+
 
     // 공지사항 조회수 증가
     public void increaseNoticeHits(int noticeNum) throws NotFoundException {
@@ -49,6 +47,11 @@ public class MediaService {
         mediaMapper.updateNoticeHits(notice.getNoticeNum(), notice.getNoticeHits());
     }
 
+    public List<File> findFilesByNoticeNum(int noticeNum) {
+        return mediaMapper.findFilesByNoticeNum(noticeNum);
+    }
+
+    /*========================================*/
 
     // 뉴스 목록
     public List<News> getNewsList(Map<String, Integer> params) {
@@ -75,6 +78,12 @@ public class MediaService {
         mediaMapper.updateNewsHits(news.getNewsIdx(), news.getNewsHits());
     }
 
+    public News findPrevNewsByNewsNum(int newsNum) {
+        return mediaMapper.findPrevNewsByNewsNum(newsNum);
+    }
+
+
+    /*========================================*/
 
     // 사진 목록
     public List<ClubPhoto> getClubPhotoList(Map<String, Integer> params) {
@@ -100,6 +109,15 @@ public class MediaService {
         mediaMapper.updatePhotoHits(photo.getCpIdx(), photo.getCpHits());
     }
 
+
+    public ClubPhoto findPrevClubPhotoByCpIdx(int cpIdx) {
+        return mediaMapper.findPrevClubPhotoByCpIdx(cpIdx);
+    }
+
+
+
+    /*========================================*/
+
     // 영상 목록
     public List<ClubVideo> getClubVideoList(Map<String, Integer> params) {
         return mediaMapper.getVideoList(params);
@@ -122,6 +140,19 @@ public class MediaService {
         clubVideo.setCvHits(clubVideo.getCvHits() + 1); // 조회수 1 증가
         mediaMapper.updateVideoHits(clubVideo.getCvIdx(), clubVideo.getCvHits());
     }
+
+    public ClubVideo findPrevClubVideoByCvIdx(int cvIdx) {
+        return mediaMapper.findPrevClubVideoByCvIdx(cvIdx);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

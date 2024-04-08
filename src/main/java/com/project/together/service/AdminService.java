@@ -97,10 +97,18 @@ public class AdminService {
         return adminMapper.findNoticesById(noticeNum);
     }
 
-    public void saveNotice(Notice notice) {
+    public List<File> findFilesByNoticeNum(int noticeNum) {
+        return adminMapper.findFilesByNoticeNum(noticeNum);
+    }
+
+
+    public int saveNotice(Notice notice) {
         notice.setNoticeDate(getCurrentFormattedTime());
         adminMapper.insertNotice(notice);
+        return notice.getNoticeNum(); // MyBatis의 selectKey를 사용하여 생성된 ruleNum 반환
     }
+
+
 
     public void updateNotice(Notice notice) {
         notice.setNoticeDate(getCurrentFormattedTime());
@@ -128,6 +136,7 @@ public class AdminService {
         notice.setNoticeHits(notice.getNoticeHits() + 1);
         adminMapper.updateNoticeHits(notice.getNoticeNum(), notice.getNoticeHits());
     }
+
 
 
     // ================================== Notice and
@@ -763,6 +772,8 @@ public class AdminService {
         }
         adminMapper.deleteTrainingSchedule(scheduleNums);
     }
+
+
 
 
 // ================================== 훈련일정 and

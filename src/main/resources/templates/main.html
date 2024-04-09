@@ -186,11 +186,24 @@
 
     <p class="feeds"><strong>투게더 소식</strong></p>
 
-    <div class="tab-buttons">
-        <button onclick="showTab('all')">전체</button>
-        <button onclick="showTab('tab1')">탭 1</button>
-        <button onclick="showTab('tab2')">탭 2</button>
-        <button onclick="showTab('tab3')">탭 3</button>
+    <div class="gnbBox">
+        <ul class="mainMenuBox" id="nav-1">
+            <li class="slide1"></li>
+            <li class="slide2"></li>
+                <li class="mainMenu">
+                    <a onclick="showTab('all')">전체</a>
+                </li>
+                <li class="mainMenu">
+                    <a onclick="showTab('tab1')">notice</a>
+                </li>
+                <li class="mainMenu">
+                    <a onclick="showTab('tab2')">news</a>
+                </li>
+                <li class="mainMenu">
+                    <a onclick="showTab('tab3')">instagram</a>
+                </li>
+        </ul>
+        <script src="/dist/js/header.js"></script>
     </div>
 
     <div class="tab-content" id="all-content">

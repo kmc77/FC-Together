@@ -474,6 +474,7 @@ public class AdminService {
 
     // 리그에 맞게 선수 등록
     public void registerPlayer(Map<String, Object> paramMap, String playerType) {
+        System.out.println("서비스 -------- paramMap = " + paramMap);
         switch (playerType.toLowerCase()) {
             case "k5":
                 K5_Player k5_player = createK5Player(paramMap);
@@ -613,42 +614,6 @@ public class AdminService {
         rule.setRuleHits(rule.getRuleHits() + 1);
         adminMapper.updateRuleHits(rule.getRuleNum(), rule.getRuleHits());
     }
-
-
-
-   /* public void saveFiles(List<MultipartFile> files, int ruleNum, String tableGb) {
-        // ruleNum을 기반으로 한 디렉토리 경로 생성
-        String ruleSpecificPath = "ruleFiles/" + ruleNum + "/";
-        Path rulePath = Paths.get(ruleSpecificPath);
-
-        try {
-            // 해당 경로에 디렉토리가 없으면 생성
-            Files.createDirectories(rulePath);
-        } catch (IOException e) {
-            throw new RuntimeException("업로드할 디렉터리를 생성할 수 없습니다!", e);
-        }
-
-        files.forEach(file -> {
-            try {
-                // 파일의 원래 이름 가져오기
-                String fileName = file.getOriginalFilename();
-                // 최종 파일 저장 경로 설정
-                Path destinationFilePath = rulePath.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
-                // 파일 저장
-                file.transferTo(destinationFilePath);
-
-                // 파일 메타데이터 저장 로직 (데이터베이스)
-                File fileEntity = new File();
-                fileEntity.setFilePath(destinationFilePath.toString());
-                fileEntity.setTableIdx(ruleNum);
-                fileEntity.setFileName(fileName);
-                fileEntity.setTableGb(tableGb);
-                adminMapper.insertFile(fileEntity);
-            } catch (IOException e) {
-                throw new RuntimeException("파일을 저장할 수 없습니다. " + file.getOriginalFilename(), e);
-            }
-        });
-    }*/
 
 
 // ================================== Rule and

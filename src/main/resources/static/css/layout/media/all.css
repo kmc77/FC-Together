@@ -329,6 +329,11 @@ button#loadMore.btn.btn-more {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.photo-detail:hover {
+    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
 }
 
 .photo-detail .photo-pinned {

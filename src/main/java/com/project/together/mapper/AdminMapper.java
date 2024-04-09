@@ -106,6 +106,9 @@ public interface AdminMapper {
 
     void deleteW1playerByPlayerNum(List<Integer> playerNums);
 
+    void insertPlayerFile(File photoMetadata);
+
+
     /* ======================================= */
 
     List<TeamStaff> getTeamStaff();
@@ -193,6 +196,5 @@ public interface AdminMapper {
     void updateTrainingSchedule(TrainingSchedule trainingSchedule);
 
     void deleteTrainingSchedule(List<Integer> scheduleNums);
-
 
 }

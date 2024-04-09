@@ -158,7 +158,6 @@ public class FileService {
         }
     }
 
-
     // 경영공시 파일을 삭제하는 메서드
     public void deleteFilesByOperationNum(int operationNum) {
         List<File> filesToDelete = adminMapper.findFilesByOperationNum(operationNum);
@@ -172,6 +171,37 @@ public class FileService {
         adminMapper.deleteFilesByOperationNum(operationNum);
     }
 
+    public String uploadPlayerPhotoToS3AndSaveMetadata(MultipartFile photo, int playerNum, String selectedPlayerType) {
+        String fileUrl = "";
+        if (!photo.isEmpty()) {
+            try {
+                // S3에 업로드할 파일 이름 생성
+                String originalFilename = photo.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                String filePath = selectedPlayerType + "/playerNum - " + playerNum + "/" + fileName; // 'selectedPlayerType'을 경로에 포함
+
+                System.out.println("선수 사진 업로드 ==== filePath = " + filePath);
+                // S3에 파일 업로드
+                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, photo.getInputStream(), null)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                // 업로드된 파일의 URL 생성
+                fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+                // 업로드된 파일의 메타데이터를 DB에 저장
+                File photoMetadata = new File();
+                photoMetadata.setFilePath(fileUrl);
+                photoMetadata.setTableIdx(playerNum);
+                photoMetadata.setFileName(originalFilename);
+                photoMetadata.setTableGb(selectedPlayerType); // 'selectedPlayerType'을 'table_gb'에 저장
+                // 'file' 테이블에 메타데이터 저장
+                adminMapper.insertPlayerFile(photoMetadata);
+            } catch (Exception e) {
+                throw new RuntimeException("선수 사진 업로드 실패: " + e.getMessage());
+            }
+        }
+        return fileUrl;
+    }
 
 
 

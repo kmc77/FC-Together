@@ -542,8 +542,58 @@ public class AdminController {
         }
     }
 
-
     @PostMapping("/layout/updatePlayerInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updatePlayerInfo(
+            @RequestParam("selectedPlayerType") String selectedPlayerType,
+            @RequestParam("playerNum") int playerNum,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("playerName") String playerName,
+            @RequestParam("playerEnName") String playerEnName,
+            @RequestParam("playerCapYn") String playerCapYn,
+            @RequestParam("playerSubCapYn") String playerSubCapYn,
+            @RequestParam("playerPosition") String playerPosition,
+            @RequestParam("playerHeight") String playerHeight,
+            @RequestParam("playerWeight") String playerWeight,
+            @RequestParam("playerBirth") String playerBirth) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // 파일 서비스를 통해 S3에 선수 사진 업로드 및 메타데이터 저장
+            String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, playerNum, selectedPlayerType);
+
+            // dataToSend 맵에 추가적으로 필요한 선수 정보 포함
+            Map<String, Object> dataToSend = new HashMap<>();
+            dataToSend.put("playerNum", playerNum);
+            dataToSend.put("fileUrl", fileUrl);
+            dataToSend.put("selectedPlayerType", selectedPlayerType);
+            // 추가적으로 받은 선수 정보를 맵에 추가
+            dataToSend.put("playerName", playerName);
+            dataToSend.put("playerEnName", playerEnName);
+            dataToSend.put("playerCapYn", playerCapYn);
+            dataToSend.put("playerSubCapYn", playerSubCapYn);
+            dataToSend.put("playerPosition", playerPosition);
+            dataToSend.put("playerHeight", playerHeight);
+            dataToSend.put("playerWeight", playerWeight);
+            dataToSend.put("playerBirth", playerBirth);
+
+            // adminService를 통해 선수 정보 및 파일 메타데이터를 데이터베이스에 저장
+            adminService.registerPlayer(dataToSend, selectedPlayerType);
+
+            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
+            response.put("fileUrl", fileUrl); // 업로드된 파일의 URL을 응답에 포함
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("errorMessage", "업로드 실패: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+
+
+
+   /* @PostMapping("/layout/updatePlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updatePlayerInfo(@RequestBody Map<String, Object> requestData) {
 
@@ -560,7 +610,7 @@ public class AdminController {
             response.put("errorMessage", e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
-    }
+    }*/
 
 
 
@@ -923,7 +973,7 @@ public class AdminController {
 
     // ================================== Faq End
 
-    // ================================== Faq start
+    // ================================== 훈련일정 start
 
     // 훈련일정 목록 가져오기
     @GetMapping("/layout/getTrainingScheduleInfo")
@@ -991,12 +1041,6 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-
 
 
 

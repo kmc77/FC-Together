@@ -243,8 +243,8 @@
 
 
     <insert id="registerK5Player" parameterType="com.project.together.domain.K5_Player">
-        INSERT INTO K5_Player (k5_player_num, k5_file_path, k5_player_name, k5_player_en_name, k5_player_cap_yn, k5_player_subcap_yn, k5_player_position, k5_player_height, k5_player_weight, k5_player_birth)
-        VALUES (#{k5PlayerNum}, #{k5filePath}, #{k5PlayerName}, #{k5PlayerEnName}, #{k5PlayerCapYn}, #{k5PlayerSubCapYn}, #{k5PlayerPosition}, #{k5PlayerHeight}, #{k5PlayerWeight}, #{k5PlayerBirth})
+        INSERT INTO K5_Player (k5_player_num, k5_player_name, k5_player_en_name, k5_player_cap_yn, k5_player_subcap_yn, k5_player_position, k5_player_height, k5_player_weight, k5_player_birth)
+        VALUES (#{k5PlayerNum}, #{k5PlayerName}, #{k5PlayerEnName}, #{k5PlayerCapYn}, #{k5PlayerSubCapYn}, #{k5PlayerPosition}, #{k5PlayerHeight}, #{k5PlayerWeight}, #{k5PlayerBirth})
     </insert>
 
     <insert id="registerK7Player" parameterType="com.project.together.domain.K7_Player">
@@ -255,6 +255,11 @@
     <insert id="registerW1Player" parameterType="com.project.together.domain.W1_Player">
         INSERT INTO W1_Player (w1_player_num, w1_file_path, w1_player_name, w1_player_en_name, w1_player_cap_yn, w1_player_subcap_yn, w1_player_position, w1_player_height, w1_player_weight, w1_player_birth)
         VALUES (#{w1PlayerNum}, #{w1filePath}, #{w1PlayerName}, #{w1PlayerEnName}, #{w1PlayerCapYn}, #{w1PlayerSubCapYn}, #{w1PlayerPosition}, #{w1PlayerHeight}, #{w1PlayerWeight}, #{w1PlayerBirth})
+    </insert>
+
+    <insert id="insertPlayerFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
 
 

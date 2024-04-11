@@ -288,129 +288,6 @@ public class AdminService {
     }
 
 
-   /* private K5_Player createK5Player(Map<String, Object> paramMap) {
-        K5_Player k5_player = new K5_Player();
-
-        try {
-            k5_player.setK5PlayerNum(Integer.parseInt(paramMap.getOrDefault("k5PlayerNum", "0").toString()));
-            k5_player.setK5PlayerName(paramMap.getOrDefault("k5PlayerName", "").toString());
-            k5_player.setK5PlayerEnName(paramMap.getOrDefault("k5PlayerEnName", "").toString());
-            k5_player.setK5PlayerCapYn(paramMap.getOrDefault("k5PlayerCapYn", "").toString());
-            k5_player.setK5PlayerSubCapYn(paramMap.getOrDefault("k5PlayerSubCapYn", "").toString());
-            k5_player.setK5PlayerPosition(paramMap.getOrDefault("k5PlayerPosition", "").toString());
-            k5_player.setK5PlayerHeight(paramMap.getOrDefault("k5PlayerHeight", "").toString());
-            k5_player.setK5PlayerWeight(paramMap.getOrDefault("k5PlayerWeight", "").toString());
-            k5_player.setK5PlayerBirth(paramMap.getOrDefault("k5PlayerBirth", "").toString());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
-        }
-
-        return k5_player;
-    }
-
-
-    private K7_Player createK7Player(Map<String, Object> paramMap) {
-        K7_Player k7_player = new K7_Player();
-        // paramMap을 사용하여 k7_player의 필드를 채웁니다.
-
-        try {
-            k7_player.setK7PlayerNum(Integer.parseInt(paramMap.getOrDefault("k7PlayerNum", "0").toString()));
-            k7_player.setK7PlayerName(paramMap.getOrDefault("k7PlayerName", "").toString());
-            k7_player.setK7PlayerEnName(paramMap.getOrDefault("k7PlayerEnName", "").toString());
-            k7_player.setK7PlayerCapYn(paramMap.getOrDefault("k7PlayerCapYn", "").toString());
-            k7_player.setK7PlayerSubCapYn(paramMap.getOrDefault("k7PlayerSubCapYn", "").toString());
-            k7_player.setK7PlayerPosition(paramMap.getOrDefault("k7PlayerPosition", "").toString());
-            k7_player.setK7PlayerHeight(paramMap.getOrDefault("k7PlayerHeight", "").toString());
-            k7_player.setK7PlayerWeight(paramMap.getOrDefault("k7PlayerWeight", "").toString());
-            k7_player.setK7PlayerBirth(paramMap.getOrDefault("k7PlayerBirth", "").toString());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
-        }
-        return k7_player;
-    }
-
-    private W1_Player createW1Player(Map<String, Object> paramMap) {
-        W1_Player w1_player = new W1_Player();
-        // paramMap을 사용하여 w1_player의 필드를 채웁니다.
-
-        try {
-            w1_player.setW1PlayerNum(Integer.parseInt(paramMap.getOrDefault("w1PlayerNum", "0").toString()));
-            w1_player.setW1PlayerName(paramMap.getOrDefault("w1PlayerName", "").toString());
-            w1_player.setW1PlayerEnName(paramMap.getOrDefault("w1PlayerEnName", "").toString());
-            w1_player.setW1PlayerCapYn(paramMap.getOrDefault("w1PlayerCapYn", "").toString());
-            w1_player.setW1PlayerSubCapYn(paramMap.getOrDefault("w1PlayerSubCapYn", "").toString());
-            w1_player.setW1PlayerPosition(paramMap.getOrDefault("w1PlayerPosition", "").toString());
-            w1_player.setW1PlayerHeight(paramMap.getOrDefault("w1PlayerHeight", "").toString());
-            w1_player.setW1PlayerWeight(paramMap.getOrDefault("w1PlayerWeight", "").toString());
-            w1_player.setW1PlayerBirth(paramMap.getOrDefault("w1PlayerBirth", "").toString());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("선수 정보 파싱 중 오류가 발생했습니다.", e);
-        }
-        return w1_player;
-    }
-
-    // 리그에 맞게 선수 등록
-    public void registerPlayer(Map<String, Object> paramMap, String playerType, MultipartFile playerImage) {
-        switch (playerType.toLowerCase()) {
-            case "k5":
-                K5_Player k5Player = createK5Player(paramMap);
-                // 여기에 이미지 처리 로직을 추가할 수 있습니다.
-                adminMapper.registerK5Player(k5Player);
-                break;
-            case "k7":
-                K7_Player k7Player = createK7Player(paramMap);
-                // 여기에 이미지 처리 로직을 추가할 수 있습니다.
-                adminMapper.registerK7Player(k7Player);
-                break;
-            case "w1":
-                W1_Player w1Player = createW1Player(paramMap);
-                // 여기에 이미지 처리 로직을 추가할 수 있습니다.
-                adminMapper.registerW1Player(w1Player);
-                break;
-            default:
-                throw new IllegalArgumentException("유효하지 않은 선수 유형입니다.");
-        }
-    }
-
-    public void playerDelete(List<Integer> playerNums, String playerType) {
-        boolean playerExists = false;
-
-        for (Integer playerNum : playerNums) {
-            switch (playerType) {
-                case "k5":
-                    K5_Player k5Player = adminMapper.find_k5PlayerByNum(playerNum);
-                    if (k5Player != null) {
-                        adminMapper.deleteK5playerByPlayerNum(Collections.singletonList(k5Player.getK5PlayerNum()));
-                        playerExists = true;
-                    }
-                    break;
-                case "k7":
-                    K7_Player k7Player = adminMapper.find_k7PlayerByNum(playerNum);
-                    if (k7Player != null) {
-                        adminMapper.deleteK7playerByPlayerNum(Collections.singletonList(k7Player.getK7PlayerNum()));
-                        playerExists = true;
-                    }
-                    break;
-                case "w1":
-                    W1_Player wPlayer = adminMapper.find_w1PlayerByNum(playerNum);
-                    if (wPlayer != null) {
-                        adminMapper.deleteW1playerByPlayerNum(Collections.singletonList(wPlayer.getW1PlayerNum()));
-                        playerExists = true;
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("잘못된 playerType 입니다. playerType: " + playerType);
-            }
-
-        }
-
-        // 모든 playerNums 처리 후, playerExists가 false라면 예외 발생
-        if (!playerExists) {
-            throw new IllegalArgumentException("해당 선수 번호에 해당하는 선수가 존재하지 않습니다. playerNums: " + playerNums);
-        }
-    }*/
-
-
     private K5_Player createK5Player(Map<String, Object> paramMap) {
         K5_Player k5_player = new K5_Player();
 
@@ -530,6 +407,54 @@ public class AdminService {
             throw new IllegalArgumentException("해당 선수 번호에 해당하는 선수가 존재하지 않습니다. playerNums: " + playerNums);
         }
     }
+
+    public void updatePlayer(Map<String, Object> paramMap, String selectedPlayerType) {
+        System.out.println("서비스 -------- paramMap = " + paramMap);
+        switch (selectedPlayerType.toLowerCase()) {
+            case "k5":
+                K5_Player k5_player = createK5Player(paramMap); // paramMap을 사용하여 K5_Player 객체 생성
+                adminMapper.updateK5Player(k5_player); // K5_Player 정보를 업데이트하는 메서드 호출
+                break;
+            case "k7":
+                K7_Player k7_player = createK7Player(paramMap); // paramMap을 사용하여 K7_Player 객체 생성
+                adminMapper.updateK7Player(k7_player); // K7_Player 정보를 업데이트하는 메서드 호출
+                break;
+            case "w1":
+                W1_Player w1_player = createW1Player(paramMap); // paramMap을 사용하여 W1_Player 객체 생성
+                adminMapper.updateW1Player(w1_player); // W1_Player 정보를 업데이트하는 메서드 호출
+                break;
+            default:
+                throw new IllegalArgumentException("유효하지 않은 선수 유형입니다: " + selectedPlayerType);
+        }
+    }
+
+
+    public List<File> findFilesByK5PlayerNum(int k5PlayerNum) {
+        return adminMapper.findFilesByK5PlayerNum(k5PlayerNum);
+    }
+
+    public List<File> findFilesByK7PlayerNum(int k7PlayerNum) {
+        return adminMapper.findFilesByK7PlayerNum(k7PlayerNum);
+    }
+
+    public List<File> findFilesByW1PlayerNum(int w1PlayerNum) {
+        return adminMapper.findFilesByW1PlayerNum(w1PlayerNum);
+    }
+
+    public boolean existsK5PlayerByNum(int playerNum) {
+        return adminMapper.existsK5PlayerByNum(playerNum);
+    }
+
+    public boolean existsK7PlayerByNum(int playerNum) {
+        return adminMapper.existsK7PlayerByNum(playerNum);
+
+    }
+
+    public boolean existsW1PlayerByNum(int playerNum) {
+        return adminMapper.existsW1PlayerByNum(playerNum);
+
+    }
+
 
 
 // ================================== Player and
@@ -737,7 +662,6 @@ public class AdminService {
         }
         adminMapper.deleteTrainingSchedule(scheduleNums);
     }
-
 
 
 

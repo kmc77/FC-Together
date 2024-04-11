@@ -108,6 +108,30 @@ public interface AdminMapper {
 
     void insertPlayerFile(File photoMetadata);
 
+    List<File> findFilesByK5PlayerNum(int k5PlayerNum);
+
+    List<File> findFilesByK7PlayerNum(int k7PlayerNum);
+
+    List<File> findFilesByW1PlayerNum(int w1PlayerNum);
+
+    boolean existsK5PlayerByNum(int playerNum);
+
+    boolean existsK7PlayerByNum(int playerNum);
+
+    boolean existsW1PlayerByNum(int playerNum);
+
+    void deleteFilesByK5PlayerNum(int playerNum);
+
+    void deleteFilesByK7PlayerNum(int playerNum);
+
+    void deleteFilesByW1PlayerNum(int playerNum);
+
+    void updateK5Player(K5_Player k5Player);
+
+    void updateK7Player(K7_Player k7Player);
+
+    void updateW1Player(W1_Player w1Player);
+
 
     /* ======================================= */
 
@@ -196,5 +220,7 @@ public interface AdminMapper {
     void updateTrainingSchedule(TrainingSchedule trainingSchedule);
 
     void deleteTrainingSchedule(List<Integer> scheduleNums);
+
+
 
 }

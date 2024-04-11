@@ -248,13 +248,13 @@
     </insert>
 
     <insert id="registerK7Player" parameterType="com.project.together.domain.K7_Player">
-        INSERT INTO K7_Player (k7_player_num, k7_file_path, k7_player_name, k7_player_en_name, k7_player_cap_yn, k7_player_subcap_yn, k7_player_position, k7_player_height, k7_player_weight, k7_player_birth)
-        VALUES (#{k7PlayerNum}, #{k7filePath}, #{k7PlayerName}, #{k7PlayerEnName}, #{k7PlayerCapYn}, #{k7PlayerSubCapYn}, #{k7PlayerPosition}, #{k7PlayerHeight}, #{k7PlayerWeight}, #{k7PlayerBirth})
+        INSERT INTO K7_Player (k7_player_num, k7_player_name, k7_player_en_name, k7_player_cap_yn, k7_player_subcap_yn, k7_player_position, k7_player_height, k7_player_weight, k7_player_birth)
+        VALUES (#{k7PlayerNum}, #{k7PlayerName}, #{k7PlayerEnName}, #{k7PlayerCapYn}, #{k7PlayerSubCapYn}, #{k7PlayerPosition}, #{k7PlayerHeight}, #{k7PlayerWeight}, #{k7PlayerBirth})
     </insert>
 
     <insert id="registerW1Player" parameterType="com.project.together.domain.W1_Player">
-        INSERT INTO W1_Player (w1_player_num, w1_file_path, w1_player_name, w1_player_en_name, w1_player_cap_yn, w1_player_subcap_yn, w1_player_position, w1_player_height, w1_player_weight, w1_player_birth)
-        VALUES (#{w1PlayerNum}, #{w1filePath}, #{w1PlayerName}, #{w1PlayerEnName}, #{w1PlayerCapYn}, #{w1PlayerSubCapYn}, #{w1PlayerPosition}, #{w1PlayerHeight}, #{w1PlayerWeight}, #{w1PlayerBirth})
+        INSERT INTO W1_Player (w1_player_num, w1_player_name, w1_player_en_name, w1_player_cap_yn, w1_player_subcap_yn, w1_player_position, w1_player_height, w1_player_weight, w1_player_birth)
+        VALUES (#{w1PlayerNum}, #{w1PlayerName}, #{w1PlayerEnName}, #{w1PlayerCapYn}, #{w1PlayerSubCapYn}, #{w1PlayerPosition}, #{w1PlayerHeight}, #{w1PlayerWeight}, #{w1PlayerBirth})
     </insert>
 
     <insert id="insertPlayerFile" parameterType="com.project.together.domain.File">
@@ -262,6 +262,95 @@
         VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
 
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByK5PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{k5PlayerNum} AND table_gb = 'k5Player'
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByK7PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{k7PlayerNum} AND table_gb = 'k7Player'
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByW1PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{w1PlayerNum} AND table_gb = 'w1Player'
+    </select>
+
+    <!-- K5 선수 번호 존재 여부 확인 -->
+    <select id="existsK5PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM K5_Player
+        WHERE k5_player_num = #{playerNum}
+    </select>
+
+    <!-- K7 선수 번호 존재 여부 확인 -->
+    <select id="existsK7PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM K7_Player
+        WHERE k7_player_num = #{playerNum}
+    </select>
+
+    <!-- W1 선수 번호 존재 여부 확인 -->
+    <select id="existsW1PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM w1_Player
+        WHERE w1_player_num = #{playerNum}
+    </select>
+
+    <delete id="deleteFilesByK5PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'k5Player'
+    </delete>
+
+    <delete id="deleteFilesByK7PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'k7Player'
+    </delete>
+
+    <delete id="deleteFilesByW1PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'w1Player'
+    </delete>
+
+    <update id="updateK5Player" parameterType="com.project.together.domain.K5_Player">
+        UPDATE K5_Player
+        SET k5_player_name = #{k5PlayerName},
+        k5_player_en_name = #{k5PlayerEnName},
+        k5_player_cap_yn = #{k5PlayerCapYn},
+        k5_player_subcap_yn = #{k5PlayerSubCapYn},
+        k5_player_position = #{k5PlayerPosition},
+        k5_player_height = #{k5PlayerHeight},
+        k5_player_weight = #{k5PlayerWeight},
+        k5_player_birth = #{k5PlayerBirth}
+        WHERE k5_player_num = #{k5PlayerNum}
+    </update>
+
+    <update id="updateK7Player" parameterType="com.project.together.domain.K7_Player">
+        UPDATE K7_Player
+        SET k7_player_name = #{k7PlayerName},
+        k7_player_en_name = #{k7PlayerEnName},
+        k7_player_cap_yn = #{k7PlayerCapYn},
+        k7_player_subcap_yn = #{k7PlayerSubCapYn},
+        k7_player_position = #{k7PlayerPosition},
+        k7_player_height = #{k7PlayerHeight},
+        k7_player_weight = #{k7PlayerWeight},
+        k7_player_birth = #{k7PlayerBirth}
+        WHERE k7_player_num = #{k7PlayerNum}
+    </update>
+
+    <update id="updateW1Player" parameterType="com.project.together.domain.W1_Player">
+        UPDATE W1_Player
+        SET w1_player_name = #{w1PlayerName},
+        w1_player_en_name = #{w1PlayerEnName},
+        w1_player_cap_yn = #{w1PlayerCapYn},
+        w1_player_subcap_yn = #{w1PlayerSubCapYn},
+        w1_player_position = #{w1PlayerPosition},
+        w1_player_height = #{w1PlayerHeight},
+        w1_player_weight = #{w1PlayerWeight},
+        w1_player_birth = #{w1PlayerBirth}
+        WHERE w1_player_num = #{w1PlayerNum}
+    </update>
 
 
     <!-- ==============  Player End ============== -->

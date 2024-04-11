@@ -38,7 +38,7 @@
     border-radius: 4px;
 }
 
-/* 버튼 스타일 */
+/* 기존 버튼 스타일 */
 .cnt_bbs .tb_btn {
     padding: 0.5rem 1rem;
     color: #fff;
@@ -56,6 +56,11 @@
     color: #000;
 }
 
+/* "정보 수정" 버튼에 대한 주황색 배경 스타일 추가 */
+.cnt_bbs .tb_btn.redM {
+    background-color: #FF4500; /* 주황색 배경 */
+}
+
 .cnt_bbs .tb_btn:hover {
     opacity: 0.8;
 }
@@ -64,7 +69,7 @@
     margin-top: 20px; /* 20px 상단 마진 적용 */
 }
 
-.submit-btn {
+.submit-btn, .change_submit-btn {
   display: block; /* 블록 레벨 요소로 만들어 줍니다 */
   margin-left: auto; /* 왼쪽 마진을 자동으로 설정하여 오른쪽 정렬을 합니다 */
   margin-right: 0; /* 오른쪽 마진을 0으로 설정 */

@@ -10,13 +10,12 @@ import java.util.List;
 
 @Mapper
 public interface TeamMapper {
-    TeamStaff getAllTeamStaff();
 
-    List<K5_Player> getK5Player();
+    List<K5_Player> getK5Players();
 
-    List<K7_Player> getK7Player();
+    List<K7_Player> getK7Players();
 
-    List<W1_Player> getW1Player();
+    List<W1_Player> getW1Players();
 
     List<TeamStaff> getTeamStaff();
 }

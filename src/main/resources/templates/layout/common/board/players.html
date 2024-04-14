@@ -322,6 +322,11 @@
                 // 'create' 상태 설정
                 $('form').data('state', 'create');
 
+                // 폼의 action 경로, method, 그리고 enctype을 선수 등록 URL, POST 방식, multipart/form-data로 변경
+                $('form').attr('action', '/admin/layout/insertPlayerInfo')
+                .attr('method', 'post')
+                .attr('enctype', 'multipart/form-data');
+
                 // "선수등록" 버튼 클릭 시 "정보 수정" 버튼을 숨김
                 $('.change_submit-btn').hide();
 
@@ -448,16 +453,24 @@
             var selectedPlayerType = localStorage.getItem('selectedPlayerType');
             formData.append('selectedPlayerType', selectedPlayerType);
 
-            // 모든 입력필드를 formData에 추가
+            // 모든 입력 필드를 formData에 추가
             $('form[action="/admin/layout/insertPlayerInfo"] input, form[action="/admin/layout/insertPlayerInfo"] select').each(function() {
-                if (this.name && this.value) {
-                    formData.append(this.name, this.value);
+                if (this.type === 'file') {
+                    // 파일 필드의 경우, 파일 객체 자체를 추가
+                    if (this.files.length > 0) {
+                        formData.append(this.name, this.files[0]);
+                    }
+                } else {
+                    // 다른 모든 필드
+                    if (this.name && this.value) {
+                        formData.append(this.name, this.value);
+                    }
                 }
             });
 
             // AJAX 요청으로 서버에 데이터 전송
             $.ajax({
-                url: '/admin/layout/insertPlayerInfo',
+                url: $('form').attr('action'),
                 type: 'POST',
                 processData: false,
                 contentType: false,

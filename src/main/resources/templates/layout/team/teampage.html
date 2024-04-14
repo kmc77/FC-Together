@@ -215,10 +215,10 @@
 
                 playersInSection.forEach(function(player) {
                     var playerHtml = `<li class="team-member__item">
-                                        <a class="team-member__link" href="/en/topteam/detail/?id=${player[playerType + 'PlayerNum']}">
+                                        <a class="team-member__link" href="#">
                                             <div class="team-member__img-holder">
                                                 <img class="team-member__img lozad"
-                                                     src="${player[playerType + 'filePath']}"
+                                                     src="${player.filePath}"  // 파일 테이블에서 선수테이블에 맞는 사진 노출
                                                      alt="${player[playerType + 'PlayerEnName']}"
                                                      data-loaded="true">
                                             </div>
@@ -259,10 +259,10 @@
                 teamStaff.forEach(function(staff) {
                     var staffHtml = `
                         <li class="team-member__item">
-                            <a class="team-member__link" href="/en/topteam/detail/?id=${staff.teamStaffNum}">
+                            <a class="team-member__link" href="#">
                                 <div class="team-member__img-holder">
                                     <img class="team-member__img lozad"
-                                         src="${staff.teamStaffFilePath}"
+                                         src="${staff.file_path}"  // 수정된 부분
                                          alt="${staff.teamStaffEnName}"
                                          data-loaded="true">
                                 </div>

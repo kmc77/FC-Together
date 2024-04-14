@@ -482,7 +482,7 @@ public class AdminController {
         return ResponseEntity.ok(w1Players);
     }*/
 
-    // K5 선수 정보 가져오기
+    // K5 선수 정보와 관련 파일 정보 가져오기
     @GetMapping("/layout/get_k5PlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Map<String, Object>>> get_k5PlayerInfo() {
@@ -501,6 +501,7 @@ public class AdminController {
 
         return ResponseEntity.ok(playerInfoWithFiles);
     }
+
 
     // K7 선수 정보와 관련 파일 정보 가져오기
     @GetMapping("/layout/get_k7PlayerInfo")
@@ -540,7 +541,7 @@ public class AdminController {
         return ResponseEntity.ok(playerInfoWithFiles);
     }
 
-    //수정 후
+
     // k5 선수 상세 정보와 관련 파일(프로필 사진 등) 가져오기
     @GetMapping("/layout/k5PlayerView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -586,6 +587,7 @@ public class AdminController {
         }
     }
 
+
     // w1 선수 상세 정보와 관련 파일(프로필 사진 등) 가져오기
     @GetMapping("/layout/w1PlayerView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -609,50 +611,6 @@ public class AdminController {
     }
 
 
-
-    /*수정 전*/
-   /* // k5 선수 상세 정보 가져오기
-    @GetMapping("/layout/k5PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<K5_Player> getK5PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        System.out.println("======= selectedRows = " + playerNum);
-        K5_Player k5Player = adminService.find_k5PlayerByNum(playerNum);
-        System.out.println("k5PlayerView = " + k5Player);
-        if (k5Player != null) {
-            return ResponseEntity.ok(k5Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
-
-   /* // k7 선수 상세 정보 가져오기
-    @GetMapping("/layout/k7PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<K7_Player> getK7PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        System.out.println("======= selectedRows = " + playerNum);
-        K7_Player k7Player = adminService.find_k7PlayerByNum(playerNum);
-        System.out.println("k5PlayerView = " + k7Player);
-        if (k7Player != null) {
-            return ResponseEntity.ok(k7Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
-    /*// w1 선수 상세 정보 가져오기
-    @GetMapping("/layout/w1PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<W1_Player> getW1PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        W1_Player w1Player = adminService.find_w1PlayerByNum(playerNum);
-        System.out.println("W1PlayerView = " + w1Player);
-        if (w1Player != null) {
-            return ResponseEntity.ok(w1Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
     // 선수 삭제
     @PostMapping("/layout/playerDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -673,72 +631,31 @@ public class AdminController {
         }
     }
 
-    /*수정 전*/
-   /* @PostMapping("/layout/updatePlayerInfo")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updatePlayerInfo(
-            @RequestParam("selectedPlayerType") String selectedPlayerType,
-            @RequestParam("playerNum") int playerNum,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("playerName") String playerName,
-            @RequestParam("playerEnName") String playerEnName,
-            @RequestParam("playerCapYn") String playerCapYn,
-            @RequestParam("playerSubCapYn") String playerSubCapYn,
-            @RequestParam("playerPosition") String playerPosition,
-            @RequestParam("playerHeight") String playerHeight,
-            @RequestParam("playerWeight") String playerWeight,
-            @RequestParam("playerBirth") String playerBirth) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            // 파일 서비스를 통해 S3에 선수 사진 업로드 및 메타데이터 저장
-            String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, playerNum, selectedPlayerType);
-
-            // dataToSend 맵에 추가적으로 필요한 선수 정보 포함
-            Map<String, Object> dataToSend = new HashMap<>();
-            dataToSend.put("playerNum", playerNum);
-            dataToSend.put("fileUrl", fileUrl);
-            dataToSend.put("selectedPlayerType", selectedPlayerType);
-            // 추가적으로 받은 선수 정보를 맵에 추가
-            dataToSend.put("playerName", playerName);
-            dataToSend.put("playerEnName", playerEnName);
-            dataToSend.put("playerCapYn", playerCapYn);
-            dataToSend.put("playerSubCapYn", playerSubCapYn);
-            dataToSend.put("playerPosition", playerPosition);
-            dataToSend.put("playerHeight", playerHeight);
-            dataToSend.put("playerWeight", playerWeight);
-            dataToSend.put("playerBirth", playerBirth);
-
-            // adminService를 통해 선수 정보 및 파일 메타데이터를 데이터베이스에 저장
-            adminService.registerPlayer(dataToSend, selectedPlayerType);
-
-            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
-            response.put("fileUrl", fileUrl); // 업로드된 파일의 URL을 응답에 포함
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("errorMessage", "업로드 실패: " + e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }*/
 
     // 선수 등록
     @PostMapping("/layout/insertPlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> insertPlayerInfo(
             @RequestParam("selectedPlayerType") String selectedPlayerType,
-            @RequestParam(value = "file", required = false) MultipartFile file, // 파일 업로드는 필수가 아님
-            @RequestParam Map<String, String> otherParams // 다른 플레이어 데이터 파라미터
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams
     ) {
-        System.out.println("---------- otherParams = " + otherParams);
         Map<String, Object> response = new HashMap<>();
         try {
             // otherParams를 Map<String, Object>로 변환
             Map<String, Object> paramMap = new HashMap<>(otherParams);
-            // 파일이 제공되었다면, 업로드를 처리하고 URL을 paramMap에 추가
-            if (file != null) {
-                String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, selectedPlayerType, paramMap.get("playerNum").toString());
+            // playerNum 키를 동적으로 생성 및 접근
+            String playerNumKey = selectedPlayerType + "PlayerNum";
+            String playerNum = paramMap.get(playerNumKey).toString(); // 키 사용
+
+            if (file != null && playerNum != null) {
+                // 파일 및 선수 번호가 제공되었을 때 로직 처리
+                String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, selectedPlayerType, playerNum);
                 paramMap.put("fileUrl", fileUrl);
+            } else {
+                // 필수 데이터가 누락된 경우의 에러 처리
+                response.put("errorMessage", "필수 데이터 누락: 선수 번호 또는 파일이 없습니다.");
+                return ResponseEntity.badRequest().body(response);
             }
 
             // 선수 등록 서비스 호출
@@ -748,11 +665,12 @@ public class AdminController {
             response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // 에러 응답
+            e.printStackTrace(); // 예외 상세 내용을 로그로 출력
             response.put("errorMessage", "업로드 실패: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
+
 
     // 선수 업데이트
     @PostMapping("/layout/updatePlayerInfo")
@@ -798,28 +716,6 @@ public class AdminController {
             return ResponseEntity.badRequest().body(Map.of("errorMessage", "처리 실패: " + e.getMessage()));
         }
     }
-
-
-
-    /*수정 전*/
-   /* @PostMapping("/layout/updatePlayerInfo")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updatePlayerInfo(@RequestBody Map<String, Object> requestData) {
-
-        String selectedPlayerType = (String) requestData.get("selectedPlayerType");
-        Map<String, Object> dataToSend = (Map<String, Object>) requestData.get("dataToSend");
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            adminService.registerPlayer(dataToSend, selectedPlayerType);
-            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
-            return ResponseEntity.ok(response);
-
-        } catch (IllegalArgumentException e) {
-            response.put("errorMessage", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }*/
 
 
     // K5 선수 번호 검사

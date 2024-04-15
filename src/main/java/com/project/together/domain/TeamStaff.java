@@ -8,6 +8,6 @@ public class TeamStaff {
     private String teamLeagueGb;
     private int teamStaffNum;
     private String teamStaffEnName;
-    private String teamStaffFilePath;
     private String teamStaffBirth;
+    private String filePath;  // 파일 경로 필드 추가
 }

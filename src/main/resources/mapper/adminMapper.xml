@@ -363,14 +363,18 @@
     </select>
 
     <insert id="insertTeamStaff" parameterType="com.project.together.domain.TeamStaff">
-        INSERT INTO TeamStaff (team_staff_file_path, team_staff_name, team_staff_en_name, team_birth, team_staff_role, team_league_gb)
-        VALUES (#{teamStaffFilePath}, #{teamStaffName}, #{teamStaffEnName}, #{teamStaffBirth}, #{teamStaffRole}, #{teamLeagueGb})
+        INSERT INTO TeamStaff (team_staff_name, team_staff_en_name, team_birth, team_staff_role, team_league_gb)
+        VALUES (#{teamStaffName}, #{teamStaffEnName}, #{teamStaffBirth}, #{teamStaffRole}, #{teamLeagueGb})
     </insert>
 
     <select id="findTeamStaffByNum" parameterType="int" resultType="com.project.together.domain.TeamStaff">
         SELECT * FROM TeamStaff WHERE team_staff_num = #{teamStaffNum}
     </select>
 
+    <insert id="insertTeamStaffFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
 
 
     <delete id="deleteTeamStaff" parameterType="java.util.List">

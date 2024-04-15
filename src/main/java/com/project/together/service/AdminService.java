@@ -466,7 +466,7 @@ public class AdminService {
         return adminMapper.getTeamStaff();
     }
 
-    public void save(TeamStaff teamStaff) {
+    public void teamStaffSave(TeamStaff teamStaff) {
         adminMapper.insertTeamStaff(teamStaff);
     }
 

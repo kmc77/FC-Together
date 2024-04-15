@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/admin")
@@ -761,7 +763,6 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<TeamStaff>> get_staffInfo() {
         List<TeamStaff> teamStaffs = adminService.getTeamStaff();
-        System.out.println("teamStaffs = " + teamStaffs);
         return ResponseEntity.ok(teamStaffs);
     }
 
@@ -798,26 +799,80 @@ public class AdminController {
         }
     }
 
+    // 스태프 등록
+    @PostMapping("/layout/insertStaffInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> insertStaffInfo(
+            @ModelAttribute TeamStaff teamStaff,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Map<String, Object> paramMap = new HashMap<>(otherParams);
 
-    // 구단 스태프 등록
+            // 파일이 제공되었을 경우 파일 저장 로직 수행
+            if (file != null && !file.isEmpty()) {
+                String fileUrl = fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamStaff.getTeamLeagueGb(), String.valueOf(teamStaff.getTeamStaffNum()));
+                paramMap.put("fileUrl", fileUrl);
+            }
+            System.out.println("컨 ======== teamStaff = " + teamStaff);
+            // TeamStaff 객체 저장
+            adminService.teamStaffSave(teamStaff);
+
+            // 성공 메시지 응답
+            response.put("message", "스태프 등록이 성공적으로 완료되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // 예외 발생시 로그 출력 및 에러 메시지 응답
+            response.put("error", "스태프 등록 처리 중 에러가 발생하였습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+
+
+    /* // 구단 스태프 등록
+    @PostMapping("/layout/teamStaffUpdate")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String teamStaffUpdate(@ModelAttribute TeamStaff teamStaff,
+                                  @RequestParam(value = "file", required = false) MultipartFile file,
+                                  RedirectAttributes redirectAttributes) {
+
+
+        if (file != null && !file.isEmpty()) {
+            String fileUrl = fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamLeagueGb, teamStaffNum);
+        }
+
+        // TeamStaff 객체 저장
+        adminService.save(teamStaff);
+
+        // 리다이렉트 후 메시지 표시
+        redirectAttributes.addFlashAttribute("message", "스태프 정보가 성공적으로 추가되었습니다.");
+
+        return "redirect:/admin/layout/staff";
+    }
+*/
+
+
+
+
+   /* // 구단 스태프 등록
     @PostMapping("/layout/teamStaffUpdate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String teamStaffUpdate(@RequestBody TeamStaff teamStaff, RedirectAttributes redirectAttributes) {
 
         System.out.println("컨트롤러 teamStaff = " + teamStaff);
 
-        // 예를 들어, teamStaffService.save(teamStaff); 와 같이 사용할 수 있습니다.
         adminService.save(teamStaff);
 
 
-        // 데이터베이스에 저장하는 과정은 생략하고, 성공적으로 처리되었다고 가정합시다.
-        // 성공 메시지를 리다이렉트 속성에 추가합니다.
         redirectAttributes.addFlashAttribute("message", "스태프 정보가 성공적으로 추가되었습니다.");
 
-        // 스태프 관리 페이지로 리다이렉트합니다.
         return "redirect:/admin/layout/staff";
     }
-
+*/
 
     // ================================== Staff End
 

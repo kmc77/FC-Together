@@ -143,6 +143,9 @@ public interface AdminMapper {
 
     TeamStaff findTeamStaffByNum(int teamStaffNum);
 
+    void insertTeamStaffFile(File file);
+
+
     /* ======================================= */
 
     List<Rule> getAllRule();
@@ -220,7 +223,6 @@ public interface AdminMapper {
     void updateTrainingSchedule(TrainingSchedule trainingSchedule);
 
     void deleteTrainingSchedule(List<Integer> scheduleNums);
-
 
 
 }

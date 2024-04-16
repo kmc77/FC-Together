@@ -487,6 +487,14 @@ public class AdminService {
         return adminMapper.findTeamStaffByNum(teamStaffNum);
     }
 
+    public List<File> findFilesByTeamStaffNum(int teamStaffNum) {
+        return adminMapper.findFilesByTeamStaffNum(teamStaffNum);
+    }
+
+    public void updateTeamStaff(TeamStaff teamStaff) {
+        adminMapper.updateTeamStaff(teamStaff);
+    }
+
 
 // ================================== Staff and
 

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminMapper {
@@ -145,6 +146,15 @@ public interface AdminMapper {
 
     void insertTeamStaffFile(File file);
 
+    List<File> findFilesByTeamStaffNum(int teamStaffNum);
+
+    List<File> findFilesByTeamStaffNums(List<Integer> teamStaffNum);
+
+    void updateTeamStaff(TeamStaff teamStaff);
+
+    void deleteFilesByTeamStaffNum(int teamStaffNum);
+
+    void deleteFilesByTeamStaffNums(List<Integer> teamStaffNum);
 
     /* ======================================= */
 

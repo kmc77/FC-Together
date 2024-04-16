@@ -623,7 +623,7 @@ public class AdminController {
             adminService.playerDelete(playerNums, playerType);
             System.out.println("선수 삭제 완료!!");
 
-            fileService.deleteS3FilesByPlayerNumAndType(playerNums, playerType);
+            fileService.deleteS3FilesByPlayerNumsAndType(playerNums, playerType);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -758,16 +758,37 @@ public class AdminController {
 
     // ================================== Staff start
 
-    // 스태프 선수 정보 가져오기
+  /*  // 스태프 선수 정보 가져오기
     @GetMapping("/layout/get_staffInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<TeamStaff>> get_staffInfo() {
         List<TeamStaff> teamStaffs = adminService.getTeamStaff();
         return ResponseEntity.ok(teamStaffs);
+    }*/
+
+
+    // 스태프 선수 정보 가져오기
+    @GetMapping("/layout/get_staffInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> get_staffInfo() {
+        List<TeamStaff> teamStaffs = adminService.getTeamStaff();
+        List<Map<String, Object>> staffInfoWithFiles = new ArrayList<>();
+
+        for (TeamStaff staff : teamStaffs) {
+            Map<String, Object> staffInfo = new HashMap<>();
+            List<File> files = adminService.findFilesByTeamStaffNum(staff.getTeamStaffNum()); // 해당 스태프의 파일 정보 가져오기
+
+            staffInfo.put("staff", staff);
+            staffInfo.put("files", files);
+            staffInfoWithFiles.add(staffInfo);
+        }
+
+        return ResponseEntity.ok(staffInfoWithFiles);
     }
 
 
-    // 구단 Staff 상세 정보 가져오기
+
+  /*  // 구단 Staff 상세 정보 가져오기
     @GetMapping("/layout/teamStaffView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<TeamStaff> teamStaffView(@RequestParam("teamStaffNum") int teamStaffNum, HttpServletResponse response) {
@@ -778,10 +799,30 @@ public class AdminController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }*/
+
+
+    // Staff 상세 정보 (프로필 사진 등) 가져오기
+    @GetMapping("/layout/teamStaffView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Map<String, Object>> getTeamStaffView(@RequestParam("teamStaffNum") int teamStaffNum) {
+
+        TeamStaff teamStaff = adminService.findTeamStaffByNum(teamStaffNum);
+        Map<String, Object> response = new HashMap<>();
+        if (teamStaff != null) {
+            response.put("teamStaff", teamStaff);
+
+            List<File> files = adminService.findFilesByTeamStaffNum(teamStaffNum);
+            response.put("files", files);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 
-    // 구단 스태프 삭제
+    // 스태프 삭제
     @PostMapping("/layout/teamStaffDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> teamStaffDelete(@RequestParam("teamStaffNum") List<Integer> teamStaffNum, HttpServletResponse response) {
@@ -791,6 +832,8 @@ public class AdminController {
             adminService.teamStaffDelete(teamStaffNum);
             System.out.println("TeamStaff 삭제 완료!!");
 
+            fileService.deleteFilesByStaffNums(teamStaffNum);
+
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -798,6 +841,7 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // 스태프 등록
     @PostMapping("/layout/insertStaffInfo")
@@ -809,26 +853,23 @@ public class AdminController {
     ) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Map<String, Object> paramMap = new HashMap<>(otherParams);
+            // 스태프 정보를 데이터베이스에 저장
+            adminService.teamStaffSave(teamStaff);
 
             // 파일이 제공되었을 경우 파일 저장 로직 수행
             if (file != null && !file.isEmpty()) {
                 String fileUrl = fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamStaff.getTeamLeagueGb(), String.valueOf(teamStaff.getTeamStaffNum()));
-                paramMap.put("fileUrl", fileUrl);
+                response.put("fileUrl", fileUrl);
             }
-            System.out.println("컨 ======== teamStaff = " + teamStaff);
-            // TeamStaff 객체 저장
-            adminService.teamStaffSave(teamStaff);
 
-            // 성공 메시지 응답
             response.put("message", "스태프 등록이 성공적으로 완료되었습니다.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // 예외 발생시 로그 출력 및 에러 메시지 응답
-            response.put("error", "스태프 등록 처리 중 에러가 발생하였습니다.");
+            response.put("error", "스태프 등록 처리 중 에러가 발생하였습니다. 세부 정보: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 
 
@@ -855,24 +896,36 @@ public class AdminController {
     }
 */
 
-
-
-
-   /* // 구단 스태프 등록
+    // 스태프 업데이트
     @PostMapping("/layout/teamStaffUpdate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String teamStaffUpdate(@RequestBody TeamStaff teamStaff, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> teamStaffUpdate(
+            @ModelAttribute TeamStaff teamStaff,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams) {
 
-        System.out.println("컨트롤러 teamStaff = " + teamStaff);
+        try {
+            // 기존 파일 정보 삭제
+            fileService.deleteFilesByStaffNum(teamStaff.getTeamStaffNum());
 
-        adminService.save(teamStaff);
+            // 스태프 정보 업데이트
+            adminService.updateTeamStaff(teamStaff);
 
+            // 파일이 제공된 경우, S3에 업로드하고 메타데이터 저장
+            if (file != null && !file.isEmpty()) {
+                fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamStaff.getTeamLeagueGb(), String.valueOf(teamStaff.getTeamStaffNum()));
+            }
 
-        redirectAttributes.addFlashAttribute("message", "스태프 정보가 성공적으로 추가되었습니다.");
-
-        return "redirect:/admin/layout/staff";
+            return ResponseEntity.ok(Map.of("message", "스태프 정보가 성공적으로 업데이트되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", "업데이트 처리 실패: " + e.getMessage()));
+        }
     }
-*/
+
+
+
+
+
 
     // ================================== Staff End
 

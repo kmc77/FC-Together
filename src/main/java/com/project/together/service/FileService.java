@@ -249,8 +249,8 @@ public class FileService {
         }
     }
 
-    // 선수 정보 직접 삭제 시
-    public void deleteS3FilesByPlayerNumAndType(List<Integer> playerNums, String playerType) {
+    // 선수 정보 다중 삭제 시
+    public void deleteS3FilesByPlayerNumsAndType(List<Integer> playerNums, String playerType) {
         // 모든 playerNums에 대해 조회된 파일들을 저장할 리스트
         List<File> allFilesToDelete = new ArrayList<>();
 
@@ -322,7 +322,7 @@ public class FileService {
                 photoMetadata.setFilePath(fileUrl);
                 photoMetadata.setTableIdx(Integer.parseInt(teamStaffNum));
                 photoMetadata.setFileName(originalFilename);
-                photoMetadata.setTableGb(teamLeagueGb + "TeamStaff");
+                photoMetadata.setTableGb("TeamStaff");
                 // 'file' 테이블에 메타데이터 저장
                 adminMapper.insertTeamStaffFile(photoMetadata);
             } catch (Exception e) {
@@ -330,6 +330,32 @@ public class FileService {
             }
         }
         return fileUrl;
+    }
+
+    // 스태프 파일 삭제
+    public void deleteFilesByStaffNum(int teamStaffNum) {
+        List<File> filesToDelete = adminMapper.findFilesByTeamStaffNum(teamStaffNum);
+
+        for (File file : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(file.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+        adminMapper.deleteFilesByTeamStaffNum(teamStaffNum);
+    }
+
+    // 스태프 파일 다중 삭제
+    public void deleteFilesByStaffNums(List<Integer> teamStaffNum) {
+        List<File> filesToDelete = adminMapper.findFilesByTeamStaffNums(teamStaffNum);
+
+        for (File file : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(file.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+        adminMapper.deleteFilesByTeamStaffNums(teamStaffNum);
     }
 
 
@@ -345,6 +371,7 @@ public class FileService {
             throw new RuntimeException("Error extracting file key from URL", e);
         }
     }
+
 
 
 }

@@ -362,8 +362,8 @@
         SELECT * FROM TeamStaff ORDER BY team_staff_num DESC
     </select>
 
-    <insert id="insertTeamStaff" parameterType="com.project.together.domain.TeamStaff">
-        INSERT INTO TeamStaff (team_staff_name, team_staff_en_name, team_birth, team_staff_role, team_league_gb)
+    <insert id="insertTeamStaff" parameterType="com.project.together.domain.TeamStaff" useGeneratedKeys="true" keyProperty="teamStaffNum">
+        INSERT INTO TeamStaff (team_staff_name, team_staff_en_name, team_staff_birth, team_staff_role, team_league_gb)
         VALUES (#{teamStaffName}, #{teamStaffEnName}, #{teamStaffBirth}, #{teamStaffRole}, #{teamLeagueGb})
     </insert>
 
@@ -376,6 +376,32 @@
         VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
     </insert>
 
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByTeamStaffNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{teamStaffNum} AND table_gb = 'TeamStaff'
+    </select>
+
+    <!-- 여러 업로드 파일 조회 -->
+    <select id="findFilesByTeamStaffNums" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx IN
+        <foreach item="num" collection="list" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+        AND table_gb = 'TeamStaff'
+    </select>
+
+    <update id="updateTeamStaff" parameterType="com.project.together.domain.TeamStaff">
+        UPDATE TeamStaff
+        SET
+        team_staff_name = #{teamStaffName},
+        team_staff_en_name = #{teamStaffEnName},
+        team_staff_birth = #{teamStaffBirth},
+        team_staff_role = #{teamStaffRole},
+        team_league_gb = #{teamLeagueGb}
+        WHERE team_staff_num = #{teamStaffNum}
+    </update>
 
     <delete id="deleteTeamStaff" parameterType="java.util.List">
         DELETE FROM TeamStaff
@@ -383,6 +409,21 @@
         <foreach item="teamStaffNum" collection="list" open="(" separator="," close=")">
             #{teamStaffNum}
         </foreach>
+    </delete>
+
+    <!-- 업로드 파일 삭제 -->
+    <delete id="deleteFilesByTeamStaffNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{teamStaffNum} AND table_gb = 'TeamStaff'
+    </delete>
+
+    <!-- 여러 업로드 파일 삭제 -->
+    <delete id="deleteFilesByTeamStaffNums" parameterType="java.util.List">
+        DELETE FROM File
+        WHERE table_idx IN
+        <foreach item="num" collection="list" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+        AND table_gb = 'TeamStaff'
     </delete>
 
 

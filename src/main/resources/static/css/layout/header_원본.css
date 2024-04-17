@@ -1,0 +1,138 @@
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+   /* height: 80px;*/ /*임시 주석*/
+}
+
+.utils {
+    display: flex;
+    align-items: center;
+}
+
+.utils a {
+    margin-left: 10px;
+}
+
+.logo {
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+}
+
+#logoImg {
+    width: 100px;
+    height: 100px;
+}
+
+.gnbBox {
+    clear: both;
+}
+
+.mainMenuBox {
+    list-style: none;
+    display: flex;
+    align-items: center !important;
+    margin: auto !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    margin-left: 60px;
+}
+
+.mainMenu {
+    margin-right: 120px;
+}
+
+.mainMenu a {
+    font-weight: bold;
+}
+
+
+/*밑줄 삭제*/
+a,a:active,a:focus,a:hover,a:visited {
+    text-decoration: none;
+    color: #000000;
+}
+
+.gnbBox #nav-1 {
+    position: relative;
+    border: none;
+    border-radius: 10em;
+    display: flex;
+    list-style: none;
+    background: #f5f5f5;
+    box-shadow: 20px 40px 40px #00000033;
+    padding: 10px;
+}
+
+.gnbBox #nav-1 li {
+    margin: 0px;
+}
+
+.gnbBox #nav-1 li a {
+    position: relative;
+    padding: 0.6em 2em;
+    font-size: 18px;
+    border: none;
+    outline:none;
+    color: #333;
+    display: inline-block;
+    text-decoration: none;
+    z-index: 3;
+}
+
+.gnbBox #nav-1 .slide1,
+.gnbBox #nav-1 .slide2 {
+    position: absolute;
+    display: inline-block;
+    height: 3em;
+    border-radius: 10em;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.gnbBox #nav-1 .slide1 {
+    background-color: yellowgreen;
+    z-index: 2;
+}
+
+.gnbBox #nav-1 .slide2 {
+    opacity: 0;
+    background: #ddd;
+    z-index: 1;
+}
+
+.gnbBox #nav-1 .squeeze {
+    transform: scale(0.9);
+}
+
+// *************************************** Demo stuff
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body .gnbBox {
+    height:68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    font-family: Montserrat, sans-serif;
+    line-height: 1.5;
+    background: linear-gradient(
+        160deg,
+        #006604 20%,
+        #ffe501 20%,
+        #ffe501 80%,
+        #006604 80%
+    );
+}
+
+

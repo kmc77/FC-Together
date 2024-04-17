@@ -1,0 +1,42 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+.categories {
+text-align : center;}
+ body {
+            font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+           /* margin: 20px;*/
+        }
+
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .info p {
+            margin: 5px 0;
+        }
+
+        .categories {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+
+        .categories a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .categories a:hover {
+            color: #0066cc;
+        }

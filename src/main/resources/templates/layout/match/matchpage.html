@@ -46,40 +46,37 @@
 
         <div class="tab__content" id="scheduleContent">
             <!-- 경기 일정 -->
-            <table class="team-member section">
-                <tbody>
-                <tr th:each="match : ${Schedulelist}" id="Schedulelist">
-                    <td th:text="${match.teamStaffName}"></td>
-                    <td th:text="${match.matchResult}"></td>
-                    <td th:text="${match.matchScore}"></td>
-                    <td th:text="${match.matchDate}"></td>
-                    <td th:text="${match.matchTime}"></td>
-                    <td th:text="${match.matchLocation}"></td>
-                    <td th:text="${match.matchHome}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="team-member section">
+                <div th:each="match : ${K5Resultlist}" id="Schedulelist">
+                    <div th:text="${match.teamStaffName}" class="matches"></div>
+                    <div th:text="${match.matchResult}" class="matches"></div>
+                    <div th:text="${match.matchScore}" class="matches"></div>
+                    <div th:text="${match.matchDate}" class="matches"></div>
+                    <div th:text="${match.matchTime}" class="matches"></div>
+                    <div th:text="${match.matchLocation}" class="matches"></div>
+                    <div th:text="${match.matchHome}" class="matches"></div>
+                </div>
+            </div>
+            <div id="loadMore"></div>
+
         </div>
 
         <div class="tab__content" id="resultContent">
             <!-- 경기 결과 -->
-            <table class="team-member section">
-                <tbody>
-                <tr th:each="match : ${Resultlist}" id="Resultlist">
-                    <td th:text="${match.teamStaffName}"></td>
-                    <td th:text="${match.matchResult}"></td>
-                    <td th:text="${match.matchScore}"></td>
-                    <td th:text="${match.matchDate}"></td>
-                    <td th:text="${match.matchTime}"></td>
-                    <td th:text="${match.matchLocation}"></td>
-                    <td th:text="${match.matchHome}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="team-member section">
+                <div th:each="match : ${K5Schedulelist}" id="Resultlist">
+                    <div th:text="${match.teamStaffName}" class="matches"></div>
+                    <div th:text="${match.matchResult}" class="matches"></div>
+                    <div th:text="${match.matchScore}" class="matches"></div>
+                    <div th:text="${match.matchDate}" class="matches"></div>
+                    <div th:text="${match.matchTime}" class="matches"></div>
+                    <div th:text="${match.matchLocation}" class="matches"></div>
+                    <div th:text="${match.matchHome}" class="matches"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 
 <script>
@@ -190,6 +187,41 @@ function showTabContent(tabNum) {
         resultContent.style.display = 'block';
     }
 }
+
+    window.addEventListener('DOMContentLoaded', function() {
+    var scheduleList = document.getElementById('scheduleList');
+    var loadMore = document.getElementById('loadMore');
+    var batchSize = 5; // 한 번에 로드할 아이템 수
+    var totalItems = scheduleData.length; // 전체 아이템 수
+    var visibleItems = 5; // 처음에 보일 아이템 수
+    var lastLoadedIndex = visibleItems; // 초기로드된 아이템 수를 마지막으로 로드된 아이템 인덱스로 설정
+
+    function loadMoreItems() {
+        for (var i = lastLoadedIndex; i < lastLoadedIndex + batchSize; i++) {
+            if (i >= totalItems) return; // 모든 아이템이 로드되면 종료
+            var match = scheduleData[i];
+            var matchElement = createMatchElement(match); // 매치 아이템 생성
+            scheduleList.appendChild(matchElement); // 생성한 아이템 추가
+        }
+        lastLoadedIndex += batchSize; // 마지막으로 로드된 아이템 인덱스 업데이트
+    }
+
+    // 초기로드된 아이템들을 표시
+    for (var i = 0; i < visibleItems; i++) {
+        var match = scheduleData[i];
+        var matchElement = createMatchElement(match); // 매치 아이템 생성
+        scheduleList.appendChild(matchElement); // 생성한 아이템 추가
+    }
+
+    // 스크롤 이벤트 리스너 추가하여 사용자가 페이지 하단에 도달하면 추가 아이템을 로드
+    window.addEventListener('scroll', function() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            loadMoreItems();
+        }
+    });
+});
+
+
 </script>
 
 </body>

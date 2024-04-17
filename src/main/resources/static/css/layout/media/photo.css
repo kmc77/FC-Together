@@ -1,3 +1,6 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
 /*공지사항 탭 영역*/
 
 .hide-header {
@@ -222,7 +225,7 @@ button#loadMore.btn.btn-more {
     width: 173px;
     height: 61.8px;
     color: #000000;
-    font-family: Arial, sans-serif;
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
     font-size: 18px;
     border-radius: 4px;
     border: 1px solid #034f36;
@@ -402,7 +405,7 @@ button#loadMore.btn.btn-more {
     width: 173px;
     height: 61.8px;
     color: #000000;
-    font-family: Arial, sans-serif;
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
     font-size: 18px;
     border-radius: 4px;
     border: 1px solid #034f36;

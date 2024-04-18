@@ -466,7 +466,7 @@ public class AdminService {
         return adminMapper.getTeamStaff();
     }
 
-    public void save(TeamStaff teamStaff) {
+    public void teamStaffSave(TeamStaff teamStaff) {
         adminMapper.insertTeamStaff(teamStaff);
     }
 
@@ -485,6 +485,14 @@ public class AdminService {
 
     public TeamStaff findTeamStaffByNum(int teamStaffNum) {
         return adminMapper.findTeamStaffByNum(teamStaffNum);
+    }
+
+    public List<File> findFilesByTeamStaffNum(int teamStaffNum) {
+        return adminMapper.findFilesByTeamStaffNum(teamStaffNum);
+    }
+
+    public void updateTeamStaff(TeamStaff teamStaff) {
+        adminMapper.updateTeamStaff(teamStaff);
     }
 
 

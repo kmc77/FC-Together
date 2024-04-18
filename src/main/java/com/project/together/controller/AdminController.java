@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/admin")
@@ -482,7 +484,7 @@ public class AdminController {
         return ResponseEntity.ok(w1Players);
     }*/
 
-    // K5 선수 정보 가져오기
+    // K5 선수 정보와 관련 파일 정보 가져오기
     @GetMapping("/layout/get_k5PlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Map<String, Object>>> get_k5PlayerInfo() {
@@ -501,6 +503,7 @@ public class AdminController {
 
         return ResponseEntity.ok(playerInfoWithFiles);
     }
+
 
     // K7 선수 정보와 관련 파일 정보 가져오기
     @GetMapping("/layout/get_k7PlayerInfo")
@@ -540,7 +543,7 @@ public class AdminController {
         return ResponseEntity.ok(playerInfoWithFiles);
     }
 
-    //수정 후
+
     // k5 선수 상세 정보와 관련 파일(프로필 사진 등) 가져오기
     @GetMapping("/layout/k5PlayerView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -586,6 +589,7 @@ public class AdminController {
         }
     }
 
+
     // w1 선수 상세 정보와 관련 파일(프로필 사진 등) 가져오기
     @GetMapping("/layout/w1PlayerView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -609,50 +613,6 @@ public class AdminController {
     }
 
 
-
-    /*수정 전*/
-   /* // k5 선수 상세 정보 가져오기
-    @GetMapping("/layout/k5PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<K5_Player> getK5PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        System.out.println("======= selectedRows = " + playerNum);
-        K5_Player k5Player = adminService.find_k5PlayerByNum(playerNum);
-        System.out.println("k5PlayerView = " + k5Player);
-        if (k5Player != null) {
-            return ResponseEntity.ok(k5Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
-
-   /* // k7 선수 상세 정보 가져오기
-    @GetMapping("/layout/k7PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<K7_Player> getK7PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        System.out.println("======= selectedRows = " + playerNum);
-        K7_Player k7Player = adminService.find_k7PlayerByNum(playerNum);
-        System.out.println("k5PlayerView = " + k7Player);
-        if (k7Player != null) {
-            return ResponseEntity.ok(k7Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
-    /*// w1 선수 상세 정보 가져오기
-    @GetMapping("/layout/w1PlayerView")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<W1_Player> getW1PlayerView(@RequestParam("playerNum") int playerNum, HttpServletResponse response) {
-        W1_Player w1Player = adminService.find_w1PlayerByNum(playerNum);
-        System.out.println("W1PlayerView = " + w1Player);
-        if (w1Player != null) {
-            return ResponseEntity.ok(w1Player);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }*/
-
     // 선수 삭제
     @PostMapping("/layout/playerDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -663,7 +623,7 @@ public class AdminController {
             adminService.playerDelete(playerNums, playerType);
             System.out.println("선수 삭제 완료!!");
 
-            fileService.deleteS3FilesByPlayerNumAndType(playerNums, playerType);
+            fileService.deleteS3FilesByPlayerNumsAndType(playerNums, playerType);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -673,72 +633,31 @@ public class AdminController {
         }
     }
 
-    /*수정 전*/
-   /* @PostMapping("/layout/updatePlayerInfo")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updatePlayerInfo(
-            @RequestParam("selectedPlayerType") String selectedPlayerType,
-            @RequestParam("playerNum") int playerNum,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("playerName") String playerName,
-            @RequestParam("playerEnName") String playerEnName,
-            @RequestParam("playerCapYn") String playerCapYn,
-            @RequestParam("playerSubCapYn") String playerSubCapYn,
-            @RequestParam("playerPosition") String playerPosition,
-            @RequestParam("playerHeight") String playerHeight,
-            @RequestParam("playerWeight") String playerWeight,
-            @RequestParam("playerBirth") String playerBirth) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            // 파일 서비스를 통해 S3에 선수 사진 업로드 및 메타데이터 저장
-            String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, playerNum, selectedPlayerType);
-
-            // dataToSend 맵에 추가적으로 필요한 선수 정보 포함
-            Map<String, Object> dataToSend = new HashMap<>();
-            dataToSend.put("playerNum", playerNum);
-            dataToSend.put("fileUrl", fileUrl);
-            dataToSend.put("selectedPlayerType", selectedPlayerType);
-            // 추가적으로 받은 선수 정보를 맵에 추가
-            dataToSend.put("playerName", playerName);
-            dataToSend.put("playerEnName", playerEnName);
-            dataToSend.put("playerCapYn", playerCapYn);
-            dataToSend.put("playerSubCapYn", playerSubCapYn);
-            dataToSend.put("playerPosition", playerPosition);
-            dataToSend.put("playerHeight", playerHeight);
-            dataToSend.put("playerWeight", playerWeight);
-            dataToSend.put("playerBirth", playerBirth);
-
-            // adminService를 통해 선수 정보 및 파일 메타데이터를 데이터베이스에 저장
-            adminService.registerPlayer(dataToSend, selectedPlayerType);
-
-            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
-            response.put("fileUrl", fileUrl); // 업로드된 파일의 URL을 응답에 포함
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("errorMessage", "업로드 실패: " + e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }*/
 
     // 선수 등록
     @PostMapping("/layout/insertPlayerInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> insertPlayerInfo(
             @RequestParam("selectedPlayerType") String selectedPlayerType,
-            @RequestParam(value = "file", required = false) MultipartFile file, // 파일 업로드는 필수가 아님
-            @RequestParam Map<String, String> otherParams // 다른 플레이어 데이터 파라미터
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams
     ) {
-        System.out.println("---------- otherParams = " + otherParams);
         Map<String, Object> response = new HashMap<>();
         try {
             // otherParams를 Map<String, Object>로 변환
             Map<String, Object> paramMap = new HashMap<>(otherParams);
-            // 파일이 제공되었다면, 업로드를 처리하고 URL을 paramMap에 추가
-            if (file != null) {
-                String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, selectedPlayerType, paramMap.get("playerNum").toString());
+            // playerNum 키를 동적으로 생성 및 접근
+            String playerNumKey = selectedPlayerType + "PlayerNum";
+            String playerNum = paramMap.get(playerNumKey).toString(); // 키 사용
+
+            if (file != null && playerNum != null) {
+                // 파일 및 선수 번호가 제공되었을 때 로직 처리
+                String fileUrl = fileService.uploadPlayerPhotoToS3AndSaveMetadata(file, selectedPlayerType, playerNum);
                 paramMap.put("fileUrl", fileUrl);
+            } else {
+                // 필수 데이터가 누락된 경우의 에러 처리
+                response.put("errorMessage", "필수 데이터 누락: 선수 번호 또는 파일이 없습니다.");
+                return ResponseEntity.badRequest().body(response);
             }
 
             // 선수 등록 서비스 호출
@@ -748,11 +667,12 @@ public class AdminController {
             response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // 에러 응답
+            e.printStackTrace(); // 예외 상세 내용을 로그로 출력
             response.put("errorMessage", "업로드 실패: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
+
 
     // 선수 업데이트
     @PostMapping("/layout/updatePlayerInfo")
@@ -800,28 +720,6 @@ public class AdminController {
     }
 
 
-
-    /*수정 전*/
-   /* @PostMapping("/layout/updatePlayerInfo")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updatePlayerInfo(@RequestBody Map<String, Object> requestData) {
-
-        String selectedPlayerType = (String) requestData.get("selectedPlayerType");
-        Map<String, Object> dataToSend = (Map<String, Object>) requestData.get("dataToSend");
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            adminService.registerPlayer(dataToSend, selectedPlayerType);
-            response.put("message", "선수 등록이 성공적으로 완료되었습니다.");
-            return ResponseEntity.ok(response);
-
-        } catch (IllegalArgumentException e) {
-            response.put("errorMessage", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }*/
-
-
     // K5 선수 번호 검사
     @GetMapping("/layout/check_k5PlayerNumber")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -860,17 +758,37 @@ public class AdminController {
 
     // ================================== Staff start
 
-    // 스태프 선수 정보 가져오기
+  /*  // 스태프 선수 정보 가져오기
     @GetMapping("/layout/get_staffInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<TeamStaff>> get_staffInfo() {
         List<TeamStaff> teamStaffs = adminService.getTeamStaff();
-        System.out.println("teamStaffs = " + teamStaffs);
         return ResponseEntity.ok(teamStaffs);
+    }*/
+
+
+    // 스태프 선수 정보 가져오기
+    @GetMapping("/layout/get_staffInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> get_staffInfo() {
+        List<TeamStaff> teamStaffs = adminService.getTeamStaff();
+        List<Map<String, Object>> staffInfoWithFiles = new ArrayList<>();
+
+        for (TeamStaff staff : teamStaffs) {
+            Map<String, Object> staffInfo = new HashMap<>();
+            List<File> files = adminService.findFilesByTeamStaffNum(staff.getTeamStaffNum()); // 해당 스태프의 파일 정보 가져오기
+
+            staffInfo.put("staff", staff);
+            staffInfo.put("files", files);
+            staffInfoWithFiles.add(staffInfo);
+        }
+
+        return ResponseEntity.ok(staffInfoWithFiles);
     }
 
 
-    // 구단 Staff 상세 정보 가져오기
+
+  /*  // 구단 Staff 상세 정보 가져오기
     @GetMapping("/layout/teamStaffView")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<TeamStaff> teamStaffView(@RequestParam("teamStaffNum") int teamStaffNum, HttpServletResponse response) {
@@ -881,10 +799,30 @@ public class AdminController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }*/
+
+
+    // Staff 상세 정보 (프로필 사진 등) 가져오기
+    @GetMapping("/layout/teamStaffView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Map<String, Object>> getTeamStaffView(@RequestParam("teamStaffNum") int teamStaffNum) {
+
+        TeamStaff teamStaff = adminService.findTeamStaffByNum(teamStaffNum);
+        Map<String, Object> response = new HashMap<>();
+        if (teamStaff != null) {
+            response.put("teamStaff", teamStaff);
+
+            List<File> files = adminService.findFilesByTeamStaffNum(teamStaffNum);
+            response.put("files", files);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 
-    // 구단 스태프 삭제
+    // 스태프 삭제
     @PostMapping("/layout/teamStaffDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> teamStaffDelete(@RequestParam("teamStaffNum") List<Integer> teamStaffNum, HttpServletResponse response) {
@@ -893,6 +831,8 @@ public class AdminController {
             // 한 번의 호출로 모든 번호 처리
             adminService.teamStaffDelete(teamStaffNum);
             System.out.println("TeamStaff 삭제 완료!!");
+
+            fileService.deleteFilesByStaffNums(teamStaffNum);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -903,24 +843,88 @@ public class AdminController {
     }
 
 
-    // 구단 스태프 등록
+    // 스태프 등록
+    @PostMapping("/layout/insertStaffInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> insertStaffInfo(
+            @ModelAttribute TeamStaff teamStaff,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 스태프 정보를 데이터베이스에 저장
+            adminService.teamStaffSave(teamStaff);
+
+            // 파일이 제공되었을 경우 파일 저장 로직 수행
+            if (file != null && !file.isEmpty()) {
+                String fileUrl = fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamStaff.getTeamLeagueGb(), String.valueOf(teamStaff.getTeamStaffNum()));
+                response.put("fileUrl", fileUrl);
+            }
+
+            response.put("message", "스태프 등록이 성공적으로 완료되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", "스태프 등록 처리 중 에러가 발생하였습니다. 세부 정보: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+
+
+
+    /* // 구단 스태프 등록
     @PostMapping("/layout/teamStaffUpdate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String teamStaffUpdate(@RequestBody TeamStaff teamStaff, RedirectAttributes redirectAttributes) {
+    public String teamStaffUpdate(@ModelAttribute TeamStaff teamStaff,
+                                  @RequestParam(value = "file", required = false) MultipartFile file,
+                                  RedirectAttributes redirectAttributes) {
 
-        System.out.println("컨트롤러 teamStaff = " + teamStaff);
 
-        // 예를 들어, teamStaffService.save(teamStaff); 와 같이 사용할 수 있습니다.
+        if (file != null && !file.isEmpty()) {
+            String fileUrl = fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamLeagueGb, teamStaffNum);
+        }
+
+        // TeamStaff 객체 저장
         adminService.save(teamStaff);
 
-
-        // 데이터베이스에 저장하는 과정은 생략하고, 성공적으로 처리되었다고 가정합시다.
-        // 성공 메시지를 리다이렉트 속성에 추가합니다.
+        // 리다이렉트 후 메시지 표시
         redirectAttributes.addFlashAttribute("message", "스태프 정보가 성공적으로 추가되었습니다.");
 
-        // 스태프 관리 페이지로 리다이렉트합니다.
         return "redirect:/admin/layout/staff";
     }
+*/
+
+    // 스태프 업데이트
+    @PostMapping("/layout/teamStaffUpdate")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> teamStaffUpdate(
+            @ModelAttribute TeamStaff teamStaff,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam Map<String, String> otherParams) {
+
+        try {
+            // 기존 파일 정보 삭제
+            fileService.deleteFilesByStaffNum(teamStaff.getTeamStaffNum());
+
+            // 스태프 정보 업데이트
+            adminService.updateTeamStaff(teamStaff);
+
+            // 파일이 제공된 경우, S3에 업로드하고 메타데이터 저장
+            if (file != null && !file.isEmpty()) {
+                fileService.uploadStaffPhotoToS3AndSaveMetadata(file, teamStaff.getTeamLeagueGb(), String.valueOf(teamStaff.getTeamStaffNum()));
+            }
+
+            return ResponseEntity.ok(Map.of("message", "스태프 정보가 성공적으로 업데이트되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", "업데이트 처리 실패: " + e.getMessage()));
+        }
+    }
+
+
+
+
 
 
     // ================================== Staff End

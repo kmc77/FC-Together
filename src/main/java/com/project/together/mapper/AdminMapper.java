@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminMapper {
@@ -143,6 +144,18 @@ public interface AdminMapper {
 
     TeamStaff findTeamStaffByNum(int teamStaffNum);
 
+    void insertTeamStaffFile(File file);
+
+    List<File> findFilesByTeamStaffNum(int teamStaffNum);
+
+    List<File> findFilesByTeamStaffNums(List<Integer> teamStaffNum);
+
+    void updateTeamStaff(TeamStaff teamStaff);
+
+    void deleteFilesByTeamStaffNum(int teamStaffNum);
+
+    void deleteFilesByTeamStaffNums(List<Integer> teamStaffNum);
+
     /* ======================================= */
 
     List<Rule> getAllRule();
@@ -220,7 +233,6 @@ public interface AdminMapper {
     void updateTrainingSchedule(TrainingSchedule trainingSchedule);
 
     void deleteTrainingSchedule(List<Integer> scheduleNums);
-
 
 
 }

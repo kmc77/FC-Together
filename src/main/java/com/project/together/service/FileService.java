@@ -174,12 +174,12 @@ public class FileService {
     }
 
 
-    public String uploadPlayerPhotoToS3AndSaveMetadata(MultipartFile photo, String selectedPlayerType, String playerNum) {
+    public String uploadPlayerPhotoToS3AndSaveMetadata(MultipartFile file, String selectedPlayerType, String playerNum) {
         String fileUrl = "";
-        if (photo != null && !photo.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             try {
                 // S3에 업로드할 파일 이름 생성
-                String originalFilename = photo.getOriginalFilename();
+                String originalFilename = file.getOriginalFilename();
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
                 // 수정된 부분: 'selectedPlayerType'과 'playerNum'의 순서를 정확히 지정
                 String filePath = selectedPlayerType + "- PlayerImg" + "/playerNum - " + playerNum + "/" + fileName;
@@ -187,9 +187,9 @@ public class FileService {
                 System.out.println("선수 사진 업로드 ==== filePath = " + filePath);
                 // S3에 파일 업로드
                 ObjectMetadata metadata = new ObjectMetadata();
-                metadata.setContentLength(photo.getSize());
-                metadata.setContentType(photo.getContentType());
-                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, photo.getInputStream(), metadata)
+                metadata.setContentLength(file.getSize());
+                metadata.setContentType(file.getContentType());
+                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), metadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
 
                 // 업로드된 파일의 URL 생성
@@ -249,8 +249,8 @@ public class FileService {
         }
     }
 
-    // 선수 정보 직접 삭제 시
-    public void deleteS3FilesByPlayerNumAndType(List<Integer> playerNums, String playerType) {
+    // 선수 정보 다중 삭제 시
+    public void deleteS3FilesByPlayerNumsAndType(List<Integer> playerNums, String playerType) {
         // 모든 playerNums에 대해 조회된 파일들을 저장할 리스트
         List<File> allFilesToDelete = new ArrayList<>();
 
@@ -297,6 +297,67 @@ public class FileService {
         }
     }
 
+    public String uploadStaffPhotoToS3AndSaveMetadata(MultipartFile file, String teamLeagueGb, String teamStaffNum) {
+        String fileUrl = "";
+        if (file != null && !file.isEmpty()) {
+            try {
+                // S3에 업로드할 파일 이름 생성
+                String originalFilename = file.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                String filePath = teamLeagueGb + "- StaffImg" + "/staffNum - " + teamStaffNum + "/" + fileName;
+
+                System.out.println("스태프 사진 업로드 ==== filePath = " + filePath);
+                // S3에 파일 업로드
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(file.getSize());
+                metadata.setContentType(file.getContentType());
+                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), metadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                // 업로드된 파일의 URL 생성
+                fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+                // 업로드된 파일의 메타데이터를 DB에 저장
+                File photoMetadata = new File();
+                photoMetadata.setFilePath(fileUrl);
+                photoMetadata.setTableIdx(Integer.parseInt(teamStaffNum));
+                photoMetadata.setFileName(originalFilename);
+                photoMetadata.setTableGb("TeamStaff");
+                // 'file' 테이블에 메타데이터 저장
+                adminMapper.insertTeamStaffFile(photoMetadata);
+            } catch (Exception e) {
+                throw new RuntimeException("선수 사진 업로드 실패: " + e.getMessage());
+            }
+        }
+        return fileUrl;
+    }
+
+    // 스태프 파일 삭제
+    public void deleteFilesByStaffNum(int teamStaffNum) {
+        List<File> filesToDelete = adminMapper.findFilesByTeamStaffNum(teamStaffNum);
+
+        for (File file : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(file.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+        adminMapper.deleteFilesByTeamStaffNum(teamStaffNum);
+    }
+
+    // 스태프 파일 다중 삭제
+    public void deleteFilesByStaffNums(List<Integer> teamStaffNum) {
+        List<File> filesToDelete = adminMapper.findFilesByTeamStaffNums(teamStaffNum);
+
+        for (File file : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(file.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+        adminMapper.deleteFilesByTeamStaffNums(teamStaffNum);
+    }
+
 
 
 
@@ -310,5 +371,7 @@ public class FileService {
             throw new RuntimeException("Error extracting file key from URL", e);
         }
     }
+
+
 
 }

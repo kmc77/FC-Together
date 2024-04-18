@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
 /* 기본 설정 */
 .cnt_bbs {
     height: 100%;
@@ -6,7 +8,7 @@
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     display: block;
-    font-family: Arial, sans-serif;
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
     overflow: hidden;
     align-content: stretch;
     justify-content: space-around;
@@ -74,5 +76,3 @@
   margin-left: auto; /* 왼쪽 마진을 자동으로 설정하여 오른쪽 정렬을 합니다 */
   margin-right: 0; /* 오른쪽 마진을 0으로 설정 */
 }
-
-

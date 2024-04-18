@@ -1,11 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url('https://fonts.cdnfonts.com/css/d-din');
 
 
 body {
   height: 100%;
   /*overflow: hidden;*/
-  font-family: 'Roboto', sans-serif;
-
+  font-family: 'D-DIN', sans-serif;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -356,8 +355,8 @@ a {
  }
 
  body {
-    color: #000;
-   font-family: "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+   color: #000;
+   font-family: 'D-DIN', sans-serif;
    font-size: 1.2rem;
    line-height: 1.6;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -408,7 +407,7 @@ a {
  .title {
    display: block;
    text-align: center;
-   font-family: din-condensed, "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+   font-family: 'D-DIN', sans-serif;
    font-size: 4rem;
    font-weight: 400;
    line-height: 1;
@@ -556,7 +555,7 @@ a {
    -ms-flex-preferred-size: 100%;
        flex-basis: 100%;
    max-width: 100%;
-   font-family: "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+   font-family: 'D-DIN', sans-serif;
  }
 
 
@@ -683,7 +682,7 @@ a {
 
  .team-member__data-unit:nth-child(1) {
    text-align: center;
-   font-family: din-condensed, "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+   font-family: 'D-DIN', sans-serif;
    line-height: 1;
    -ms-flex-preferred-size: 50px;
    flex-basis: 50px;
@@ -858,15 +857,3 @@ a {
 
 
  /* profile card end */
-
-
-
-
-
-
-
-
-
-
-
-

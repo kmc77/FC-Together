@@ -9,6 +9,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <link href="https://fonts.cdnfonts.com/css/d-din" rel="stylesheet">
 
+
 </head>
 <body>
 <div class="container">
@@ -139,8 +140,6 @@
     $(document).ready(function() {
        var allPlayersData = null;
 
-       // 최초로 k5 탭 데이터를 불러오도록 추가한 코드
-       displayPlayersByTab(1);
        // URL 해시 값을 확인하여 해당하는 탭을 초기에 표시
        var initialTabNum = window.location.hash ? parseInt(window.location.hash.replace('#tab', '')) : 1;
        displayPlayersByTab(initialTabNum);
@@ -271,48 +270,58 @@
        }
 
 
-      function loadCoachingStaffData() {
-           $.ajax({
-               url: "/team/layout/get_teamStaffInfo",
-               method: "GET",
-               success: function(data) {
-                   var teamStaff = data;
-                   var sectionHtml = `
-                       <section class="team-member section">
-                           <h3 class="title title--underline">Staff</h3>
-                           <ul class="team-member__list team-member__list--staff">`;
+     var cachedCoachingStaffData = null; // 코칭 스태프 데이터 캐싱을 위한 전역 변수
 
-                   teamStaff.forEach(function(staff) {
-                       var staffHtml = `
-                           <li class="team-member__item">
-                               <a class="team-member__link" href="#">
-                                   <div class="team-member__img-holder">
-                                       <img class="team-member__img lozad"
-                                            src="${staff.filePath}"  // 수정된 부분
-                                            alt="${staff.teamStaffEnName}"
-                                            data-loaded="true">
-                                   </div>
-                                   <div class="team-member__data">
-                                       <div class="team-member__data-unit">
-                                           <p class="team-member__role">${staff.teamStaffRole} / ${staff.teamLeagueGb}</p>
-                                           <p class="team-member__name-ja" wovn-ignore="true">${staff.teamStaffName}</p>
-                                           <p class="team-member__name-en">${staff.teamStaffEnName}</p>
-                                           <p class="team-member__text">${staff.teamStaffBirth}</p>
-                                       </div>
-                                   </div>
-                               </a>
-                           </li>`;
-                       sectionHtml += staffHtml;
-                   });
+        function loadCoachingStaffData() {
+            if (!cachedCoachingStaffData) { // 캐시된 데이터가 없을 경우에만 요청
+                $.ajax({
+                    url: "/team/layout/get_teamStaffInfo",
+                    method: "GET",
+                    success: function(data) {
+                        cachedCoachingStaffData = data; // 데이터를 캐싱
+                        renderCoachingStaffData(data); // 데이터 렌더링
+                    }
+                });
+            } else {
+                renderCoachingStaffData(cachedCoachingStaffData); // 캐시된 데이터로 렌더링
+            }
+        }
 
-                   sectionHtml += `
-                           </ul>
-                       </section>`;
-                   $('.tab__content').append(sectionHtml);
-               }
-           });
-       }
+        function renderCoachingStaffData(data) {
+            var sectionHtml = `
+                <section class="team-member section">
+                    <h3 class="title title--underline">Staff</h3>
+                    <ul class="team-member__list team-member__list--staff">`;
 
+            data.forEach(function(staff) {
+                var staffHtml = `
+                    <li class="team-member__item">
+                        <a class="team-member__link" href="#">
+                            <div class="team-member__img-holder">
+                                <img class="team-member__img lozad"
+                                     src="${staff.filePath}"
+                                     alt="${staff.teamStaffEnName}"
+                                     data-loaded="true">
+                            </div>
+                            <div class="team-member__data">
+                                <div class="team-member__data-unit">
+                                    <p class="team-member__role">${staff.teamStaffRole} / ${staff.teamLeagueGb}</p>
+                                    <p class="team-member__name-ja" wovn-ignore="true">${staff.teamStaffName}</p>
+                                    <p class="team-member__name-en">${staff.teamStaffEnName}</p>
+                                    <p class="team-member__text">${staff.teamStaffBirth}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>`;
+                sectionHtml += staffHtml;
+            });
+
+            sectionHtml += `
+                </ul>
+            </section>`;
+
+            $('.tab__content').html(sectionHtml); // 기존의 내용을 새로운 내용으로 교체
+        }
 
        function clearTableData() {
            $('.tab__content').empty();

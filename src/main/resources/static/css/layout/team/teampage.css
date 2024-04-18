@@ -350,7 +350,7 @@ a {
 
 
 
- html {
+ /*html {
    font-size: 62.5%;
  }
 
@@ -372,7 +372,7 @@ a {
      body  ul  li  a {
          font-size: 1.7rem;
      }
- }
+ }*/
 
 /* 좌우 레이아웃 영향 */
 
@@ -415,7 +415,7 @@ a {
 
  @media (min-width: 737px) {
    .title {
-     font-size: 6.3rem;
+     /*font-size: 6.3rem;*/
      letter-spacing: -2.2px;
    }
  }
@@ -721,7 +721,7 @@ a {
  }
 
  .team-member__number {
-   font-size: 3.7rem;
+   /*font-size: 3.7rem;*/
    margin-top: -2px;
  }
 

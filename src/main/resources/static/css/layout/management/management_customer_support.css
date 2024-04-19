@@ -1,5 +1,10 @@
 @import url('https://fonts.cdnfonts.com/css/d-din');
 
+/*html {
+  font-size: 62.5%;
+}*/
+
+
 
 body {
   height: 100%;
@@ -12,6 +17,8 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+           display: block;
+              margin: 8px;
 }
 
 .tab-bar {
@@ -161,11 +168,11 @@ body {
 }
 
 
-* {
+/** {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+}*/
 
 .container {
   position: relative;
@@ -350,19 +357,17 @@ a {
 
 
 
- html {
-   font-size: 62.5%;
- }
+
 
  body {
     color: #000;
    font-family: 'D-DIN', sans-serif;
-   font-size: 1.2rem;
+   /*font-size: 1.2rem;*/
    line-height: 1.6;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
  }
 
- @media (min-width: 737px) {
+/* @media (min-width: 737px) {
    body {
      font-size: 1.5rem;
    }
@@ -372,7 +377,7 @@ a {
     body  ul  li  a {
         font-size: 1.7rem;
     }
-}
+}*/
 
 
 
@@ -1035,13 +1040,14 @@ a {
 
  /* reset */
 
- * {
+/* * {
    list-style: none;
    text-decoration: none;
    padding: 0;
    margin: 0;
    box-sizing: border-box;
- }
+ }*/
+
  .clearfix:after {
    content: '';
    display: block;

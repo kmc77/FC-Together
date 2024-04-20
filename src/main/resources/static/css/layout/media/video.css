@@ -37,11 +37,11 @@
     background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
 
-* {
+/** {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+}*/
 
 .container {
   position: relative;

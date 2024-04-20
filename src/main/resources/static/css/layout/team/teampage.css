@@ -384,10 +384,10 @@ a {
 
 @media (min-width: 1024px) {
    .container {
-     /*width: 70%;*/
-     max-width: 1260px;
+      width: auto;  /* 자동 조정 */
+      max-width: 1260px;
    }
- }
+}
 
  @media (min-width: 1024px) {
    .container--narrow {

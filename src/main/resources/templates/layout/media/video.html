@@ -3,6 +3,7 @@
 <head>
      <meta charset="UTF-8">
      <title>notice</title>
+    <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/video.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -80,28 +81,15 @@
             loadVideoList(start, limit); // 추가 비디오 목록 로딩
         });
 
-        // 탭 클릭 이벤트 처리 개선
         $("body").on("click", ".tabLink", function(e) {
             var clickedTabHref = $(this).attr("href");
-
-            // 현재 활성화된 탭과 클릭된 탭이 같은 경우 이벤트 중단
-            if (activeTabHref === clickedTabHref) {
-                e.preventDefault(); // 중복 요청 방지
-                return;
+            if (activeTabHref !== clickedTabHref) {
+                window.location.href = clickedTabHref; // 클릭된 탭의 링크로 페이지 이동
+                return; // 이 함수의 추가 실행을 방지
             }
 
+            // 이미 활성화된 탭을 다시 클릭한 경우 기본 동작 방지
             e.preventDefault();
-            activeTabHref = clickedTabHref; // 클릭된 탭의 href로 현재 활성화된 탭 업데이트
-
-            // AJAX 요청으로 페이지의 일부만 동적으로 변경
-            $.ajax({
-                url: clickedTabHref,
-                type: 'get',
-                success: function(response) {
-                    $("#content").html(response);
-                    history.pushState({}, null, clickedTabHref);
-                }
-            });
         });
 
         function loadVideoList(start, limit) {

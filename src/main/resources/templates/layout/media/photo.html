@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <<meta charset="UTF-8">
+    <meta charset="UTF-8">
      <title>photo</title>
+    <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/photo.css" rel="stylesheet"/>
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
      <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -79,29 +80,14 @@
             loadPhotoList(start, limit); // "더 보기" 클릭 시 추가 목록 로딩
         });
 
-        // 탭 클릭 이벤트 핸들링 개선
-        $("body").on("click", ".tabLink", function(e) {
+       $("body").on("click", ".tabLink", function(e) {
             var clickedTabHref = $(this).attr("href");
-
-            // 현재 활성화된 탭과 클릭된 탭이 같은 경우 이벤트 중단
-            if (activeTabHref === clickedTabHref) {
-                e.preventDefault(); // 중복 요청 방지
+            if (activeTabHref !== clickedTabHref) {
+                // 다른 탭 클릭 시 기본 동작 수행
                 return;
             }
 
-            e.preventDefault();
-            activeTabHref = clickedTabHref; // 새로 클릭된 탭의 href로 업데이트
-
-            // AJAX 요청으로 탭 콘텐츠 변경
-            $.ajax({
-                url: clickedTabHref,
-                type: 'get',
-                success: function(response) {
-                    $("#content").html(response);
-                    history.pushState({}, null, clickedTabHref);
-                    // 필요에 따라 새 탭에 맞는 데이터 로드 함수 호출
-                }
-            });
+            e.preventDefault(); // 같은 탭을 다시 클릭한 경우 기본 동작 방지
         });
 
         // 사진 목록 로딩 함수

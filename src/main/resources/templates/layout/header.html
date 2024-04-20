@@ -73,23 +73,16 @@
                     <li>
                         <a th:href="@{/history/historypage}">클럽 역사</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                           <!-- <li><a href="https://www.zelvia.co.jp/stadium/stadium_map">MAP</a></li>
-                            <li><a href="https://www.zelvia.co.jp/stadium/access">アクセス</a></li>
-                            &lt;!&ndash;<li><a href="< ?php echo home_url('/stadium/stadium-gourmet'); ?>" target="_blank">スタジアムグルメ</a></li>&ndash;&gt;
-                            <li><a href="https://www.zelvia.co.jp/stadium/regulations/">試合運営管理規程</a></li>
-                            <li><a href="https://www.zelvia.co.jp/stadium/manner/">観戦マナー＆ルール</a></li>
-                            <li><a href="https://www.zelvia.co.jp/stadium/flag/">横断幕・大旗等について</a></li>
-                            <li><a href="https://www.zelvia.co.jp/stadium/visitor">ビジターサポーターの皆様へ</a></li>
-                            <li><a href="https://www.zelvia.co.jp/stadium/guide/">はじめての試合観戦</a></li>-->
+                            <!-- 하위항목 없음 -->
                         </ul>
                     </li>
                     <li>
                         <a th:href="@{/media/notice}">미디어 센터</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a href="https://www.zelvia.co.jp/news-category/news/">공지 사항</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/gamereport/">구단 소식</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/event/">구단 사진</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/ticket/">구단 영상</a></li>
+                            <li><a th:href="@{/media/notice}">공지 사항</a></li>
+                            <li><a th:href="@{/media/news}">구단 소식</a></li>
+                            <li><a th:href="@{/media/photo}">구단 사진</a></li>
+                            <li><a th:href="@{/media/video}">구단 영상</a></li>
                         </ul>
                     </li>
                     <li>
@@ -128,16 +121,16 @@
             </div>-->
 
 
-            <div id="js-mega-menu" class="p-mega-menu" style="display: none; top: 105px;">
-                <!--<div class="p-search">
+          <!--  <div id="js-mega-menu" class="p-mega-menu" style="display: none; top: 105px;">
+                &lt;!&ndash;<div class="p-search">
                     <form action="https://www.zelvia.co.jp/" method="get" role="search">
                         <input type="search" class="p-search-field" placeholder="サイト内検索" value="" name="s"
                                role="search">
                     </form>
-                </div>-->
+                </div>&ndash;&gt;
 
                 <div class="container">
-                    <div class="row p-nav p-nav--main">
+                    <div class="row p-nav p-nav&#45;&#45;main">
                         <div class="col-xs-6 col-md-3">
                             <h1><a href="https://www.zelvia.co.jp/news/">news</a></h1>
                             <ul>
@@ -163,11 +156,11 @@
                         <div class="col-xs-6 col-md-3">
                             <h1><a href="https://www.zelvia.co.jp/club/">club</a></h1>
                             <ul>
-                                <!--
+                                &lt;!&ndash;
                                 < ?php if( $theme_post = get_field('theme-season', 'option') ): ?>
                                     <li><a href="< ?php echo get_post_type_archive_link( CC\SeasonTheme::get_post_type() ); ?>">< ?php echo $theme_post->post_title; ?></a></li>
                                 < ?php endif; ?>
-                                -->
+                                &ndash;&gt;
 
 
                                 <li><a href="https://www.zelvia.co.jp/club/clubteam/">選手・スタッフ紹介</a></li>
@@ -176,12 +169,12 @@
                                 <li><a href="https://www.zelvia.co.jp/club/activity/">ゼルビアの取り組み</a></li>
                                 <li style="letter-spacing: -1px;"><a href="http://zelviafp.com/" target="_blank">ゼルビアフットサルパーク</a>
                                 </li>
-                                <!--<li><a href="< ?php echo get_permalink(92240); ?>">ゼルビアxキッチン</a></li>-->
+                                &lt;!&ndash;<li><a href="< ?php echo get_permalink(92240); ?>">ゼルビアxキッチン</a></li>&ndash;&gt;
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- /.container -->
+                &lt;!&ndash; /.container &ndash;&gt;
 
                 <div class="p-mega-menu-footer">
                     <div class="container">
@@ -191,12 +184,12 @@
                             </div>
 
                         </div>
-                        <!-- /.row -->
+                        &lt;!&ndash; /.row &ndash;&gt;
                     </div>
-                    <!-- /.container -->
+                    &lt;!&ndash; /.container &ndash;&gt;
                 </div>
-                <!-- /.p-mega-menu-footer -->
-            </div>
+                &lt;!&ndash; /.p-mega-menu-footer &ndash;&gt;
+            </div>-->
             <!-- /.p-mega-menu -->
         </nav>
     </div>

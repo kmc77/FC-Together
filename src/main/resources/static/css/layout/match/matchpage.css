@@ -1,0 +1,28 @@
+
+#Schedulelist {
+    margin : 0 auto;
+    display: flex;
+    justify-content: center;
+    border : 1px  solid #CCCCCC;
+    margin-top : 10px;
+    margin-bottom : 15px;
+    width : 60%;
+}
+
+#Resultlist {
+    margin : 0 auto;
+    display: flex;
+    justify-content: center;
+    border : 1px  solid #CCCCCC;
+    margin-top : 10px;
+    margin-bottom : 15px;
+    width : 60%;
+}
+
+.matches {
+padding-top: 65px;
+padding-bottom: 65px;
+
+}
+
+

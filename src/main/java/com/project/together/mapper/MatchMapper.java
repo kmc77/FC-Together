@@ -7,7 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface MatchMapper {
-    List<Match> selectResult();
+    List<Match> K5selectResult();
 
-    List<Match> selectSchedule();
+    List<Match> K5selectSchedule();
+
+    List<Match> K7selectResult();
+
+    List<Match> K7selectSchedule();
 }

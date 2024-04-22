@@ -12,4 +12,5 @@ public class Match {
     private String matchLocation;
     private String matchStatus;
     private String matchHome;
+    private String leagueGb;
 }

@@ -13,13 +13,23 @@ public class MatchService {
 
     private final MatchMapper matchMapper;
 
-    public List<Match> selectResult() {
+    public List<Match> K5selectResult() {
 
-        return matchMapper.selectResult();
+        return matchMapper.K5selectResult();
     }
 
-    public List<Match> selectSchedule() {
+    public List<Match> K5selectSchedule() {
 
-        return matchMapper.selectSchedule();
+        return matchMapper.K5selectSchedule();
+    }
+
+    public List<Match> K7selectResult() {
+
+        return matchMapper.K7selectResult();
+    }
+
+    public List<Match> K7selectSchedule() {
+
+        return matchMapper.K7selectSchedule();
     }
 }

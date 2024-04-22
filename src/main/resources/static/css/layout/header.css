@@ -194,9 +194,14 @@ body .gnbBox {
       z-index: 200;
       height: 100%;
       }
+
       @media (max-width: 1350px) {
         .p-header .p-nav-global .p-nav-sub {
-          display: none; } }
+          display: none;
+        }
+      }
+
+
       .p-header .p-nav-global .p-nav-sub ul {
         list-style: none;
         margin: 0;

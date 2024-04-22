@@ -26,9 +26,9 @@
         <div class="tabMenu">
             <div class="container">
                 <ul class="tab-bar">
-                    <li data-num="1" class="tab wave dark main-tab"><a href="#">K5 선수단</a></li>
-                    <li data-num="2" class="tab wave dark main-tab"><a href="#">K7 선수단</a></li>
-                    <li data-num="3" class="tab wave dark main-tab"><a href="#">W리그 선수단</a></li>
+                    <li data-num="1" class="tab wave dark main-tab"><a href="#" id="K5">K5 선수단</a></li>
+                    <li data-num="2" class="tab wave dark main-tab"><a href="#" id="K7">K7 선수단</a></li>
+                    <li data-num="3" class="tab wave dark main-tab"><a href="#" id="W1">W1리그 선수단</a></li>
                     <div class="indicator"></div>
                 </ul>
             </div>
@@ -47,7 +47,8 @@
         <div class="tab__content" id="scheduleContent">
             <!-- 경기 일정 -->
             <div class="team-member section">
-                <div th:each="match : ${K5Resultlist}" id="Schedulelist">
+                <div th:each="match : ${K5Schedulelist}" th:if="${match.leagueGb == 'K5'}" id="Schedulelist">
+                    <!-- Display only if leagueGb is 'K5' -->
                     <div th:text="${match.teamStaffName}" class="matches"></div>
                     <div th:text="${match.matchResult}" class="matches"></div>
                     <div th:text="${match.matchScore}" class="matches"></div>
@@ -64,7 +65,8 @@
         <div class="tab__content" id="resultContent">
             <!-- 경기 결과 -->
             <div class="team-member section">
-                <div th:each="match : ${K5Schedulelist}" id="Resultlist">
+                <div th:each="match : ${K5Resultlist}" th:if="${match.leagueGb == 'K5'}" id="Resultlist">
+                    <!-- Display only if leagueGb is 'K5' -->
                     <div th:text="${match.teamStaffName}" class="matches"></div>
                     <div th:text="${match.matchResult}" class="matches"></div>
                     <div th:text="${match.matchScore}" class="matches"></div>
@@ -160,6 +162,9 @@ document.addEventListener('DOMContentLoaded', function() {
         tab.addEventListener('click', function() {
             var tabNum = this.getAttribute('data-num');
             showTabContent(tabNum);
+            // 하위 탭의 첫 번째 항목을 자동으로 선택
+            var firstSubTab = document.querySelector('.sub-tab[data-num="1"]');
+            firstSubTab.click();
         });
     });
 
@@ -221,6 +226,96 @@ function showTabContent(tabNum) {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var mainTabs = document.querySelectorAll('.main-tab');
+    var subTabs = document.querySelectorAll('.sub-tab');
+
+    mainTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+            // 하위 탭의 첫 번째 항목을 자동으로 선택
+            var firstSubTab = document.querySelector('.sub-tab[data-num="1"]');
+            firstSubTab.click();
+        });
+    });
+
+    subTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+        });
+    });
+
+    // 초기 설정: 경기 일정 탭 표시
+    showTabContent(1);
+});
+
+// 탭 내용 표시 함수
+function showTabContent(tabNum) {
+    var scheduleContent = document.getElementById('scheduleContent');
+    var resultContent = document.getElementById('resultContent');
+
+    if (tabNum === '1') {
+        scheduleContent.style.display = 'block';
+        resultContent.style.display = 'none';
+    } else if (tabNum === '4') {
+        scheduleContent.style.display = 'none';
+        resultContent.style.display = 'block';
+    }
+}
+
+    // 각 메인 탭에 클릭 이벤트를 처리하는 이벤트 리스너 추가
+mainTabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        var tabNum = this.getAttribute('data-num');
+        // 선택한 탭에 따라 데이터를 가져와서 표시하는 함수 호출
+        fetchDataAndDisplay(tabNum);
+    });
+});
+
+// 선택한 탭에 따라 데이터를 가져와서 표시하는 함수
+function fetchDataAndDisplay(tabNum) {
+    // 선택한 탭에 해당하는 팀 코드를 가져옴
+    var teamCode = getTeamCode(tabNum);
+    // 선택한 탭에 해당하는 팀의 일정을 가져오기 위해 AJAX 요청을 보냄
+    var url = '/match/' + teamCode + '/schedule';
+    $.ajax({
+        url: url,
+        method: 'GET',
+        success: function(data) {
+            // 데이터가 배열 형태로 반환되었다고 가정함
+            var matches = data.matches;
+            // 기존의 매치 목록을 지우고 새로운 데이터로 갱신함
+            var scheduleList = document.getElementById('scheduleList');
+            scheduleList.innerHTML = '';
+            // 각 매치를 HTML 요소로 만들어서 표시함
+            matches.forEach(function(match) {
+                var matchElement = createMatchElement(match);
+                scheduleList.appendChild(matchElement);
+            });
+            // 선택한 탭 내용을 표시함
+            showTabContent(tabNum);
+        },
+        error: function(xhr, status, error) {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+        }
+    });
+}
+
+// 탭 번호를 팀 코드로 매핑하는 함수
+function getTeamCode(tabNum) {
+    switch (tabNum) {
+        case '1':
+            return 'K5';
+        case '2':
+            return 'K7';
+        case '3':
+            return 'W1';
+        default:
+            return '';
+    }
+}
 
 </script>
 

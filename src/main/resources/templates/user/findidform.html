@@ -11,28 +11,82 @@
 <body class="memberPage">
 <div id="app" class="">
     <div>
-        <div class="memberContent" id="content">
-            <div class="container">
-                <div class="memberBox">
-                    <div class="topTitle">
-                        <p class="title">아이디 찾기</p>
-                        <p class="subTitle">FC투게더<br>웹사이트 아이디 찾기를 위해 본인인증을 하세요.</p>
+        <div class="userIdContent" id="content">
+            <div class="userContainer">
+                <div class="userIdBox">
+                    <div class="headerTitle">
+                        <p class="mainTitle">아이디 찾기</p>
+                        <p class="description">아이디 찾기를 위해 회원 정보를 입력 하세요.</p>
                     </div>
-                    <div>
+
+                    <!-- userIdForm -->
+                    <form id="userIdForm" action="/user/findId" method="post">
                         <div>
-                            <div class="cert">
-                                <button type="button" class="phone">휴대폰 본인인증</button>
-                                <button type="button" class="ipin">아이핀 본인인증</button>
-                            </div>
-                            <div class="certMessage"> NICE평가정보에서 인증 받은 휴대폰 번호를 사용하고 있습니다.
-                                <br>본인인증 실패시 NICE평가정보 고객센터 1600-1522로 문의하세요.
-                            </div>
+                            <input type="text" id="userInput" name="userInput" placeholder="휴대폰 번호 및 이메일을 입력하세요" class="formInput" required>
                         </div>
-                    </div>
+                        <div class="formButton">
+                            <button type="submit" class="button large full primary">아이디 찾기</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+
+    </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#userIdForm').on('submit', function(event) {
+            event.preventDefault(); // 폼 기본 제출 방지
+
+            // 유효성 검사
+            var userInput = $('#userInput').val();
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 정규 표현식
+            var phonePattern = /^\d{2,3}-\d{3,4}-\d{4}$/; // 휴대폰 번호 정규 표현식
+
+            if (!emailPattern.test(userInput) && !phonePattern.test(userInput)) {
+                // 유효성 검사 실패
+                alert('잘못된 이메일 혹은 휴대폰 번호 형식입니다. 휴대폰 번호는 하이픈(-)을 포함해야 합니다.');
+                return; // 함수 종료
+            }
+
+            var formData = $(this).serialize(); // 폼 데이터 직렬화
+
+            $.ajax({
+                url: '/user/findId', // API 엔드포인트
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.found) {
+                        // 사용자 정보를 찾은 경우
+                        // 서버에서 받은 response 객체의 "message" 값을 보여줌
+                        $('.description').text(response.message) // "message" 값으로 변경
+                            .removeClass('error-message') // 에러 메시지 스타일 제거
+                            .addClass('success-message'); // 성공 메시지 스타일 적용
+                        $('.button.primary')
+                            .text('로그인')
+                            .off('click')
+                            .on('click', function() {
+                                // http://localhost:8081/user/loginform 경로 이동
+                                window.location.href = '/user/loginform'; // 상대 경로 사용
+                            });
+                    } else {
+                        // 사용자 정보를 찾지 못한 경우
+                        $('.description').text(response.message) // 서버 응답의 "message" 사용
+                            .removeClass('success-message') // 성공 메시지 스타일 제거
+                            .addClass('error-message'); // 에러 메시지 스타일 적용
+                    }
+                },
+                error: function() {
+                    $('.description').text('서버 오류가 발생했습니다. 다시 시도해주세요.')
+                        .addClass('error-message');  // 에러 메시지 스타일 적용
+                }
+            });
+        });
+    });
+</script>
+
+
 </body>
 </html>

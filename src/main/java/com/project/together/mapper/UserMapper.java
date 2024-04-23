@@ -25,5 +25,11 @@ public interface UserMapper {
 
     void delete(User user);
 
+    User findIDByPhoneNum(String phone);
 
+    User findIDByEmail(String email);
+
+    User findPWByEmail(String userInput);
+
+    User findPWByPhoneNum(String userInput);
 }

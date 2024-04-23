@@ -68,6 +68,19 @@ public class UserService {
     }
 
 
+    public User findIDByPhoneNum(String phone) {
+        return userMapper.findIDByPhoneNum(phone);
+    }
 
+    public User findIDByEmail(String email) {
+        return userMapper.findIDByEmail(email);
+    }
 
+    public User findPWByEmail(String userInput) {
+        return userMapper.findPWByEmail(userInput);
+    }
+
+    public User findPWByPhoneNum(String userInput) {
+        return userMapper.findPWByPhoneNum(userInput);
+    }
 }

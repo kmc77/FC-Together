@@ -47,10 +47,8 @@
                     <li>
                         <a th:href="@{/club/clubpage}">클럽 투게더</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a href="https://www.zelvia.co.jp/news-category/news/">K5 선수단</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/gamereport/">K7 선수단</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/event/">여성 선수단</a></li>
-                            <li><a href="https://www.zelvia.co.jp/news-category/ticket/">스태프</a></li>
+                            <li><a th:href="@{/club/clubpage}">인사말</a></li>
+                            <li><a th:href="@{/club/clubpage#teamPeople}">축구팀 사람들</a></li>
                         </ul>
                     </li>
                     <li>
@@ -73,14 +71,7 @@
                     <li>
                         <a th:href="@{/history/historypage}">클럽 역사</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <!-- <li><a href="https://www.zelvia.co.jp/stadium/stadium_map">MAP</a></li>
-                             <li><a href="https://www.zelvia.co.jp/stadium/access">アクセス</a></li>
-                             &lt;!&ndash;<li><a href="< ?php echo home_url('/stadium/stadium-gourmet'); ?>" target="_blank">スタジアムグルメ</a></li>&ndash;&gt;
-                             <li><a href="https://www.zelvia.co.jp/stadium/regulations/">試合運営管理規程</a></li>
-                             <li><a href="https://www.zelvia.co.jp/stadium/manner/">観戦マナー＆ルール</a></li>
-                             <li><a href="https://www.zelvia.co.jp/stadium/flag/">横断幕・大旗等について</a></li>
-                             <li><a href="https://www.zelvia.co.jp/stadium/visitor">ビジターサポーターの皆様へ</a></li>
-                             <li><a href="https://www.zelvia.co.jp/stadium/guide/">はじめての試合観戦</a></li>-->
+
                         </ul>
                     </li>
                     <li>
@@ -136,52 +127,7 @@
                     </form>
                 </div>-->
 
-                <div class="container">
-                    <div class="row p-nav p-nav--main">
-                        <div class="col-xs-6 col-md-3">
-                            <h1><a href="https://www.zelvia.co.jp/news/">news</a></h1>
-                            <ul>
-                                <li><a href="https://www.zelvia.co.jp/news-category/news/">ニュース</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/gamereport/">試合</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/event/">イベント情報</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/ticket/">チケット</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/fanclub/">ファンクラブ</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/goods/">グッズ</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/hometown/">ホームタウン活動</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/media/">メディア</a></li>
-                                <li><a href="https://www.zelvia.co.jp/news-category/academy/">アカデミー</a></li>
-                                <li><a href="https://acmachida-zelvia.com/news/" target="_blank"
-                                       rel="noopener noreferrer">スクール</a></li>
-                                <li>
-                                    <a href="https://www.zelvia.co.jp/news-category/zelviakitchen/">ゼルビア×キッチン</a>
-                                </li>
-                                <li><a href="https://zelviafp.com/news/" target="_blank" rel="noopener noreferrer">フットサルパーク</a>
-                                </li>
-                            </ul>
-                        </div>
 
-                        <div class="col-xs-6 col-md-3">
-                            <h1><a href="https://www.zelvia.co.jp/club/">club</a></h1>
-                            <ul>
-                                <!--
-                                < ?php if( $theme_post = get_field('theme-season', 'option') ): ?>
-                                    <li><a href="< ?php echo get_post_type_archive_link( CC\SeasonTheme::get_post_type() ); ?>">< ?php echo $theme_post->post_title; ?></a></li>
-                                < ?php endif; ?>
-                                -->
-
-
-                                <li><a href="https://www.zelvia.co.jp/club/clubteam/">選手・スタッフ紹介</a></li>
-                                <li><a href="https://www.zelvia.co.jp/club/overview/">概要</a></li>
-                                <li><a href="https://www.zelvia.co.jp/club/history/">歴史</a></li>
-                                <li><a href="https://www.zelvia.co.jp/club/activity/">ゼルビアの取り組み</a></li>
-                                <li style="letter-spacing: -1px;"><a href="http://zelviafp.com/" target="_blank">ゼルビアフットサルパーク</a>
-                                </li>
-                                <!--<li><a href="< ?php echo get_permalink(92240); ?>">ゼルビアxキッチン</a></li>-->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container -->
 
                 <div class="p-mega-menu-footer">
                     <div class="container">
@@ -295,29 +241,37 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // 부모 메뉴 아이템 선택
-    var parentMenuItems = document.querySelectorAll('.p-nav-sub__parent > li');
+        // 부모 메뉴 아이템 선택
+        var parentMenuItems = document.querySelectorAll('.p-nav-sub__parent > li');
 
-    parentMenuItems.forEach(function(item) {
-        // 마우스 오버 이벤트 리스너 추가
-        item.addEventListener('mouseover', function() {
-            // 하위 메뉴 찾기 및 활성화
-            var childMenu = this.querySelector('.p-nav-sub__child');
-            if (childMenu) {
-                childMenu.style.display = 'block';
-            }
+        parentMenuItems.forEach(function(item) {
+            // 마우스 오버 이벤트 리스너 추가
+            item.addEventListener('mouseover', function() {
+                // 하위 메뉴 찾기 및 활성화
+                var childMenu = this.querySelector('.p-nav-sub__child');
+                if (childMenu && childMenu.children.length > 0) { // 하위 메뉴에 자식 요소가 있는지 확인
+                    childMenu.style.display = 'block';
+                }
+            });
+
+            // 마우스 아웃 이벤트 리스너 추가
+            item.addEventListener('mouseout', function() {
+                // 하위 메뉴 찾기 및 비활성화
+                var childMenu = this.querySelector('.p-nav-sub__child');
+                if (childMenu) {
+                    childMenu.style.display = 'none';
+                }
+            });
         });
 
-        // 마우스 아웃 이벤트 리스너 추가
-        item.addEventListener('mouseout', function() {
-            // 하위 메뉴 찾기 및 비활성화
-            var childMenu = this.querySelector('.p-nav-sub__child');
-            if (childMenu) {
-                childMenu.style.display = 'none';
+        // 자식 요소가 없는 하위 메뉴의 초기 상태 설정
+        var subMenus = document.querySelectorAll('.p-nav-sub__child');
+        subMenus.forEach(function(menu) {
+            if (menu.children.length === 0) {
+                menu.style.display = 'none'; // 자식 요소가 없으면 메뉴를 숨김
             }
         });
     });
-});
 
 </script>
 </body>

@@ -1,12 +1,15 @@
 @import url('https://fonts.cdnfonts.com/css/d-din');
 
-body {
+.team-page-body {
     display: block;
-    margin: 8px;
+     margin-top: 20px; /* 상단 마진만 8px 적용 */
+     margin-right: 0; /* 오른쪽 마진 0 */
+     margin-bottom: 0; /* 하단 마진 0 */
+     margin-left: 0; /* 왼쪽 마진 0 */
 }
 
 
-body {
+.team-page-body {
   height: 100%;
   /*overflow: hidden;*/
   font-family: 'D-DIN', sans-serif;
@@ -160,7 +163,7 @@ body {
     margin-right: -40px;
     padding-top: 140px;
     text-align: center;
-    font-size: 50px;
+    font-size: 44px;
     font-weight: 500;
     background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
@@ -172,7 +175,7 @@ body {
   /*box-sizing: border-box;*/
 }
 
-.container {
+.team-container {
   position: relative;
   max-width: 1260px;
   margin-left: auto;
@@ -383,14 +386,14 @@ a {
 /* 좌우 레이아웃 영향 */
 
 @media (min-width: 1024px) {
-   .container {
+   .team-container {
       width: auto;  /* 자동 조정 */
       max-width: 1260px;
    }
 }
 
  @media (min-width: 1024px) {
-   .container--narrow {
+   .team-container--narrow {
      max-width: 1024px;
    }
  }
@@ -414,7 +417,7 @@ a {
    display: block;
    text-align: center;
    font-family: 'D-DIN', sans-serif;
-   font-size: 4rem;
+   font-size: 3.5rem;
    font-weight: 400;
    line-height: 1;
  }
@@ -791,22 +794,36 @@ a {
    margin-top: 0.9em;
  }
 
- @media (min-width: 1024px) {
-   .team-member__text {
-     font-size: 1.2rem;
-   }
- }
-
  .team-member__role {
    margin-bottom: 0.8em;
    font-size: 1.1rem;
  }
 
- @media (min-width: 1024px) {
+ /* 반응형 디자인을 위한 미디어 쿼리 */
+ @media (max-width: 768px) {
+   .team-member__text {
+     font-size: 0.9rem; /* 모바일 기기에서는 글자 크기를 조금 줄입니다 */
+     margin-top: 0.7em; /* 상단 여백도 조금 줄입니다 */
+   }
+
    .team-member__role {
-     font-size: 1.5rem;
+     font-size: 1rem; /* 모바일 기기에서는 역할 글자 크기를 조금 줄입니다 */
+     margin-bottom: 0.6em; /* 하단 여백도 조금 줄입니다 */
    }
  }
+
+ @media (min-width: 769px) and (max-width: 1024px) {
+   .team-member__text {
+     font-size: 1.1rem; /* 태블릿에서는 글자 크기를 조금 늘립니다 */
+     margin-top: 1em; /* 상단 여백을 조금 늘립니다 */
+   }
+
+   .team-member__role {
+     font-size: 1.2rem; /* 태블릿에서는 역할 글자 크기를 늘립니다 */
+     margin-bottom: 1em; /* 하단 여백을 늘립니다 */
+   }
+ }
+
 
  .team-member__switch {
    display: -webkit-box;

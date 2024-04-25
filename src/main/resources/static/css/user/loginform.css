@@ -1,4 +1,4 @@
-.container {
+.login-container {
     position: relative;
     max-width: 1260px;
     margin-left: auto;
@@ -7,11 +7,10 @@
     padding-right: 30px
 }
 
-* {
-    /*margin: 0;
-    padding: 0;*/
+.memberBox * {
     box-sizing: border-box;
 }
+
 
 .memberPage .memberContent {
     color: #777777c4;
@@ -21,7 +20,7 @@
 .memberPage .memberBox {
     max-width: 480px;
     margin: 0 auto;
-    padding: 108px 60px 100px;
+    padding: 50px 60px 100px;
     background-color: #fff;
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
@@ -32,7 +31,7 @@
     margin-right: -40px;
     padding-top: 110px;
     text-align: center;
-    background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 130px no-repeat;
 }
 
 .memberPage .topTitle .title {

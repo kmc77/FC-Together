@@ -11,8 +11,8 @@
 
 
 </head>
-<body>
-<div class="container">
+<body class="team-page-body">
+<div class="team-container">
     <div class="teamPage" id="content">
         <div class="subTop">
             <div class="top">
@@ -160,9 +160,7 @@
            clearTableData();
            displayPlayersByTab(selectedTabNum);
            resetSubTabInfo();
-           $('html, body').animate({
-               scrollTop: $(this).offset().top
-           }, 900);
+
        });
 
        $('.sub-tab').on('click', function() {

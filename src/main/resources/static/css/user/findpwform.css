@@ -1,7 +1,5 @@
 
-* {
-    /*margin: 0;
-    padding: 0;*/
+.memberPage .userPwBox * {
     box-sizing: border-box;
 }
 
@@ -22,7 +20,7 @@
 .userPwBox {
     max-width: 480px;
     margin: 0 auto;
-    padding: 108px 60px 100px;
+    padding: 50px 60px 100px;
     background-color: hsla(0,0%,100%,.9);
     backdrop-filter: blur(3px);
 }
@@ -32,7 +30,7 @@
     margin-right: -40px;
     padding-top: 110px;
     text-align: center;
-    background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 130px no-repeat;
 }
 
 .headerTitle .mainTitle {

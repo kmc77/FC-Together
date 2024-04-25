@@ -1,4 +1,4 @@
-.container {
+.joinPage-container {
     position: relative;
     max-width: 1260px;
     margin-left: auto;
@@ -134,11 +134,10 @@
 }
 
 /*헤더 영역 침범*/
- * {
-     /*margin: 0;
-     padding: 0;*/
-     box-sizing: border-box;
- }
+.memberBox * {
+    box-sizing: border-box;
+}
+
 
 .formGroup .withBtn {
     position: relative;

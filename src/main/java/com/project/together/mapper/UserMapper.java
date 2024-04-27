@@ -2,6 +2,8 @@ package com.project.together.mapper;
 
 import com.project.together.domain.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -29,7 +31,5 @@ public interface UserMapper {
 
     User findIDByEmail(String email);
 
-    User findPWByEmail(String userInput);
-
-    User findPWByPhoneNum(String userInput);
+    User findByUsernameAndEmail(@Param("username") String username, @Param("email") String email);
 }

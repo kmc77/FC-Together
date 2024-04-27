@@ -195,7 +195,7 @@
             top: 50%;
             transform: translateY(-50%);
             width: 310px;
-            font-size: 11px;
+            font-size: 20px;
             text-align: right;
           }
           .timeline .swiper-slide .timeline-year {
@@ -203,7 +203,7 @@
             font-size: 32px;
           }
           .timeline .swiper-slide .timeline-title {
-            font-size: 46px;
+            font-size: 40px;
             margin: 0;
           }
           .timeline .swiper-pagination {

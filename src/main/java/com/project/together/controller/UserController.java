@@ -1,17 +1,17 @@
 package com.project.together.controller;
 
 import com.project.together.config.auth.PrincipalDetails;
-import com.project.together.config.jwt.JwtProperties;
 import com.project.together.config.jwt.TokenUtils;
 import com.project.together.domain.*;
 import com.project.together.mapper.UserMapper;
+import com.project.together.service.MailService;
 import com.project.together.service.UserService;
-import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,15 +19,13 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Controller
@@ -35,11 +33,18 @@ import java.util.regex.Pattern;
 public class UserController {
 
     private final UserService userService;
+    private final MailService mailService;
     private final UserMapper userMapper;
 
+
+
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    private JavaMailSender mailSender;
+
+    @Autowired
+    public UserController(UserService userService, MailService mailService, UserMapper userMapper) {
         this.userService = userService;
+        this.mailService = mailService;
         this.userMapper = userMapper;
     }
 
@@ -217,34 +222,55 @@ public class UserController {
     }
 
 
-    // 비밀번호 찾기(휴대폰 번호 및 이메일 사용)
+    // 비밀번호 찾기(아이디와 이메일 사용)
     @PostMapping("/findPw")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> findPw(@RequestParam(required = false) String userInput) {
+    public ResponseEntity<Map<String, Object>> findPw(@RequestParam(required = false) String username, @RequestParam(required = false) String email) {
         Map<String, Object> response = new HashMap<>();
-        User user = null;
-
-        System.out.println("====== userInput = " + userInput);
-
-        // 정규 표현식을 사용한 이메일과 휴대폰 번호 검증
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-        String phoneRegex = "^\\d{2,3}-\\d{3,4}-\\d{4}$"; // 하이픈이 포함된 휴대폰 번호 검증
-
-        if (Pattern.matches(emailRegex, userInput)) {
-            user = userService.findPWByEmail(userInput);
-        } else if (Pattern.matches(phoneRegex, userInput)) {
-            user = userService.findPWByPhoneNum(userInput);
-        }
+        User user = userService.findByUsernameAndEmail(username, email);
 
         if (user != null) {
+
             response.put("found", true);
-            /*response.put("message", "고객님의 비밀번호는 " + user.getPassword() + " 입니다.");*/
+            response.put("message", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
         } else {
             response.put("found", false);
-            response.put("message", "입력하신 정보로 등록된 아이디를 찾을 수 없습니다.");
+            response.put("message", "입력하신 정보로 등록된 계정을 찾을 수 없습니다.");
         }
+
         return ResponseEntity.ok(response);
     }
 
 
+    // 비밀번호 재설정 메일 발송
+    @PostMapping("/sendResetEmail")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> sendResetEmail(@RequestParam String username, @RequestParam String email) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 비밀번호 재설정 링크 생성 로직 (여기서는 단순화를 위해 UUID를 사용)
+        // 실제로는 사용자를 위한 안전한 토큰 생성 과정이 포함되어야 합니다.
+        String resetToken = UUID.randomUUID().toString();
+        String resetLink = "http://yourdomain.com/reset-password?token=" + resetToken;
+
+        // 이메일 발송 로직
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("비밀번호 재설정 안내");
+            message.setText("비밀번호를 재설정하려면 다음 링크를 클릭하세요: " + resetLink);
+            mailSender.send(message);
+
+            response.put("success", true);
+            response.put("message", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+        } catch(Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "이메일 발송 중 오류가 발생하였습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }
+

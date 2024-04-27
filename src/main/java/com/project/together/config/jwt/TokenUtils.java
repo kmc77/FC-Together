@@ -27,6 +27,14 @@ public class TokenUtils {
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
+    public static String createPasswordResetToken(int userId) {
+        return JWT.create()
+                .withSubject(String.valueOf(userId))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.PASSWORD_RESET_EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+    }
+
+
     //토큰 유효성 검사
     public static boolean validateToken(String token) {
         try {

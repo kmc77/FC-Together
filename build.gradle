@@ -53,6 +53,14 @@ dependencies {
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 
 
+    // JavaMailSender
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.1'
+
+    // mail template 사용을 위해서
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework:spring-context-support'
+
 
 
 }

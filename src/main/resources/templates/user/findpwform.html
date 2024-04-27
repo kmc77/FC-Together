@@ -1,92 +1,91 @@
 <!DOCTYPE html>
-<html lang="" class="memberPage" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" class="memberPage" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>FindPwForm</title>
     <th:block th:include="layout/header"></th:block>
     <link href="/css/user/FindPwForm.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body class="memberPage">
-<div id="app" class="">
-    <div>
-        <div class="userPwContent" id="content">
-            <div class="userContainer">
-                <div class="userPwBox">
-                    <div class="headerTitle">
-                        <p class="mainTitle">비밀번호 찾기</p>
-                        <p class="description">비밀번호 찾기를 위해 회원 정보를 입력 하세요.</p>
-                    </div>
-
-                    <!-- userPwForm -->
-                    <form id="userPwForm" action="/user/findPw" method="post">
-                        <div>
-                            <input type="text" id="userInput" name="userInput" placeholder="휴대폰 번호 및 이메일을 입력하세요" class="formInput" required>
-                        </div>
-                        <div class="formButton">
-                            <button type="submit" class="button large full primary">비밀번호 찾기</button>
-                        </div>
-                    </form>
+<div id="app">
+    <div class="userPwContent" id="content">
+        <div class="userContainer">
+            <div class="userPwBox">
+                <div class="headerTitle">
+                    <p class="mainTitle">비밀번호 찾기</p>
+                    <p class="description">비밀번호 찾기를 위해 아이디와 이메일을 입력하세요.</p>
                 </div>
+                <form id="userPwForm" action="/user/findPw" method="post">
+                    <div>
+                        <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" class="formInput" required>
+                    </div>
+                    <div>
+                        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" class="formInput" required>
+                    </div>
+                    <div class="formButton">
+                        <button type="submit" class="button large full primary">비밀번호 찾기</button>
+                    </div>
+                </form>
             </div>
         </div>
-
     </div>
 </div>
 <script>
     $(document).ready(function() {
-        $('#userPwForm').on('submit', function(event) {
-            event.preventDefault(); // 폼 기본 제출 방지
+    $('#userPwForm').on('submit', function(event) {
+        event.preventDefault();
+        var username = $('#username').val().trim();
+        var email = $('#email').val().trim();
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            // 유효성 검사
-            var userInput = $('#userInput').val();
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 정규 표현식
-            var phonePattern = /^\d{2,3}-\d{3,4}-\d{4}$/; // 휴대폰 번호 정규 표현식
-
-            if (!emailPattern.test(userInput) && !phonePattern.test(userInput)) {
-                // 유효성 검사 실패
-                alert('잘못된 이메일 혹은 휴대폰 번호 형식입니다. 휴대폰 번호는 하이픈(-)을 포함해야 합니다.');
-                return; // 함수 종료
-            }
-
-            var formData = $(this).serialize(); // 폼 데이터 직렬화
-
-            $.ajax({
-                url: '/user/findPw', // API 엔드포인트
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    if (response.found) {
-                        // 사용자 정보를 찾은 경우
-                        $('.description').text('비밀번호를 찾았습니다. 회원정보를 이메일로 전송하시겠습니까?')
-                            .removeClass('error-message')  // 에러 메시지 스타일 제거
-                            .addClass('success-message');  // 성공 메시지 스타일 적용
-                        $('.button.primary')
-                            .text('이메일 전송')
-                            .off('click')
-                            .on('click', function() {
-                                sendConfirmationEmail();
-                            });
-                    } else {
-                        // 사용자 정보를 찾지 못한 경우
-                        $('.description').text('비밀번호를 찾을 수 없습니다. 입력 정보를 확인해주세요.')
-                            .removeClass('success-message')  // 성공 메시지 스타일 제거
-                            .addClass('error-message');  // 에러 메시지 스타일 적용
-                    }
-                },
-                error: function() {
-                    $('.description').text('서버 오류가 발생했습니다. 다시 시도해주세요.')
-                        .addClass('error-message');  // 에러 메시지 스타일 적용
-                }
-            });
-        });
-
-        function sendConfirmationEmail() {
-            // 이메일 전송 로직 구현 필요
-            console.log('이메일 전송 로직 구현 필요');
+        if (!username || !emailPattern.test(email)) {
+            alert('잘못된 사용자명 또는 이메일 형식입니다.');
+            $('#email').focus(); // 이메일 입력에 자동으로 포커스
+            return;
         }
+
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '/user/findPw',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.found) {
+                    $('.description').text('계정을 찾았습니다. 이메일로 비밀번호 재설정 링크를 보내시겠습니까?').removeClass('error-message').addClass('success-message');
+                    $('.button.primary')
+                    .text('이메일 전송')
+                    .off('click')
+                    .on('click', function() {
+                        sendResetEmail(username, email);
+                    });
+                } else {
+                    $('.description').text(response.message).removeClass('success-message').addClass('error-message');
+                    $('#username').focus();
+                }
+            },
+            error: function() {
+                $('.description').text('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.').addClass('error-message');
+            }
+        });
     });
+
+    function sendResetEmail(username, email) {
+        $.ajax({
+            url: '/user/sendResetEmail',
+            type: 'POST',
+            data: {username: username, email: email},
+            success: function(response) {
+                $('.description').text('비밀번호 재설정 링크가 이메일로 발송되었습니다.').addClass('success-message');
+                $('.send-email').hide();
+            },
+            error: function() {
+                $('.description').text('이메일 발송 중 오류가 발생했습니다.').addClass('error-message');
+            }
+        });
+    }
+});
+
 </script>
 <footer>
     <th:block th:include="layout/footer"></th:block>

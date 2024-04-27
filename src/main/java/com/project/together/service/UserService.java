@@ -76,11 +76,7 @@ public class UserService {
         return userMapper.findIDByEmail(email);
     }
 
-    public User findPWByEmail(String userInput) {
-        return userMapper.findPWByEmail(userInput);
-    }
-
-    public User findPWByPhoneNum(String userInput) {
-        return userMapper.findPWByPhoneNum(userInput);
+    public User findByUsernameAndEmail(String username, String email) {
+        return userMapper.findByUsernameAndEmail(username, email);
     }
 }

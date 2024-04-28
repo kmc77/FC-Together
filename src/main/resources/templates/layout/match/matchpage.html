@@ -1,320 +1,323 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>경기 일정 / 결과</title>
     <th:block th:include="layout/header"></th:block>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="/css/layout/team/teampage.css" rel="stylesheet"/>
+    <link href="/css/layout/match/matchpage.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <link href="https://fonts.cdnfonts.com/css/d-din" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-
-            // 이중탭
-            $(".tabonoff > .cont-wrap").children().css("display", "none");
-            $(".tabonoff > .cont-wrap div:first-child").css("display", "block");
-            $(".tabonoff > .jq_tab li:first-child").addClass("on");
-
-            $(".tabonoff").find(".jq_tab > li").on("click", function() {
-                var index = $(this).parent().children().index(this);
-
-                $(this).siblings().removeClass();
-                $(this).addClass("on");
-               // console.log($(this).parent().children());
-                $(this).parent().next(".cont-wrap").children().hide().eq(index).show();
-            });
-
-             // 설치/미설치 탭메뉴 이미지교체
-             $("#tabMenu > li").click(function(){
-                var $this = $(this);
-                $("#tabMenu > li").each(function(idx){
-                    var $li = $(this);
-                    $li.find("img").attr("src", $(this).find("img").attr("src").replace("_on","_off"));
-                });
-                $this.find("img").attr("src", $this.find("img").attr("src").replace("_off","_on"));
-            });
-
-            // 서브_탭메뉴 > Dot Indicator 연결
-            $(".jq_stabMenu li > a").on("click", function() {
-                var index = $(this).parent().index();
-                $(this).closest(".tabonoff").find(".dots > a").removeClass("on");
-                $(this).closest(".tabonoff").find(".dots > a").eq(index).addClass("on");
-            });
-
-            //  Dot Indicator > 서브_탭메뉴 연결
-            $(".dots > a").click(function(){
-                var dotIndex = $(this).parent().children().index(this);
-                $(this).siblings().removeClass();
-                $(this).addClass("on");
-                // console.log(dotIndex);
-                $(this).closest(".tabonoff").find("li").eq(dotIndex).trigger("click");
-            });
-
-            // '로그인'버튼 클릭이벤트
-            $(".id_loginCheck").click(function(){
-                location.href="./sub-main.html"
-            });
-
-
-        });
-    </script>
-
-    <style>
-
-        .login .container{width:1280px; /*margin:0 auto;*/ margin-top:100px; margin-bottom:160px;}
-.login .tit-box{margin-bottom:56px;}
-.login .tit-box p{font-size:36px; color:#797979; margin-bottom:20px;}
-.login .tit-box h2{font-size:60px; font-family:'NotoM';}
-
-.login .content-wrap{display:block; clear:both;*zoom:1; width:1024px; margin:0 auto;}
-.login .content-wrap:after{display:block; height:0;content:".";font-size:0;visibility:hidden;clear:both;}
-.login .content-wrap .form-group{width:582px; margin:0 auto;}
-.login .content-wrap>.tab-conts{display:block; float:left; width:100%;clear:both;color:#fff; width:1024px;}
-.login .content-wrap .tab-menu{position:relative; width:440px; margin:0 auto; height:40px;}
-.login .content-wrap .tab-menu::after{display:block; content:''; width:1px; height:36px; background:#b7b7b7; position:absolute; top:0; left:50%; transform:translateX(-50%);}
-.login .content-wrap .tab-menu li::before{display:block; content:''; clear:both;}
-.login .content-wrap .tab-menu li{float:left; width:45%; height:44px; font-size:30px; vertical-align:middle; font-family:'NotoM'; color:#a2a3a3;}
-.login .content-wrap .tab-menu li:first-of-type{margin-right:5%;}
-.login .content-wrap .tab-menu li:last-of-type{margin-left:5%;}
-.login .content-wrap .tab-menu li.on{color:#2b2e38;}
-.login .content-wrap .tab-menu li a{display:block; width:100%; text-align:center;}
-.login .content-wrap .tab-menu li a img{vertical-align:middle;}
-.login .content-wrap .tab-menu li:first-of-type a img{margin-right:15px;}
-.login .content-wrap .tab-menu li:last-of-type a img{margin-left:20px;}
-.login .content-wrap .tab-menu li a span{vertical-align:middle;}
-.login .sub-tabs{display:block; clear:both; *zoom:1; padding:0 50px; /*margin-top:20px;*/ position:relative;}
-.login .sub-tabs .stab-menu{width:800px; margin:0 auto; height:68px; padding:0 50px;}
-.login .sub-tabs .stab-menu li::before{display:block; content:''; clear:both;}
-.login .sub-tabs .stab-menu li{float:left; width:33.33%; height:66px;font-size:30px; color:#bec2c7; font-family:'NotoM';}
-.login .sub-tabs .stab-menu li a{display:block; padding:20px 0;}
-.login .sub-tabs .stab-menu li.on{color:#2b2e38; border-bottom:3px solid #2b2e38;}
-
-.login .cont-box{position:relative; width:900px; margin:0 auto; border:1px solid #b7b7b7; height:420px;}
-
-.login .form-group .btn-wrap{width:456px; margin:0 auto; margin-top:24px;}
-.login .form-group .btn-wrap::after{display:block; content:''; clear:both;}
-.login .form-group .btn-wrap button{width:148px; float:left;}
-.login .form-group .btn-wrap button{color:#fff; font-size:26px; font-family:'NotoM'; padding:32px 0; line-height:1;}
-.login .form-group .btn-wrap button + button{margin-left:6px;}
-.login .form-group .btn-wrap.w100p{width:360px;}
-.login .form-group .btn-wrap.w100p button{width:100%;}
-
-.login .input-box{width:360px; margin:0 auto; margin-top:52px;}
-.login .tab-cont .input-box.pd{padding:28px 0 10px 0;}
-
-.login .input-box .input + .input{margin-top:14px;}
-.login .input-box input{font-size:28px; /* padding:9px 12px;*/ width:100%; line-height:1; background:#fff; border-radius:0px; border:0; border-bottom:1px solid #cccccc; height:52px;}
-
-.login .input-box input:focus,
-.login .input-box select:focus,
-.login .input-box select:focus{outline:1px solid transparent;}
-.login .form-group .desc{font-size:20px; font-family:'NotoR'; color:#a1a2a4; margin-top:24px; line-height:1.1;}
-.login .tab-cont{position:relative;}
-.login .tab-cont .dots{width:100%; position:absolute; bottom:-40px; left:50%; transform:translateX(-50%);}
-.login .tab-cont .dots a{display:inline-block; width:10px; height:10px; border-radius:50%; background:#c3cacf; transition:all .3s ease-in-out;}
-.login .tab-cont .dots a.on{background:#428bf2;border-radius:50px; width:24px;}
-.login .tab-cont .dots a + a{margin-left:12px;}
-.login .content-wrap .tab-menu{margin-bottom:24px; margin-bottom:20px;}
-.login .content-wrap .tab-menu{width:520px;}
-.login .content-wrap .pt{padding-top:24px;}
-    </style>
 </head>
 <body>
-<div class="login">
-    <!-- contents -->
-    <div class="container">
-        <div class="tit-box">
-            <h2>로그인 폼</h2>
+
+<div class="teamPage" id="content">
+    <div class="subTop">
+        <div class="top">
+            <div class="matchContainer"> <!-- 변경된 클래스 이름 -->
+                <div class="topTitle">
+                    <p class="title">
+                        <span class="mobileBreak"><strong></strong>경기 일정 / 결과</span>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="tabonoff content-wrap">
-            <!-- 탭메뉴 -->
-            <ul id="tabMenu" class="jq_tab tab-menu">
-                <li>
-                    <a href="javascript:void(0);" class="tit"><span>A 타입</span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="tit"><span>B 타입</span></a>
-                </li>
-            </ul>
-            <!-- //탭메뉴 -->
-            <div class="cont-wrap">
-                <!-- 탭1_설치 -->
-                <div class="tab-cont">
-                    <div class="tabonoff sub-tabs">
-                        <!-- dots_indicator -->
-                        <div class="dots">
-                            <a href="javascript:void(0);" class="on"></a>
-                            <a href="javascript:void(0);"></a>
-                            <a href="javascript:void(0);"></a>
-                        </div>
-                        <!-- //dots_indicator -->
+        <!-- 메인 탭 메뉴 -->
+        <div class="tabMenu">
+            <div class="container">
+                <ul class="tab-bar">
+                    <li data-num="1" class="tab wave dark main-tab"><a href="#" id="K5">K5 선수단</a></li>
+                    <li data-num="2" class="tab wave dark main-tab"><a href="#" id="K7">K7 선수단</a></li>
+                    <li data-num="3" class="tab wave dark main-tab"><a href="#" id="W1">W1리그 선수단</a></li>
+                    <div class="indicator"></div>
+                </ul>
+            </div>
+        </div>
+        <!-- 서브 탭 메뉴 -->
+        <div class="sub_tabMenu">
+            <div class="sub_container">
+                <ul class="sub-tab-bar">
+                    <li data-num="1" class="sub-tab wave dark sub-tab"><a href="#">경기 일정</a></li>
+                    <li data-num="4" class="sub-tab wave dark sub-tab"><a href="#">경기 결과</a></li>
+                    <div class="sub-indicator"></div>
+                </ul>
+            </div>
+        </div>
 
-                        <!-- 서브_탭메뉴 -->
-                        <ul class="jq_tab jq_stabMenu stab-menu">
-                            <li class="active"><a href="javascript:void(0);" class="tit">ID/PW</a></li>
-                            <li><a href="javascript:void(0);" class="tit">로그인2</a></li>
-                            <li><a href="javascript:void(0);" class="tit">로그인3</a></li>
-                        </ul>
-                        <!-- //서브_탭메뉴 -->
-                        <div class="cont-wrap cont-box">
-                            <!-- IDPW_탭1_1-->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box">
-                                        <div class="input">
-                                            <input type="text" title="아이디 입력" placeholder="아이디">
-                                        </div>
-                                        <div class="input">
-                                            <input type="password" title="패스워드 입력" placeholder="패스워드 입력">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap w100p">
-                                        <button class="id_loginCheck btn-sblue" type="button">로그인</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ 할당받은 ID를 입력하시면 로그인이 됩니다.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //IDPW_탭1_1 -->
-                            <!-- 탭1_2 -->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box pd">
-                                        <div class="input">
-                                            <input type="text" title="사용자ID / 이메일" placeholder="사용자ID / 이메일">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap">
-                                        <button class="id_register_fido btn-navy" type="button">등록</button>
-                                        <button class="id_loginCheck btn-sblue" type="button">로그인</button>
-                                        <button class="id_delete btn-gray" type="button">해지</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ 할당받은 ID를 입력하고 등록하시면 로그인이 됩니다.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //탭1_2 -->
-
-                            <!-- 탭1_3 -->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box">
-                                        <div class="input">
-                                            <input type="text" title="아이디 입력" placeholder="아이디">
-                                        </div>
-                                        <div class="input">
-                                            <input type="password" title="패스워드 입력" placeholder="패스워드 입력">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap">
-                                        <button class="id_register_motp btn-navy" type="button">등록</button>
-                                        <button class="id_loginCheck btn-sblue" type="button" >로그인</button>
-                                        <button class="id_delete btn-gray" type="button">해지</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ㅎㅎㅎ</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //탭1_3 -->
-                        </div>
-                    </div>
+        <div class="tab__content" id="scheduleContent">
+            <!-- 경기 일정 -->
+            <div class="team-member section">
+                <div th:each="match : ${K5Schedulelist}" th:if="${match.leagueGb == 'K5'}" id="Schedulelist">
+                    <!-- Display only if leagueGb is 'K5' -->
+                    <div th:text="${match.teamStaffName}" class="matches"></div>
+                    <div th:text="${match.matchResult}" class="matches"></div>
+                    <div th:text="${match.matchScore}" class="matches"></div>
+                    <div th:text="${match.matchDate}" class="matches"></div>
+                    <div th:text="${match.matchTime}" class="matches"></div>
+                    <div th:text="${match.matchLocation}" class="matches"></div>
+                    <div th:text="${match.matchHome}" class="matches"></div>
                 </div>
-                <!-- //탭1_설치 -->
-                <!-- 탭2_미설치 -->
-                <div class="tab-cont">
-                    <div class="tabonoff sub-tabs">
-                        <!-- dots_indicator -->
-                        <div class="dots">
-                            <a data-dot="dot1" href="javascript:void(0);" class="on"></a>
-                            <a data-dot="dot2"  href="javascript:void(0);"></a>
-                            <a data-dot="dot3"   href="javascript:void(0);"></a>
-                        </div>
-                        <!-- //dots_indicator -->
-                        <!-- 서브_탭메뉴 -->
-                        <ul class="jq_tab jq_stabMenu stab-menu">
-                            <li class="active"><a href="javascript:void(0);" class="tit">ID/PW</a></li>
-                            <li><a href="javascript:void(0);" class="tit">FIDO2</a></li>
-                            <li><a href="javascript:void(0);" class="tit">MOTP</a></li>
-                        </ul>
-                        <!-- //서브_탭메뉴 -->
+            </div>
+            <div id="loadMore"></div>
 
-                        <div class="cont-wrap cont-box">
-                            <!-- 탭2_1 -->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box">
-                                        <div class="input">
-                                            <input type="text" title="아이디 입력" placeholder="아이디">
-                                        </div>
-                                        <div class="input">
-                                            <input type="password" title="패스워드 입력" placeholder="패스워드 입력">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap w100p">
-                                        <button class="id_loginCheck btn-sblue" type="button">로그인</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ 할당받은 ID를 입력하시면 로그인이 됩니다.</p>
-                                    </div>
+        </div>
 
-                                </div>
-                            </div>
-                            <!-- //탭2_1 -->
-
-                            <!-- 탭2_2-->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box pd">
-                                        <div class="input">
-                                            <input type="text" title="사용자ID / 이메일" placeholder="사용자ID / 이메일">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap">
-                                        <button class="id_register_fido btn-navy" type="button" >등록</button>
-                                        <button class="id_loginCheck btn-sblue" type="button" >로그인</button>
-                                        <button class="id_delete btn-gray" type="button" >해지</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ sdd</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //탭2_2 -->
-
-                            <!-- 탭2_3 -->
-                            <div class="tab-cont">
-                                <div class="form-group">
-                                    <div class="input-box">
-                                        <div class="input">
-                                            <input type="text" title="아이디 입력" placeholder="아이디">
-                                        </div>
-                                        <div class="input">
-                                            <input type="password" title="패스워드 입력" placeholder="패스워드 입력">
-                                        </div>
-                                    </div>
-                                    <div class="btn-wrap">
-                                        <button class="id_register_motp btn-navy" type="button" >등록</button>
-                                        <button class="id_loginCheck btn-sblue" type="button" >로그인</button>
-                                        <button class="id_delete btn-gray" type="button" >해지</button>
-                                    </div>
-                                    <div class="desc">
-                                        <p>※ aaaaa </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //탭2_3 -->
-                        </div>
-                    </div>
+        <div class="tab__content" id="resultContent">
+            <!-- 경기 결과 -->
+            <div class="team-member section">
+                <div th:each="match : ${K5Resultlist}" th:if="${match.leagueGb == 'K5'}" id="Resultlist">
+                    <!-- Display only if leagueGb is 'K5' -->
+                    <div th:text="${match.teamStaffName}" class="matches"></div>
+                    <div th:text="${match.matchResult}" class="matches"></div>
+                    <div th:text="${match.matchScore}" class="matches"></div>
+                    <div th:text="${match.matchDate}" class="matches"></div>
+                    <div th:text="${match.matchTime}" class="matches"></div>
+                    <div th:text="${match.matchLocation}" class="matches"></div>
+                    <div th:text="${match.matchHome}" class="matches"></div>
                 </div>
-                <!-- //탭2_미설치 -->
             </div>
         </div>
     </div>
-    <!-- //contents -->
 </div>
+
+
+<script>
+    var waveBtnInit = function () {
+            // 메인 탭과 서브 탭을 모두 선택
+            var mainTabs = document.querySelectorAll('.main-tab.wave');
+            var subTabs = document.querySelectorAll('.sub-tab.wave');
+            var mainIndicator = document.querySelector('.tab-bar .indicator');
+            var subIndicator = document.querySelector('.sub-tab-bar .sub-indicator');
+
+            // 인디케이터 위치 업데이트 함수
+            function updateIndicator(indicator, index, tabType, tabs) {
+                // 탭의 전체 길이와 간격 계산
+                var totalWidth = tabs.length * tabs[0].offsetWidth; // 탭의 개수 * 탭 하나의 너비
+                var tabWidth = tabs[0].offsetWidth; // 탭 하나의 너비
+                var offset = (totalWidth - tabWidth) / (tabs.length - 1); // 간격 계산
+                var marginLeft = index * offset; // 인디케이터의 왼쪽 여백 계산
+
+                // 인디케이터 위치 및 크기 업데이트
+                indicator.style.width = tabWidth + 'px'; // 인디케이터 너비 업데이트
+                indicator.style.marginLeft = marginLeft + 'px'; // 인디케이터 왼쪽 여백 업데이트
+            }
+
+            // 탭 클릭 이벤트 핸들러
+            function addWaveEffect(tabs, indicator, tabType) {
+                tabs.forEach(function(tab, index) {
+                    tab.addEventListener('click', function(e) {
+                        var newRound = document.createElement('div');
+                        var x = e.pageX - tab.offsetLeft;
+                        var y = e.pageY - tab.offsetTop;
+
+                        newRound.className = 'cercle anim';
+                        newRound.style.left = x + "px";
+                        newRound.style.top = y + "px";
+                        tab.appendChild(newRound);
+
+                        // 인디케이터 위치 업데이트
+                        updateIndicator(indicator, index, tabType, tabs);
+
+                        // 애니메이션이 완료된 후 newRound 요소 제거
+                        setTimeout(function() {
+                            newRound.remove();
+                        }, 1200);
+                    });
+                });
+            }
+
+            // 첫 번째 탭에 대한 인디케이터 위치 초기화
+            if (mainTabs.length > 0) updateIndicator(mainIndicator, 0, 'main', mainTabs);
+            if (subTabs.length > 0) updateIndicator(subIndicator, 0, 'sub', subTabs);
+
+            // 메인 탭과 서브 탭에 대한 이벤트 리스너 추가
+            addWaveEffect(mainTabs, mainIndicator, 'main');
+            addWaveEffect(subTabs, subIndicator, 'sub');
+        };
+
+        // 페이지 로드 시 함수 실행
+        waveBtnInit();
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+// K5 선수단 탭의 경기 일정 탭을 선택
+var k5ScheduleTab = document.querySelector('.main-tab[data-num="1"]');
+var scheduleTab = document.querySelector('.sub-tab[data-num="1"]');
+
+// 클릭 이벤트를 생성하고 실행
+var clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    view: window
+});
+k5ScheduleTab.dispatchEvent(clickEvent);
+scheduleTab.dispatchEvent(clickEvent);
+});
+
+// 메인 탭 및 서브 탭 클릭 이벤트 설정
+document.addEventListener('DOMContentLoaded', function() {
+    var mainTabs = document.querySelectorAll('.main-tab');
+    var subTabs = document.querySelectorAll('.sub-tab');
+
+    mainTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+            // 하위 탭의 첫 번째 항목을 자동으로 선택
+            var firstSubTab = document.querySelector('.sub-tab[data-num="1"]');
+            firstSubTab.click();
+        });
+    });
+
+    subTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+        });
+    });
+
+    // 초기 설정: 경기 일정 탭 표시
+    showTabContent(1);
+});
+
+// 탭 내용 표시 함수
+function showTabContent(tabNum) {
+    var scheduleContent = document.getElementById('scheduleContent');
+    var resultContent = document.getElementById('resultContent');
+
+    if (tabNum === '1') {
+        scheduleContent.style.display = 'block';
+        resultContent.style.display = 'none';
+    } else if (tabNum === '4') {
+        scheduleContent.style.display = 'none';
+        resultContent.style.display = 'block';
+    }
+}
+
+    window.addEventListener('DOMContentLoaded', function() {
+    var scheduleList = document.getElementById('scheduleList');
+    var loadMore = document.getElementById('loadMore');
+    var batchSize = 5; // 한 번에 로드할 아이템 수
+    var totalItems = scheduleData.length; // 전체 아이템 수
+    var visibleItems = 5; // 처음에 보일 아이템 수
+    var lastLoadedIndex = visibleItems; // 초기로드된 아이템 수를 마지막으로 로드된 아이템 인덱스로 설정
+
+    function loadMoreItems() {
+        for (var i = lastLoadedIndex; i < lastLoadedIndex + batchSize; i++) {
+            if (i >= totalItems) return; // 모든 아이템이 로드되면 종료
+            var match = scheduleData[i];
+            var matchElement = createMatchElement(match); // 매치 아이템 생성
+            scheduleList.appendChild(matchElement); // 생성한 아이템 추가
+        }
+        lastLoadedIndex += batchSize; // 마지막으로 로드된 아이템 인덱스 업데이트
+    }
+
+    // 초기로드된 아이템들을 표시
+    for (var i = 0; i < visibleItems; i++) {
+        var match = scheduleData[i];
+        var matchElement = createMatchElement(match); // 매치 아이템 생성
+        scheduleList.appendChild(matchElement); // 생성한 아이템 추가
+    }
+
+    // 스크롤 이벤트 리스너 추가하여 사용자가 페이지 하단에 도달하면 추가 아이템을 로드
+    window.addEventListener('scroll', function() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            loadMoreItems();
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var mainTabs = document.querySelectorAll('.main-tab');
+    var subTabs = document.querySelectorAll('.sub-tab');
+
+    mainTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+            // 하위 탭의 첫 번째 항목을 자동으로 선택
+            var firstSubTab = document.querySelector('.sub-tab[data-num="1"]');
+            firstSubTab.click();
+        });
+    });
+
+    subTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var tabNum = this.getAttribute('data-num');
+            showTabContent(tabNum);
+        });
+    });
+
+    // 초기 설정: 경기 일정 탭 표시
+    showTabContent(1);
+});
+
+// 탭 내용 표시 함수
+function showTabContent(tabNum) {
+    var scheduleContent = document.getElementById('scheduleContent');
+    var resultContent = document.getElementById('resultContent');
+
+    if (tabNum === '1') {
+        scheduleContent.style.display = 'block';
+        resultContent.style.display = 'none';
+    } else if (tabNum === '4') {
+        scheduleContent.style.display = 'none';
+        resultContent.style.display = 'block';
+    }
+}
+
+    // 각 메인 탭에 클릭 이벤트를 처리하는 이벤트 리스너 추가
+mainTabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        var tabNum = this.getAttribute('data-num');
+        // 선택한 탭에 따라 데이터를 가져와서 표시하는 함수 호출
+        fetchDataAndDisplay(tabNum);
+    });
+});
+
+// 선택한 탭에 따라 데이터를 가져와서 표시하는 함수
+function fetchDataAndDisplay(tabNum) {
+    // 선택한 탭에 해당하는 팀 코드를 가져옴
+    var teamCode = getTeamCode(tabNum);
+    // 선택한 탭에 해당하는 팀의 일정을 가져오기 위해 AJAX 요청을 보냄
+    var url = '/match/' + teamCode + '/schedule';
+    $.ajax({
+        url: url,
+        method: 'GET',
+        success: function(data) {
+            // 데이터가 배열 형태로 반환되었다고 가정함
+            var matches = data.matches;
+            // 기존의 매치 목록을 지우고 새로운 데이터로 갱신함
+            var scheduleList = document.getElementById('scheduleList');
+            scheduleList.innerHTML = '';
+            // 각 매치를 HTML 요소로 만들어서 표시함
+            matches.forEach(function(match) {
+                var matchElement = createMatchElement(match);
+                scheduleList.appendChild(matchElement);
+            });
+            // 선택한 탭 내용을 표시함
+            showTabContent(tabNum);
+        },
+        error: function(xhr, status, error) {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+        }
+    });
+}
+
+// 탭 번호를 팀 코드로 매핑하는 함수
+function getTeamCode(tabNum) {
+    switch (tabNum) {
+        case '1':
+            return 'K5';
+        case '2':
+            return 'K7';
+        case '3':
+            return 'W1';
+        default:
+            return '';
+    }
+}
+
+</script>
+
 </body>
 </html>

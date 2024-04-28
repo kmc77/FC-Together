@@ -22,17 +22,41 @@
         m.match_score is not null
     </select>
 
-    <select id="K7selectResult" resultType="com.project.together.domain.Match">
-        SELECT m.*
-        FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K7'and m.match_result is not null and m.match_score is not null
-    </select>
-
     <select id="K7selectSchedule" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
         JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K7' and m.match_result is null and m.match_score is null
+        WHERE ts.team_league_gb = 'K7'
+        AND m.match_result IS  NULL
+        AND m.match_score IS  NULL
+        AND m.league_gb = 'K7'
+    </select>
+
+    <select id="K7selectResult" resultType="com.project.together.domain.Match">
+        SELECT m.*
+        FROM matches m
+        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
+        WHERE ts.team_league_gb = 'K7'
+        and m.match_result is not null and
+        m.match_score is not null
+    </select>
+
+    <select id="W1selectSchedule" resultType="com.project.together.domain.Match">
+        SELECT m.*
+        FROM matches m
+        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
+        WHERE ts.team_league_gb = 'W1'
+        AND m.match_result IS  NULL
+        AND m.match_score IS  NULL
+        AND m.league_gb = 'W1'
+    </select>
+
+    <select id="W1selectResult" resultType="com.project.together.domain.Match">
+        SELECT m.*
+        FROM matches m
+        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
+        WHERE ts.team_league_gb = 'W1'
+        and m.match_result is not null and
+        m.match_score is not null
     </select>
 </mapper>

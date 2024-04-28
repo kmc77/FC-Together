@@ -25,6 +25,11 @@ public class MainController {
         return "/layout/club/clubpage";
     }
 
+/*    @GetMapping("/club/togetherpeople")
+    public String togetherpeople() {
+        return "/layout/club/togetherpeople";
+    }*/
+
     @GetMapping("/team/teampage")
     public String teampage() {
         return "/layout/team/teampage";

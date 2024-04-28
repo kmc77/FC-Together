@@ -58,19 +58,14 @@
         WHERE email = #{email}
     </select>
 
-    <!-- 휴대폰 번호로 사용자 비밀번호(password) 찾기 -->
-    <select id="findPWByPhoneNum" parameterType="java.lang.String" resultType="com.project.together.domain.User">
-        SELECT password
+    <!-- 사용자명과 이메일로 사용자 정보 조회 -->
+    <select id="findByUsernameAndEmail" parameterType="map" resultType="com.project.together.domain.User">
+        SELECT *
         FROM user
-        WHERE user_phone = #{phone}
+        WHERE username = #{username} AND email = #{email}
     </select>
 
-    <!-- 이메일로 사용자 비밀번호(password) 찾기 -->
-    <select id="findPWByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
-        SELECT password
-        FROM user
-        WHERE email = #{email}
-    </select>
+
 
 
 </mapper>

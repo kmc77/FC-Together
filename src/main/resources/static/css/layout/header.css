@@ -176,7 +176,7 @@ body .gnbBox {
       transform: translateY(-50%);
       font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
       /*font-weight: bold;*/ /* 볼드 스타일 적용 */
-      font-size: 18px; /* 글자 크기를 18px로 설정 */
+      font-size: 19px;
     }
 
 
@@ -243,7 +243,7 @@ body .gnbBox {
            color: #000;
            font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
            font-weight: bold; /* 볼드 스타일 적용 */
-           font-size: 18px; /* 글자 크기를 18px로 설정 */
+           font-size: 19px;
        }
 
 
@@ -259,24 +259,33 @@ body .gnbBox {
               }
             .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a:hover:after {
               width: 100%; }
+
+
       .p-header .p-nav-global .p-nav-sub .p-nav-sub__child {
-        display: none;
-        position: absolute;
-        top: calc(100% + 10px);
-        padding: 22px 0;
-        background-color: rgba(0, 0, 0, 0.9);
-        }
-        .p-header .p-nav-global .p-nav-sub .p-nav-sub__child li a {
+          display: none;
+          position: absolute;
+          top: calc(100% + 10px);
+          padding: 22px 10px; /* 좌우 패딩도 조절하여 너비를 조절 */
+          background-color: rgba(0, 0, 0, 0.85); /* 투명도를 0.75로 설정 */
+          width: 200px;
+          min-width: 200px; /* 최소 너비를 설정하여 반응형 디자인을 유지 */
+      }
+
+      .p-header .p-nav-global .p-nav-sub .p-nav-sub__child li a {
           display: block;
-          padding: 5px 30px;
+          padding: 10px 30px; /* 상하 패딩 증가 */
           width: 100%;
           color: #fff;
-          font-size: 14px;
-          font-size: 0.875rem;
-          }
-          .p-header .p-nav-global .p-nav-sub .p-nav-sub__child li a:hover {
-            opacity: 1;
-            color: #7cdf80; }
+          font-size: 17px;
+      }
+
+      .p-header .p-nav-global .p-nav-sub .p-nav-sub__child li a:hover {
+          opacity: 1;
+          color: #7cdf80;
+      }
+
+
+
   .p-header .p-mega-menu {
     display: none;
     position: fixed;

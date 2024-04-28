@@ -248,6 +248,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> sendResetEmail(@RequestParam String username, @RequestParam String email) {
         Map<String, Object> response = new HashMap<>();
 
+        
         // 비밀번호 재설정 링크 생성 로직 (여기서는 단순화를 위해 UUID를 사용)
         // 실제로는 사용자를 위한 안전한 토큰 생성 과정이 포함되어야 합니다.
         String resetToken = UUID.randomUUID().toString();

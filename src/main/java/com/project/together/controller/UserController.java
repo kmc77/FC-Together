@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+
 import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.config.jwt.TokenUtils;
 import com.project.together.domain.*;
@@ -9,8 +10,8 @@ import com.project.together.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,12 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Controller
@@ -35,7 +36,6 @@ public class UserController {
     private final UserService userService;
     private final MailService mailService;
     private final UserMapper userMapper;
-
 
 
     @Autowired
@@ -230,9 +230,9 @@ public class UserController {
         User user = userService.findByUsernameAndEmail(username, email);
 
         if (user != null) {
-
+            // 계정을 찾았지만, 인증번호는 아직 보내지 않았음을 명시
             response.put("found", true);
-            response.put("message", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+            response.put("message", "계정을 찾았습니다. 이메일로 인증번호를 보내기 위해 '이메일 전송' 버튼을 클릭해주세요.");
         } else {
             response.put("found", false);
             response.put("message", "입력하신 정보로 등록된 계정을 찾을 수 없습니다.");
@@ -242,36 +242,102 @@ public class UserController {
     }
 
 
-    // 비밀번호 재설정 메일 발송
-    @PostMapping("/sendResetEmail")
+    // 비밀번호 재설정 인증번호 메일 발송
+    @PostMapping("/sendVerificationCode")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> sendResetEmail(@RequestParam String username, @RequestParam String email) {
+    public ResponseEntity<Map<String, Object>> sendVerificationCode(@RequestParam String username, @RequestParam String email) {
         Map<String, Object> response = new HashMap<>();
 
-        
-        // 비밀번호 재설정 링크 생성 로직 (여기서는 단순화를 위해 UUID를 사용)
-        // 실제로는 사용자를 위한 안전한 토큰 생성 과정이 포함되어야 합니다.
-        String resetToken = UUID.randomUUID().toString();
-        String resetLink = "http://yourdomain.com/reset-password?token=" + resetToken;
-
-        // 이메일 발송 로직
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(email);
-            message.setSubject("비밀번호 재설정 안내");
-            message.setText("비밀번호를 재설정하려면 다음 링크를 클릭하세요: " + resetLink);
+            // 인증번호 생성 및 토큰 발급
+            String tokenResponse = TokenUtils.createVerificationToken(username, email);
+
+            // 토큰에서 인증번호 추출
+            int verificationCode = TokenUtils.extractVerificationCode(tokenResponse);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom("fctogether@naver.com");
+            helper.setTo(email);
+            helper.setSubject("FC Together 비밀번호 재설정 인증번호");
+
+            // HTML 메일 컨텐츠.
+            String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 20px; padding: 20px; border: 1px solid #EDEDED; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); border-radius: 8px;'>" +
+                    "<h3 style='color: #333;'>비밀번호 재설정 인증번호</h3>" +
+                    "<div style='background-color: #F9F9F9; padding: 20px; border-radius: 5px;'>" +
+                    "<p>귀하의 비밀번호 재설정을 위한 인증번호는 " +
+                    "<strong style='display: inline-block; background-color: #FFFFFF; padding: 8px 12px; border: 1px solid #DDD; border-radius: 4px; color: #0056b3;'>" + verificationCode + "</strong> 입니다.</p>" +
+                    "</div>" +
+                    "<br><br><p style='font-size: small; color: #666;'>*이 메일은 시스템에 의해 자동 발송되었습니다. 답장을 보내지 마십시오.</p>" +
+                    "</div>";
+
+            helper.setText(htmlContent, true);
+
             mailSender.send(message);
 
+            response.put("verificationToken", tokenResponse);
             response.put("success", true);
-            response.put("message", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
-        } catch(Exception e) {
+            response.put("message", "인증번호가 성공적으로 발송되었습니다.");
+        } catch (MessagingException e) {
             e.printStackTrace();
             response.put("success", false);
-            response.put("message", "이메일 발송 중 오류가 발생하였습니다.");
+            response.put("message", "이메일 발송 중 오류가 발생했습니다: " + e.getMessage());
         }
 
         return ResponseEntity.ok(response);
     }
+
+    // 비밀번호 재설정 인증 토큰 검증
+    @PostMapping("/verifyCode")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> verifyCode(@RequestParam String verificationCode, @RequestParam String verificationToken) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // verificationToken을 검증하는 로직
+            boolean isValid = TokenUtils.verifyToken(verificationToken, Integer.parseInt(verificationCode));
+
+            if (isValid) {
+                response.put("success", true);
+                response.put("message", "인증번호가 확인되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "잘못된 인증번호입니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "인증번호 검증 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // 비밀번호 재설정
+    @PostMapping("/resetPassword")
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestParam("password") String password, @RequestParam("verificationToken") String token) {
+        Map<String, Object> response = new HashMap<>();
+        if (!TokenUtils.validateToken(token)) {
+            response.put("success", false);
+            response.put("message", "유효하지 않은 토큰입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);  // 수정
+        }
+
+        User user = userService.getUserByResetPasswordToken(token);
+        if (user == null) {
+            response.put("success", false);
+            response.put("message", "사용자를 찾을 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);  // 수정
+        }
+
+        userService.updatePassword(user, password);
+        response.put("success", true);
+        response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return ResponseEntity.ok(response);  // 확인
+    }
+
 
 }
 

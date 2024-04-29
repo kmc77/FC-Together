@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.config.jwt.TokenUtils;
 import com.project.together.domain.*;
 import com.project.together.mapper.MyMapper;
 import com.project.together.mapper.UserMapper;
@@ -79,4 +80,22 @@ public class UserService {
     public User findByUsernameAndEmail(String username, String email) {
         return userMapper.findByUsernameAndEmail(username, email);
     }
+
+    public User getUserByResetPasswordToken(String token) {
+        // 토큰에서 username 추출
+        String username = TokenUtils.getUsername(token);
+
+        System.out.println("서비스 ====== username = " + username);
+        // 데이터베이스에서 username을 기반으로 사용자 검색
+        return userMapper.findByUsername(username);
+    }
+
+
+    // 비밀번호 업데이트 메서드
+    public void updatePassword(User user, String newPassword) {
+        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userMapper.updateUserPassword(user);
+    }
+
 }

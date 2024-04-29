@@ -65,6 +65,13 @@
         WHERE username = #{username} AND email = #{email}
     </select>
 
+    <update id="updateUserPassword" parameterType="com.project.together.domain.User">
+        UPDATE user
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
+
 
 
 

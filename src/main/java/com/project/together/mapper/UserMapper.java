@@ -32,4 +32,6 @@ public interface UserMapper {
     User findIDByEmail(String email);
 
     User findByUsernameAndEmail(@Param("username") String username, @Param("email") String email);
+
+    void updateUserPassword(User user);
 }

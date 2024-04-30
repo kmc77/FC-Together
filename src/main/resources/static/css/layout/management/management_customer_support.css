@@ -90,7 +90,7 @@ body {
 .indicator {
   width: auto;
   height: 3px;
-  background: #078f0c;
+  background: #FF9800;
   position: absolute;
   margin-top: 58px;
   margin-left:0;
@@ -101,7 +101,7 @@ body {
 .sub-indicator {
   width: auto;
    height: 3px;
-   background: #078f0c;
+   background: #FF9800;
    position: absolute;
    margin-top: 58px;
    margin-left:0;
@@ -572,7 +572,7 @@ a {
    flex-basis: calc(50% - 8px);
    max-width: calc(50% - 8px);
    margin-left: 16px;
-   border-bottom: 2px solid #078f0c;
+   border-bottom: 2px solid #ff9800;
    position: relative;
    z-index: 1;
  }

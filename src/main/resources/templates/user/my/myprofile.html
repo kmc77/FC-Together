@@ -254,43 +254,43 @@
             });
 
           $.ajax({
-    url: '/my/list',
-    type: 'GET',
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-    },
-    success: function(data) {
-        data.forEach(function(qna) {
-            var qnaContent = qna.qnaContent.length > 10 ? qna.qnaContent.substring(0, 10) + " •••" : qna.qnaContent;
+            url: '/my/list',
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            success: function(data) {
+                data.forEach(function(qna) {
+                    var qnaContent = qna.qnaContent.length > 10 ? qna.qnaContent.substring(0, 10) + " •••" : qna.qnaContent;
 
-            var statusClass = '';
-            if(qna.qnaStatus === '답변완료') {
-                statusClass = 'completed';
-            } else if(qna.qnaStatus === '답변대기') {
-                statusClass = 'waiting';
-            } // 추가로 필요한 상태에 따라 else if 문을 더 추가할 수 있습니다.
+                    var statusClass = '';
+                    if(qna.qnaStatus === '답변완료') {
+                        statusClass = 'completed';
+                    } else if(qna.qnaStatus === '답변대기') {
+                        statusClass = 'waiting';
+                    } // 추가로 필요한 상태에 따라 else if 문을 더 추가할 수 있습니다.
 
-            var html = '<div class="list-item">'
-                     + '    <div class="col tit">'
-                     + '        <span class="col date txt-tit">' + qna.qnaTitle + '</span>'
-                     + '    </div>'
-                     + '    <div class="col text">'
-                     + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qnaContent + '</a>'
-                     + '    </div>'
-                     + '    <div class="col qna-info">'
-                     + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'
-                     + '    </div>'
-                     + '    <div class="col state"><span class="badge-answer ' + statusClass + '">' + qna.qnaStatus + '</span></div>'
-                     + '</div>';
-            $('.qnaList').append(html);
+                    var html = '<div class="list-item">'
+                             + '    <div class="col tit">'
+                             + '        <span class="col date txt-tit">' + qna.qnaTitle + '</span>'
+                             + '    </div>'
+                             + '    <div class="col text">'
+                             + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qnaContent + '</a>'
+                             + '    </div>'
+                             + '    <div class="col qna-info">'
+                             + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'
+                             + '    </div>'
+                             + '    <div class="col state"><span class="badge-answer ' + statusClass + '">' + qna.qnaStatus + '</span></div>'
+                             + '</div>';
+                    $('.qnaList').append(html);
+                });
+                $("#submitQna").hide();
+                $("#showQnaList").hide();
+            },
+            error: function(xhr, status, error) {
+                console.error('QnA 목록 불러오기 요청 실패: ' + error);
+            }
         });
-        $("#submitQna").hide();
-        $("#showQnaList").hide();
-    },
-    error: function(xhr, status, error) {
-        console.error('QnA 목록 불러오기 요청 실패: ' + error);
-    }
-});
 
         }
     });
@@ -321,7 +321,9 @@
  });
 
 </script>
-
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 
 </body>
 </html>

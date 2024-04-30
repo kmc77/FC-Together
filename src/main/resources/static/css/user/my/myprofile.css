@@ -1,3 +1,5 @@
+
+
 .mypagePage .top .topTitle {
   padding-top: 0;
 }
@@ -8,16 +10,15 @@
 }
 
 .mypagePage .top .topTitle .title {
-  padding-top: 110px;
-  font-size: 40px;
-  background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+  margin-left: -90px;
+       margin-right: -40px;
+       padding-top: 140px;
+       text-align: center;
+       font-size: 50px;
+       font-weight: 500;
+       background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .container {
   position: relative;
@@ -82,7 +83,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 50px 0; /* 위아래 50px, 좌우 0 */
 }
+
 
 #userProfile {
   margin: 20px;
@@ -140,6 +143,7 @@ textarea {
 }
 
 .input {
+  box-sizing: border-box; /* 여기를 추가함 */
   width: 100%;
   padding: 16px 20px 14px;
   font-size: 14px;
@@ -388,11 +392,15 @@ textarea {
 
 #userProfile {
   padding: 0 2em;
-  font-family: Montserrat, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   color: #444;
-  /*background: #eee;*/
+  /* background: #eee; */
+  display: flex; /* Flexbox를 사용하기 위해 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 (이는 필요에 따라 사용여부 결정) */
+  flex-direction: column; /* 자식 요소들을 세로로 배열 */
+  /* min-height: 100vh; */ /* 최소 높이를 viewport의 100%로 설정 (전체 화면에 걸쳐 중앙 정렬 위해) */
 }
 
 #userProfile h1 {

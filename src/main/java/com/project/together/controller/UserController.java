@@ -52,6 +52,7 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<User> getUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = userService.getFullUserInfo(principalDetails.getUser().getUsername());
+        System.out.println("컨 ====== user = " + user);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 사용자 정보가 없는 경우 404 에러 반환
         }
@@ -65,7 +66,7 @@ public class UserController {
     @ResponseBody
     public Map<String, String> tokenAll(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> response = new HashMap<>();
-        response.put("username", principalDetails.getUsername());
+        response.put("userRealName", principalDetails.getUserRealName());
 
         System.out.println("사용자 정보 response = " + response);
         return response;
@@ -287,6 +288,7 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
 
     // 비밀번호 재설정 인증 토큰 검증
     @PostMapping("/verifyCode")

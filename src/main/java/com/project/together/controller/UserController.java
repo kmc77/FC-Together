@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,8 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -167,7 +164,7 @@ public class UserController {
         userService.joinUser(user);
         System.out.println("회원가입 성공 = " + user);
         model.addAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요."); // 메시지를 모델에 추가
-        return "redirect:/user/loginform";
+        return "redirect:/user/loginform?success=true";
     }
 
     // 로그아웃
@@ -256,31 +253,13 @@ public class UserController {
             // 토큰에서 인증번호 추출
             int verificationCode = TokenUtils.extractVerificationCode(tokenResponse);
 
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-            helper.setFrom("fctogether@naver.com");
-            helper.setTo(email);
-            helper.setSubject("FC Together 비밀번호 재설정 인증번호");
-
-            // HTML 메일 컨텐츠.
-            String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 20px; padding: 20px; border: 1px solid #EDEDED; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); border-radius: 8px;'>" +
-                    "<h3 style='color: #333;'>비밀번호 재설정 인증번호</h3>" +
-                    "<div style='background-color: #F9F9F9; padding: 20px; border-radius: 5px;'>" +
-                    "<p>귀하의 비밀번호 재설정을 위한 인증번호는 " +
-                    "<strong style='display: inline-block; background-color: #FFFFFF; padding: 8px 12px; border: 1px solid #DDD; border-radius: 4px; color: #0056b3;'>" + verificationCode + "</strong> 입니다.</p>" +
-                    "</div>" +
-                    "<br><br><p style='font-size: small; color: #666;'>*이 메일은 시스템에 의해 자동 발송되었습니다. 답장을 보내지 마십시오.</p>" +
-                    "</div>";
-
-            helper.setText(htmlContent, true);
-
-            mailSender.send(message);
+            // 메일 서비스를 이용하여 인증 메일 발송
+            mailService.sendVerificationMail(email, verificationCode);
 
             response.put("verificationToken", tokenResponse);
             response.put("success", true);
             response.put("message", "인증번호가 성공적으로 발송되었습니다.");
-        } catch (MessagingException e) {
+        } catch (Exception e) { // 메일 발송 실패 및 기타 예외 처리
             e.printStackTrace();
             response.put("success", false);
             response.put("message", "이메일 발송 중 오류가 발생했습니다: " + e.getMessage());

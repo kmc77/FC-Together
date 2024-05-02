@@ -91,7 +91,7 @@
 .indicator {
   width: auto;
   height: 3px;
-  background: #078f0c;
+  background: #FF9800;
   position: absolute;
   margin-top: 58px;
   margin-left:0;
@@ -102,7 +102,7 @@
 .sub-indicator {
   width: auto;
    height: 3px;
-   background: #078f0c;
+   background: #FF9800;
    position: absolute;
    margin-top: 58px;
    margin-left:0;
@@ -445,7 +445,7 @@ a {
    z-index: 1;
    width: 100%;
    height: 2px;
-   background-color: #078f0c;
+   background-color: #FF9800;
  }
 
  @media (min-width: 737px) {
@@ -576,7 +576,7 @@ a {
    flex-basis: calc(50% - 8px);
    max-width: calc(50% - 8px);
    margin-left: 16px;
-   border-bottom: 2px solid #078f0c;
+   border-bottom: 2px solid #ff9800;
    position: relative;
    z-index: 1;
  }
@@ -616,6 +616,28 @@ a {
 
 
 
+.team-member__item {
+  position: relative;
+  overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
+}
+
+.team-member__item img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s ease, opacity 0.5s ease; /* 확대 및 투명도 변화 속도를 0.3초에서 0.5초로 조정 */
+  transform-origin: center; /* 확대의 기준점을 이미지 중앙으로 설정 */
+  opacity: 0.9; /* 초기 투명도 설정 */
+}
+
+.team-member__item:hover img {
+  transform: scale(1.1); /* 호버 시 이미지를 조금 더 확대 */
+  opacity: 1; /* 호버 시 투명도를 완전하게 만들어 선명도 증가 */
+}
+
+
+
+ /* 프로필 애니메이션 처리 */
+/*
  .team-member__item:before {
    content: "";
    width: 100%;
@@ -624,7 +646,7 @@ a {
    top: 0;
    left: 0;
    z-index: 2;
-   background-color: #e6002d;
+   background-color: #FF9800;
    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
    transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
    transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
@@ -635,15 +657,17 @@ a {
    transform-origin: left;
  }
 
- .is-pc .team-member__item:hover:before {
+.team-member__item:hover:before {
    -webkit-transform: scaleX(1);
-           transform: scaleX(1);
- }
+   transform: scaleX(1);
+}
 
- .is-pc .team-member__item:hover .team-member__link:before, .is-pc .team-member__item:hover .team-member__link:after {
+.team-member__item:hover .team-member__link:before,
+.team-member__item:hover .team-member__link:after {
    -webkit-transform: scaleY(1);
-           transform: scaleY(1);
- }
+   transform: scaleY(1);
+}
+
 
  .team-member__link {
    display: block;
@@ -657,7 +681,7 @@ a {
    height: 100%;
    position: absolute;
    z-index: 2;
-   background-color: #e6002d;
+   background-color: #FF9800;
    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
    transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
    transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
@@ -679,6 +703,13 @@ a {
    -webkit-transform-origin: top;
            transform-origin: top;
  }
+*/
+
+
+
+
+
+
 
  .team-member__data {
    display: -webkit-box;

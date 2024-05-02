@@ -111,6 +111,16 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+        if(success === 'true'){
+            alert('회원가입이 완료되었습니다. 로그인해주세요.');
+        }
+    });
+</script>
+
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

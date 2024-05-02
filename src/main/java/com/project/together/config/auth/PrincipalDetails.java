@@ -108,4 +108,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return user.getId();
     }
 
+    public String getUserRealName() {
+        return user.getUserRealName();
+    }
+
 }

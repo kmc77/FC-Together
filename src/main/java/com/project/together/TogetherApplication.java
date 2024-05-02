@@ -11,7 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 
-@SpringBootApplication
+
+@SpringBootApplication(
+
+)
 public class TogetherApplication {
 
     @Bean

@@ -34,7 +34,7 @@ public class MainController {
     public String teampage() {
         return "/layout/team/teampage";
     }
-
+//
 //    @GetMapping("/match/matchpage")
 //    public String matchpage() {
 //        return "/layout/match/matchpage";

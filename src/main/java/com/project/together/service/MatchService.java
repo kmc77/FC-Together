@@ -13,14 +13,21 @@ public class MatchService {
 
     private final MatchMapper matchMapper;
 
+
+    public List<Match> K5selectSchedule() {
+
+        return matchMapper.K5selectSchedule();
+    }
+
     public List<Match> K5selectResult() {
 
         return matchMapper.K5selectResult();
     }
 
-    public List<Match> K5selectSchedule() {
 
-        return matchMapper.K5selectSchedule();
+    public List<Match> K7selectSchedule() {
+
+        return matchMapper.K7selectSchedule();
     }
 
     public List<Match> K7selectResult() {
@@ -28,8 +35,13 @@ public class MatchService {
         return matchMapper.K7selectResult();
     }
 
-    public List<Match> K7selectSchedule() {
+    public List<Match> W1selectSchedule() {
 
-        return matchMapper.K7selectSchedule();
+        return matchMapper.W1selectSchedule();
+    }
+
+    public List<Match> W1selectResult() {
+
+        return matchMapper.W1selectResult();
     }
 }

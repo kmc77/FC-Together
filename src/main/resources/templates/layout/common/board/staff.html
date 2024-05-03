@@ -44,7 +44,7 @@
         <ul id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-            <li><a href="#/" data-staff-type="staff">스태프 목록</a></li>
+            <li><a th:href="@{./staff}" data-staff-type="staff">스태프 목록</a></li>
             <li id="register-staff"><a href="#/">스태프 등록</a></li>
         </ul>
         <script src="/dist/js/staff.js"></script>
@@ -584,6 +584,9 @@
 
                               // "보기" 버튼 클릭 시 "정보 업데이트" 버튼을 숨김
                               $('.submit-btn').hide();
+
+                              // "스태프 등록" 탭의 이름을 "스태프 정보"로 변경합니다.
+                              $("#register-staff a").text("스태프 정보");
 
                               // "스태프 등록" 탭 클릭
                               $("#register-staff a").trigger('click');

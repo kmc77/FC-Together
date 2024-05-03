@@ -42,7 +42,7 @@
         <ul id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-            <li><a href="#/">공지사항 목록</a></li>
+            <li><a th:href="@{./notice_management}">공지사항 목록</a></li>
             <li><a href="#/">공지 작성</a></li>
         </ul>
         <script src="/dist/js/notice_management.js"></script>
@@ -89,13 +89,14 @@
             <input type="hidden" name="noticeNum"> <!-- 고유값 -->
             <input type="hidden" name="noticeDate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
-            <input name="noticeTitle" type="text" placeholder="제목"/><br>
+            <input name="noticeTitle" type="text" placeholder="제목" style="width: 100%; max-width: 700px; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px;"/><br>
             <textarea name="noticeContent" id="content"></textarea><br>
             <input type="file" name="files" multiple><br> <!-- 파일 선택 입력 필드 추가 -->
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
             </div>
         </form>
+        <link rel="stylesheet" href="/dist/css/admin/notice_management.css">
         <script>
 
             ClassicEditor.create( document.querySelector( '#content' ), {
@@ -374,11 +375,21 @@
                         $('#title-value').text(data.notice.noticeTitle);
                         $('#content-html-value').html(data.notice.noticeContent);
 
-                        // 공지 작성 탭으로 이동하고 버튼 텍스트를 "수정"으로 변경
+                        // 공지 작성 탭으로 이동
                         $("#nav-1 li:contains('공지 작성') a").click();
+
+                        // 탭의 텍스트를 "공지 내용"으로 변경
+                        $("#nav-1 li a:contains('공지 작성')").text("공지 내용");
+
+                        // 버튼 텍스트를 "수정"으로 변경
                         $(".btn-perspective .btn").text("수정");
+
+                        // 폼의 action 속성을 업데이트
                         $('form').attr('action', '/admin/layout/noticeUpdate/' + data.notice.noticeNum);
+
+                        // noticeNum 값 설정
                         $("input[name='noticeNum']").val(data.notice.noticeNum);
+
 
                         // 첨부파일 목록 업데이트
                         var attachmentsHtml = '<ul>';

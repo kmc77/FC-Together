@@ -63,12 +63,12 @@
     gap: 0.667rem;
 }
 
-.photoContent {
+.cpContent {
    /* border-bottom: 1px solid rgb(0, 0, 0);*/
     font-weight: 400;
 }
 
-.photoContent .content {
+.cpContent .content {
      padding: 3.111rem 2.111rem;
      font-size: 1rem; /* 기본 글자 크기를 16px(1rem)로 설정 */
      letter-spacing: 0.05em; /* 글자 간격을 적당히 늘림 */

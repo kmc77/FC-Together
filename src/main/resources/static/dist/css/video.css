@@ -1,78 +1,99 @@
 @import url('https://fonts.cdnfonts.com/css/d-din');
 
-/* 기본 설정 */
+/* video.css */
+
 .cnt_bbs {
-    height: 100%;
+    display: flex;
+    flex-direction: column; /* 수직 방향 배치 */
+    align-items: center; /* 중앙 정렬 */
+    justify-content: flex-start; /* 상단 정렬 */
     width: 80%;
-    margin: 0 auto;  
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    display: block;
-    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 자동으로 중앙 정렬 */
+    padding: 2rem 1rem; /* 상하 패딩 조정 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
+    background-color: #fff; /* 배경색 설정 */
     overflow: hidden;
-    align-content: stretch;
-    justify-content: space-around;
-    overflow-y: auto; /* 스크롤 적용 */
-    max-height: 100vh; /* 높이 제한 */
 }
+
+/* 제목 스타일 */
+/*.cnt_bbs h1 {
+    font-size: 2rem; *//* 글자 크기 조정 *//*
+    color: #333; *//* 글자 색상 조정 *//*
+    margin-bottom: 1.5rem; *//* 하단 마진 조정 *//*
+}*/
 
 /* 테이블 스타일 */
 .cnt_bbs .tb_write {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; /* 너비 100%로 설정 */
+    margin-bottom: 20px; /* 하단 여백 추가 */
 }
 
-.cnt_bbs .tb_write th, .cnt_bbs .tb_write td {
-    padding: 1rem;
-    border: 1px solid #ddd;
-}
-
-.cnt_bbs .tb_write th {
-    background-color: #f2f2f2;
-    text-align: left;
+.cnt_bbs th, .cnt_bbs td {
+    text-align: left; /* 왼쪽 정렬 */
+    padding: 0.8rem; /* 패딩 조정 */
+    border-bottom: 1px solid #eee; /* 하단 경계선 추가 */
 }
 
 /* 입력 필드 스타일 */
 .cnt_bbs input[type="text"], .cnt_bbs textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: 100%; /* 전체 너비 사용 */
+    padding: 0.8rem; /* 패딩 조정 */
+    border: 1px solid #ccc; /* 경계선 색상 조정 */
+    border-radius: 4px; /* 모서리 둥글게 */
 }
 
-/* 기존 버튼 스타일 */
-.cnt_bbs .tb_btn {
-    padding: 0.5rem 1rem;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
+/* 버튼 스타일 */
 .cnt_bbs .tb_btn.blueM {
-    background-color: #007BFF;
+    font-size: 1rem; /* 글자 크기 조정 */
+    padding: 0.8rem 1.2rem; /* 패딩 조정 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    background-color: #3498DB; /* 기본 배경색 */
+    color: white; /* 글자색 */
+    border: none; /* 경계선 제거 */
+    perspective: 1000px; /* 3D 효과를 위한 원근감 설정 */
+    transition: transform 0.3s, background-color 0.3s; /* 애니메이션 효과 추가 */
+    transform-style: preserve-3d; /* 3D 변형 스타일 유지 */
+    position: relative; /* 필요한 경우 위치를 상대적으로 설정 */
+    overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 
-.cnt_bbs .tb_btn.whiteM {
-    background-color: #ffffff;
-    color: #000;
+.cnt_bbs .tb_btn.blueM::after {
+    content: ''; /* 가상 요소에 내용 추가 */
+    position: absolute; /* 절대 위치 설정 */
+    width: 100%; /* 전체 너비 */
+    height: 40%; /* 높이 설정 */
+    left: 0; /* 왼쪽에서 시작 */
+    bottom: 0; /* 하단에서 시작 */
+    background: #2980D9; /* 배경색 설정 */
+    transform-origin: 0% 100%; /* 변형 기준점 설정 */
+    transform: rotateX(90deg); /* X축 기준 90도 회전 */
+    transition: transform 0.3s; /* 애니메이션 효과 적용 */
 }
 
-/* "정보 수정" 버튼에 대한 주황색 배경 스타일 추가 */
-.cnt_bbs .tb_btn.redM {
-    background-color: #FF4500; /* 주황색 배경 */
+.cnt_bbs .tb_btn.blueM:hover {
+    transform: rotateX(5deg); /* 호버 시 회전 효과 */
+    background-color: #2980D9; /* 호버 시 배경색 변경 */
 }
 
-.cnt_bbs .tb_btn:hover {
-    opacity: 0.8;
+.cnt_bbs .tb_btn.blueM:hover::after {
+    transform: rotateX(0deg); /* 호버 시 :after 요소가 회전 해제 */
 }
 
-.mt_20.t_r {
-    margin-top: 20px; /* 20px 상단 마진 적용 */
+
+/* 반응형 비디오 플레이어 설정 */
+#content-html-value {
+    width: 40vw; /* 너비를 뷰포트의 40%로 설정 */
+    height: 22.5vw; /* 16:9 비율에 맞춰 높이 조정 (40vw * 0.5625) */
+    position: relative; /* 상대 위치 설정 */
+    overflow: visible; /* 내용이 넘치면 보이도록 설정 */
 }
 
-.submit-btn, .change_submit-btn {
-  display: block; /* 블록 레벨 요소로 만들어 줍니다 */
-  margin-left: auto; /* 왼쪽 마진을 자동으로 설정하여 오른쪽 정렬을 합니다 */
-  margin-right: 0; /* 오른쪽 마진을 0으로 설정 */
+#content-html-value iframe {
+    position: absolute; /* 절대 위치 설정 */
+    top: 0;
+    left: 0;
+    width: 100%; /* 너비를 상위 요소와 동일하게 설정 */
+    height: 100%; /* 높이를 상위 요소와 동일하게 설정 */
 }
+

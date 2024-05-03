@@ -44,7 +44,7 @@
             <li class="slide3"></li>
             <li class="slide4"></li>
             <li class="slide5"></li>
-            <li><a href="#/" data-player-type="k5">K5 선수 목록</a></li>
+            <li><a th:href="@{./players}" data-player-type="k5">K5 선수 목록</a></li>
             <li><a href="#/" data-player-type="k7">K7 선수 목록</a></li>
             <li><a href="#/" data-player-type="w1">Woman 선수 목록</a></li>
             <li id="active-players"><a href="#/">현역 선수 목록</a></li>
@@ -662,7 +662,7 @@
                             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
                         },
                         success: function(response) {
-                            var playerInfo = response.player; // 이 부분이 변경되었습니다.
+                            var playerInfo = response.player;
                             var files = response.files;
 
                         // localStorage에서 selectedPlayerType 값을 가져옵니다.
@@ -692,6 +692,9 @@
 
                             // "보기" 버튼 클릭 시 "정보 업데이트" 버튼을 숨김
                             $('.submit-btn').hide();
+
+                            // "선수 등록" 탭의 이름을 "선수 정보"로 변경합니다.
+                            $("#register-player a").text("선수 정보");
 
                             // "선수 등록" 탭 클릭
                             $("#register-player a").trigger('click');

@@ -84,7 +84,7 @@
             <input type="hidden" name="newsIdx"> <!-- 고유값 -->
             <input type="hidden" name="newsRegdate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
-            <input name="newsTitle" type="text" placeholder="제목"/><br>
+            <input name="newsTitle" type="text" placeholder="제목" style="width: 100%; max-width: 700px; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px;"/><br>
             <textarea name="newsContent" id="content"></textarea><br>
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
@@ -386,6 +386,9 @@
 
                             // "소식 작성" 탭 클릭
                             $("#nav-1 li:contains('소식 작성') a").click();
+
+                            // 탭의 텍스트를 "소식 내용"으로 변경
+                            $("#nav-1 li a:contains('소식 작성')").text("소식 내용");
 
                             // Form submit 버튼의 텍스트를 "수정"으로 변경
                             $(".btn-perspective .btn").text("수정");

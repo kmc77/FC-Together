@@ -49,7 +49,7 @@
 
     <!-- CK Editor 추가 -->
     <div id="ck-editor-wrapper" class="ck-editor" style="display: none;">
-        <h1 class="text-3xl py-4 border-b mb-10">사진 등록</h1>
+        <h1 class="text-3xl py-4 border-b mb-10">사진 정보</h1>
 
         <div id="viewContainer" class="container mx-auto py-6 px-4 textarea">
             <div class="content-box">
@@ -84,7 +84,7 @@
             <input type="hidden" name="cpIdx"> <!-- 고유값 -->
             <input type="hidden" name="cpRegdate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
-            <input name="cpTitle" type="text" placeholder="제목"/><br>
+            <input name="cpTitle" type="text" placeholder="제목" style="width: 100%; max-width: 700px; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px;"/><br>
             <textarea name="cpContent" id="content"></textarea><br>
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
@@ -385,6 +385,9 @@
 
                             // "사진 등록" 탭 클릭
                             $("#nav-1 li:contains('사진 등록') a").click();
+
+                            // 탭의 텍스트를 "사진 정보"으로 변경
+                            $("#nav-1 li a:contains('사진 등록')").text("사진 정보");
 
                             // Form submit 버튼의 텍스트를 "수정"으로 변경
                             $(".btn-perspective .btn").text("수정");

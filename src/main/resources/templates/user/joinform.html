@@ -39,7 +39,7 @@
                 success: function (resp) {
                     console.log("ID 중복 확인 결과:", resp);
                     if (resp === -1) {
-                        $("#message").css('color', 'red').html("이 ID는 이미 사용 중입니다.");
+                        $("#message").css('color', 'red').html("해당 ID는 이미 사용 중입니다.");
                         checkid = false;
                         idcheck = '';
                     } else if (resp === 1) {
@@ -73,7 +73,7 @@
                 success: function (resp) {
                     console.log("이메일 중복 확인 결과:", resp);
                     if (resp === -1) {
-                        $("#email_message").css('color', 'red').html("이 이메일은 이미 사용 중입니다.");
+                        $("#email_message").css('color', 'red').html("해당 이메일은 이미 사용 중입니다.");
                         checkemail = false;
                         emailcheck = '';
                     } else if (resp === 1) {
@@ -189,13 +189,13 @@
                         <button class="btn whiteLightgrey" type="button" id="id_butt">중복확인</button>
                     </div>
                 </div>
-                <div id="message" style="color: red; margin-top: 5px;"></div>
+                <div id="message" style="color: red; margin-bottom: 30px; margin-left: 160px;"></div>
                 <div class="formGroup">
                     <label class="label" for="password">비밀번호 입력<span class="required">(필수)</span></label>
                     <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" class="input">
                     <p class="inputMessage"><!----> 영어 대/소문자, 특수문자, 숫자를 조합한 9~20자리로 입력하세요</p>
                 </div>
-                <div id="password_message" style="color: red; margin-top: 5px;"></div>
+                <div id="password_message" style="color: red; margin-bottom: 30px;"></div>
                 <div class="formGroup">
                     <label class="label">비밀번호 확인</label>
                     <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요"
@@ -236,7 +236,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="email_message" class="messageContainer"></div>
+                <div id="email_message" class="messageContainer" style="color: red; margin-bottom: 30px; margin-left: 160px;"></div>
                 <div class="formGroup">
                     <label class="label" for="user_birth">생년월일 <span class="required">(필수)</span></label>
                     <input class="input" type="text" name="userBirth" id="user_birth" placeholder="YYYY-MM-DD 형식">
@@ -380,8 +380,8 @@
                 var players = JSON.parse(this.responseText);
                 players.forEach(function(player) {
                     var option = document.createElement('option');
-                    var playerName = player.k5PlayerName || player.k7PlayerName || player.wplayerName || "선수없음";
-                    var playerNum = player.k5PlayerNum || player.k7PlayerNum || player.wplayerNum || "0";
+                    var playerName = player.k5PlayerName || player.k7PlayerName || player.w1PlayerName || "선수없음";
+                    var playerNum = player.k5PlayerNum || player.k7PlayerNum || player.w1PlayerNum || "0";
                     option.value = option.text = playerName + " (" + playerNum + ")";
                     playerSelect.add(option);
                 });

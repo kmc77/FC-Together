@@ -92,9 +92,9 @@
                     </ul>
                 </li>
                 <li class="nav-item"
-                    th:classappend="${currentPage == 'k4match' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'sLeaguematch' ? 'menu-open' : ''}">
+                    th:classappend="${currentPage == 'clublist' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'w1match' ? 'menu-open' : ''}">
                     <a href="#" class="nav-link"
-                       th:classappend="${currentPage == 'k4match' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'sLeaguematch' ? 'active' : ''}">
+                       th:classappend="${currentPage == 'clublist' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'w1match' ? 'active' : ''}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Match
@@ -103,10 +103,10 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a th:href="@{./k4match}" th:classappend="${currentPage == 'k4match' ? 'active' : ''}"
+                            <a th:href="@{./clublist}" th:classappend="${currentPage == 'clublist' ? 'active' : ''}"
                                class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>K4</p>
+                                <p>구단목록</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -124,8 +124,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a th:href="@{./wLeaguematch}"
-                               th:classappend="${currentPage == 'wLeaguematch' ? 'active' : ''}"
+                            <a th:href="@{./w1match}"
+                               th:classappend="${currentPage == 'w1match' ? 'active' : ''}"
                                class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>W리그</p>

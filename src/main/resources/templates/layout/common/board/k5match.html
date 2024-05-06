@@ -1,54 +1,138 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
-<head th:replace="layout/common/header :: load('Layout Sample Page')"></head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common/header :: load('k5 매치 관리 페이지')"></head>
 <body>
-<!-- Preloader -->
+<!-- 프리로더 -->
 <div th:replace="layout/common/preloader :: load()"></div>
 
-<!-- Navbar -->
+<!-- 네비게이션바 -->
 <nav th:replace="layout/common/navigator :: load()"></nav>
 
-<!-- Main Sidebar Container -->
+<!-- 메인 사이드바 컨테이너 -->
 <aside th:replace="layout/common/sider :: load()"></aside>
 
-<!-- 에디터 코드 추가 -->
-
-
-<!-- Content Wrapper. Contains page content -->
+<!-- 컨텐츠 래퍼 -->
 <div id="app" class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- 페이지 헤더 -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">k5 match 관리 페이지</h1>
-                </div><!-- /.col -->
+                    <h1 class="m-0">k5 매치 관리 페이지</h1>
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/admin/layout/adminpage">Home</a></li>
-                        <li class="breadcrumb-item active">k5 match 관리 페이지</li>
+                        <li class="breadcrumb-item"><a href="/admin/layout/adminpage">홈</a></li>
+                        <li class="breadcrumb-item active">k5 매치 관리 페이지</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Main content -->
+    <!-- 매치 추가 양식 -->
     <section class="content">
-        <!-- 화면 내용 작성 -->
-        <p id="message">{{message}}</p>
-        <button id="reverseButton">메시지 뒤집기</button>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">새 매치 추가</h3>
+            </div>
+            <div class="card-body">
+                <form id="addMatchForm">
+                    <div class="form-group">
+                        <label>팀 스태프 이름:</label>
+                        <select class="form-control" name="teamStaffName">
+                            <!-- 팀 스태프 이름 옵션은 서버에서 로드 -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>매치 결과:</label>
+                        <select class="form-control" name="matchResult">
+                            <option>승</option>
+                            <option>패</option>
+                            <option>무</option>
+                        </select>
+                    </div>
+                    <!-- 추가적인 드롭다운 메뉴 필드 -->
+                    <div class="form-group">
+                        <label>점수:</label>
+                        <input type="text" class="form-control" name="matchScore">
+                    </div>
+                    <div class="form-group">
+                        <label>날짜:</label>
+                        <input type="date" class="form-control" name="matchDate">
+                    </div>
+                    <div class="form-group">
+                        <label>시간:</label>
+                        <input type="time" class="form-control" name="matchTime">
+                    </div>
+                    <div class="form-group">
+                        <label>장소:</label>
+                        <input type="text" class="form-control" name="matchLocation">
+                    </div>
+                    <div class="form-group">
+                        <label>상태:</label>
+                        <select class="form-control" name="matchStatus">
+                            <option>예정</option>
+                            <option>진행중</option>
+                            <option>완료</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>홈/어웨이:</label>
+                        <select class="form-control" name="matchHome">
+                            <option>홈</option>
+                            <option>어웨이</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>리그:</label>
+                        <select class="form-control" name="leagueGb">
+                            <!-- 리그 옵션은 서버에서 로드 -->
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="addMatch()">추가</button>
+                </form>
+            </div>
+        </div>
     </section>
 
-
-
+    <!-- 메인 콘텐츠: 매치 목록 -->
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">매치 목록</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered" id="matchList">
+                    <thead>
+                    <tr>
+                        <th>팀 스태프 이름</th>
+                        <th>매치 결과</th>
+                        <th>점수</th>
+                        <th>날짜</th>
+                        <th>시간</th>
+                        <th>장소</th>
+                        <th>상태</th>
+                        <th>홈/어웨이</th>
+                        <th>리그</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 동적으로 로드된 매치 데이터 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </div>
 
-<!-- Main footer -->
+<!-- 푸터 -->
 <footer th:replace="layout/common/footer :: load()"></footer>
 
-<!-- common javascript -->
+<!-- 공통 자바스크립트 -->
 <div th:include="layout/common/script :: load()"></div>
+
+
 
 <script th:inline="javascript">
     $(document).ready(function(){
@@ -85,7 +169,41 @@
     document.querySelector('.d-block').textContent = username + " 관리자";
 
 </script>
+<script>
+    function editMatch(button) {
+        var row = button.parentNode.parentNode;
+        var cells = row.querySelectorAll('td:not(:last-child)');
+        cells.forEach(function(cell, index) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.value = cell.innerText;
+            cell.innerText = '';
+            cell.appendChild(input);
+        });
+    }
 
+    function deleteMatch(button) {
+        var row = button.parentNode.parentNode;
+        row.remove();
+    }
+
+    function addNewMatch() {
+        var table = document.getElementById('matchTable').getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.length);
+        for (var i = 0; i < 9; i++) {
+            var cell = newRow.insertCell(i);
+            var input = document.createElement('input');
+            input.type = 'text';
+            cell.appendChild(input);
+        }
+        var actionCell = newRow.insertCell(9);
+        var saveButton = document.createElement('button');
+        saveButton.innerText = '저장';
+        saveButton.type = 'button';
+        saveButton.classList.add('btn', 'btn-success');
+        actionCell.appendChild(saveButton);
+    }
+</script>
 
 </body>
 </html>

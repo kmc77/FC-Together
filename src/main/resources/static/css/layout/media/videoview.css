@@ -69,11 +69,18 @@
 }
 
 .cvContent .content {
-     padding: 3.111rem 2.111rem;
+     padding: 3.111rem 4.111rem;
      font-size: 1rem; /* 기본 글자 크기를 16px(1rem)로 설정 */
      letter-spacing: 0.05em; /* 글자 간격을 적당히 늘림 */
      line-height: 1.6; /* 줄 간격을 글자 크기의 1.6배로 설정 */
 }
+
+.cvContent .content iframe {
+    max-width: 100%;  /* 최대 너비를 부모 요소의 100%로 설정 */
+    height: auto;     /* 높이를 자동으로 조절 */
+    aspect-ratio: 16 / 9;  /* 영상의 종횡비를 16:9로 유지 */
+}
+
 
 .post-navigation {
     font-size: 1rem;

@@ -90,12 +90,13 @@
             <input type="hidden" name="scheduleNum"> <!-- 고유값 -->
             <input type="hidden" name="scheduleDate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
-            <input name="scheduleTitle" type="text" placeholder="제목"/><br>
+            <input name="scheduleTitle" type="text" placeholder="일정제목" style="width: 100%; max-width: 700px; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px;"/><br>
             <textarea name="scheduleContent" id="content"></textarea><br>
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
             </div>
         </form>
+        <link rel="stylesheet" href="/dist/css/admin/trainingschedule_management.css">
         <script>
 
             ClassicEditor.create( document.querySelector( '#content' ), {

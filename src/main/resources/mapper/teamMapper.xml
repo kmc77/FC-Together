@@ -2,17 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.TeamMapper">
 
-   <!-- <select id="getK5Player" resultType="com.project.together.domain.K5_Player">
-        SELECT * FROM K5_Player ORDER BY k5_player_num DESC
-    </select>
-
-    <select id="getK7Player" resultType="com.project.together.domain.K7_Player">
-        SELECT * FROM K7_Player ORDER BY k7_player_num DESC
-    </select>
-
-    <select id="getW1Player" resultType="com.project.together.domain.W1_Player">
-        SELECT * FROM W1_Player ORDER BY W1_player_num DESC
-    </select>-->
 
     <!-- K5_Player 테이블과 file 테이블 조인 쿼리, 필요한 컬럼만 선택 -->
     <select id="getK5Players" resultType="com.project.together.domain.K5_Player">

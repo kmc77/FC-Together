@@ -97,3 +97,26 @@
     height: 100%; /* 높이를 상위 요소와 동일하게 설정 */
 }
 
+/* 버튼 컨테이너 스타일 */
+.cnt_bbs .change_submit-btn {
+    width: 100%; /* 너비를 100%로 설정하여 폼 전체에 맞춤 */
+    display: flex; /* Flexbox를 사용하여 요소를 유연하게 배치 */
+    justify-content: center; /* 버튼을 중앙에 위치시킴 */
+    margin-top: 20px; /* 상단 여백 추가 */
+}
+
+/* '정보 수정' 버튼 스타일 */
+.cnt_bbs .change_submit-btn .tb_btn.redM {
+    font-size: 1rem; /* 글자 크기 조정 */
+    padding: 0.8rem 1.2rem; /* 패딩 조정 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
+    background-color: #E74C3C; /* 배경색을 붉은색으로 설정 */
+    color: white; /* 글자색을 흰색으로 설정 */
+    border: none; /* 테두리 제거 */
+    transition: background-color 0.3s, transform 0.3s; /* 배경색과 변형에 대한 전환 효과 추가 */
+}
+
+.cnt_bbs .change_submit-btn .tb_btn.redM:hover {
+    background-color: #C0392B; /* 호버 시 배경색을 더 어두운 붉은색으로 변경 */
+    transform: scale(1.05); /* 호버 시 버튼을 약간 확대 */
+}

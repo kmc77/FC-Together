@@ -672,8 +672,16 @@ public class AdminService {
     }
 
 
-
 // ================================== 훈련일정 and
+
+
+    public List<Team> getAllTeamList() {
+        return adminMapper.getAllTeamList();
+    }
+
+    public List<Team> findTeamsByLeague(String league) {
+        return adminMapper.findTeamsByLeague(league);
+    }
 }
 
 

@@ -44,15 +44,29 @@
         #{providerId})
     </insert>
 
-    <!-- 휴대폰 번호로 사용자 아이디(username) 찾기 -->
+    <!-- 휴대폰 번호로 사용자 아이디(username) 찾기
     <select id="findIDByPhoneNum" parameterType="java.lang.String" resultType="com.project.together.domain.User">
         SELECT username
         FROM user
         WHERE user_phone = #{phone}
     </select>
 
-    <!-- 이메일로 사용자 아이디(username) 찾기 -->
+    &lt;!&ndash; 이메일로 사용자 아이디(username) 찾기 &ndash;&gt;
     <select id="findIDByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE email = #{email}
+    </select>-->
+
+    <!-- 휴대폰 번호로 사용자 아이디(username) 찾기 -->
+    <select id="findUsersByPhoneNumber" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE user_phone = #{phone}
+    </select>
+
+    <!-- 이메일로 사용자 아이디(username) 찾기 -->
+    <select id="findUsersByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
         SELECT username
         FROM user
         WHERE email = #{email}

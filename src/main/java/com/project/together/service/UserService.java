@@ -60,7 +60,7 @@ public class UserService {
 
     public void deleteUser(String username) {
         User user = userMapper.findByUsername(username);
-
+        System.out.println("서비스 ===== user = " + user);
         // Qna 테이블에서 관련 레코드를 먼저 삭제합니다.
         myMapper.deleteByUserId(user.getUsername());
 
@@ -69,12 +69,12 @@ public class UserService {
     }
 
 
-    public User findIDByPhoneNum(String phone) {
-        return userMapper.findIDByPhoneNum(phone);
+    public List<User> findUsersByEmail(String userInput) {
+        return userMapper.findUsersByEmail(userInput);
     }
 
-    public User findIDByEmail(String email) {
-        return userMapper.findIDByEmail(email);
+    public List<User> findUsersByPhoneNumber(String userInput) {
+        return userMapper.findUsersByPhoneNumber(userInput);
     }
 
     public User findByUsernameAndEmail(String username, String email) {
@@ -97,5 +97,6 @@ public class UserService {
         user.setPassword(encodedPassword);
         userMapper.updateUserPassword(user);
     }
+
 
 }

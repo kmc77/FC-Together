@@ -625,6 +625,23 @@
     <!-- ==============  훈련일정 End ============== -->
 
 
+    <!-- ==============  구단목록 Start ============== -->
+
+
+    <select id="getAllTeamList" resultType="com.project.together.domain.Team">
+        SELECT * FROM Team ORDER BY team_name DESC
+    </select>
+
+    <select id="findTeamsByLeague" resultType="com.project.together.domain.Team" parameterType="String">
+        SELECT * FROM Team WHERE team_league_gb = #{league} ORDER BY team_name DESC
+    </select>
+
+
+
+
+
+
+    <!-- ==============  구단목록 End ============== -->
 
 
 </mapper>

@@ -10,48 +10,71 @@
 
     <style>
         /* CSS for tabs */
-        .tab-container {
-            display: flex;
-            justify-content: center; /* 수평 가운데 정렬 */
-            align-items: center; /* 수직 가운데 정렬 */
-            margin-top: 20px;
-            max-width: 400px; /* 가로 길이 조정 */
-            margin: 0 auto; /* 가로 가운데 정렬 추가 */
-        }
-
         .tab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px; /* Increased width */
+            margin: 0 auto; /* Center align */
             overflow: hidden;
             border: 1px solid #ccc;
             background-color: #f1f1f1;
-            display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
             width: 100%;
-            max-width: 400px; /* 탭 너비 조정 */
         }
 
-        /* Style the buttons inside the tab */
         .tab button {
             background-color: inherit;
             float: left;
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 10px 12px; /* 크기 조정 */
+            padding: 10px 12px; /* Adjust size */
             transition: 0.3s;
-            display: inline-block; /* 추가 */
+            display: inline-block;
             margin-bottom: -1px;
             width: calc(33.33% - 1px); /* 3개의 탭이 동일한 너비를 가지도록 조정 */
         }
 
-        /* Change background color of buttons on hover */
         .tab button:hover {
             background-color: #8bc34a; /* 초록색으로 변경합니다. */
         }
 
-        /* Create an active/current tablink class */
         .tab button.active {
             background-color: #8bc34a; /* 활성 탭의 배경색을 초록색으로 변경합니다. */
+        }
+
+        /* Style for subtab buttons */
+        .subtab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 300px; /* Decreased width */
+            margin: 0 auto; /* Center align */
+            overflow: hidden;
+            border: none;
+            background-color: inherit;
+        }
+
+        .subtab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 12px; /* Adjust size */
+            transition: 0.3s;
+            display: inline-block;
+            margin-bottom: -1px;
+            width: calc(50% - 1px); /* Ensure two buttons fit within the subtab */
+        }
+
+        .subtab button:hover {
+            background-color: #8bc34a; /* Change to desired color */
+        }
+
+        .subtab button.active {
+            background-color: #8bc34a; /* Change to desired color */
         }
 
         /* Style the tab content */
@@ -68,9 +91,14 @@
             margin: 0 auto; /* 가로 가운데 정렬 */
         }
 
+        .matchAllArea {
+         margin-top : 30px;
+        }
+
     </style>
 </head>
 <body>
+<div class="matchAllArea">
 
 <div class="tab-container">
     <div class="tab">
@@ -82,7 +110,7 @@
 
 <div id="K5" class="tabcontent">
     <div class="subtab">
-        <button class="subtablinks" onclick="openSubTab(event, 'schedule_K5')">경기 일정</button>
+        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K5')">경기 일정</button>
         <button class="subtablinks" onclick="openSubTab(event, 'results_K5')">경기 결과</button>
     </div>
     <div id="schedule_K5" class="subtabcontent">
@@ -105,7 +133,7 @@
 
 <div id="K7" class="tabcontent">
     <div class="subtab">
-        <button class="subtablinks" onclick="openSubTab(event, 'schedule_K7')">경기 일정</button>
+        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K7')">경기 일정</button>
         <button class="subtablinks" onclick="openSubTab(event, 'results_K7')">경기 결과</button>
     </div>
     <div id="schedule_K7" class="subtabcontent">
@@ -128,7 +156,7 @@
 
 <div id="W1" class="tabcontent">
     <div class="subtab">
-        <button class="subtablinks" onclick="openSubTab(event, 'schedule_W1')">경기 일정</button>
+        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_W1')">경기 일정</button>
         <button class="subtablinks" onclick="openSubTab(event, 'results_W1')">경기 결과</button>
     </div>
     <div id="schedule_W1" class="subtabcontent">
@@ -148,6 +176,8 @@
         </table>
     </div>
 </div>
+</div>
+
 
 <script>
     // JavaScript for tabs

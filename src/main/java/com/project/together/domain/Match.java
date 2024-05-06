@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class Match {
-    private String teamStaffName;
-    private String matchResult;
+    private String teamName;
     private String matchScore;
     private String matchDate;
     private String matchTime;

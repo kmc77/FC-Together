@@ -27,11 +27,13 @@ public interface UserMapper {
 
     void delete(User user);
 
-    User findIDByPhoneNum(String phone);
+    List<User> findUsersByEmail(String userInput);
 
-    User findIDByEmail(String email);
+    List<User> findUsersByPhoneNumber(String userInput);
 
     User findByUsernameAndEmail(@Param("username") String username, @Param("email") String email);
 
     void updateUserPassword(User user);
+
+
 }

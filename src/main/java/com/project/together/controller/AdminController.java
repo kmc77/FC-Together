@@ -1270,12 +1270,40 @@ public class AdminController {
 
 
 
+    // ================================== 구단목록 start
+
+
+    // 구단목록 목록 가져오기
+    /*@GetMapping("/layout/getTeamList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Team>> getTeamList() {
+        List<Team> teams = adminService.getAllTeamList();
+        System.out.println("컨 ===== teams = " + teams);
+        System.out.println("teams = " + teams);
+        return ResponseEntity.ok(teams);
+    }*/
+
+    @GetMapping("/layout/getTeamList")
+    public ResponseEntity<List<Team>> getTeamList(@RequestParam(required = false) String league) {
+        List<Team> teams;
+        if (league == null || league.isEmpty()) {
+            teams = adminService.getAllTeamList();
+        } else {
+            teams = adminService.findTeamsByLeague(league);
+        }
+        return ResponseEntity.ok(teams);
+    }
 
 
 
 
 
 
+
+
+
+
+    // ================================== 구단목록 End
 
 
 
@@ -1307,11 +1335,11 @@ public class AdminController {
         return "layout/common/board/staff";
     }
 
-    @GetMapping("/layout/k4match")
-    public String k4match(Model model) {
-        model.addAttribute("content", "K4 매치 관리 입장");
-        model.addAttribute("currentPage", "k4match");
-        return "layout/common/board/k4match";
+    @GetMapping("/layout/clublist")
+    public String clublist(Model model) {
+        model.addAttribute("content", "구단명단 관리 입장");
+        model.addAttribute("currentPage", "clublist");
+        return "layout/common/board/clublist";
     }
 
     @GetMapping("/layout/k5match")
@@ -1328,11 +1356,11 @@ public class AdminController {
         return "layout/common/board/k7match";
     }
 
-    @GetMapping("/layout/wLeaguematch")
-    public String wLeaguematch(Model model) {
+    @GetMapping("/layout/w1match")
+    public String w1match(Model model) {
         model.addAttribute("content", "W리그 매치 관리 입장");
-        model.addAttribute("currentPage", "sLeaguematch");
-        return "layout/common/board/wLeaguematch";
+        model.addAttribute("currentPage", "w1match");
+        return "layout/common/board/w1match";
     }
 
     @GetMapping("/layout/notice_management")

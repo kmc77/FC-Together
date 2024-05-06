@@ -178,9 +178,10 @@ public class UserController {
     }
 
     // 회원 탈퇴
+    @ResponseStatus(HttpStatus.SEE_OTHER)
     @DeleteMapping("/delete")
     public String deleteUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
+        System.out.println("컨 ======= principalDetails.getUsername() = " + principalDetails.getUsername());
         userService.deleteUser(principalDetails.getUsername()); // 사용자 삭제
 
         // 로그아웃 처리
@@ -190,34 +191,41 @@ public class UserController {
         return "redirect:/";
     }
 
+
     // 아이디 찾기(휴대폰 번호 및 이메일 사용)
     @PostMapping("/findId")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> findId(@RequestParam(required = false) String userInput) {
         Map<String, Object> response = new HashMap<>();
-        User user = null;
+        List<User> users = new ArrayList<>();
 
-        System.out.println("====== userInput = " + userInput);
-
-        // 정규 표현식을 사용한 이메일과 휴대폰 번호 검증
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-        String phoneRegex = "^\\d{2,3}-\\d{3,4}-\\d{4}$"; // 하이픈이 포함된 휴대폰 번호 검증
+        String phoneRegex = "^\\d{2,3}-\\d{3,4}-\\d{4}$";
 
         if (Pattern.matches(emailRegex, userInput)) {
-            user = userService.findIDByEmail(userInput);
+            users = userService.findUsersByEmail(userInput);
+            if (users.size() == 1) {
+                response.put("found", true);
+                response.put("message", "고객님의 아이디는 " + users.get(0).getUsername() + " 입니다.");
+            }
         } else if (Pattern.matches(phoneRegex, userInput)) {
-            user = userService.findIDByPhoneNum(userInput);
+            users = userService.findUsersByPhoneNumber(userInput);
+            if (users.size() == 1) {
+                response.put("found", true);
+                response.put("message", "고객님의 아이디는 " + users.get(0).getUsername() + " 입니다.");
+            } else if (users.size() > 1) {
+                response.put("found", false);
+                response.put("message", "여러 계정이 발견되었습니다. 이메일을 사용하여 아이디를 찾으세요.");
+            }
         }
 
-        if (user != null) {
-            response.put("found", true);
-            response.put("message", "고객님의 아이디는 " + user.getUsername() + " 입니다.");
-        } else {
+        if (users.isEmpty()) {
             response.put("found", false);
             response.put("message", "입력하신 정보로 등록된 아이디를 찾을 수 없습니다.");
         }
         return ResponseEntity.ok(response);
     }
+
 
 
     // 비밀번호 찾기(아이디와 이메일 사용)

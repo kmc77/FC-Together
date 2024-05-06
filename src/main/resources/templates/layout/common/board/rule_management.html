@@ -89,13 +89,14 @@
             <input type="hidden" name="ruleNum"> <!-- 고유값 -->
             <input type="hidden" name="ruleDate"> <!-- 현재 시각 -->
             <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
-            <input name="ruleTitle" type="text" placeholder="제목"/><br>
+            <input name="ruleTitle" type="text" placeholder="제목" style="width: 100%; max-width: 700px; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px;"/><br>
             <textarea name="ruleContent" id="content"></textarea><br>
             <input type="file" name="files" multiple><br> <!-- 파일 선택 입력 필드 추가 -->
             <div class="btn-perspective">
                 <button type="submit" class="btn btn-3d btn-two">등록</button>
             </div>
         </form>
+        <link rel="stylesheet" href="/dist/css/admin/rule_management.css">
         <script>
 
             ClassicEditor.create( document.querySelector( '#content' ), {

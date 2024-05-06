@@ -235,4 +235,10 @@ public interface AdminMapper {
     void deleteTrainingSchedule(List<Integer> scheduleNums);
 
 
+    /* ======================================= */
+
+
+    List<Team> getAllTeamList();
+
+    List<Team> findTeamsByLeague(String league);
 }

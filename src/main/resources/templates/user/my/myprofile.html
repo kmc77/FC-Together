@@ -314,8 +314,9 @@
           window.location.href = "/"; // 홈페이지로 리다이렉트
            },
            error: function(xhr, status, error) {
-               alert("회원 탈퇴 중 오류가 발생했습니다: " + error);
-           }
+            console.error("회원 탈퇴 요청 실패:", xhr.status, xhr.responseText);
+            alert("회원 탈퇴 중 오류가 발생했습니다: " + xhr.statusText);
+        }
        });
    }
  });

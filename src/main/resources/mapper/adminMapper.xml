@@ -636,6 +636,17 @@
         SELECT * FROM Team WHERE team_league_gb = #{league} ORDER BY team_name DESC
     </select>
 
+    <insert id="insertTeamFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <!-- Team 정보를 데이터베이스에 삽입하는 SQL -->
+    <insert id="registerTeam" parameterType="map">
+        INSERT INTO Team (team_name, team_logo, team_league_gb)
+        VALUES (#{teamName}, #{teamLogo}, #{teamLeagueGb})
+    </insert>
+
 
 
 

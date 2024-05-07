@@ -1,5 +1,6 @@
 package com.project.together.service;
 
+import java.io.IOException;
 import java.net.URL;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -160,6 +161,7 @@ public class FileService {
         }
     }
 
+
     // 경영공시 파일을 삭제하는 메서드
     public void deleteFilesByOperationNum(int operationNum) {
         List<File> filesToDelete = adminMapper.findFilesByOperationNum(operationNum);
@@ -174,6 +176,7 @@ public class FileService {
     }
 
 
+    // 선수 사진 업로드
     public String uploadPlayerPhotoToS3AndSaveMetadata(MultipartFile file, String selectedPlayerType, String playerNum) {
         String fileUrl = "";
         if (file != null && !file.isEmpty()) {
@@ -297,6 +300,7 @@ public class FileService {
         }
     }
 
+    // 스태프 사진 업로드
     public String uploadStaffPhotoToS3AndSaveMetadata(MultipartFile file, String teamLeagueGb, String teamStaffNum) {
         String fileUrl = "";
         if (file != null && !file.isEmpty()) {
@@ -332,6 +336,7 @@ public class FileService {
         return fileUrl;
     }
 
+
     // 스태프 파일 삭제
     public void deleteFilesByStaffNum(int teamStaffNum) {
         List<File> filesToDelete = adminMapper.findFilesByTeamStaffNum(teamStaffNum);
@@ -358,6 +363,45 @@ public class FileService {
         adminMapper.deleteFilesByTeamStaffNums(teamStaffNum);
     }
 
+
+    /**
+     * 사용자가 업로드한 팀 로고를 S3에 업로드하고 메타데이터를 저장합니다.
+     *
+     * @param teamLogo 사용자가 업로드한 MultipartFile.
+     * @param teamLeagueGb 리그 식별자.
+     * @param teamName 파일 경로와 메타데이터에 사용될 팀 이름.
+     * @return 업로드된 파일의 URL.
+     */
+    public String uploadTeamLogoToS3(MultipartFile teamLogo, String teamLeagueGb, String teamName) {
+        String fileUrl = "";
+        if (teamLogo != null && !teamLogo.isEmpty()) {
+            try {
+                String originalFilename = teamLogo.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                String filePath = teamLeagueGb + "_team" + "/teamLogos/" + teamName + "/" + fileName;
+
+                System.out.println("팀 로고 업로드 ==== filePath = " + filePath);
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(teamLogo.getSize());
+                metadata.setContentType(teamLogo.getContentType());
+                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, teamLogo.getInputStream(), metadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+                File logoMetadata = new File();
+                logoMetadata.setFilePath(fileUrl);
+                logoMetadata.setTableIdx(Integer.parseInt(teamName));  // 필요한 경우 teamName을 추가 정보로 저장
+                logoMetadata.setFileName(originalFilename);
+                logoMetadata.setTableGb("Team");
+                adminMapper.insertTeamFile(logoMetadata);
+
+            } catch (IOException e) {
+                throw new RuntimeException("팀 로고 업로드 실패: " + e.getMessage());
+            }
+        }
+        return fileUrl;
+    }
 
 
 

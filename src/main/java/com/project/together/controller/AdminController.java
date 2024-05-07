@@ -1283,6 +1283,7 @@ public class AdminController {
         return ResponseEntity.ok(teams);
     }*/
 
+    // 구단목록 목록 가져오기
     @GetMapping("/layout/getTeamList")
     public ResponseEntity<List<Team>> getTeamList(@RequestParam(required = false) String league) {
         List<Team> teams;
@@ -1295,7 +1296,49 @@ public class AdminController {
     }
 
 
+    // 구단 등록
+    @PostMapping("/layout/insertTeamInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> insertTeamInfo(
+            @RequestParam(value = "teamLogo", required = false) MultipartFile teamLogo,
+            @RequestParam Map<String, String> params
+    ) {
+        System.out.println("컨 ===== teamLogo = " + teamLogo);
+        System.out.println("컨 ===== params = " + params);
 
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 입력받은 모든 파라미터를 Map<String, Object>로 변환
+            Map<String, Object> paramMap = new HashMap<>(params);
+
+            // teamLeagueGb와 teamName 값을 params에서 추출
+            String teamLeagueGb = params.getOrDefault("teamLeagueGb", "defaultLeague");
+            String teamName = params.getOrDefault("teamName", "UnnamedTeam");
+
+            // 파일(로고)이 제공되었을 때의 처리 로직
+            if (teamLogo != null) {
+                // 파일 URL을 얻기 위해 로고와 리그 정보, 팀 이름을 서비스에 전달
+                String fileUrl = fileService.uploadTeamLogoToS3(teamLogo, teamLeagueGb, teamName);
+                paramMap.put("teamLogo", fileUrl);  // 'teamLogo' 키로 파일 URL을 paramMap에 추가
+            } else {
+                // 파일이 누락된 경우의 에러 처리
+                response.put("errorMessage", "필수 데이터 누락: 팀 로고가 없습니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 구단 정보 등록 서비스 호출
+            adminService.registerTeam(paramMap);
+
+            // 성공 메시지 응답
+            response.put("message", "구단 등록이 성공적으로 완료되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 상세 내용을 로그로 출력
+            response.put("errorMessage", "등록 실패: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
 
 

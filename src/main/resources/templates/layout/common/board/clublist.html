@@ -59,54 +59,26 @@
         <h1 class="text-3xl py-4 border-b mb-10">구단 정보</h1>
 
         <div id="viewContainer" class="container mx-auto py-6 px-4 textarea">
-            <form action="/admin/layout/updatePlayerInfo" method="post" enctype="multipart/form-data">
+            <form action="/admin/layout/insertTeamInfo" method="post" enctype="multipart/form-data">
                 <div class="content-box">
                     <div class="form-list view-list">
                         <input type="hidden" name="no" value="">
                         <div class="col">
                             <dl class="flex-align-center">
-                                <dt id="PlayerNum-label">선수번호</dt>
-                                <dd id="PlayerNum-value"></dd>
+                                <dt id="teamName-label">팀이름</dt>
+                                <dd id="teamName-value"></dd>
                             </dl>
                             <dl>
-                                <dt id="filePath-label">선수사진</dt>
+                                <dt id="filePath-label">팀로고</dt>
                                 <dd id="filePath-value"></dd>
                             </dl>
                             <dl>
-                                <dt id="PlayerName-label">이름</dt>
-                                <dd id="PlayerName-value"></dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerEnName-label">영문이름</dt>
-                                <dd id="PlayerEnName-value"></dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerCapYn-label">주장여부</dt>
-                                <dd id="PlayerCapYn-value"></dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerSubCapYn-label">부주장여부</dt>
-                                <dd id="PlayerSubCapYn-value"> </dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerPosition-label">포지션</dt>
-                                <dd id="PlayerPosition-value"> </dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerHeight-label">키</dt>
-                                <dd id="PlayerHeight-value"> </dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerWeight-label">체중</dt>
-                                <dd id="PlayerWeight-value"> </dd>
-                            </dl>
-                            <dl>
-                                <dt id="PlayerBirth-label">생년월일</dt>
-                                <dd id="PlayerBirth-value"> </dd>
+                                <dt id="teamLeagueGb-label">참가리그</dt>
+                                <dd id="teamLeagueGb-value"></dd>
                             </dl>
                         </div>
                         <div class="submit-btn">
-                            <button type="submit" class="tb_btn blueM">선수 등록</button>
+                            <button type="submit" class="tb_btn blueM">구단 등록</button>
                         </div>
                         <div class="change_submit-btn">
                             <button type="submit" class="tb_btn redM">정보 수정</button>
@@ -204,7 +176,7 @@
             <button class="deleteButton">삭제</button>
             <button class="checkButton">보기</button>
         </div>
-        <button class="writeButton">선수등록</button>
+        <button class="writeButton">구단등록</button>
         <link rel="stylesheet" href="/dist/css/qna.css">
     </div>
 </div>
@@ -219,179 +191,287 @@
 <div th:include="layout/common/script :: load()"></div>
 
 <script th:inline="javascript">
-    $(document).ready(function() {
-        var message = /*[[${content}]]*/ 'default';
-        $('#message').text(message);
 
-        $('#reverseButton').click(function() {
-            var reversedMessage = $('#message').text().split('').reverse().join('');
-            $('#message').text(reversedMessage);
-        });
 
-        // JWT 토큰을 디코딩하는 함수
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-
-            return JSON.parse(jsonPayload);
-        };
-
-        // JWT 토큰이 저장된 곳에서 가져오기
-        var token = localStorage.getItem('accessToken');
-
-        // 토큰에서 사용자 이름 추출
-        var username = parseJwt(token).sub;
-
-        // 사용자 이름이 정상적으로 추출되었는지 콘솔에 로깅
-        console.log("사용자 이름: ", username);
-
-        // HTML 페이지에 사용자 이름 노출
-        document.querySelector('.d-block').textContent = username + " 관리자";
-
-        // 선택된 행들을 저장하는 배열
-        var selectedRows = [];
-        // 표시 버튼의 상태 (열림/닫힘)
-        var isOpen = false;
-
-        // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
-        var updateSelectedCount = function() {
-            var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
-            $('#selectedRowsBanner').css('top', navbarHeight);
-            // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
-            var checkedCount = $('.rowCheckbox:checked').length;
-            $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
-            if (checkedCount > 0) {
-                $('#selectedRowsBanner').show();
-            } else {
-                $('#selectedRowsBanner').hide();
-            }
-        };
-
-        // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
-        $('#displayButton').click(function() {
-            isOpen = !isOpen;
-            if (isOpen) {
-                $('#columnSelection').show();
-            } else {
-                $('#columnSelection').hide();
-            }
-        });
-
-        // 표시 버튼이나 컬럼 선택 영역 외의 곳을 클릭하면 컬럼 선택 영역을 숨김
-        $(document).click(function(event) {
-            if (!$(event.target).closest('#displayButton').length && !$(event.target).closest('#columnSelection').length) {
-                isOpen = false;
-                $('#columnSelection').hide();
-            }
-        });
-
-        // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
-        $('#columnSelection').on('click', '.column-checkbox', function() {
-            var key = $(this).attr('name');
-            $('.' + key).toggleClass('hidden');
-        });
-
-        // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
-        $("#selectAllCheckbox").click(function() {
-            $(".rowCheckbox").prop('checked', $(this).prop('checked'));
-            selectedRows = [];
-            if ($(this).prop('checked')) {
-                $('.rowCheckbox').each(function() {
-                    selectedRows.push(parseInt($(this).attr('name')));
-                });
-            }
-            updateSelectedCount();
-        });
-
-        // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
-        $(document).on('click', '.rowCheckbox', function() {
-            var id = parseInt($(this).attr('name'));
-            if ($(this).prop('checked')) {
-                selectedRows.push(id);
-            } else {
-                var index = selectedRows.indexOf(id);
-                if (index > -1) {
-                    selectedRows.splice(index, 1);
-                }
-            }
-
-            // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
-            if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
-                $('#selectAllCheckbox').prop('checked', true);
-            } else {
-                $('#selectAllCheckbox').prop('checked', false);
-            }
-            updateSelectedCount();
-        });
-    });
 
 
 
     $(document).ready(function() {
-        var teamListKeys = ['teamLogo', 'teamName', 'teamLeagueGb'];
-        var currentLeague = null; // 현재 활성화된 리그 추적
-
-        // 열 체크박스 동적 생성
-        $.each(teamListKeys, function(index, key) {
-            var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
-            var div = $('<div/>').addClass('text-teal-600 mr-3');
-            var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
-            var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
-
-            div.append(checkbox);
-            label.append(div, divText);
-            $('#columnSelection').append(label);
-
-            // 체크박스로 컬럼 표시/숨김 제어
-            checkbox.change(function() {
-                $('.' + key).toggle();
+        $('.writeButton').click(function() {
+            // 'create' 상태 설정 및 폼 설정 변경
+            $('form').data('state', 'create').attr({
+                action: '/admin/layout/insertTeamInfo',
+                method: 'post',
+                enctype: 'multipart/form-data'
             });
+            $('.change_submit-btn').hide();
+
+            // 중요: 탭 이동 전 로컬스토리지 값을 저장
+            var savedLeague = localStorage.getItem('teamLeagueGb');
+
+            // 탭 이동
+            $("#register-team a").trigger('click');
+
+            // 탭 이동 후 로컬스토리지 값을 복원
+            localStorage.setItem('teamLeagueGb', savedLeague);
+
+            // 입력 필드 설정
+            setTimeout(function() {
+                clearAndAddInputField('teamName-value', '팀 이름', 'teamName');
+                clearAndAddFileUploadField('filePath-value', 'teamLogo');
+                clearAndAddInputField('teamLeagueGb-value', '참가리그', 'teamLeagueGb', savedLeague, true); // 로컬스토리지 값으로 초기화, 읽기 전용 설정
+            }, 100);
         });
 
-        function loadTeams(teamLeagueGb) {
-            if (teamLeagueGb === currentLeague) {
-                return; // 중복 로드 방지
-            }
-            currentLeague = teamLeagueGb; // 현text-3xl py-4 border-b mb-10재 리그 업데이트
-
-            var accessToken = localStorage.getItem('accessToken');
-            $.ajax({
-                url: "/admin/layout/getTeamList",
-                method: "GET",
-                headers: {"Authorization": "Bearer " + accessToken},
-                data: { league: teamLeagueGb },
-                success: function(data) {
-                    $('#teamsTable tbody').empty(); // 테이블 내용 비우기
-                    $.each(data, function(i, team) {
-                        var tr = $('<tr/>');
-                        tr.append($("<td class='border-dashed border-t border-gray-200 px-3'/>").append(
-                            $("<label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'/>").append(
-                                $("<input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + team.teamName + "' data-teamName='" + team.teamName + "'/>")
-                            )
-                        ));
-
-                        $.each(teamListKeys, function(j, key) {
-                            var value = team[key];
-                            tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
-                        });
-                        $('#teamsTable tbody').append(tr);
-                    });
-                }
-            });
+        // 파일 업로드 필드 추가 함수
+        function clearAndAddFileUploadField(containerId, name) {
+            var container = $('#' + containerId);
+            container.empty(); // 기존 필드 제거
+            var fileUploadHTML = '<input type="file" id="file" name="' + name + '" accept="image/*">';
+            container.html(fileUploadHTML);
         }
 
-        // 탭 클릭 이벤트 핸들러
-        $('#nav-1 a').on('click', function(e) {
-            e.preventDefault();
-            var teamType = $(this).data('team-type');
-            loadTeams(teamType); // 해당 리그 데이터 로드
-        });
+        // 입력 필드를 추가하는 함수
+        function clearAndAddInputField(id, hint, name, defaultValue = '', readOnly = false) {
+            var container = document.getElementById(id);
+            container.innerHTML = ''; // 기존 필드 제거
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.style.width = '100%'; // 폼에 맞게 스타일 조정
+            input.placeholder = hint;
+            input.name = name;
+            input.value = defaultValue; // 기본값 설정
+            if (readOnly) {
+                input.setAttribute('readonly', 'readonly'); // 읽기 전용 속성 추가
+            }
 
-        loadTeams('k5'); // 초기 페이지 로드 시 'k5' 리그 데이터 로드
+            container.appendChild(input); // 새로운 입력 필드 추가
+        }
+
+     // "구단 등록" 버튼 이벤트 처리
+     $('.submit-btn button').click(function(e) {
+         e.preventDefault(); // 기본 폼 제출 동작 방지
+
+         // 모든 필드가 채워졌는지 확인
+         var isAllFilled = true;
+         var emptyFieldName = "";
+
+         // 필수 입력 필드 검증
+         $('form input[type="text"], form input[type="file"]').each(function() {
+             if (!$(this).val().trim() && isAllFilled) {
+                 isAllFilled = false;
+                 emptyFieldName = $(this).attr('name'); // 빈 필드의 name을 가져옵니다.
+             }
+         });
+
+         if (!isAllFilled) {
+             alert(emptyFieldName + " 필드를 채워주세요.");
+             return;
+         }
+
+         var formData = new FormData($('form')[0]);
+         console.log([...formData]);
+
+         // AJAX 요청으로 서버에 데이터 전송
+         $.ajax({
+             url: $('form').attr('action'),
+             type: 'POST',
+             processData: false,
+             contentType: false,
+             data: formData,
+             success: function(response) {
+                 alert('등록 성공');
+                 window.location.href = '/admin/layout/teams'; // 성공 시 페이지 리다이렉션
+             },
+             error: function(xhr, status, error) {
+                 alert('등록 실패: ' + error);
+             }
+         });
+     });
+ });
+
+
+
+
+
+
+     // JWT 토큰을 디코딩하는 함수
+     function parseJwt(token) {
+         var base64Url = token.split('.')[1];
+         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+         var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+         }).join(''));
+
+         return JSON.parse(jsonPayload);
+     };
+
+     // JWT 토큰이 저장된 곳에서 가져오기
+     var token = localStorage.getItem('accessToken');
+
+     // 토큰에서 사용자 이름 추출
+     var username = parseJwt(token).sub;
+
+     // 사용자 이름이 정상적으로 추출되었는지 콘솔에 로깅
+     console.log("사용자 이름: ", username);
+
+     // HTML 페이지에 사용자 이름 노출
+     document.querySelector('.d-block').textContent = username + " 관리자";
+
+     // 선택된 행들을 저장하는 배열
+     var selectedRows = [];
+     // 표시 버튼의 상태 (열림/닫힘)
+     var isOpen = false;
+
+     // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
+     var updateSelectedCount = function() {
+         var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
+         $('#selectedRowsBanner').css('top', navbarHeight);
+         // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
+         var checkedCount = $('.rowCheckbox:checked').length;
+         $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
+         if (checkedCount > 0) {
+             $('#selectedRowsBanner').show();
+         } else {
+             $('#selectedRowsBanner').hide();
+         }
+     };
+
+     // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
+     $('#displayButton').click(function() {
+         isOpen = !isOpen;
+         if (isOpen) {
+             $('#columnSelection').show();
+         } else {
+             $('#columnSelection').hide();
+         }
+     });
+
+     // 표시 버튼이나 컬럼 선택 영역 외의 곳을 클릭하면 컬럼 선택 영역을 숨김
+     $(document).click(function(event) {
+         if (!$(event.target).closest('#displayButton').length && !$(event.target).closest('#columnSelection').length) {
+             isOpen = false;
+             $('#columnSelection').hide();
+         }
+     });
+
+     // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
+     $('#columnSelection').on('click', '.column-checkbox', function() {
+         var key = $(this).attr('name');
+         $('.' + key).toggleClass('hidden');
+     });
+
+     // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
+     $("#selectAllCheckbox").click(function() {
+         $(".rowCheckbox").prop('checked', $(this).prop('checked'));
+         selectedRows = [];
+         if ($(this).prop('checked')) {
+             $('.rowCheckbox').each(function() {
+                 selectedRows.push(parseInt($(this).attr('name')));
+             });
+         }
+         updateSelectedCount();
+     });
+
+     // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
+     $(document).on('click', '.rowCheckbox', function() {
+         var id = parseInt($(this).attr('name'));
+         if ($(this).prop('checked')) {
+             selectedRows.push(id);
+         } else {
+             var index = selectedRows.indexOf(id);
+             if (index > -1) {
+                 selectedRows.splice(index, 1);
+             }
+         }
+
+         // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+         if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
+             $('#selectAllCheckbox').prop('checked', true);
+         } else {
+             $('#selectAllCheckbox').prop('checked', false);
+         }
+         updateSelectedCount();
+     });
+
+
+
+ $(document).ready(function() {
+    var teamListKeys = ['teamLogo', 'teamName', 'teamLeagueGb'];
+    var currentLeague = null; // 현재 활성화된 리그 추적
+
+    // 리그 이름 매핑
+    var leagueNames = {
+        'k5': 'K5 구단목록',
+        'k7': 'K7 구단목록',
+        'w1': 'Woman 구단목록'
+    };
+
+    // 열 체크박스 동적 생성
+    $.each(teamListKeys, function(index, key) {
+        var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+        var div = $('<div/>').addClass('text-teal-600 mr-3');
+        var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+        var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+        div.append(checkbox);
+        label.append(div, divText);
+        $('#columnSelection').append(label);
+
+        checkbox.change(function() {
+            $('.' + key).toggle();
+        });
     });
+
+    // 탭 클릭 이벤트 핸들러
+    $('#nav-1 a').on('click', function(e) {
+        e.preventDefault();
+        var teamType = $(this).data('team-type');
+        loadTeams(teamType); // 해당 리그 데이터 로드
+    });
+
+    function loadTeams(teamLeagueGb) {
+        if (teamLeagueGb === currentLeague) {
+            return; // 중복 로드 방지
+        }
+        currentLeague = teamLeagueGb; // 현재 리그 업데이트
+        localStorage.setItem('teamLeagueGb', teamLeagueGb); // 리그 변경 시 로컬 스토리지 업데이트
+
+        var accessToken = localStorage.getItem('accessToken');
+        $.ajax({
+            url: "/admin/layout/getTeamList",
+            method: "GET",
+            headers: {"Authorization": "Bearer " + accessToken},
+            data: { league: teamLeagueGb },
+            success: function(data) {
+                $('#teamsTable tbody').empty(); // 테이블 내용 비우기
+                $.each(data, function(i, team) {
+                    var tr = $('<tr/>');
+                    tr.append($("<td class='border-dashed border-t border-gray-200 px-3'/>").append(
+                        $("<label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'/>").append(
+                            $("<input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + team.teamName + "' data-teamName='" + team.teamName + "'/>")
+                        )
+                    ));
+                    $.each(teamListKeys, function(j, key) {
+                        var value = team[key];
+                        tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                    });
+                    $('#teamsTable tbody').append(tr);
+                });
+                // 업데이트 타이틀
+                $('.text-3xl.py-4.border-b.mb-10').text(leagueNames[teamLeagueGb]);
+            }
+        });
+    }
+
+    // 설정된 리그 값으로 초기 페이지 로드
+    loadTeams('k5'); // 'k5'를 기본 리그로 설정하여 초기 로드
+    $('#nav-1 a[data-team-type="k5"]').addClass('active'); // 'k5' 탭을 활성화 상태로 설정
+});
+
+
+
+
 
 
 

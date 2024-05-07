@@ -241,4 +241,8 @@ public interface AdminMapper {
     List<Team> getAllTeamList();
 
     List<Team> findTeamsByLeague(String league);
+
+    void insertTeamFile(File logoMetadata);
+
+    void registerTeam(Map<String, Object> paramMap);
 }

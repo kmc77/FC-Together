@@ -1273,15 +1273,6 @@ public class AdminController {
     // ================================== 구단목록 start
 
 
-    // 구단목록 목록 가져오기
-    /*@GetMapping("/layout/getTeamList")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Team>> getTeamList() {
-        List<Team> teams = adminService.getAllTeamList();
-        System.out.println("컨 ===== teams = " + teams);
-        System.out.println("teams = " + teams);
-        return ResponseEntity.ok(teams);
-    }*/
 
     // 구단목록 목록 가져오기
     @GetMapping("/layout/getTeamList")
@@ -1303,9 +1294,9 @@ public class AdminController {
             @RequestParam(value = "teamLogo", required = false) MultipartFile teamLogo,
             @RequestParam Map<String, String> params
     ) {
-        System.out.println("컨 ===== teamLogo = " + teamLogo);
-        System.out.println("컨 ===== params = " + params);
-
+        System.out.println("컨 ===== teamLogo = " + (teamLogo != null ? teamLogo.getOriginalFilename() : "null"));
+        System.out.println("컨 ===== params:");
+        params.forEach((key, value) -> System.out.println(key + ": " + value));
 
         Map<String, Object> response = new HashMap<>();
         try {
@@ -1317,7 +1308,7 @@ public class AdminController {
             String teamName = params.getOrDefault("teamName", "UnnamedTeam");
 
             // 파일(로고)이 제공되었을 때의 처리 로직
-            if (teamLogo != null) {
+            if (teamLogo != null && !teamLogo.isEmpty()) {
                 // 파일 URL을 얻기 위해 로고와 리그 정보, 팀 이름을 서비스에 전달
                 String fileUrl = fileService.uploadTeamLogoToS3(teamLogo, teamLeagueGb, teamName);
                 paramMap.put("teamLogo", fileUrl);  // 'teamLogo' 키로 파일 URL을 paramMap에 추가
@@ -1339,6 +1330,45 @@ public class AdminController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+
+    // 구단 상세 정보 가져오기
+    @GetMapping("/layout/TeamView")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Map<String, Object>> teamView(@RequestParam("id") int id) { // 'id' 파라미터 추가
+        Team team = adminService.findTeamById(id); // 이름 대신 id로 팀을 찾는 메서드 호출
+        Map<String, Object> response = new HashMap<>();
+        if (team != null) {
+            // 팀 정보를 response 맵에 추가
+            response.put("team", team);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    // 구단 삭제
+    @PostMapping("/layout/teamDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> teamDelete(@RequestParam("teamNums") List<Integer> teamNums, HttpServletResponse response) {
+        System.out.println("컨트롤러 teamNums = " + teamNums);
+        try {
+            // 먼저 각 구단 번호에 해당하는 파일을 S3에서 삭제합니다.
+            teamNums.forEach(fileService::deleteFilesByTeamNum);
+
+            // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서  삭제합니다.
+            /*adminService.teamDelete(teamNums);*/
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 
 

@@ -691,6 +691,13 @@ public class AdminService {
         adminMapper.registerTeam(paramMap);
     }
 
+  /*  public Team findTeamByName(ing teamName) {
+        return adminMapper.findTeamByName(teamName);
+    }*/
+
+    public Team findTeamById(int id) {
+        return adminMapper.findTeamById(id);
+    }
 
 
 // ================================== 구단목록 and

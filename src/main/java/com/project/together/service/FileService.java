@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.project.together.domain.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -389,12 +390,12 @@ public class FileService {
 
                 fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
 
-                File logoMetadata = new File();
+               /* File logoMetadata = new File();
                 logoMetadata.setFilePath(fileUrl);
-                logoMetadata.setTableIdx(Integer.parseInt(teamName));  // 필요한 경우 teamName을 추가 정보로 저장
+                *//*logoMetadata.setTableIdx(Integer.parseInt(teamName));*//*  // 필요한 경우 teamName을 추가 정보로 저장
                 logoMetadata.setFileName(originalFilename);
                 logoMetadata.setTableGb("Team");
-                adminMapper.insertTeamFile(logoMetadata);
+                adminMapper.insertTeamFile(logoMetadata);*/
 
             } catch (IOException e) {
                 throw new RuntimeException("팀 로고 업로드 실패: " + e.getMessage());
@@ -402,6 +403,24 @@ public class FileService {
         }
         return fileUrl;
     }
+
+    // 구단 삭제
+    public void deleteFilesByTeamNum(Integer teamId) {
+        Team teamName = adminMapper.findTeamById(teamId);
+        if (teamName == null) {
+            throw new IllegalArgumentException("팀을 찾을 수 없습니다.");
+        }
+
+        List<Team> filesToDelete = adminMapper.deleteTeamByTeamId(teamId);
+
+        for (Team team : filesToDelete) {
+            String fileKey = getFileKeyFromUrl(team.getTeamLogo());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+        }
+    }
+
 
 
 

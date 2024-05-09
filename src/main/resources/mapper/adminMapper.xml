@@ -648,14 +648,15 @@
         VALUES (#{teamName}, #{teamLogo}, #{teamLeagueGb})
     </insert>
 
-    <select id="findTeamById" resultType="com.project.together.domain.Team">
+    <!-- 특정 팀을 찾는 쿼리 -->
+    <select id="findTeamById" resultType="com.project.together.domain.Team" parameterType="int">
         SELECT * FROM Team WHERE id = #{id}
     </select>
 
     <delete id="deleteTeamByTeamId" parameterType="list">
         DELETE FROM Team WHERE id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
+        <foreach collection="list" item="teamId" open="(" separator="," close=")">
+            #{teamId}
         </foreach>
     </delete>
 

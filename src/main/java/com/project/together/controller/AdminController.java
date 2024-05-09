@@ -1352,19 +1352,13 @@ public class AdminController {
     // 구단 삭제
     @PostMapping("/layout/teamDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> teamDelete(@RequestParam("teamNums") List<Integer> teamNums, HttpServletResponse response) {
-        System.out.println("컨트롤러 teamNums = " + teamNums);
+    public ResponseEntity<String> teamDelete(@RequestParam("teamNums") List<Integer> teamNums) {
         try {
-            // 먼저 각 구단 번호에 해당하는 파일을 S3에서 삭제합니다.
-            teamNums.forEach(fileService::deleteFilesByTeamNum);
-
-            // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서  삭제합니다.
-            /*adminService.teamDelete(teamNums);*/
-
-            return new ResponseEntity<>(HttpStatus.OK);
+            fileService.deleteFilesByTeamNum(teamNums);
+            return ResponseEntity.ok("선택한 팀이 모두 삭제되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 삭제에 실패하였습니다.");
         }
     }
 

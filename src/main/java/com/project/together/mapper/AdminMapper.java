@@ -250,5 +250,5 @@ public interface AdminMapper {
 
     Team findTeamById(int id);
 
-    List<Team> deleteTeamByTeamId(Integer teamId);
+    void deleteTeamByTeamId(List<Integer> teamIds);
 }

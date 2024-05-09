@@ -20,6 +20,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -404,20 +405,33 @@ public class FileService {
         return fileUrl;
     }
 
+
     // 구단 삭제
-    public void deleteFilesByTeamNum(Integer teamId) {
-        Team teamName = adminMapper.findTeamById(teamId);
-        if (teamName == null) {
-            throw new IllegalArgumentException("팀을 찾을 수 없습니다.");
-        }
-
-        List<Team> filesToDelete = adminMapper.deleteTeamByTeamId(teamId);
-
-        for (Team team : filesToDelete) {
-            String fileKey = getFileKeyFromUrl(team.getTeamLogo());
-            if (fileKey != null && !fileKey.isEmpty()) {
-                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+    public void deleteFilesByTeamNum(List<Integer> teamIds) {
+        for (Integer teamId : teamIds) {
+            Team team = adminMapper.findTeamById(teamId);
+            if (team == null) {
+                throw new IllegalArgumentException("팀을 찾을 수 없습니다: " + teamId);
             }
+
+            String teamLogoUrl = team.getTeamLogo();
+            if (teamLogoUrl == null || teamLogoUrl.isEmpty()) {
+                System.err.println("팀 로고 URL이 없습니다: " + teamId);
+            } else {
+                System.out.println("팀 로고 URL: " + teamLogoUrl);
+
+                String fileKey = getFileKeyFromUrl(teamLogoUrl);
+                if (fileKey != null && !fileKey.isEmpty()) {
+                    amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+                    System.out.println("파일 삭제 성공, 키: " + fileKey);
+                } else {
+                    System.err.println("파일 키가 없거나 비어있습니다: " + teamId);
+                }
+            }
+
+            // 팀 테이블 데이터 삭제
+            adminMapper.deleteTeamByTeamId(Collections.singletonList(teamId));
+            System.out.println("팀 삭제 성공, ID: " + teamId);
         }
     }
 
@@ -426,14 +440,23 @@ public class FileService {
 
     private String getFileKeyFromUrl(String fileUrl) {
         try {
-            URL url = new URL(fileUrl);
-            String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
-            // URL 디코딩 적용
-            return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+            if (fileUrl != null && !fileUrl.isEmpty()) {
+                URL url = new URL(fileUrl);
+                String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
+                // URL 디코딩 적용
+                return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+            } else {
+                System.err.println("잘못된 또는 빈 파일 URL: " + fileUrl);
+                return null; // 예외 발생 대신 null 반환
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Error extracting file key from URL", e);
+            System.err.println("파일 URL에서 키 추출 중 오류 발생: " + fileUrl);
+            e.printStackTrace();
+            return null; // 예외 발생 대신 null 반환
         }
     }
+
+
 
 
 

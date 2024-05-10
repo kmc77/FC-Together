@@ -251,4 +251,11 @@ public interface AdminMapper {
     Team findTeamById(int id);
 
     void deleteTeamByTeamId(List<Integer> teamIds);
+
+
+    /* ======================================= */
+
+    List<Team> findK5TeamList(String teamName);
+
+
 }

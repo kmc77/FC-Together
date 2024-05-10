@@ -703,6 +703,16 @@ public class AdminService {
 // ================================== 구단목록 and
 
 
+// ================================== 구단목록 start
+
+
+    public List<Team> findK5TeamList(String teamName) {
+        return adminMapper.findK5TeamList(teamName);
+    }
+
+
+// ================================== 구단목록 and
+
 }
 
 

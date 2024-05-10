@@ -661,10 +661,22 @@
     </delete>
 
 
-
-
-
     <!-- ==============  구단목록 End ============== -->
+
+
+    <!-- ==============  매치 Start ============== -->
+
+
+    <select id="findK5TeamList" resultType="com.project.together.domain.Team">
+        SELECT *
+        FROM team
+        WHERE team_league_gb = 'k5';
+    </select>
+
+
+
+
+    <!-- ==============  매치 End ============== -->
 
 
 </mapper>

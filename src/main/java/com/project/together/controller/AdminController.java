@@ -1364,13 +1364,36 @@ public class AdminController {
 
 
 
-
-
-
-
-
-
     // ================================== 구단목록 End
+
+
+    // ================================== 매치 start
+
+
+
+    // 구단목록 목록 가져오기
+    @GetMapping("/layout/getK5MatchList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Team>> getK5MatchList(@RequestParam(required = false) String teamName) {
+        List<Team> k5Teams;
+        if (teamName != null && !teamName.isEmpty()) {
+            k5Teams = adminService.findK5TeamList(teamName);
+        } else {
+            k5Teams = adminService.findK5TeamList(null);
+        }
+        return ResponseEntity.ok(k5Teams);
+    }
+
+
+
+
+
+
+
+
+
+
+    // ================================== 매치 End
 
 
 

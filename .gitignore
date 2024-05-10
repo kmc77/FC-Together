@@ -38,3 +38,4 @@ out/
 
 ### application.properties 파일이 Git에 의해 무시 ###
 /application.properties
+src/main/resources/application.properties

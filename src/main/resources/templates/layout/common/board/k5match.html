@@ -41,16 +41,18 @@
                 <form id="addMatchForm" class="form-row">
                     <div class="form-group col-md-6">
                         <label>상대 팀 이름:</label>
-                        <input type="text" class="form-control" name="teamName">
+                        <select class="form-control" name="teamName" id="opponentTeamSelect">
+                            <option value="">선택</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>점수:</label>
                         <div class="form-inline" style="align-items: center;">
-                            <select class="form-control" name="ourTeamScore" style="width: 80px;">
+                            <select class="form-control" name="matchScore" style="width: 80px;">
                                 ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
                             </select>
                             <span class="mx-2 font-weight-bold">VS</span>
-                            <select class="form-control" name="opponentTeamScore" style="width: 80px;">
+                            <select class="form-control" name="matchRelativeScore" style="width: 80px;">
                                 ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
                             </select>
                         </div>
@@ -136,6 +138,23 @@
         return options;
     }
 
+    // 팀 목록을 드롭다운에 로드
+    function loadTeams() {
+        fetch('/admin/layout/getK5MatchList')
+            .then(response => response.json())
+            .then(teams => {
+                const select = document.getElementById('opponentTeamSelect');
+                select.innerHTML = "<option value=''>선택</option>"; // 기본 선택 옵션 추가
+                teams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team.teamName;
+                    option.textContent = team.teamName;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('팀 목록을 로드하는 중 오류가 발생했습니다:', error));
+    }
+
     // JWT 토큰을 디코딩하는 함수
     function parseJwt(token) {
         var base64Url = token.split('.')[1];
@@ -172,7 +191,6 @@
         }
     }
 
-
     var editingRow = null;
 
     function editMatch(button) {
@@ -182,8 +200,8 @@
         var form = document.getElementById('addMatchForm');
         form.teamName.value = cells[0].innerText.split(' vs ')[1] || '';
         var scores = cells[1].innerText.split(' vs ');
-        form.ourTeamScore.value = scores[0] || '0';
-        form.opponentTeamScore.value = scores[1] || '0';
+        form.matchScore.value = scores[0] || '0';
+        form.matchRelativeScore.value = scores[1] || '0';
         form.matchDate.value = cells[2].innerText || '';
         form.matchTime.value = cells[3].innerText || '';
         form.matchLocation.value = cells[4].innerText || '';
@@ -203,7 +221,7 @@
         var leagueGb = "k5"; // 고정된 리그 값
         var newMatch = {
             teamName: ourTeamName + " vs " + form.teamName.value,
-            matchScore: form.ourTeamScore.value + " vs " + form.opponentTeamScore.value,
+            matchScore: form.matchScore.value + " vs " + form.matchRelativeScore.value,
             matchDate: form.matchDate.value,
             matchTime: form.matchTime.value,
             matchLocation: form.matchLocation.value,
@@ -230,7 +248,7 @@
         var leagueGb = "k5"; // 고정된 리그 값
         var updatedMatch = {
             teamName: ourTeamName + " vs " + form.teamName.value,
-            matchScore: form.ourTeamScore.value + " vs " + form.opponentTeamScore.value,
+            matchScore: form.matchScore.value + " vs " + form.matchRelativeScore.value,
             matchDate: form.matchDate.value,
             matchTime: form.matchTime.value,
             matchLocation: form.matchLocation.value,
@@ -258,8 +276,11 @@
     }
 
     // 드롭다운 스코어 생성
-    document.querySelector('[name="ourTeamScore"]').innerHTML = generateScoreOptions();
-    document.querySelector('[name="opponentTeamScore"]').innerHTML = generateScoreOptions();
+    document.querySelector('[name="matchScore"]').innerHTML = generateScoreOptions();
+    document.querySelector('[name="matchRelativeScore"]').innerHTML = generateScoreOptions();
+
+    // 페이지 로드 시 팀 목록 로드
+    loadTeams();
 </script>
 
 </body>

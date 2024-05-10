@@ -43,6 +43,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String userBirth = null; // 사용자 생일을 저장할 변수
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청");
+
+
             oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             System.out.println("네이버 로그인 요청");

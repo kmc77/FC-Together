@@ -59,6 +59,17 @@
                             <th>좋아하는 선수</th>
                             <th>마케팅 동의</th>
                         </tr>
+                        <tr>
+                            <td data-th="아이디" class="username"></td>
+                            <td data-th="이메일" class="email"></td>
+                            <td data-th="권한" class="authority"></td>
+                            <td data-th="이름" class="userRealName"></td>
+                            <td data-th="핸드폰 번호" class="phone-number"></td>
+                            <td data-th="생일" class="birthdate"></td>
+                            <td data-th="주소" class="userAddress"></td>
+                            <td data-th="좋아하는 선수" class="favorite-player"></td>
+                            <td data-th="마케팅 동의" class="marketing-agreement"></td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -203,27 +214,34 @@
                 }
             });
 
-            // 유저 정보 불러오기
-          $.ajax({
+          // 유저 정보 불러오기
+            $.ajax({
                 url: '/user/user',
                 type: 'GET',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', token);
+                    var token = localStorage.getItem('accessToken');
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
-               success: function(user) {
-                    var html = '<tr>'
-                        + '<td data-th="아이디" class="username">' + user.username + '</td>'
-                        + '<td data-th="이메일" class="email">' + user.email + '</td>'
-                        + '<td data-th="권한" class="authority">' + user.roles + '</td>'
-                        + '<td data-th="이름" class="userRealName">' + user.userRealName + '</td>'
-                        + '<td data-th="핸드폰 번호" class="phone-number">' + user.userPhone + '</td>'
-                        + '<td data-th="생일" class="birthdate">' + user.userBirth + '</td>'
-                        + '<td data-th="주소" class="userAddress">' + user.userAddress + '</td>'
-                        + '<td data-th="좋아하는 선수" class="favorite-player">' + user.userLikePlayer + '</td>'
-                        + '<td data-th="마케팅 동의" class="marketing-agreement">' + user.userMarketing + '</td>'
-                        + '</tr>';
+                success: function(user) {
+                    // 소셜 로그인 사용자인지 여부에 따라 열 숨기기
+                    var isSocialUser = user.provider && user.providerId;
 
-                    $('.rwd-table').append(html);  // 테이블에 정보를 추가합니다.
+                    $('.username').text(user.username);
+                    $('.email').text(user.email);
+                    $('.authority').text(user.roles);
+                    $('.userRealName').text(user.userRealName);
+                    $('.phone-number').text(user.userPhone);
+                    $('.birthdate').text(user.userBirth);
+
+                    if (isSocialUser) {
+                        $('.userAddress').hide();
+                        $('.favorite-player').hide();
+                        $('.marketing-agreement').hide();
+                    } else {
+                        $('.userAddress').text(user.userAddress).show();
+                        $('.favorite-player').text(user.userLikePlayer).show();
+                        $('.marketing-agreement').text(user.userMarketing).show();
+                    }
 
                     var username = user.userRealName;
                     if (username) {
@@ -231,9 +249,11 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    // 오류 처리
+                    console.error('유저 정보 요청 실패: ' + error);
                 }
             });
+
+
             var activeTab = localStorage.getItem('activeTab');
             if (activeTab) {
                 $('.tabContent').hide();

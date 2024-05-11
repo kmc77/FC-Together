@@ -30,46 +30,46 @@
         </div>
     </div>
 
-    <!-- 매치 추가 양식 -->
+    <!-- 매치 추가 및 수정 양식 -->
     <section class="content">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header"> <!-- 매치 추가 및 수정 양식 -->
                 <h3 class="card-title">새 매치 추가</h3>
+                <button type="button" class="btn btn-primary float-right" id="addMatchButton" onclick="toggleAddMatchForm()">경기 등록</button>
             </div>
-            <div class="card-body">
-                <form id="addMatchForm">
-                    <div class="form-group">
-                        <label>팀 스태프 이름:</label>
-                        <select class="form-control" name="teamStaffName">
-                            <!-- 팀 스태프 이름 옵션은 서버에서 로드 -->
+            <div class="card-body" id="addMatchSection" style="display: none; max-width: 700px; margin: 0 auto;">
+                <form id="addMatchForm" class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>상대 팀 이름:</label>
+                        <select class="form-control" name="teamName" id="opponentTeamSelect">
+                            <option value="">선택</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>매치 결과:</label>
-                        <select class="form-control" name="matchResult">
-                            <option>승</option>
-                            <option>패</option>
-                            <option>무</option>
-                        </select>
-                    </div>
-                    <!-- 추가적인 드롭다운 메뉴 필드 -->
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>점수:</label>
-                        <input type="text" class="form-control" name="matchScore">
+                        <div class="form-inline" style="align-items: center;">
+                            <select class="form-control" name="matchScore" style="width: 80px;">
+                                ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
+                            </select>
+                            <span class="mx-2 font-weight-bold">VS</span>
+                            <select class="form-control" name="matchRelativeScore" style="width: 80px;">
+                                ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>날짜:</label>
                         <input type="date" class="form-control" name="matchDate">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>시간:</label>
                         <input type="time" class="form-control" name="matchTime">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>장소:</label>
                         <input type="text" class="form-control" name="matchLocation">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>상태:</label>
                         <select class="form-control" name="matchStatus">
                             <option>예정</option>
@@ -77,20 +77,16 @@
                             <option>완료</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>홈/어웨이:</label>
                         <select class="form-control" name="matchHome">
                             <option>홈</option>
                             <option>어웨이</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>리그:</label>
-                        <select class="form-control" name="leagueGb">
-                            <!-- 리그 옵션은 서버에서 로드 -->
-                        </select>
+                    <div class="form-group col-md-12 text-center">
+                        <button type="button" class="btn btn-success" id="addMatchSubmitButton" onclick="addMatch()" style="margin-top: 10px;">추가</button>
                     </div>
-                    <button type="button" class="btn btn-success" onclick="addMatch()">추가</button>
                 </form>
             </div>
         </div>
@@ -106,8 +102,7 @@
                 <table class="table table-bordered" id="matchList">
                     <thead>
                     <tr>
-                        <th>팀 스태프 이름</th>
-                        <th>매치 결과</th>
+                        <th>팀 이름</th>
                         <th>점수</th>
                         <th>날짜</th>
                         <th>시간</th>
@@ -115,6 +110,7 @@
                         <th>상태</th>
                         <th>홈/어웨이</th>
                         <th>리그</th>
+                        <th>작업</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -132,18 +128,32 @@
 <!-- 공통 자바스크립트 -->
 <div th:include="layout/common/script :: load()"></div>
 
-
-
 <script th:inline="javascript">
-    $(document).ready(function(){
-        var message = /*[[${content}]]*/ 'default';
-        $('#message').text(message);
+    // 숫자 드롭다운 메뉴 생성
+    function generateScoreOptions() {
+        let options = "";
+        for (let i = 0; i <= 10; i++) {
+            options += `<option value="${i}">${i}</option>`;
+        }
+        return options;
+    }
 
-        $('#reverseButton').click(function(){
-            var reversedMessage = $('#message').text().split('').reverse().join('');
-            $('#message').text(reversedMessage);
-        });
-    });
+    // 팀 목록을 드롭다운에 로드
+    function loadTeams() {
+        fetch('/admin/layout/getK5MatchList')
+            .then(response => response.json())
+            .then(teams => {
+                const select = document.getElementById('opponentTeamSelect');
+                select.innerHTML = "<option value=''>선택</option>"; // 기본 선택 옵션 추가
+                teams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team.teamName;
+                    option.textContent = team.teamName;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('팀 목록을 로드하는 중 오류가 발생했습니다:', error));
+    }
 
     // JWT 토큰을 디코딩하는 함수
     function parseJwt(token) {
@@ -154,7 +164,7 @@
         }).join(''));
 
         return JSON.parse(jsonPayload);
-    };
+    }
 
     // JWT 토큰이 저장된 곳에서 가져오기
     var token = localStorage.getItem('accessToken');
@@ -168,18 +178,96 @@
     // HTML 페이지에 사용자 이름 노출
     document.querySelector('.d-block').textContent = username + " 관리자";
 
-</script>
-<script>
+    function toggleAddMatchForm() {
+        var formSection = document.getElementById('addMatchSection');
+        var addMatchButton = document.getElementById('addMatchButton');
+
+        if (formSection.style.display === 'none') {
+            addMatchButton.textContent = "취소";
+            formSection.style.display = 'block';
+        } else {
+            addMatchButton.textContent = "경기 등록";
+            formSection.style.display = 'none';
+        }
+    }
+
+    var editingRow = null;
+
     function editMatch(button) {
         var row = button.parentNode.parentNode;
+        editingRow = row;
         var cells = row.querySelectorAll('td:not(:last-child)');
-        cells.forEach(function(cell, index) {
-            var input = document.createElement('input');
-            input.type = 'text';
-            input.value = cell.innerText;
-            cell.innerText = '';
-            cell.appendChild(input);
+        var form = document.getElementById('addMatchForm');
+        form.teamName.value = cells[0].innerText.split(' vs ')[1] || '';
+        var scores = cells[1].innerText.split(' vs ');
+        form.matchScore.value = scores[0] || '0';
+        form.matchRelativeScore.value = scores[1] || '0';
+        form.matchDate.value = cells[2].innerText || '';
+        form.matchTime.value = cells[3].innerText || '';
+        form.matchLocation.value = cells[4].innerText || '';
+        form.matchStatus.value = cells[5].innerText || '예정';
+        form.matchHome.value = cells[6].innerText || '홈';
+
+        document.getElementById('addMatchSubmitButton').innerText = "수정완료";
+        document.getElementById('addMatchSubmitButton').classList.remove("btn-success");
+        document.getElementById('addMatchSubmitButton').classList.add("btn-warning");
+        document.getElementById('addMatchSubmitButton').setAttribute("onclick", "updateMatch()");
+        document.getElementById('addMatchSection').style.display = "block"; // 폼을 항상 표시
+    }
+
+    function addMatch() {
+        var form = document.getElementById('addMatchForm');
+        var ourTeamName = "우리팀"; // 고정된 우리 팀 이름
+        var leagueGb = "k5"; // 고정된 리그 값
+        var newMatch = {
+            teamName: ourTeamName + " vs " + form.teamName.value,
+            matchScore: form.matchScore.value + " vs " + form.matchRelativeScore.value,
+            matchDate: form.matchDate.value,
+            matchTime: form.matchTime.value,
+            matchLocation: form.matchLocation.value,
+            matchStatus: form.matchStatus.value,
+            matchHome: form.matchHome.value,
+            leagueGb: leagueGb
+        };
+
+        var tbody = document.getElementById('matchList').querySelector('tbody');
+        var newRow = tbody.insertRow();
+        Object.values(newMatch).forEach((value, index) => {
+            var cell = newRow.insertCell();
+            cell.innerText = value;
         });
+        var actionCell = newRow.insertCell();
+        actionCell.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteMatch(this)">삭제</button> <button class="btn btn-warning btn-sm" onclick="editMatch(this)">수정</button>';
+
+        form.reset();
+    }
+
+    function updateMatch() {
+        var form = document.getElementById('addMatchForm');
+        var ourTeamName = "우리팀"; // 고정된 우리 팀 이름
+        var leagueGb = "k5"; // 고정된 리그 값
+        var updatedMatch = {
+            teamName: ourTeamName + " vs " + form.teamName.value,
+            matchScore: form.matchScore.value + " vs " + form.matchRelativeScore.value,
+            matchDate: form.matchDate.value,
+            matchTime: form.matchTime.value,
+            matchLocation: form.matchLocation.value,
+            matchStatus: form.matchStatus.value,
+            matchHome: form.matchHome.value,
+            leagueGb: leagueGb
+        };
+
+        var cells = editingRow.querySelectorAll('td:not(:last-child)');
+        Object.values(updatedMatch).forEach((value, index) => {
+            cells[index].innerText = value;
+        });
+
+        form.reset();
+        editingRow = null;
+        document.getElementById('addMatchSubmitButton').innerText = "추가";
+        document.getElementById('addMatchSubmitButton').classList.remove("btn-warning");
+        document.getElementById('addMatchSubmitButton').classList.add("btn-success");
+        document.getElementById('addMatchSubmitButton').setAttribute("onclick", "addMatch()");
     }
 
     function deleteMatch(button) {
@@ -187,22 +275,12 @@
         row.remove();
     }
 
-    function addNewMatch() {
-        var table = document.getElementById('matchTable').getElementsByTagName('tbody')[0];
-        var newRow = table.insertRow(table.length);
-        for (var i = 0; i < 9; i++) {
-            var cell = newRow.insertCell(i);
-            var input = document.createElement('input');
-            input.type = 'text';
-            cell.appendChild(input);
-        }
-        var actionCell = newRow.insertCell(9);
-        var saveButton = document.createElement('button');
-        saveButton.innerText = '저장';
-        saveButton.type = 'button';
-        saveButton.classList.add('btn', 'btn-success');
-        actionCell.appendChild(saveButton);
-    }
+    // 드롭다운 스코어 생성
+    document.querySelector('[name="matchScore"]').innerHTML = generateScoreOptions();
+    document.querySelector('[name="matchRelativeScore"]').innerHTML = generateScoreOptions();
+
+    // 페이지 로드 시 팀 목록 로드
+    loadTeams();
 </script>
 
 </body>

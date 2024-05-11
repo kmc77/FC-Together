@@ -632,16 +632,51 @@
         SELECT * FROM Team ORDER BY team_name DESC
     </select>
 
+
     <select id="findTeamsByLeague" resultType="com.project.together.domain.Team" parameterType="String">
         SELECT * FROM Team WHERE team_league_gb = #{league} ORDER BY team_name DESC
+    </select>
+
+    <!--<insert id="insertTeamFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>-->
+
+    <!-- Team 정보를 데이터베이스에 삽입하는 SQL -->
+    <insert id="registerTeam" parameterType="map">
+        INSERT INTO Team (team_name, team_logo, team_league_gb)
+        VALUES (#{teamName}, #{teamLogo}, #{teamLeagueGb})
+    </insert>
+
+    <!-- 특정 팀을 찾는 쿼리 -->
+    <select id="findTeamById" resultType="com.project.together.domain.Team" parameterType="int">
+        SELECT * FROM Team WHERE id = #{id}
+    </select>
+
+    <delete id="deleteTeamByTeamId" parameterType="list">
+        DELETE FROM Team WHERE id IN
+        <foreach collection="list" item="teamId" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  구단목록 End ============== -->
+
+
+    <!-- ==============  매치 Start ============== -->
+
+
+    <select id="findK5TeamList" resultType="com.project.together.domain.Team">
+        SELECT *
+        FROM team
+        WHERE team_league_gb = 'k5';
     </select>
 
 
 
 
-
-
-    <!-- ==============  구단목록 End ============== -->
+    <!-- ==============  매치 End ============== -->
 
 
 </mapper>

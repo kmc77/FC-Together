@@ -48,13 +48,37 @@ public class UserController {
     // 사용자 정보 조회
     @GetMapping("/user")
     public ResponseEntity<User> getUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        User user = userService.getFullUserInfo(principalDetails.getUser().getUsername());
+        if (principalDetails == null || principalDetails.getUser() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = principalDetails.getUser();
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 소셜 로그인 사용자인지 확인
+        if (user.getProvider() != null && user.getProviderId() != null) {
+            User socialUser = User.builder()
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .roles(user.getRoles())
+                    .user_real_name(user.getUserRealName())
+                    .user_phone(user.getUserPhone())
+                    .user_birth(user.getUserBirth())
+                    .build();
+            return ResponseEntity.ok(socialUser);
+        }
+
+        // 일반 로그인 사용자 정보 반환
+        user = userService.getFullUserInfo(user.getUsername());
+
         System.out.println("컨 ====== user = " + user);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 사용자 정보가 없는 경우 404 에러 반환
         }
 
-        return ResponseEntity.ok(user); // User 객체를 직접 반환
+        return ResponseEntity.ok(user);
     }
 
 

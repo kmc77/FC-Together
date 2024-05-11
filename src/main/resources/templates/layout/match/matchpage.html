@@ -3,19 +3,22 @@
 <head>
     <title>경기 일정 / 결과</title>
     <th:block th:include="layout/header"></th:block>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="/css/layout/match/matchpage.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+    <!-- CSS styles -->
     <style>
         /* CSS for tabs */
         .tab {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 600px; /* Increased width */
-            margin: 0 auto; /* Center align */
+            max-width: 600px;
+            margin: 0 auto;
             overflow: hidden;
             border: 1px solid #ccc;
             background-color: #f1f1f1;
@@ -29,28 +32,27 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 10px 12px; /* Adjust size */
+            padding: 10px 12px;
             transition: 0.3s;
             display: inline-block;
             margin-bottom: -1px;
-            width: calc(33.33% - 1px); /* 3개의 탭이 동일한 너비를 가지도록 조정 */
+            width: calc(33.33% - 1px);
         }
 
         .tab button:hover {
-            background-color: #8bc34a; /* 초록색으로 변경합니다. */
+            background-color: #8bc34a;
         }
 
         .tab button.active {
-            background-color: #8bc34a; /* 활성 탭의 배경색을 초록색으로 변경합니다. */
+            background-color: #8bc34a;
         }
 
-        /* Style for subtab buttons */
         .subtab {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 300px; /* Decreased width */
-            margin: 0 auto; /* Center align */
+            max-width: 300px;
+            margin: 0 auto;
             overflow: hidden;
             border: none;
             background-color: inherit;
@@ -62,122 +64,155 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 10px 12px; /* Adjust size */
+            padding: 10px 12px;
             transition: 0.3s;
             display: inline-block;
             margin-bottom: -1px;
-            width: calc(50% - 1px); /* Ensure two buttons fit within the subtab */
+            width: calc(50% - 1px);
         }
 
         .subtab button:hover {
-            background-color: #8bc34a; /* Change to desired color */
+            background-color: #8bc34a;
         }
 
         .subtab button.active {
-            background-color: #8bc34a; /* Change to desired color */
+            background-color: #8bc34a;
         }
 
-        /* Style the tab content */
         .tabcontent {
             display: none;
             padding: 6px 12px;
             border: 1px solid #ccc;
             border-top: none;
-            text-align: center; /* 가운데 정렬 */
+            text-align: center;
             width: 100%;
         }
 
         table {
-            margin: 0 auto; /* 가로 가운데 정렬 */
+            margin: 0 auto;
         }
 
         .matchAllArea {
-         margin-top : 30px;
+            margin-top: 30px;
         }
 
+        /* Pagination styles */
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
 <div class="matchAllArea">
 
-<div class="tab-container">
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'K5')" id="defaultOpen">K5</button>
-        <button class="tablinks" onclick="openTab(event, 'K7')">K7</button>
-        <button class="tablinks" onclick="openTab(event, 'W1')">W1</button>
+    <div class="tab-container">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'K5')" id="defaultOpen">K5</button>
+            <button class="tablinks" onclick="openTab(event, 'K7')">K7</button>
+            <button class="tablinks" onclick="openTab(event, 'W1')">W1</button>
+        </div>
     </div>
-</div>
 
-<div id="K5" class="tabcontent">
-    <div class="subtab">
-        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K5')">경기 일정</button>
-        <button class="subtablinks" onclick="openSubTab(event, 'results_K5')">경기 결과</button>
+    <div id="K5" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K5')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_K5')">경기 결과</button>
+        </div>
+        <div id="schedule_K5" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${K5Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
+        <div id="results_K5" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${K5Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
     </div>
-    <div id="schedule_K5" class="subtabcontent">
-        <!-- Content for K5 Schedule -->
-        <table>
-            <tr th:each="match : ${K5Schedulelist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
-    </div>
-    <div id="results_K5" class="subtabcontent">
-        <!-- Content for K5 Results -->
-        <table>
-            <tr th:each="match : ${K5Resultlist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
-    </div>
-</div>
 
-<div id="K7" class="tabcontent">
-    <div class="subtab">
-        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K7')">경기 일정</button>
-        <button class="subtablinks" onclick="openSubTab(event, 'results_K7')">경기 결과</button>
+    <div id="K7" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K7')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_K7')">경기 결과</button>
+        </div>
+        <div id="schedule_K7" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${K7Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
+        <div id="results_K7" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${K7Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
     </div>
-    <div id="schedule_K7" class="subtabcontent">
-        <!-- Content for K7 Schedule -->
-        <table>
-            <tr th:each="match : ${K7Schedulelist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
-    </div>
-    <div id="results_K7" class="subtabcontent">
-        <!-- Content for K7 Results -->
-        <table>
-            <tr th:each="match : ${K7Resultlist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
-    </div>
-</div>
 
-<div id="W1" class="tabcontent">
-    <div class="subtab">
-        <button class="subtablinks active" onclick="openSubTab(event, 'schedule_W1')">경기 일정</button>
-        <button class="subtablinks" onclick="openSubTab(event, 'results_W1')">경기 결과</button>
-    </div>
-    <div id="schedule_W1" class="subtabcontent">
-        <!-- Content for W1 Schedule -->
-        <table>
-            <tr th:each="match : ${W1Schedulelist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
-    </div>
-    <div id="results_W1" class="subtabcontent">
-        <!-- Content for W1 Results -->
-        <table>
-            <tr th:each="match : ${W1Resultlist}">
-                <td th:text="${match.matchDate}"></td>
-            </tr>
-        </table>
+    <div id="W1" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_W1')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_W1')">경기 결과</button>
+        </div>
+        <div id="schedule_W1" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${W1Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
+        <div id="results_W1" class="subtabcontent">
+            <table>
+                <tr th:each="match : ${W1Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+            </div>
+        </div>
     </div>
 </div>
-</div>
-
 
 <script>
     // JavaScript for tabs

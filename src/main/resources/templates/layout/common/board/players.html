@@ -334,6 +334,9 @@
                 // "선수 등록" 탭 클릭
                 $("#register-player a").trigger('click');
 
+                // "선수 정보" 영역의 제목을 로컬 스토리지에서 가져온 값으로 변경
+                $('#cnt_bbs h1').text(selectedPlayerType + ' 선수등록');
+
 
                 // DOM이 완전히 로드된 후 실행되도록 지연 실행 설정
                 setTimeout(function() {
@@ -363,6 +366,7 @@
       // 입력 필드를 추가하는 함수에 힌트 텍스트 매개변수 추가
         function addInputField(id, hint, name) {
             var container = document.getElementById(id);
+            container.innerHTML = ''; // 기존 필드 제거
             if (container) {
                 var input = document.createElement('input');
                 input.type = 'text';
@@ -696,6 +700,9 @@
 
                             // "선수 등록" 탭 클릭
                             $("#register-player a").trigger('click');
+
+                            // "선수 정보" 영역의 제목을 로컬 스토리지에서 가져온 값으로 변경
+                            $('#cnt_bbs h1').text(selectedPlayerType + ' 선수정보');
                         },
                         error: function(error) {
                             console.log(error);
@@ -816,6 +823,11 @@
                 setColumnTitles(playerType + 'Player');
                 // 테이블에 선수 추가
                 addPlayersToTable(playerType, playerKeys[playerType + 'Player']);
+
+                // 체크박스 상태 리셋
+                $('#selectAllCheckbox').prop('checked', false); // "모두 선택" 체크박스를 초기화
+                selectedRows = []; // 선택된 행 배열 비우기
+                updateSelectedCount(); // 선택된 행의 수 업데이트
 
                 // 선수 목록 제목 업데이트
                 var playerTypeName = ''; // 선수 타입 이름 초기화

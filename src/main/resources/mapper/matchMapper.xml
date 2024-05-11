@@ -6,57 +6,51 @@
     <select id="K5selectSchedule" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K5'
-        AND m.match_result IS  NULL
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'k5'
         AND m.match_score IS  NULL
-        AND m.league_gb = 'K5'
+        AND m.league_gb = 'k5'
     </select>
 
     <select id="K5selectResult" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K5'
-        and m.match_result is not null and
-        m.match_score is not null
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'k5'
+        AND m.match_score is not null
     </select>
 
     <select id="K7selectSchedule" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K7'
-        AND m.match_result IS  NULL
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'k7'
         AND m.match_score IS  NULL
-        AND m.league_gb = 'K7'
+        AND m.league_gb = 'k7'
     </select>
 
     <select id="K7selectResult" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'K7'
-        and m.match_result is not null and
-        m.match_score is not null
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'k7'
+        AND m.match_score is not null
     </select>
 
     <select id="W1selectSchedule" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'W1'
-        AND m.match_result IS  NULL
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'w1'
         AND m.match_score IS  NULL
-        AND m.league_gb = 'W1'
+        AND m.league_gb = 'w1'
     </select>
 
     <select id="W1selectResult" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m
-        JOIN teamstaff ts ON m.team_staff_name = ts.team_staff_name
-        WHERE ts.team_league_gb = 'W1'
-        and m.match_result is not null and
-        m.match_score is not null
+        JOIN team ts ON m.team_name = ts.team_name
+        WHERE ts.team_league_gb = 'w1'
+        AND m.match_score is not null
     </select>
 </mapper>

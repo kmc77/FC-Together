@@ -241,4 +241,21 @@ public interface AdminMapper {
     List<Team> getAllTeamList();
 
     List<Team> findTeamsByLeague(String league);
+
+    /*void insertTeamFile(File logoMetadata);*/
+
+    void registerTeam(Map<String, Object> paramMap);
+
+    /*Team findTeamByName(int teamName);*/
+
+    Team findTeamById(int id);
+
+    void deleteTeamByTeamId(List<Integer> teamIds);
+
+
+    /* ======================================= */
+
+    List<Team> findK5TeamList(String teamName);
+
+
 }

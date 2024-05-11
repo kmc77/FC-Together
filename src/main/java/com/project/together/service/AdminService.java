@@ -675,6 +675,10 @@ public class AdminService {
 // ================================== 훈련일정 and
 
 
+// ================================== 구단목록 start
+
+
+
     public List<Team> getAllTeamList() {
         return adminMapper.getAllTeamList();
     }
@@ -682,6 +686,33 @@ public class AdminService {
     public List<Team> findTeamsByLeague(String league) {
         return adminMapper.findTeamsByLeague(league);
     }
+
+    public void registerTeam(Map<String, Object> paramMap) {
+        adminMapper.registerTeam(paramMap);
+    }
+
+  /*  public Team findTeamByName(ing teamName) {
+        return adminMapper.findTeamByName(teamName);
+    }*/
+
+    public Team findTeamById(int id) {
+        return adminMapper.findTeamById(id);
+    }
+
+
+// ================================== 구단목록 and
+
+
+// ================================== 구단목록 start
+
+
+    public List<Team> findK5TeamList(String teamName) {
+        return adminMapper.findK5TeamList(teamName);
+    }
+
+
+// ================================== 구단목록 and
+
 }
 
 

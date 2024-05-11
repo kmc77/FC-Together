@@ -1,8 +1,10 @@
 package com.project.together.service;
 
+import java.io.IOException;
 import java.net.URL;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.project.together.domain.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -160,6 +163,7 @@ public class FileService {
         }
     }
 
+
     // 경영공시 파일을 삭제하는 메서드
     public void deleteFilesByOperationNum(int operationNum) {
         List<File> filesToDelete = adminMapper.findFilesByOperationNum(operationNum);
@@ -174,6 +178,7 @@ public class FileService {
     }
 
 
+    // 선수 사진 업로드
     public String uploadPlayerPhotoToS3AndSaveMetadata(MultipartFile file, String selectedPlayerType, String playerNum) {
         String fileUrl = "";
         if (file != null && !file.isEmpty()) {
@@ -297,6 +302,7 @@ public class FileService {
         }
     }
 
+    // 스태프 사진 업로드
     public String uploadStaffPhotoToS3AndSaveMetadata(MultipartFile file, String teamLeagueGb, String teamStaffNum) {
         String fileUrl = "";
         if (file != null && !file.isEmpty()) {
@@ -332,6 +338,7 @@ public class FileService {
         return fileUrl;
     }
 
+
     // 스태프 파일 삭제
     public void deleteFilesByStaffNum(int teamStaffNum) {
         List<File> filesToDelete = adminMapper.findFilesByTeamStaffNum(teamStaffNum);
@@ -359,18 +366,97 @@ public class FileService {
     }
 
 
+    /**
+     * 사용자가 업로드한 팀 로고를 S3에 업로드하고 메타데이터를 저장합니다.
+     *
+     * @param teamLogo 사용자가 업로드한 MultipartFile.
+     * @param teamLeagueGb 리그 식별자.
+     * @param teamName 파일 경로와 메타데이터에 사용될 팀 이름.
+     * @return 업로드된 파일의 URL.
+     */
+    public String uploadTeamLogoToS3(MultipartFile teamLogo, String teamLeagueGb, String teamName) {
+        String fileUrl = "";
+        if (teamLogo != null && !teamLogo.isEmpty()) {
+            try {
+                String originalFilename = teamLogo.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                String filePath = teamLeagueGb + "_team" + "/teamLogos/" + teamName + "/" + fileName;
+
+                System.out.println("팀 로고 업로드 ==== filePath = " + filePath);
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(teamLogo.getSize());
+                metadata.setContentType(teamLogo.getContentType());
+                amazonS3.putObject(new PutObjectRequest(bucketName, filePath, teamLogo.getInputStream(), metadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+               /* File logoMetadata = new File();
+                logoMetadata.setFilePath(fileUrl);
+                *//*logoMetadata.setTableIdx(Integer.parseInt(teamName));*//*  // 필요한 경우 teamName을 추가 정보로 저장
+                logoMetadata.setFileName(originalFilename);
+                logoMetadata.setTableGb("Team");
+                adminMapper.insertTeamFile(logoMetadata);*/
+
+            } catch (IOException e) {
+                throw new RuntimeException("팀 로고 업로드 실패: " + e.getMessage());
+            }
+        }
+        return fileUrl;
+    }
+
+
+    // 구단 삭제
+    public void deleteFilesByTeamNum(List<Integer> teamIds) {
+        for (Integer teamId : teamIds) {
+            Team team = adminMapper.findTeamById(teamId);
+            if (team == null) {
+                throw new IllegalArgumentException("팀을 찾을 수 없습니다: " + teamId);
+            }
+
+            String teamLogoUrl = team.getTeamLogo();
+            if (teamLogoUrl == null || teamLogoUrl.isEmpty()) {
+                System.err.println("팀 로고 URL이 없습니다: " + teamId);
+            } else {
+                System.out.println("팀 로고 URL: " + teamLogoUrl);
+
+                String fileKey = getFileKeyFromUrl(teamLogoUrl);
+                if (fileKey != null && !fileKey.isEmpty()) {
+                    amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+                    System.out.println("파일 삭제 성공, 키: " + fileKey);
+                } else {
+                    System.err.println("파일 키가 없거나 비어있습니다: " + teamId);
+                }
+            }
+
+            // 팀 테이블 데이터 삭제
+            adminMapper.deleteTeamByTeamId(Collections.singletonList(teamId));
+            System.out.println("팀 삭제 성공, ID: " + teamId);
+        }
+    }
+
+
 
 
     private String getFileKeyFromUrl(String fileUrl) {
         try {
-            URL url = new URL(fileUrl);
-            String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
-            // URL 디코딩 적용
-            return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+            if (fileUrl != null && !fileUrl.isEmpty()) {
+                URL url = new URL(fileUrl);
+                String path = url.getPath().substring(1); // 첫 번째 '/'를 제외한 나머지 부분
+                // URL 디코딩 적용
+                return URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+            } else {
+                System.err.println("잘못된 또는 빈 파일 URL: " + fileUrl);
+                return null; // 예외 발생 대신 null 반환
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Error extracting file key from URL", e);
+            System.err.println("파일 URL에서 키 추출 중 오류 발생: " + fileUrl);
+            e.printStackTrace();
+            return null; // 예외 발생 대신 null 반환
         }
     }
+
+
 
 
 

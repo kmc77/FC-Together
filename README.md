@@ -20,7 +20,7 @@
                 </td>
             </tr>
         </table>
-        <img src="https://github.com/kmc77/FC-Together/blob/main/IMG_0225.jpeg?raw=true" width="300" alt="Project Image">
+        <img src="https://github.com/kmc77/FC-Together/blob/kmc/websiteCreation.png?raw=true" width="" alt="Project Image">
     </div>
 </body>
 </html>

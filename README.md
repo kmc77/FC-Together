@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC Together Project</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css">
-    <style>
-        h2 {
-            font-size: 24px; /* Customize size as needed */
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <div class="container mx-auto">

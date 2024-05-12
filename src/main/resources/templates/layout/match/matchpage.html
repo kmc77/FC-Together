@@ -5,11 +5,6 @@
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/match/matchpage.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
     <!-- CSS styles -->
     <style>
         /* CSS for tabs */
@@ -92,10 +87,6 @@
             margin: 0 auto;
         }
 
-        .matchAllArea {
-            margin-top: 30px;
-        }
-
         /* Pagination styles */
         .pagination {
             display: inline-block;
@@ -127,7 +118,7 @@
     <div class="tab-container">
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'K5')" id="defaultOpen">K5</button>
-            <button class="tablinks" onclick="openTab(event, 'K7')">K777</button>
+            <button class="tablinks" onclick="openTab(event, 'K7')">K7</button>
             <button class="tablinks" onclick="openTab(event, 'W1')">W1</button>
         </div>
     </div>
@@ -138,23 +129,23 @@
             <button class="subtablinks" onclick="openSubTab(event, 'results_K5')">경기 결과</button>
         </div>
         <div id="schedule_K5" class="subtabcontent">
-            <table>
+            <table id="K5ScheduleTable">
                 <tr th:each="match : ${K5Schedulelist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="K5ScheduleLoadMore">더보기</button>
             </div>
         </div>
         <div id="results_K5" class="subtabcontent">
-            <table>
+            <table id="K5ResultTable">
                 <tr th:each="match : ${K5Resultlist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="K5ResultLoadMore">더보기</button>
             </div>
         </div>
     </div>
@@ -165,23 +156,23 @@
             <button class="subtablinks" onclick="openSubTab(event, 'results_K7')">경기 결과</button>
         </div>
         <div id="schedule_K7" class="subtabcontent">
-            <table>
+            <table id="K7ScheduleTable">
                 <tr th:each="match : ${K7Schedulelist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="K7ScheduleLoadMore">더보기</button>
             </div>
         </div>
         <div id="results_K7" class="subtabcontent">
-            <table>
+            <table id="K7ResultTable">
                 <tr th:each="match : ${K7Resultlist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="K7ResultLoadMore">더보기</button>
             </div>
         </div>
     </div>
@@ -192,64 +183,123 @@
             <button class="subtablinks" onclick="openSubTab(event, 'results_W1')">경기 결과</button>
         </div>
         <div id="schedule_W1" class="subtabcontent">
-            <table>
+            <table id="W1ScheduleTable">
                 <tr th:each="match : ${W1Schedulelist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="W1ScheduleLoadMore">더보기</button>
             </div>
         </div>
         <div id="results_W1" class="subtabcontent">
-            <table>
+            <table id="W1ResultTable">
                 <tr th:each="match : ${W1Resultlist}">
                     <td th:text="${match.matchDate}"></td>
                 </tr>
             </table>
             <div class="pagination">
-                <a th:href="@{'/match/matchpage?page=' + ${currentPage + 1}}">더보기</a>
+                <button id="W1ResultLoadMore">더보기</button>
             </div>
         </div>
     </div>
+
+
 </div>
 
 <script>
     // JavaScript for tabs
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
+       function openTab(evt, tabName) {
+           var i, tabcontent, tablinks;
+           tabcontent = document.getElementsByClassName("tabcontent");
+           for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+           }
+           tablinks = document.getElementsByClassName("tablinks");
+           for (i = 0; i < tablinks.length; i++) {
+               tablinks[i].className = tablinks[i].className.replace(" active", "");
+           }
+           document.getElementById(tabName).style.display = "block";
+           evt.currentTarget.className += " active";
 
-        // Ensure the default sub-tab is selected when changing tabs
-        var defaultSubTab = document.getElementById(tabName).getElementsByClassName("subtablinks")[0];
-        defaultSubTab.click();
-    }
+           // Ensure the default sub-tab is selected when changing tabs
+           var defaultSubTab = document.getElementById(tabName).getElementsByClassName("subtablinks")[0];
+           defaultSubTab.click();
+       }
 
-    function openSubTab(evt, subTabName) {
-        var i, tabcontent, subtablinks;
-        tabcontent = document.getElementsByClassName("subtabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        subtablinks = document.getElementsByClassName("subtablinks");
-        for (i = 0; i < subtablinks.length; i++) {
-            subtablinks[i].className = subtablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(subTabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
+       function openSubTab(evt, subTabName) {
+           var i, tabcontent, subtablinks;
+           tabcontent = document.getElementsByClassName("subtabcontent");
+           for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+           }
+           subtablinks = document.getElementsByClassName("subtablinks");
+           for (i = 0; i < subtablinks.length; i++) {
+               subtablinks[i].className = subtablinks[i].className.replace(" active", "");
+           }
+           document.getElementById(subTabName).style.display = "block";
+           evt.currentTarget.className += " active";
+       }
 
-    // Open the default tab on page load
-    document.getElementById("defaultOpen").click();
+       // Open the default tab on page load
+       $(document).ready(function() {
+           document.getElementById("defaultOpen").click();
+       });
+
+
+   $(document).ready(function() {
+       var currentPage = 1;
+       var size = 5;
+
+       $('#K5ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K5ScheduleTable tr');
+               $('#K5ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K5ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K5ResultTable tr');
+               $('#K5ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K7ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K7ScheduleTable tr');
+               $('#K7ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K7ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K7ResultTable tr');
+               $('#K7ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#W1ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#W1ScheduleTable tr');
+               $('#W1ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#W1ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#W1ResultTable tr');
+               $('#W1ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+   });
 </script>
 
 </body>

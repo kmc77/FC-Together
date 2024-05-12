@@ -1,3 +1,5 @@
+// MatchController.java
+
 package com.project.together.controller;
 
 import com.project.together.domain.Match;
@@ -26,6 +28,14 @@ public class MatchController {
         List<Match> W1matchSchedule = matchService.W1selectSchedule();
         List<Match> W1matchResult = matchService.W1selectResult();
 
+        System.out.println("k5Schedule" + K5matchSchedule);
+        System.out.println("k5Result" + K5matchResult);
+        System.out.println("k7Schedule" + K7matchSchedule);
+        System.out.println("k7Result" + K7matchResult);
+        System.out.println("W1Schedule" + W1matchSchedule);
+        System.out.println("W1Result" + W1matchResult);
+
+        // Pagination logic
         List<Match> paginatedK5Schedule = getPaginatedList(K5matchSchedule, page, size);
         List<Match> paginatedK5Result = getPaginatedList(K5matchResult, page, size);
         List<Match> paginatedK7Schedule = getPaginatedList(K7matchSchedule, page, size);

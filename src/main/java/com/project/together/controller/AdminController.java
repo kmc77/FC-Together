@@ -1372,9 +1372,9 @@ public class AdminController {
 
 
     // 구단목록 목록 가져오기
-    @GetMapping("/layout/getK5MatchList")
+    @GetMapping("/layout/getK5TeamList")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Team>> getK5MatchList(@RequestParam(required = false) String teamName) {
+    public ResponseEntity<List<Team>> getK5TeamList(@RequestParam(required = false) String teamName) {
         List<Team> k5Teams;
         if (teamName != null && !teamName.isEmpty()) {
             k5Teams = adminService.findK5TeamList(teamName);
@@ -1383,6 +1383,40 @@ public class AdminController {
         }
         return ResponseEntity.ok(k5Teams);
     }
+
+
+    // K5 매치목록 가져오기
+    @GetMapping("/layout/getK5MatchList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Match>> getK5MatchList() {
+        List<Match> k5Match = adminService.findK5MatchListByLeague("k5");
+        return ResponseEntity.ok(k5Match);
+    }
+
+
+    // K5 매치 등록하기
+    @PostMapping("/layout/addK5Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addK5Match(@RequestBody Match matchRequest) {
+        try {
+            matchRequest.setLeagueGb("k5");
+            adminService.saveK5Match(matchRequest);
+            return ResponseEntity.ok(Map.of("message", "새로운 매치가 성공적으로 추가되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 추가에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

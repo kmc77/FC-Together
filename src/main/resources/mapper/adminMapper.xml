@@ -673,6 +673,22 @@
         WHERE team_league_gb = 'k5';
     </select>
 
+    <select id="findK5MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'k5'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
+    <insert id="saveK5Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matches (team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home, league_gb)
+        VALUES (#{teamName}, #{matchScore}, #{matchRelativeScore}, #{matchDate}, #{matchTime}, #{matchLocation}, #{matchStatus}, #{matchHome}, #{leagueGb})
+    </insert>
+
+
+
+
 
 
 

@@ -703,7 +703,7 @@ public class AdminService {
 // ================================== 구단목록 and
 
 
-// ================================== 구단목록 start
+// ================================== 구단목록 + 매치목록 start
 
 
     public List<Team> findK5TeamList(String teamName) {
@@ -711,7 +711,16 @@ public class AdminService {
     }
 
 
-// ================================== 구단목록 and
+    public List<Match> findK5MatchListByLeague(String league) {
+        return adminMapper.findK5MatchListByLeague(league);
+    }
+
+    public void saveK5Match(Match matchRequest) {
+        adminMapper.saveK5Match(matchRequest);
+    }
+
+
+// ================================== 구단목록 + 매치목록 and
 
 }
 

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/common/header :: load('k5 매치 관리 페이지')"></head>
+<head th:replace="layout/common/header :: load('k5 매치 관리 페이지')">
+
+
+</head>
 <body>
 <!-- 프리로더 -->
 <div th:replace="layout/common/preloader :: load()"></div>
@@ -85,7 +88,8 @@
                         </select>
                     </div>
                     <div class="form-group col-md-12 text-center">
-                        <button type="button" class="btn btn-success" id="addMatchSubmitButton" onclick="addMatch()" style="margin-top: 10px;">추가</button>
+                        <button type="button" class="btn btn-success" id="addMatchSubmitButton" onclick="addMatch()" style="margin-top: 10px;">등록</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEditButton" onclick="cancelEdit()" style="margin-top: 10px;">취소</button>
                     </div>
                 </form>
             </div>
@@ -140,20 +144,125 @@
 
     // 팀 목록을 드롭다운에 로드
     function loadTeams() {
-        fetch('/admin/layout/getK5MatchList')
+        fetch('/admin/layout/getK5TeamList')
             .then(response => response.json())
             .then(teams => {
                 const select = document.getElementById('opponentTeamSelect');
                 select.innerHTML = "<option value=''>선택</option>"; // 기본 선택 옵션 추가
                 teams.forEach(team => {
-                    const option = document.createElement('option');
-                    option.value = team.teamName;
-                    option.textContent = team.teamName;
-                    select.appendChild(option);
+                    if (team.teamName !== "FC 투게더") { // "FC 투게더" 제외
+                        const option = document.createElement('option');
+                        option.value = team.teamName;
+                        option.textContent = team.teamName;
+                        select.appendChild(option);
+                    }
                 });
             })
             .catch(error => console.error('팀 목록을 로드하는 중 오류가 발생했습니다:', error));
     }
+
+
+    // 매치 데이터를 로드하는 함수
+    function loadMatchData() {
+        fetch('/admin/layout/getK5MatchList')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('matchList').querySelector('tbody');
+                tableBody.innerHTML = '';
+                data.forEach(match => {
+                    // "FC 투게더"의 로고 URL을 미리 설정
+                    const ourTeamLogo = `<img src="/img/FcTogether-removebg.png" alt="FC 투게더 로고" style="height:30px; width:30px;">`;
+
+                   // "FC 투게더"가 왼쪽에, 상대 팀을 오른쪽에 표시
+                    const teamDisplay = match.teamName === 'FC 투게더'
+                        ? `<td><div class="team-info" style="display: flex; align-items: center;">${ourTeamLogo} FC 투게더 <span style="margin: 0 10px;">VS</span> ${match.opponentName}</div></td>`
+                        : `<td><div class="team-info" style="display: flex; align-items: center;">${ourTeamLogo} FC 투게더 <span style="margin: 0 10px;">VS</span> <img src="${match.teamLogo}" alt="${match.teamName} 로고" style="height:30px; width:30px; margin-right: 5px;"> ${match.teamName}</div></td>`;
+
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        ${teamDisplay}
+                        <td>${match.matchScore} - ${match.matchRelativeScore}</td>
+                        <td>${match.matchDate}</td>
+                        <td>${match.matchTime}</td>
+                        <td>${match.matchLocation}</td>
+                        <td>${match.matchStatus}</td>
+                        <td>${match.matchHome}</td>
+                        <td>${match.leagueGb}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editMatch(this)">수정</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteMatch(this)">삭제</button>
+                        </td>
+                    `;
+                });
+            })
+            .catch(error => console.error('매치 데이터 로드 중 에러 발생:', error));
+    }
+
+
+    // 매치 등록 함수
+    function addMatch() {
+        const form = document.getElementById('addMatchForm');
+        const formData = new FormData(form);
+        if (!validateForm(formData)) return;
+
+        if (!confirm('매치를 추가하시겠습니까?')) {
+            console.log('매치 추가가 취소되었습니다.');
+            return;
+        }
+
+        const accessToken = localStorage.getItem('accessToken');
+        const jsonObject = Object.fromEntries(formData.entries());
+
+        postData('/admin/layout/addK5Match', jsonObject, accessToken)
+            .then(data => {
+                console.log('새로운 매치가 추가되었습니다:', data);
+                location.href = '/admin/layout/k5match';
+            })
+            .catch(error => console.error('새로운 매치 추가 중 오류 발생:', error));
+    }
+
+    // 폼 유효성 검사
+    function validateForm(formData) {
+        for (let [key, value] of formData.entries()) {
+            if (!value.trim()) {
+                alert(key + ' 필드는 필수입니다.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // POST 요청을 보내는 함수
+    function postData(url, data, token) {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error('오류: ' + err.error);
+                });
+            }
+            return response.json();
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // JWT 토큰을 디코딩하는 함수
     function parseJwt(token) {
@@ -182,14 +291,14 @@
         var formSection = document.getElementById('addMatchSection');
         var addMatchButton = document.getElementById('addMatchButton');
 
+        // 폼의 표시 상태를 토글합니다.
         if (formSection.style.display === 'none') {
-            addMatchButton.textContent = "취소";
-            formSection.style.display = 'block';
+            formSection.style.display = 'block';  // 폼을 보이게 설정
         } else {
-            addMatchButton.textContent = "경기 등록";
-            formSection.style.display = 'none';
+            formSection.style.display = 'none';  // 폼을 숨김
         }
     }
+
 
     var editingRow = null;
 
@@ -198,8 +307,24 @@
         editingRow = row;
         var cells = row.querySelectorAll('td:not(:last-child)');
         var form = document.getElementById('addMatchForm');
-        form.teamName.value = cells[0].innerText.split(' vs ')[1] || '';
-        var scores = cells[1].innerText.split(' vs ');
+
+        // "FC 투게더 VS 상대팀"에서 상대 팀 이름만 추출
+        var fullTeamInfo = cells[0].innerText; // "FC 투게더 VS 상대팀" 문자열 전체를 가져옴
+        var opponentTeamName = fullTeamInfo.includes('FC 투게더')
+                               ? fullTeamInfo.split('VS')[1].trim() // "FC 투게더" 다음의 텍스트를 가져옴
+                               : fullTeamInfo.split('VS')[0].trim(); // 상대방이 왼쪽에 있을 경우
+
+        var teamDropdown = document.getElementById('opponentTeamSelect');
+
+        // 드롭다운에서 해당 상대 팀 이름의 value를 찾아 선택
+        Array.from(teamDropdown.options).forEach(option => {
+            if (option.text === opponentTeamName) {
+                teamDropdown.value = option.value;
+            }
+        });
+
+        // 점수, 날짜, 시간 등 나머지 필드 설정
+        var scores = cells[1].innerText.split('-').map(s => s.trim());
         form.matchScore.value = scores[0] || '0';
         form.matchRelativeScore.value = scores[1] || '0';
         form.matchDate.value = cells[2].innerText || '';
@@ -208,39 +333,47 @@
         form.matchStatus.value = cells[5].innerText || '예정';
         form.matchHome.value = cells[6].innerText || '홈';
 
+        // 버튼 텍스트 및 클래스 업데이트
         document.getElementById('addMatchSubmitButton').innerText = "수정완료";
         document.getElementById('addMatchSubmitButton').classList.remove("btn-success");
         document.getElementById('addMatchSubmitButton').classList.add("btn-warning");
         document.getElementById('addMatchSubmitButton').setAttribute("onclick", "updateMatch()");
-        document.getElementById('addMatchSection').style.display = "block"; // 폼을 항상 표시
+        document.getElementById('addMatchSection').style.display = "block"; // 폼을 표시
     }
 
-    function addMatch() {
+
+    function cancelEdit() {
+        // 폼 섹션을 숨깁니다.
+        var formSection = document.getElementById('addMatchSection');
+        formSection.style.display = 'none';
+
+        // 폼 내부의 입력 필드들을 초기화합니다.
         var form = document.getElementById('addMatchForm');
-        var ourTeamName = "우리팀"; // 고정된 우리 팀 이름
-        var leagueGb = "k5"; // 고정된 리그 값
-        var newMatch = {
-            teamName: ourTeamName + " vs " + form.teamName.value,
-            matchScore: form.matchScore.value + " vs " + form.matchRelativeScore.value,
-            matchDate: form.matchDate.value,
-            matchTime: form.matchTime.value,
-            matchLocation: form.matchLocation.value,
-            matchStatus: form.matchStatus.value,
-            matchHome: form.matchHome.value,
-            leagueGb: leagueGb
-        };
-
-        var tbody = document.getElementById('matchList').querySelector('tbody');
-        var newRow = tbody.insertRow();
-        Object.values(newMatch).forEach((value, index) => {
-            var cell = newRow.insertCell();
-            cell.innerText = value;
-        });
-        var actionCell = newRow.insertCell();
-        actionCell.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteMatch(this)">삭제</button> <button class="btn btn-warning btn-sm" onclick="editMatch(this)">수정</button>';
-
         form.reset();
+
+        // '등록' 버튼을 다시 활성화하고 초기 상태로 설정합니다.
+        var addMatchSubmitButton = document.getElementById('addMatchSubmitButton');
+        addMatchSubmitButton.innerText = '등록';
+        addMatchSubmitButton.classList.remove("btn-warning");
+        addMatchSubmitButton.classList.add("btn-success");
+        addMatchSubmitButton.setAttribute('onclick', 'addMatch()'); // 이벤트 핸들러를 다시 addMatch로 설정
+        addMatchSubmitButton.style.display = 'inline-block'; // 버튼을 보이게 합니다.
+
+        // 수정완료 및 취소 버튼을 숨기고 필요 없는 설정을 제거합니다.
+        var editMatchSubmitButton = document.getElementById('editMatchSubmitButton');
+        if (editMatchSubmitButton) {
+            editMatchSubmitButton.style.display = 'none';
+        }
+
+        // 수정 중이던 행의 참조를 제거합니다.
+        editingRow = null;
     }
+
+
+
+
+
+
 
     function updateMatch() {
         var form = document.getElementById('addMatchForm');
@@ -264,7 +397,7 @@
 
         form.reset();
         editingRow = null;
-        document.getElementById('addMatchSubmitButton').innerText = "추가";
+        document.getElementById('addMatchSubmitButton').innerText = "등록";
         document.getElementById('addMatchSubmitButton').classList.remove("btn-warning");
         document.getElementById('addMatchSubmitButton').classList.add("btn-success");
         document.getElementById('addMatchSubmitButton').setAttribute("onclick", "addMatch()");
@@ -279,8 +412,10 @@
     document.querySelector('[name="matchScore"]').innerHTML = generateScoreOptions();
     document.querySelector('[name="matchRelativeScore"]').innerHTML = generateScoreOptions();
 
-    // 페이지 로드 시 팀 목록 로드
-    loadTeams();
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTeams();  // 팀 목록 로드
+        loadMatchData();  // 매치 데이터 로드
+    });
 </script>
 
 </body>

@@ -14,4 +14,5 @@ public class Match {
     private String matchStatus;
     private String matchHome;
     private String leagueGb;
+    private String teamLogo;
 }

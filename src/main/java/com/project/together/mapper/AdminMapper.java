@@ -255,7 +255,14 @@ public interface AdminMapper {
 
     /* ======================================= */
 
-    List<Team> findK5TeamList(String teamName);
+    List<Team> findK5TeamList(@Param("teamName") String teamName);
 
 
+    List<Match> findK5MatchList(@Param("teamName") String teamName);
+
+
+    List<Match> findK5MatchListByLeague(@Param("league") String league);
+
+
+    void saveK5Match(Match matchRequest);
 }

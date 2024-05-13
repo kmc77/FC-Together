@@ -686,6 +686,33 @@
         VALUES (#{teamName}, #{matchScore}, #{matchRelativeScore}, #{matchDate}, #{matchTime}, #{matchLocation}, #{matchStatus}, #{matchHome}, #{leagueGb})
     </insert>
 
+    <select id="findMatchById" resultType="com.project.together.domain.Match">
+        SELECT id, team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home
+        FROM matches
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateK5Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        UPDATE matches SET
+        team_name = #{teamName},
+        match_score = #{matchScore},
+        match_relative_score = #{matchRelativeScore},
+        match_date = #{matchDate},
+        match_time = #{matchTime},
+        match_location = #{matchLocation},
+        match_status = #{matchStatus},
+        match_home = #{matchHome}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteK5Match" parameterType="int">
+        DELETE FROM matches
+        WHERE id = #{id}
+    </delete>
+
+
+
+
 
 
 

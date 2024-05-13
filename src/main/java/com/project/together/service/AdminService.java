@@ -7,12 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -718,6 +713,40 @@ public class AdminService {
     public void saveK5Match(Match matchRequest) {
         adminMapper.saveK5Match(matchRequest);
     }
+
+    // 매치 정보 업데이트
+    public void updateMatch(int matchId, Match matchDetails) {
+        Match existingMatch = adminMapper.findMatchById(matchId);
+        if (existingMatch == null) {
+            throw new IllegalArgumentException("매치를 찾을 수 없습니다: ID " + matchId);
+        }
+
+        existingMatch.setTeamName(matchDetails.getTeamName());
+        existingMatch.setMatchScore(matchDetails.getMatchScore());
+        existingMatch.setMatchRelativeScore(matchDetails.getMatchRelativeScore());
+        existingMatch.setMatchDate(matchDetails.getMatchDate());
+        existingMatch.setMatchTime(matchDetails.getMatchTime());
+        existingMatch.setMatchLocation(matchDetails.getMatchLocation());
+        existingMatch.setMatchStatus(matchDetails.getMatchStatus());
+        existingMatch.setMatchHome(matchDetails.getMatchHome());
+
+        adminMapper.updateK5Match(existingMatch);
+    }
+
+    public boolean deleteMatch(int matchId) {
+        // 데이터베이스에서 매치 ID로 매치를 찾습니다.
+        Match matchToDelete = adminMapper.findMatchById(matchId);
+
+        if (matchToDelete == null) {
+            // 매치를 찾을 수 없으면 예외를 던지는 대신 false를 반환합니다.
+            return false;
+        }
+
+        // 매치를 찾았으므로 삭제를 진행합니다.
+        adminMapper.deleteK5Match(matchId);
+        return true;
+    }
+
 
 
 // ================================== 구단목록 + 매치목록 and

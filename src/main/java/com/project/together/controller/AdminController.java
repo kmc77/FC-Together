@@ -9,6 +9,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -1371,7 +1372,7 @@ public class AdminController {
 
 
 
-    // 구단목록 목록 가져오기
+    // K5 구단목록 목록 가져오기
     @GetMapping("/layout/getK5TeamList")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Team>> getK5TeamList(@RequestParam(required = false) String teamName) {
@@ -1398,6 +1399,7 @@ public class AdminController {
     @PostMapping("/layout/addK5Match")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addK5Match(@RequestBody Match matchRequest) {
+        System.out.println("컨 ===== matchRequest = " + matchRequest);
         try {
             matchRequest.setLeagueGb("k5");
             adminService.saveK5Match(matchRequest);
@@ -1407,6 +1409,55 @@ public class AdminController {
                     .body(Map.of("error", "매치 추가에 실패했습니다: " + e.getMessage()));
         }
     }
+
+
+    // K5 매치 업데이트
+    @PostMapping("/layout/updateK5Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateK5Match(@RequestBody Match matchRequest) {
+        System.out.println("=========== matchRequest = " + matchRequest);
+        try {
+            adminService.updateMatch(matchRequest.getId(), matchRequest);
+
+            return ResponseEntity.ok(Map.of("message", "매치 정보가 성공적으로 업데이트되었습니다."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 정보 업데이트에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+    // K5 매치 삭제
+    @DeleteMapping("/layout/deleteK5Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteK5Match(@RequestBody Map<String, Integer> payload) {
+        Integer matchId = payload.get("id");
+        if (matchId == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "매치 ID가 제공되지 않았습니다."));
+        }
+
+        try {
+            boolean isDeleted = adminService.deleteMatch(matchId);
+            if (!isDeleted) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "해당 매치를 찾을 수 없습니다."));
+            }
+            return ResponseEntity.ok(Map.of("message", "매치가 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "매치 삭제 중 문제가 발생했습니다.", "details", e.getMessage()));
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 

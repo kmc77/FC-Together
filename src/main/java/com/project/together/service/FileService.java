@@ -187,7 +187,7 @@ public class FileService {
                 String originalFilename = file.getOriginalFilename();
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
                 // 수정된 부분: 'selectedPlayerType'과 'playerNum'의 순서를 정확히 지정
-                String filePath = selectedPlayerType + "- PlayerImg" + "/playerNum - " + playerNum + "/" + fileName;
+                String filePath = selectedPlayerType + "_team/" + "PlayerImg" + "/PlayerNum - " + playerNum + "/" + fileName;
 
                 System.out.println("선수 사진 업로드 ==== filePath = " + filePath);
                 // S3에 파일 업로드
@@ -310,7 +310,7 @@ public class FileService {
                 // S3에 업로드할 파일 이름 생성
                 String originalFilename = file.getOriginalFilename();
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-                String filePath = teamLeagueGb + "- StaffImg" + "/staffNum - " + teamStaffNum + "/" + fileName;
+                String filePath = teamLeagueGb + "_team/" + "StaffImg" + "/StaffNum - " + teamStaffNum + "/" + fileName;
 
                 System.out.println("스태프 사진 업로드 ==== filePath = " + filePath);
                 // S3에 파일 업로드
@@ -380,7 +380,7 @@ public class FileService {
             try {
                 String originalFilename = teamLogo.getOriginalFilename();
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-                String filePath = teamLeagueGb + "_team" + "/teamLogos/" + teamName + "/" + fileName;
+                String filePath = teamLeagueGb + "_team" + "/TeamLogos/" + teamName + "/" + fileName;
 
                 System.out.println("팀 로고 업로드 ==== filePath = " + filePath);
                 ObjectMetadata metadata = new ObjectMetadata();

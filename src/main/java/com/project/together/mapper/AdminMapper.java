@@ -265,7 +265,19 @@ public interface AdminMapper {
 
     Match findMatchById(int id);
 
-    void updateK5Match(Match existingMatch);
+    void updateMatch(Match existingMatch);
 
-    void deleteK5Match(int matchId);
+    void deleteMatch(int matchId);
+
+    List<Team> findK7TeamList(@Param("teamName") String teamName);
+
+    List<Match> findK7MatchListByLeague(@Param("league") String league);
+
+    void saveK7Match(Match matchRequest);
+
+    List<Team> findW1TeamList(@Param("teamName") String teamName);
+
+    List<Match> findW1MatchListByLeague(@Param("league") String league);
+
+    void saveW1Match(Match matchRequest);
 }

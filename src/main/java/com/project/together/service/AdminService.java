@@ -698,7 +698,7 @@ public class AdminService {
 // ================================== 구단목록 and
 
 
-// ================================== 구단목록 + 매치목록 start
+// ================================== k5 구단목록 + 매치목록 start
 
 
     public List<Team> findK5TeamList(String teamName) {
@@ -730,7 +730,7 @@ public class AdminService {
         existingMatch.setMatchStatus(matchDetails.getMatchStatus());
         existingMatch.setMatchHome(matchDetails.getMatchHome());
 
-        adminMapper.updateK5Match(existingMatch);
+        adminMapper.updateMatch(existingMatch);
     }
 
     public boolean deleteMatch(int matchId) {
@@ -743,13 +743,52 @@ public class AdminService {
         }
 
         // 매치를 찾았으므로 삭제를 진행합니다.
-        adminMapper.deleteK5Match(matchId);
+        adminMapper.deleteMatch(matchId);
         return true;
     }
 
 
 
-// ================================== 구단목록 + 매치목록 and
+// ================================== k5 구단목록 + 매치목록 and
+
+
+
+// ================================== k7 구단목록 + 매치목록 start
+
+    public List<Team> findK7TeamList(String teamName) {
+        return adminMapper.findK7TeamList(teamName);
+    }
+
+    public List<Match> findK7MatchListByLeague(String league) {
+        return adminMapper.findK7MatchListByLeague(league);
+    }
+
+    public void saveK7Match(Match matchRequest) {
+        adminMapper.saveK7Match(matchRequest);
+    }
+
+
+// ================================== k7 구단목록 + 매치목록 and
+
+
+// ================================== k7 구단목록 + 매치목록 start
+
+    public List<Team> findW1TeamList(String teamName) {
+        return adminMapper.findW1TeamList(teamName);
+    }
+
+    public List<Match> findW1MatchListByLeague(String league) {
+        return adminMapper.findW1MatchListByLeague(league);
+
+    }
+
+    public void saveW1Match(Match matchRequest) {
+        adminMapper.saveW1Match(matchRequest);
+    }
+
+
+// ================================== k7 구단목록 + 매치목록 and
+
 
 }
 

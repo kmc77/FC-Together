@@ -33,33 +33,251 @@
         </div><!-- /.container-fluid -->
     </div>
 
-    <!-- Main content -->
+    <!-- 매치 추가 및 수정 양식 -->
     <section class="content">
-        <!-- 화면 내용 작성 -->
-        <p id="message">{{message}}</p>
-        <button id="reverseButton">메시지 뒤집기</button>
+        <div class="card">
+            <div class="card-header"> <!-- 매치 추가 및 수정 양식 -->
+                <h3 class="card-title">새 매치 추가</h3>
+                <button type="button" class="btn btn-primary float-right" id="addMatchButton" onclick="toggleAddMatchForm()">경기 등록</button>
+            </div>
+            <div class="card-body" id="addMatchSection" style="display: none; max-width: 700px; margin: 0 auto;">
+                <form id="addMatchForm" class="form-row">
+                    <input type="hidden" id="matchId" name="id">
+                    <div class="form-group col-md-6">
+                        <label>상대 팀 이름:</label>
+                        <select class="form-control" name="teamName" id="opponentTeamSelect">
+                            <option value="">선택</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>점수:</label>
+                        <div class="form-inline" style="align-items: center;">
+                            <select class="form-control" name="matchScore" style="width: 80px;">
+                                ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
+                            </select>
+                            <span class="mx-2 font-weight-bold">VS</span>
+                            <select class="form-control" name="matchRelativeScore" style="width: 80px;">
+                                ${[...Array(11).keys()].map(num => `<option>${num}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>날짜:</label>
+                        <input type="date" class="form-control" name="matchDate">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>시간:</label>
+                        <input type="time" class="form-control" name="matchTime">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>장소:</label>
+                        <input type="text" class="form-control" name="matchLocation">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>상태:</label>
+                        <select class="form-control" name="matchStatus">
+                            <option>예정</option>
+                            <option>진행중</option>
+                            <option>완료</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>홈/어웨이:</label>
+                        <select class="form-control" name="matchHome">
+                            <option>홈</option>
+                            <option>어웨이</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12 text-center">
+                        <button type="button" class="btn btn-success" id="addMatchSubmitButton" onclick="addMatch()" style="margin-top: 10px;">등록</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEditButton" onclick="cancelEdit()" style="margin-top: 10px;">취소</button>
+                    </div>
+                </form>
+                <link rel="stylesheet" href="/dist/css/admin/k5match.css">
+            </div>
+        </div>
     </section>
 
-
-
+    <!-- 메인 콘텐츠: 매치 목록 -->
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">매치 목록</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered" id="matchList">
+                    <thead>
+                    <tr>
+                        <th>팀 이름</th>
+                        <th>점수</th>
+                        <th>날짜</th>
+                        <th>시간</th>
+                        <th>장소</th>
+                        <th>상태</th>
+                        <th>홈/어웨이</th>
+                        <th>리그</th>
+                        <th>작업</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 동적으로 로드된 매치 데이터 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </div>
 
-<!-- Main footer -->
+<!-- 푸터 -->
 <footer th:replace="layout/common/footer :: load()"></footer>
 
-<!-- common javascript -->
+<!-- 공통 자바스크립트 -->
 <div th:include="layout/common/script :: load()"></div>
 
 <script th:inline="javascript">
-    $(document).ready(function(){
-        var message = /*[[${content}]]*/ 'default';
-        $('#message').text(message);
+    // 숫자 드롭다운 메뉴 생성
+    function generateScoreOptions() {
+        // '선택하지 않음'을 나타내는 기본 옵션 추가
+        let options = '<option value="">선택</option>';
+        for (let i = 0; i <= 15; i++) {
+            options += `<option value="${i}">${i}</option>`;
+        }
+        return options;
+    }
 
-        $('#reverseButton').click(function(){
-            var reversedMessage = $('#message').text().split('').reverse().join('');
-            $('#message').text(reversedMessage);
+    // 팀 목록을 드롭다운에 로드
+    function loadTeams() {
+        fetch('/admin/layout/getW1TeamList')
+            .then(response => response.json())
+            .then(teams => {
+                const select = document.getElementById('opponentTeamSelect');
+                select.innerHTML = "<option value=''>선택</option>"; // 기본 선택 옵션 추가
+                teams.forEach(team => {
+                    if (team.teamName !== "FC 투게더") { // "FC 투게더" 제외
+                        const option = document.createElement('option');
+                        option.value = team.teamName;
+                        option.textContent = team.teamName;
+                        select.appendChild(option);
+                    }
+                });
+            })
+            .catch(error => console.error('팀 목록을 로드하는 중 오류가 발생했습니다:', error));
+    }
+
+
+    // 매치 데이터를 로드하는 함수
+    function loadMatchData() {
+        fetch('/admin/layout/getW1MatchList')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('matchList').querySelector('tbody');
+                tableBody.innerHTML = '';
+                data.forEach(match => {
+                    // "FC 투게더"의 로고 URL을 미리 설정
+                    const ourTeamLogo = `<img src="/img/FcTogether-removebg.png" alt="FC 투게더 로고" style="height:30px; width:30px;">`;
+
+                   // "FC 투게더"가 왼쪽에, 상대 팀을 오른쪽에 표시
+                    const teamDisplay = match.teamName === 'FC 투게더'
+                        ? `<td><div class="team-info" style="display: flex; align-items: center;">${ourTeamLogo} FC 투게더 <span style="margin: 0 10px;">VS</span> ${match.opponentName}</div></td>`
+                        : `<td><div class="team-info" style="display: flex; align-items: center;">${ourTeamLogo} FC 투게더 <span style="margin: 0 10px;">VS</span> <img src="${match.teamLogo}" alt="${match.teamName} 로고" style="height:30px; width:30px; margin-right: 5px;"> ${match.teamName}</div></td>`;
+
+                    const row = tableBody.insertRow();
+                        row.setAttribute('data-match-id', match.id); // 매치의 ID를 저장하는 data-match-id 속성 추가
+
+                    row.innerHTML = `
+                        ${teamDisplay}
+                        <td>${match.matchScore} - ${match.matchRelativeScore}</td>
+                        <td>${match.matchDate}</td>
+                        <td>${match.matchTime}</td>
+                        <td>${match.matchLocation}</td>
+                        <td>${match.matchStatus}</td>
+                        <td>${match.matchHome}</td>
+                        <td>${match.leagueGb}</td>
+
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editMatch(this)">수정</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteMatch(this)">삭제</button>
+                        </td>
+                    `;
+                });
+            })
+            .catch(error => console.error('매치 데이터 로드 중 에러 발생:', error));
+    }
+
+
+    // 매치 등록 함수
+    function addMatch() {
+        const form = document.getElementById('addMatchForm');
+        const formData = new FormData(form);
+        if (!validateForm(formData)) return;
+
+        if (!confirm('매치를 추가하시겠습니까?')) {
+            console.log('매치 추가가 취소되었습니다.');
+            return;
+        }
+
+        // 스코어 값이 빈 문자열일 경우 null로 처리
+        formData.set('matchScore', formData.get('matchScore') || null);
+        formData.set('matchRelativeScore', formData.get('matchRelativeScore') || null);
+
+        const accessToken = localStorage.getItem('accessToken');
+        const jsonObject = Object.fromEntries(formData.entries());
+
+        postData('/admin/layout/addW1Match', jsonObject, accessToken)
+            .then(data => {
+                console.log('새로운 매치가 추가되었습니다:', data);
+                location.href = '/admin/layout/w1match';
+            })
+            .catch(error => console.error('새로운 매치 추가 중 오류 발생:', error));
+    }
+
+    // 폼 유효성 검사
+    function validateForm(formData) {
+        for (let [key, value] of formData.entries()) {
+            // 'matchScore', 'matchRelativeScore', 그리고 'id' 필드는 유효성 검사에서 제외
+            if (key === 'matchScore' || key === 'matchRelativeScore' || key === 'id') {
+                continue;
+            }
+            if (!value.trim()) {
+                alert(key + ' 필드는 필수입니다.');  // 필수 필드임을 알림
+                return false;
+            }
+        }
+        return true;  // 모든 필수 필드가 채워져 있으면 true 반환
+    }
+
+
+    // POST 요청을 보내는 함수
+    function postData(url, data, token) {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error('오류: ' + err.error);
+                });
+            }
+            return response.json();
         });
-    });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // JWT 토큰을 디코딩하는 함수
     function parseJwt(token) {
@@ -70,7 +288,7 @@
         }).join(''));
 
         return JSON.parse(jsonPayload);
-    };
+    }
 
     // JWT 토큰이 저장된 곳에서 가져오기
     var token = localStorage.getItem('accessToken');
@@ -84,6 +302,181 @@
     // HTML 페이지에 사용자 이름 노출
     document.querySelector('.d-block').textContent = username + " 관리자";
 
+    function toggleAddMatchForm() {
+        var formSection = document.getElementById('addMatchSection');
+        var addMatchButton = document.getElementById('addMatchButton');
+
+        // 폼의 표시 상태를 토글합니다.
+        if (formSection.style.display === 'none') {
+            formSection.style.display = 'block';  // 폼을 보이게 설정
+        } else {
+            formSection.style.display = 'none';  // 폼을 숨김
+        }
+    }
+
+
+    var editingRow = null;
+
+    function editMatch(button) {
+        var row = button.parentNode.parentNode;
+        editingRow = row;
+        var cells = row.querySelectorAll('td:not(:last-child)');
+        var form = document.getElementById('addMatchForm');
+
+        // 매치 아이디 추출
+        var matchId = row.getAttribute('data-match-id'); // data-match-id 속성으로부터 아이디 값을 가져옴
+        form.matchId.value = matchId; // 폼의 matchId 필드에 아이디 값을 설정
+
+
+        // "FC 투게더 VS 상대팀"에서 상대 팀 이름만 추출
+        var fullTeamInfo = cells[0].innerText; // "FC 투게더 VS 상대팀" 문자열 전체를 가져옴
+        var opponentTeamName = fullTeamInfo.includes('FC 투게더')
+                               ? fullTeamInfo.split('VS')[1].trim() // "FC 투게더" 다음의 텍스트를 가져옴
+                               : fullTeamInfo.split('VS')[0].trim(); // 상대방이 왼쪽에 있을 경우
+
+        var teamDropdown = document.getElementById('opponentTeamSelect');
+
+        // 드롭다운에서 해당 상대 팀 이름의 value를 찾아 선택
+        Array.from(teamDropdown.options).forEach(option => {
+            if (option.text === opponentTeamName) {
+                teamDropdown.value = option.value;
+            }
+        });
+
+        // 점수, 날짜, 시간 등 나머지 필드 설정
+        var scores = cells[1].innerText.split('-').map(s => s.trim());
+        form.matchScore.value = scores[0] || '0';
+        form.matchRelativeScore.value = scores[1] || '0';
+        form.matchDate.value = cells[2].innerText || '';
+        form.matchTime.value = cells[3].innerText || '';
+        form.matchLocation.value = cells[4].innerText || '';
+        form.matchStatus.value = cells[5].innerText || '예정';
+        form.matchHome.value = cells[6].innerText || '홈';
+
+        // 버튼 텍스트 및 클래스 업데이트
+        document.getElementById('addMatchSubmitButton').innerText = "수정완료";
+        document.getElementById('addMatchSubmitButton').classList.remove("btn-success");
+        document.getElementById('addMatchSubmitButton').classList.add("btn-warning");
+        document.getElementById('addMatchSubmitButton').setAttribute("onclick", "updateMatch()");
+        document.getElementById('addMatchSection').style.display = "block"; // 폼을 표시
+    }
+
+
+    function cancelEdit() {
+        // 폼 섹션을 숨깁니다.
+        var formSection = document.getElementById('addMatchSection');
+        formSection.style.display = 'none';
+
+        // 폼 내부의 입력 필드들을 초기화합니다.
+        var form = document.getElementById('addMatchForm');
+        form.reset();
+
+        // '등록' 버튼을 다시 활성화하고 초기 상태로 설정합니다.
+        var addMatchSubmitButton = document.getElementById('addMatchSubmitButton');
+        addMatchSubmitButton.innerText = '등록';
+        addMatchSubmitButton.classList.remove("btn-warning");
+        addMatchSubmitButton.classList.add("btn-success");
+        addMatchSubmitButton.setAttribute('onclick', 'addMatch()'); // 이벤트 핸들러를 다시 addMatch로 설정
+        addMatchSubmitButton.style.display = 'inline-block'; // 버튼을 보이게 합니다.
+
+        // 수정완료 및 취소 버튼을 숨기고 필요 없는 설정을 제거합니다.
+        var editMatchSubmitButton = document.getElementById('editMatchSubmitButton');
+        if (editMatchSubmitButton) {
+            editMatchSubmitButton.style.display = 'none';
+        }
+
+        // 수정 중이던 행의 참조를 제거합니다.
+        editingRow = null;
+    }
+
+
+    // 매치 수정
+    function updateMatch() {
+        var form = document.getElementById('addMatchForm');
+        var formData = new FormData(form);
+
+
+         // 팀 이름과 스코어는 폼에서 직접 읽어 사용
+        formData.set('teamName', form.teamName.value);
+        formData.set('matchScore', form.matchScore.value);
+        formData.set('matchRelativeScore', form.matchRelativeScore.value);
+
+
+        // 폼 데이터 유효성 검사
+        if (!validateForm(formData)) return;
+
+        // 수정을 위한 확인
+        if (!confirm('매치 정보를 수정하시겠습니까?')) {
+            console.log('매치 수정이 취소되었습니다.');
+            return;
+        }
+
+        // 서버에 데이터 전송
+        const accessToken = localStorage.getItem('accessToken');
+        const jsonObject = Object.fromEntries(formData.entries());
+
+        postData('/admin/layout/updateW1Match', jsonObject, accessToken)
+            .then(data => {
+                console.log('매치 정보가 수정되었습니다:', data);
+                alert(data.message);
+                location.reload(); // 페이지 새로 고침
+            })
+            .catch(error => console.error('매치 수정 중 오류 발생:', error));
+
+        // UI 초기화
+        form.reset();
+        editingRow = null;
+        document.getElementById('addMatchSubmitButton').innerText = "등록";
+        document.getElementById('addMatchSubmitButton').classList.remove("btn-warning");
+        document.getElementById('addMatchSubmitButton').classList.add("btn-success");
+        document.getElementById('addMatchSubmitButton').setAttribute("onclick", "addMatch()");
+    }
+
+
+    // 매치 삭제
+    function deleteMatch(button) {
+        var row = button.parentNode.parentNode; // 버튼의 부모 행에 접근합니다.
+        var matchId = row.getAttribute('data-match-id'); // 행에서 매치 ID를 가져옵니다.
+
+        if (confirm('이 매치를 정말로 삭제하시겠습니까?')) { // 사용자에게 삭제를 확인합니다.
+            const accessToken = localStorage.getItem('accessToken'); // 저장된 액세스 토큰을 가져옵니다.
+
+            // 서버에 DELETE 요청을 보냅니다.
+            fetch('/admin/layout/deleteW1Match', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ id: matchId }) // 요청 본문에 매치 ID를 포함합니다.
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                console.log('매치가 성공적으로 삭제되었습니다:', data.message);
+                alert(data.message); // 사용자에게 결과를 알립니다.
+                location.reload(); // 페이지 새로 고침
+            })
+            .catch(error => {
+                console.error('매치 삭제 중 오류가 발생했습니다:', error);
+                alert('오류: ' + error.message); // 사용자에게 오류를 알립니다.
+            });
+        }
+    }
+
+
+
+
+    // 드롭다운 스코어 생성
+    document.querySelector('[name="matchScore"]').innerHTML = generateScoreOptions();
+    document.querySelector('[name="matchRelativeScore"]').innerHTML = generateScoreOptions();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTeams();  // 팀 목록 로드
+        loadMatchData();  // 매치 데이터 로드
+    });
 </script>
 
 

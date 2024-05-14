@@ -1,0 +1,114 @@
+
+
+ .tab-content { display: none; }
+ .tab-content.active { display: block; }
+
+
+
+ @import url('https://fonts.cdnfonts.com/css/d-din');
+
+.club-body {
+    display: flex; /* flex 박스 모델 적용 */
+    margin-top: 20px; /* 상단 마진 20px 적용 */
+    margin-right: 0; /* 오른쪽 마진 없음 */
+    margin-bottom: 0; /* 하단 마진 없음 */
+    margin-left: 0; /* 왼쪽 마진 없음 */
+    height: 100%; /* 높이 100% 설정 */
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 'D-DIN' 적용 */
+    flex-direction: column; /* 자식 요소들을 세로로 정렬 */
+    -webkit-box-orient: vertical; /* 구버전 사파리 대응 */
+    -webkit-box-direction: normal; /* 구버전 사파리 대응 */
+    -ms-flex-direction: column; /* 구버전 IE 대응 */
+}
+
+
+ .light .cercle {background: white}
+ .dark .cercle {background: black}
+
+ .anim {
+   opacity: 0.2;
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+   -webkit-animation: touch 1.2s ease-out;
+           animation: touch 1.2s ease-out;
+ }
+
+ @-webkit-keyframes touch {
+   100% {
+     width: 600px;
+     height: 600px;
+     border-radius: 600px;
+     opacity: 0;
+     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+     margin: -300px;
+   }
+ }
+
+ @keyframes touch {
+   100% {
+     width: 600px;
+     height: 600px;
+     border-radius: 600px;
+     opacity: 0;
+     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+     margin: -300px;
+   }
+ }
+
+
+ .clubPage .top .topTitle {
+   padding-top: 0;
+ }
+
+ .subTop .top .topTitle {
+   padding-top: 34px;
+   text-align: center;
+ }
+
+ .clubPage .top .topTitle .title {
+     margin-left: -90px;
+     margin-right: -40px;
+     padding-top: 140px;
+     text-align: center;
+     font-size: 50px;
+     font-weight: 500;
+     background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
+ }
+
+
+ * {
+   margin: 0;
+   padding: 0;
+   /*box-sizing: border-box;*/
+ }
+
+ .club-container {
+   position: relative;
+   max-width: 1260px;
+   margin-left: auto;
+   margin-right: auto;
+   padding-left: 30px;
+   padding-right: 30px;
+ }
+
+
+
+
+
+
+ /* 좌우 레이아웃 영향 */
+
+ @media (min-width: 1024px) {
+    .club-container {
+       width: auto;  /* 자동 조정 */
+       max-width: 1260px;
+    }
+ }
+
+  @media (min-width: 1024px) {
+    .club-container--narrow {
+      max-width: 1024px;
+    }
+  }
+
+
+

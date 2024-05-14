@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>newsView</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/media/newsview.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="newsWrapper newsContainer">
+    <div class="mediaRoomContainer">
+        <div class="mediaRoomContents">
+            <div class="newsInformation">
+                <div class="titleBox"><p th:text="${news.newsTitle}"></p>
+                    <div>
+                        <div class="titleInfo"><p>작성자</p>
+                            <p th:text="${news.username}"></p></div>
+                        <div class="line"></div>
+                        <div class="titleInfo"><p>작성일</p>
+                            <p th:text="${news.newsRegdate}"></p></div>
+                        <div class="line"></div>
+                        <div class="titleInfo"><p>조회수</p>
+                            <p th:text="${news.newsHits}"></p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="newsContent">
+                <div class="content">
+                    <p th:utext="${news.newsContent}"></p>
+                </div>
+                <div class="previous-post post-navigation" th:if="${prevNews != null}">
+                    <div><p>이전글</p>
+                        <div class="arrow up"></div>
+                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}"
+                           th:text="${prevNews.newsTitle}">이전글 제목</a>
+                    </div>
+                </div>
+                <div class="formBtns">
+                    <a id="default_butt" href="/media/news" class="btn btn-default">목록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+</body>
+</html>

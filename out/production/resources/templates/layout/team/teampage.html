@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/team/teampage.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link href="https://fonts.cdnfonts.com/css/d-din" rel="stylesheet">
+</head>
+<body class="team-page-body">
+<div class="team-container">
+    <div class="teamPage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle">
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>팀 소개</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- 메인 탭 메뉴 -->
+            <div class="tabMenu">
+                <div class="container">
+                    <a href="javascript:void(0);" data-num="1" class="main-tab wave router-link-exact-active router-link-active current">
+                        <span>K5 선수단</span>
+                    </a>
+                    <a href="javascript:void(0);" data-num="2" class="main-tab wave">
+                        <span>K7 선수단</span>
+                    </a>
+                    <a href="javascript:void(0);" data-num="3" class="main-tab wave">
+                        <span>W리그 선수단</span>
+                    </a>
+                    <a href="javascript:void(0);" data-num="4" class="main-tab wave">
+                        <span>코칭스태프</span>
+                    </a>
+                </div>
+            </div>
+            <!-- 서브 탭 메뉴 -->
+            <div class="sub_tabMenu">
+                <div class="sub_container">
+                    <ul class="sub-tab-bar">
+                        <li data-num="1" class="sub-tab wave dark sub-tab"><a href="#">GK</a></li>
+                        <li data-num="2" class="sub-tab wave dark sub-tab"><a href="#">DF</a></li>
+                        <li data-num="3" class="sub-tab wave dark sub-tab"><a href="#">MF</a></li>
+                        <li data-num="4" class="sub-tab wave dark sub-tab"><a href="#">FW</a></li>
+                        <div class="sub-indicator"></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab__content">
+                <!-- 팀 멤버 섹션 시작 -->
+                <section class="team-member section">
+                </section>
+                <!-- 팀 멤버 섹션 끝 -->
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function() {
+     var allPlayersData = null;
+     var cachedCoachingStaffData = null;
+
+     // URL 해시 값을 확인하여 해당하는 탭을 초기에 표시
+     var initialTabNum = window.location.hash ? parseInt(window.location.hash.replace('#tab', '')) : 1;
+     displayPlayersByTab(initialTabNum);
+
+     $('.main-tab').on('click', function() {
+         var selectedTabNum = $(this).data('num');
+
+         // 현재 선택된 탭에 따라 URL의 해시값 업데이트
+         window.location.hash = 'tab' + selectedTabNum;
+
+         // 모든 메인 탭에서 'current' 및 관련 클래스 제거
+         $('.main-tab').removeClass('router-link-exact-active router-link-active current');
+         // 클릭된 메인 탭에 'current' 및 관련 클래스 추가
+         $(this).addClass('router-link-exact-active router-link-active current');
+
+         // 코칭스태프 탭이 선택되었는지 확인하고 서브 탭 메뉴를 숨기거나 표시
+         if (selectedTabNum === 4) {
+             $('.sub_tabMenu').hide();
+         } else {
+             $('.sub_tabMenu').show();
+         }
+
+         clearTableData();
+         displayPlayersByTab(selectedTabNum);
+         resetSubTabInfo();
+     });
+
+     $('.sub-tab').on('click', function() {
+         var selectedSubTabNum = $(this).data('num');
+         filterPlayersByPosition(selectedSubTabNum);
+     });
+
+     function setInitialTab() {
+         var initialTabNum = window.location.hash ? parseInt(window.location.hash.replace('#tab', '')) : null;
+         if (initialTabNum !== null) {
+             var initialTab = document.querySelector('.main-tab.wave[data-num="' + initialTabNum + '"]');
+             if (initialTab) {
+                 initialTab.click();
+             }
+         }
+     }
+
+     setInitialTab(); // 초기 탭 설정 실행
+
+     function resetSubTabInfo() {
+         $('.team-member.section').hide();
+         $('.sub-tab[data-num="1"]').click();
+         $('.team-member.section').show();
+     }
+
+     function loadAllPlayersData(callback) {
+         $.ajax({
+             url: "/team/layout/get_allPlayerInfo",
+             method: "GET",
+             success: function(data) {
+                 allPlayersData = data;
+                 if (typeof callback === 'function') {
+                     callback();
+                 }
+             }
+         });
+     }
+
+     function displayPlayersByTab(tabNum) {
+         if (!allPlayersData) {
+             loadAllPlayersData(function() {
+                 displayPlayers(tabNum);
+             });
+         } else {
+             displayPlayers(tabNum);
+         }
+     }
+
+     function displayPlayers(tabNum) {
+         var playerType;
+         switch(tabNum) {
+             case 1:
+                 playerType = 'k5';
+                 break;
+             case 2:
+                 playerType = 'k7';
+                 break;
+             case 3:
+                 playerType = 'w1';
+                 break;
+             case 4:
+                 loadCoachingStaffData();
+                 return;
+             default:
+                 playerType = '';
+         }
+
+         if (playerType) {
+             var players = allPlayersData[playerType];
+             if (players) {
+                 addPlayersToTable(players, playerType);
+             }
+         }
+     }
+
+     function addPlayersToTable(players, playerType) {
+         var orderedPositions = ['GK', 'DF', 'MF', 'FW'];
+         $('.tab__content').empty();
+         orderedPositions.forEach(function(position) {
+             var playersInSection = players.filter(function(player) {
+                 return player[playerType + 'PlayerPosition'] === position;
+             });
+             if (playersInSection.length > 0) {
+                 var sectionHtml = `<section class="team-member section">
+                                      <h3 class="title title--underline">${position}</h3>
+                                      <ul class="team-member__list">`;
+                 playersInSection.forEach(function(player) {
+                     var playerHtml = `<li class="team-member__item">
+                                        <a class="team-member__link">
+                                            <div class="team-member__img-holder">
+                                                <img class="team-member__img lozad"
+                                                     src="${player.filePath}"
+                                                     alt="${player[playerType + 'PlayerEnName']}"
+                                                     data-loaded="true">
+                                            </div>
+                                            <div class="team-member__data">
+                                                <div class="team-member__data-unit">
+                                                    <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
+                                                    <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
+                                                </div>
+                                                <div class="team-member__data-unit">
+                                                    <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
+                                                    <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
+                                                    <p class="team-member__text">${player[playerType + 'PlayerBirth']}<br>${player[playerType + 'PlayerHeight']} / ${player[playerType + 'PlayerWeight']}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                      </li>`;
+                     sectionHtml += playerHtml;
+                 });
+                 sectionHtml += `</ul></section>`;
+                 $('.tab__content').append(sectionHtml);
+             }
+         });
+     }
+
+     function loadCoachingStaffData() {
+         if (!cachedCoachingStaffData) { // 캐시된 데이터가 없을 경우에만 요청
+             $.ajax({
+                 url: "/team/layout/get_teamStaffInfo",
+                 method: "GET",
+                 success: function(data) {
+                     cachedCoachingStaffData = data; // 데이터를 캐싱
+                     renderCoachingStaffData(data); // 데이터 렌더링
+                 }
+             });
+         } else {
+             renderCoachingStaffData(cachedCoachingStaffData); // 캐시된 데이터로 렌더링
+         }
+     }
+
+     function renderCoachingStaffData(data) {
+         var sectionHtml = `<section class="team-member section">
+                             <h3 class="title title--underline">Staff</h3>
+                             <ul class="team-member__list team-member__list--staff">`;
+         data.forEach(function(staff) {
+             var staffHtml = `<li class="team-member__item">
+                               <a class="team-member__link">
+                                   <div class="team-member__img-holder">
+                                       <img class="team-member__img lozad"
+                                            src="${staff.filePath}"
+                                            alt="${staff.teamStaffEnName}"
+                                            data-loaded="true">
+                                   </div>
+                                   <div class="team-member__data">
+                                       <div class="team-member__data-unit">
+                                           <p class="team-member__role">${staff.teamStaffRole} / ${staff.teamLeagueGb}</p>
+                                           <p class="team-member__name-ja" wovn-ignore="true">${staff.teamStaffName}</p>
+                                           <p class="team-member__name-en">${staff.teamStaffEnName}</p>
+                                           <p class="team-member__text">${staff.teamStaffBirth}</p>
+                                       </div>
+                                   </div>
+                               </a>
+                             </li>`;
+             sectionHtml += staffHtml;
+         });
+         sectionHtml += `</ul></section>`;
+         $('.tab__content').html(sectionHtml);
+     }
+
+     function clearTableData() {
+         $('.tab__content').empty();
+     }
+
+     function filterPlayersByPosition(positionNum) {
+         $('.team-member.section').hide();
+         var positionMap = {1: 'GK', 2: 'DF', 3: 'MF', 4: 'FW'};
+         var selectedPosition = positionMap[positionNum];
+         $('.team-member.section').each(function() {
+             if ($(this).find('.title--underline').text() === selectedPosition) {
+                 $(this).show();
+             }
+         });
+     }
+
+     loadAllPlayersData(); // 페이지 로딩 시 모든 플레이어 데이터 로드
+ });
+
+
+</script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+</body>
+</html>

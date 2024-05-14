@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" class="memberPage" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FindPwForm</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/FindPwForm.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body class="memberPage">
+<div id="app">
+    <div class="userPwContent" id="content">
+        <div class="userContainer">
+            <div class="userPwBox">
+                <div class="headerTitle">
+                    <p class="mainTitle">비밀번호 찾기</p>
+                    <p class="description">비밀번호 찾기를 위해 아이디와 이메일을 입력하세요.</p>
+                </div>
+                <form id="userPwForm" action="/user/findPw" method="post">
+                    <div>
+                        <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" class="formInput" required>
+                    </div>
+                    <div>
+                        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" class="formInput" required>
+                    </div>
+                    <!-- 인증번호 입력 필드 추가, 기본적으로 숨김 -->
+                    <div id="verificationCodeDiv" style="display:none;">
+                        <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력" class="formInput">
+                        <div class="formButton">
+                            <button type="button" class="button large full primary verify-code">인증번호 확인</button>
+                        </div>
+                    </div>
+
+                    <div class="formButton">
+                        <button type="submit" class="button large full primary find-password">비밀번호 찾기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#userPwForm').on('submit', function(event) {
+            event.preventDefault();
+            var username = $('#username').val().trim();
+            var email = $('#email').val().trim();
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!username || !emailPattern.test(email)) {
+                alert('잘못된 사용자명 또는 이메일 형식입니다.');
+                $('#email').focus();
+                return;
+            }
+
+            var formData = $(this).serialize();
+            $.ajax({
+                url: '/user/findPw',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('.description').text(response.message).removeClass('error-message');
+                    if (response.found) {
+                        $('.description').addClass('success-message');
+                        $('.find-password')
+                            .text('이메일 전송')
+                            .removeClass('find-password').addClass('send-email')
+                            .off('click') // 기존 이벤트 핸들러 제거
+                            .on('click', function() {
+                                sendVerificationCode(username, email);
+                                $(this).hide(); // 이메일 전송 버튼 숨기기
+                            });
+                    } else {
+                        $('.description').addClass('error-message');
+                        $('#username').focus();
+                    }
+                },
+                error: function() {
+                    $('.description').text('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.').addClass('error-message');
+                }
+            });
+        });
+
+       function sendVerificationCode(username, email) {
+            $.ajax({
+                url: '/user/sendVerificationCode',
+                type: 'POST',
+                data: {username: username, email: email},
+                success: function(response) {
+                    $('.description').text(response.message);
+                    if(response.success) {
+                        // 성공 메시지 설정
+                        $('.description').addClass('success-message');
+                        // 입력 필드 비우기
+                        $('#username, #email').val('');
+                        // 아이디와 이메일 필드 숨기기
+                        $('#username, #email').closest('div').hide();
+                        // 인증번호 입력 필드 보이기
+                        $('#verificationCodeDiv').show();
+                        // 로컬 스토리지에 verificationToken 저장
+                        localStorage.setItem('verificationToken', response.verificationToken);
+                    } else {
+                        $('.description').addClass('error-message');
+                    }
+                },
+                error: function() {
+                    $('.description').text('이메일 발송 중 오류가 발생했습니다.').addClass('error-message');
+                }
+            });
+       }
+
+
+
+
+       $('#verificationCodeDiv button.verify-code').on('click', function() {
+            var verificationCode = $('#verificationCode').val().trim();
+            if (verificationCode === '') {
+                alert('인증번호를 입력해주세요.');
+                return;
+            }
+
+            var verificationToken = localStorage.getItem('verificationToken');
+
+            $.ajax({
+                url: '/user/verifyCode',
+                type: 'POST',
+                data: {
+                    verificationCode: verificationCode,
+                    verificationToken: verificationToken
+                },
+                success: function(response) {
+                    $('.description').removeClass('error-message');
+                    if (response.success) {
+                        $('.description').addClass('success-message').text(response.message);
+                        $('#verificationCodeDiv').hide();
+
+                        var resetPasswordHtml = `
+                            <div id="resetPasswordDiv">
+                                <input type="password" id="newPassword" name="password" placeholder="새 비밀번호 입력" class="formInput" required>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="새 비밀번호 확인" class="formInput" required>
+                                <div class="formButton">
+                                    <button type="button" class="button large full primary reset-password">비밀번호 재설정</button>
+                                </div>
+                            </div>
+                        `;
+                        $('#userPwForm').append(resetPasswordHtml);
+
+                        $('.reset-password').on('click', function() {
+                            var password = $('#newPassword').val().trim();
+                            var confirmPassword = $('#confirmPassword').val().trim();
+                            if (password !== confirmPassword) {
+                                alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '/user/resetPassword',
+                                type: 'POST',
+                                data: {
+                                    password: password,
+                                    verificationToken: verificationToken
+                                },
+                                success: function(res) {
+                                    if (res.success) {
+                                        alert(res.message); // 성공 메시지 출력
+                                        window.location.href = '/user/loginform'; // 로그인 페이지로 리디렉션
+                                    } else {
+                                        alert(res.message); // 서버에서 전달된 에러 메시지를 표시
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    alert('비밀번호 변경 중 오류가 발생했습니다: ' + xhr.responseText);
+                                }
+                            });
+                        });
+                    } else {
+                        $('.description').removeClass('success-message');
+                        $('.description').addClass('error-message').text(response.message);
+                    }
+                },
+                error: function() {
+                    alert('서버 오류가 발생했습니다.');
+                    $('.description').addClass('error-message').text('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                }
+            });
+        });
+    });
+
+
+</script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head th:replace="layout/common/header :: load('Layout Sample Page')"></head>
+<body>
+<!-- Preloader -->
+<div th:replace="layout/common/preloader :: load()"></div>
+
+<!-- Navbar -->
+<nav th:replace="layout/common/navigator :: load()"></nav>
+
+<!-- Main Sidebar Container -->
+<aside th:replace="layout/common/sider :: load()"></aside>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div id="app" class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">구단영상 관리 페이지</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/layout/adminpage">Home</a></li>
+                        <li class="breadcrumb-item active">구단영상 관리 페이지</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- 처리 결과 얼럿 -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <p th:text="${message}"></p>
+    </div>
+
+
+    <!-- Main content -->
+    <div class="adminTab">
+        <ul id="nav-1">
+            <li class="slide1"></li>
+            <li class="slide2"></li>
+            <li><a href="#/">구단영상 목록</a></li>
+            <li><a href="#/">영상 등록</a></li>
+        </ul>
+        <script src="/dist/js/video_management.js"></script>
+    </div>
+
+    <!-- 유튜브 영상 추가 -->
+    <div class="cnt_bbs" id="cnt_bbs" style="display: none;">
+        <h1 class="text-3xl py-4 border-b mb-10">영상 등록</h1>
+
+        <div id="viewContainer" class="container mx-auto py-6 px-4 textarea">
+            <div class="content-box">
+                <div class="form-list view-list">
+                    <input type="hidden" name="no" value="">
+                    <div class="col">
+                        <dl class="flex-align-center">
+                            <dt id="num-label">영상번호</dt>
+                            <dd id="num-value"></dd>
+                        </dl>
+                        <dl>
+                            <dt id="date-label">등록일</dt>
+                            <dd id="date-value"></dd>
+                        </dl>
+                        <dl>
+                            <dt id="tableGb-label">tableGb</dt>
+                            <dd id="tableGb-value"></dd>
+                        </dl>
+                        <!--<dl>
+                            <dt id="mvTheOriginUrl-label">Url</dt>
+                            <dd id="mvTheOriginUrl-value"></dd>
+                        </dl>-->
+                    </div>
+                    <dl>
+                        <dt id="title-label">영상제목</dt>
+                        <dd>
+                            <em class="notice-cont-tit" id="title-value"></em>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt id="content-label">영상내용</dt>
+                        <dd>
+                            <iframe id="content-html-value" width="1000" height="720" src=""
+                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                            </iframe>
+                            <div class="notice-cont ql-editor" ></div>
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
+        </div>
+
+
+        <form action="/admin/layout/youtube" name="clubVideo" method="post">
+            <div class="bbs_write">
+                <table2 class="tb_write">
+
+                    <tbody>
+                    <tr>
+                        <th scope="row"><label for="cvTitle"> 제목 </label></th>
+                        <td>
+                            <input type="text" name="cvTitle" id="cvTitle" style="width:100%"/>
+                            <input type="hidden" name="cvIdx">
+                            <input type="hidden" name="username" id="username"> <!-- 사용자 이름 -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">유튜브 주소 ID</th>
+                        <td>
+                            <div>
+                                <span class="line_h35">https://www.youtube.com/embed/  </span>
+                                <input type="text" name="mvTheOriginUrl" id="mvTheOriginUrl" style="width:150px"/>
+                            </div>
+                            <p class="mt_10">*ID를 정확히 입력해야 Player 및 썸네일 이미지가 정상적으로 출력이 됩니다.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"> 영상소개 </th>
+                        <td>
+                            <textarea name="cvContent" cols="100" rows="5"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table2>
+            </div>
+            <div class="mt_20 t_r">
+                <input type="submit" class="tb_btn blueM"  value="등록" />
+                <!--<a href="/youtube/list.do"  class="tb_btn whiteM">목록</a>-->
+            </div>
+        </form>
+        <link rel="stylesheet" href="/dist/css/video.css">
+    </div>
+    <!-- 유튜브 영상 Ena -->
+
+
+
+    <!-- 테이블 시작 -->
+    <div id="tableContainer" class="container mx-auto py-6 px-4">
+        <h1 class="text-3xl py-4 border-b mb-10">구단영상 목록</h1>
+        <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex md:items-center">
+                    <div class="mr-4 flex-shrink-0">
+                        <svg class="h-8 w-8 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div id="selectionCount" class="text-teal-800 text-lg">0 rows are selected</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-4 flex justify-between items-center">
+            <!-- 테이블 검색 -->
+            <div class="flex-1 pr-4">
+                <div class="relative md:w-1/3">
+                    <input type="search" class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium" placeholder="Search...">
+                    <div class="absolute top-0 left-0 inline-flex items-center p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                            <circle cx="10" cy="10" r="7"></circle>
+                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- 테이블 검색 and -->
+            <div>
+                <div class="shadow rounded-lg flex">
+                    <div class="relative">
+                        <button id="displayButton" class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5"></path>
+                            </svg>
+                            <span class="hidden md:block">Display</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div id="columnSelection" class="z-40 absolute top-0 right-0 w-40 bg-white rounded-lg shadow-lg mt-12 -mr-1 block py-1 overflow-hidden" style="display: none;">
+                            <!-- Column checkboxes will be appended here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
+            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+                <thead>
+                <!-- 테이블 항목 -->
+                <tr class="text-left">
+                    <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+                        <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                            <input id="selectAllCheckbox" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
+                        </label>
+                    </th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvIdx">영상 번호</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs username">작성자명</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvTitle">영상 제목</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvHits">영상 조회수</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cvDate">영상 등록일</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs tableGb">테이블 구분</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs mvTheOriginUrl">영상 url</th>
+                </tr>
+                <!-- 테이블 항목 end -->
+
+                </thead>
+            </table>
+        </div>
+    </div>
+    <!-- 테이블 and -->
+
+    <div class="buttonContainer" id="buttonContainer">
+        <div class="leftContainer">
+            <button class="deleteButton">삭제</button>
+            <button class="checkButton">보기</button>
+        </div>
+        <button class="writeButton">작성</button>
+        <link rel="stylesheet" href="/dist/css/qna.css">
+    </div>
+</div>
+
+</div>
+
+<!-- Main footer -->
+<footer th:replace="layout/common/footer :: load()"></footer>
+
+<!-- common javascript -->
+<div th:include="layout/common/script :: load()"></div>
+
+<script th:inline="javascript">
+    // JWT 토큰을 디코딩하는 함수
+    function parseJwt(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    };
+
+    // JWT 토큰이 저장된 곳에서 가져오기
+    var token = localStorage.getItem('accessToken');
+
+    // 토큰에서 사용자 이름 추출
+    var username = parseJwt(token).sub;
+
+    // 사용자 이름이 정상적으로 추출되었는지 콘솔에 로깅
+    console.log("Username: ", username);
+
+    // HTML 페이지에 사용자 이름 노출
+    document.querySelector('.d-block').textContent = username + " 관리자";
+
+    // hidden input field에 username 설정
+    document.querySelector('#username').value = username;
+
+
+    $(document).ready(function () {
+        // 선택된 행들을 저장하는 배열
+        var selectedRows = [];
+        // 표시 버튼의 상태 (열림/닫힘)
+        var isOpen = false;
+
+        // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
+        var updateSelectedCount = function() {
+            var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
+            $('#selectedRowsBanner').css('top', navbarHeight);
+            // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
+            var checkedCount = $('.rowCheckbox:checked').length;
+            $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
+            if (checkedCount > 0) {
+                $('#selectedRowsBanner').show();
+            } else {
+                $('#selectedRowsBanner').hide();
+            }
+        };
+
+        // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
+        $('#displayButton').click(function() {
+            isOpen = !isOpen;
+            if (isOpen) {
+                $('#columnSelection').show();
+            } else {
+                $('#columnSelection').hide();
+            }
+        });
+
+        // 표시 버튼이나 컬럼 선택 영역 외의 곳을 클릭하면 컬럼 선택 영역을 숨김
+        $(document).click(function(event) {
+            if (!$(event.target).closest('#displayButton').length && !$(event.target).closest('#columnSelection').length) {
+                isOpen = false;
+                $('#columnSelection').hide();
+            }
+        });
+
+        // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
+        $('#columnSelection').on('click', '.column-checkbox', function () {
+            var key = $(this).attr('name');
+            $('.' + key).toggleClass('hidden');
+        });
+
+        // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
+        $("#selectAllCheckbox").click(function(){
+            $(".rowCheckbox").prop('checked', $(this).prop('checked'));
+            selectedRows = [];
+            if ($(this).prop('checked')) {
+                $('.rowCheckbox').each(function() {
+                    selectedRows.push(parseInt($(this).attr('name')));
+                });
+            }
+            updateSelectedCount();
+        });
+
+        // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
+        $(document).on('click', '.rowCheckbox', function(){
+            var id = parseInt($(this).attr('name'));
+            if ($(this).prop('checked')) {
+                selectedRows.push(id);
+            } else {
+                var index = selectedRows.indexOf(id);
+                if (index > -1) {
+                    selectedRows.splice(index, 1);
+                }
+            }
+
+            // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+            if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
+                $('#selectAllCheckbox').prop('checked', true);
+            } else {
+                $('#selectAllCheckbox').prop('checked', false);
+            }
+            updateSelectedCount();
+        });
+
+     // "삭제" 버튼 클릭 이벤트
+        $('.deleteButton').click(function() {
+            if (selectedRows.length === 0) {
+                alert("삭제할 글을 선택해주세요.");
+            } else {
+                // 확인 메시지를 보여주고 "확인" 버튼을 눌렀는지 확인한다.
+                var confirmMessage = selectedRows.length > 1 ? "선택한 글을 모두 삭제 하겠습니까?" : "글을 삭제 하겠습니까?";
+                if (confirm(confirmMessage)) {
+                    var cvIdxs = selectedRows;
+                    var accessToken = localStorage.getItem('accessToken');
+
+                    // 선택된 cpIdxs에 해당하는 글 삭제
+                    $.ajax({
+                        url: "/admin/layout/clubVideoDelete",
+                        method: "POST",
+                        data: { cvIdx: cvIdxs },
+                        traditional: true, // 이 옵션은 배열을 올바른 형태로 전송하기 위해 필요합니다.
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        },
+                        success: function(data) {
+                            // 서버 응답 처리
+                            alert("선택한 글이 모두 삭제되었습니다.");
+                            location.reload();
+                        },
+                        error: function(error) {
+                            // 에러 처리
+                            console.log(error);
+                            alert("글 삭제에 실패하였습니다.");
+                        }
+                    });
+                }
+            }
+        });
+
+     // "보기" 버튼 클릭 이벤트
+        $('.checkButton').click(function() {
+            if (selectedRows.length === 0) {
+                alert("확인할 글을 선택해주세요.");
+            } else if (selectedRows.length > 1) {
+                alert("확인할 글을 하나만 선택해주세요.");
+            } else {
+                for (var i = 0; i < selectedRows.length; i++) {
+                    var cvIdx = selectedRows[i];
+                    var accessToken = localStorage.getItem('accessToken');
+                    // 선택된 cvIdx 해당하는 글 뷰페이지로 이동
+                    $.ajax({
+                        url: "/admin/layout/clubVideoView",
+                        method: "GET",
+                        data: { cvIdx: cvIdx },
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        },
+                       success: function(clubVideos) {
+                    // 'update' 상태 설정
+                    $('form').data('state', 'update');
+
+                    // 응답받은 데이터로 화면 갱신
+                        $('#num-value').text(clubVideos.cvIdx); // 번호
+                        $('#date-value').text(clubVideos.cvDate); // 등록일
+                        $('#title-value').text(clubVideos.cvTitle); // 제목
+                        $('#content-html-value').html(clubVideos.cvContent); // HTML 내용
+                        $('#tableGb-value').text(clubVideos.tableGb); // tableGb 값
+                        $('#content-html-value').attr('src', clubVideos.mvTheOriginUrl);
+
+                        // "영상 등록" 탭 클릭
+                        $("#nav-1 li:contains('영상 등록') a").click();
+
+                        // Form submit 버튼의 텍스트를 "수정"으로 변경
+                        $(".mt_20.t_r .tb_btn.blueM").val("수정");
+
+                        // 구단영상 수정을 위한 요청을 보내도록 폼의 action 속성 변경
+                        $('form').attr('action', '/admin/layout/clubVideoUpdate/' + clubVideos.cvIdx);
+
+                        // cvIdx 값을 hidden input에 설정
+                        $("input[name='cvIdx']").val(clubVideos.cvIdx);
+                    },
+
+
+                        error: function(error) {
+                            // 에러 처리
+                            console.log(error);
+                        }
+                    });
+                }
+            }
+        });
+     $('.writeButton').click(function() {
+
+            // 'create' 상태 설정
+            $('form').data('state', 'create');
+
+            // cnt_bbs 보이게
+            $('#cnt_bbs').show();
+
+            // viewContainer 영역 숨기기
+            $('#viewContainer').hide();
+            $('#tableContainer').hide();
+            $('#buttonContainer').hide();
+
+            // "소식 작성" 탭 클릭
+            $("#nav-1 li:contains('영상 등록') a").trigger('click');
+
+            // cpIdx 값을 지움, 자동 증가 값이기 때문
+            $("input[name='cvIdx']").remove();
+        });
+
+        //
+        $(document).ready(function() {
+            $(".alert-success").delay(3000).fadeOut('slow');
+        });
+
+       $('form[name="clubVideo"]').submit(function(e) {
+        var isEmpty = false;
+        // 폼 내의 모든 보이는 입력 필드를 검사합니다.
+        $(this).find('input[type="text"], textarea').each(function() {
+            if ($(this).val() === '') { // 값이 비어 있는지 확인합니다.
+                isEmpty = true;
+                return false; // each 루프를 종료합니다.
+            }
+        });
+
+        if (isEmpty) {
+            e.preventDefault(); // 폼 제출을 막습니다.
+            alert('모든 필드를 채워주세요.');
+        } else {
+            var buttonText = $(this).find('.tb_btn.blueM').val();
+            // 버튼의 텍스트에 따라 다른 확인 메시지를 띄웁니다.
+            if (buttonText === "수정") {
+                if (!confirm("수정을 완료하시겠습니까?")) {
+                    e.preventDefault();
+                }
+            } else if (buttonText === "등록") {
+                if (!confirm("구단영상을 등록하시겠습니까?")) {
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+
+        // ClubVideo 정보 키
+        var ClubVideoKeys = ['cvIdx', 'username', 'cvTitle', 'cvHits', 'cvDate', 'tableGb', 'mvTheOriginUrl'];
+
+        // 컬럼 선택 영역에 체크박스와 라벨을 추가
+        $.each(ClubVideoKeys, function(index, key) {
+            var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+            var div = $('<div/>').addClass('text-teal-600 mr-3');
+            var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+            var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+            div.append(checkbox);
+            label.append(div, divText);
+            $('#columnSelection').append(label);
+        });
+
+        var accessToken = localStorage.getItem('accessToken');
+
+        // ClubVideo 정보를 가져와서 테이블에 추가
+        $.ajax({
+            url: "/admin/layout/getClubVideoInfo",
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + accessToken
+            },
+            success: function(data) {
+                var clubVideos = data;
+                $.each(clubVideos, function(i, ClubVideo) {
+                    var tr = $('<tr/>');
+                    tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + ClubVideo.cvIdx + "' data-cvIdx='" + ClubVideo.cvIdx + "'></label></td>");
+
+                    // ClubVideoKeys 배열에 따라 순서대로 테이블에 데이터 추가
+                    $.each(ClubVideoKeys, function(j, key) {
+                        var value = ClubVideo[key];
+                        if (value !== undefined) {
+                            if (key === 'cvTitle') {
+                                value = value.length > 20 ? value.substring(0, 20) + " • • •" : value;
+                            }
+
+                            tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                        }
+                    });
+                    $('table').append(tr);
+                });
+            }
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

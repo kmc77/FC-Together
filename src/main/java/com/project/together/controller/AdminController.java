@@ -1368,7 +1368,7 @@ public class AdminController {
     // ================================== 구단목록 End
 
 
-    // ================================== 매치 start
+    // ================================== k5 매치 start
 
 
 
@@ -1452,33 +1452,183 @@ public class AdminController {
 
 
 
+    // ================================== k5 매치 End
+
+
+    // ================================== k7 매치 start
+
+
+    // K7 구단목록 목록 가져오기
+    @GetMapping("/layout/getK7TeamList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Team>> getK7TeamList(@RequestParam(required = false) String teamName) {
+        List<Team> k7Teams;
+        if (teamName != null && !teamName.isEmpty()) {
+            k7Teams = adminService.findK7TeamList(teamName);
+        } else {
+            k7Teams = adminService.findK7TeamList(null);
+        }
+        return ResponseEntity.ok(k7Teams);
+    }
+
+
+    // K7 매치목록 가져오기
+    @GetMapping("/layout/getK7MatchList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Match>> getK7MatchList() {
+        List<Match> k7Match = adminService.findK7MatchListByLeague("k7");
+        return ResponseEntity.ok(k7Match);
+    }
+
+
+    // K7 매치 등록하기
+    @PostMapping("/layout/addK7Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addK7Match(@RequestBody Match matchRequest) {
+        System.out.println("컨 ===== matchRequest = " + matchRequest);
+        try {
+            matchRequest.setLeagueGb("k7");
+            adminService.saveK7Match(matchRequest);
+            return ResponseEntity.ok(Map.of("message", "새로운 매치가 성공적으로 추가되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 추가에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+    // K7 매치 업데이트
+    @PostMapping("/layout/updateK7Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateK7Match(@RequestBody Match matchRequest) {
+        System.out.println("=========== matchRequest = " + matchRequest);
+        try {
+            adminService.updateMatch(matchRequest.getId(), matchRequest);
+
+            return ResponseEntity.ok(Map.of("message", "매치 정보가 성공적으로 업데이트되었습니다."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 정보 업데이트에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+    // K7 매치 삭제
+    @DeleteMapping("/layout/deleteK7Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteK7Match(@RequestBody Map<String, Integer> payload) {
+        Integer matchId = payload.get("id");
+        if (matchId == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "매치 ID가 제공되지 않았습니다."));
+        }
+
+        try {
+            boolean isDeleted = adminService.deleteMatch(matchId);
+            if (!isDeleted) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "해당 매치를 찾을 수 없습니다."));
+            }
+            return ResponseEntity.ok(Map.of("message", "매치가 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "매치 삭제 중 문제가 발생했습니다.", "details", e.getMessage()));
+        }
+    }
+
+
+
+    // ================================== k7 매치 End
+
+
+
+    // ================================== w1 매치 start
+
+
+    // 여성 구단목록 목록 가져오기
+    @GetMapping("/layout/getW1TeamList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Team>> getW1TeamList(@RequestParam(required = false) String teamName) {
+        List<Team> w1Teams;
+        if (teamName != null && !teamName.isEmpty()) {
+            w1Teams = adminService.findW1TeamList(teamName);
+        } else {
+            w1Teams = adminService.findW1TeamList(null);
+        }
+        return ResponseEntity.ok(w1Teams);
+    }
+
+
+    // 여성 매치목록 가져오기
+    @GetMapping("/layout/getW1MatchList")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Match>> getW1MatchList() {
+        List<Match> w1Match = adminService.findW1MatchListByLeague("w1");
+        return ResponseEntity.ok(w1Match);
+    }
+
+
+    // 여성 매치 등록하기
+    @PostMapping("/layout/addW1Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addW1Match(@RequestBody Match matchRequest) {
+        System.out.println("컨 ===== matchRequest = " + matchRequest);
+        try {
+            matchRequest.setLeagueGb("w1");
+            adminService.saveW1Match(matchRequest);
+            return ResponseEntity.ok(Map.of("message", "새로운 매치가 성공적으로 추가되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 추가에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+    // 여성 매치 업데이트
+    @PostMapping("/layout/updateW1Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateW1Match(@RequestBody Match matchRequest) {
+        System.out.println("=========== matchRequest = " + matchRequest);
+        try {
+            adminService.updateMatch(matchRequest.getId(), matchRequest);
+
+            return ResponseEntity.ok(Map.of("message", "매치 정보가 성공적으로 업데이트되었습니다."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "매치 정보 업데이트에 실패했습니다: " + e.getMessage()));
+        }
+    }
+
+
+    // 여성 매치 삭제
+    @DeleteMapping("/layout/deleteW1Match")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteW1Match(@RequestBody Map<String, Integer> payload) {
+        Integer matchId = payload.get("id");
+        if (matchId == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "매치 ID가 제공되지 않았습니다."));
+        }
+
+        try {
+            boolean isDeleted = adminService.deleteMatch(matchId);
+            if (!isDeleted) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "해당 매치를 찾을 수 없습니다."));
+            }
+            return ResponseEntity.ok(Map.of("message", "매치가 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "매치 삭제 중 문제가 발생했습니다.", "details", e.getMessage()));
+        }
+    }
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ================================== 매치 End
+    // ================================== w1 매치 End
 
 
 

@@ -65,11 +65,11 @@
         WHERE user_phone = #{phone}
     </select>
 
-    <!-- 이메일로 사용자 아이디(username) 찾기 -->
+    <!-- 이메일로 일반 로그인 사용자의 아이디(username) 찾기 -->
     <select id="findUsersByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
         SELECT username
         FROM user
-        WHERE email = #{email}
+        WHERE email = #{email} AND provider IS NULL
     </select>
 
     <!-- 사용자명과 이메일로 사용자 정보 조회 -->

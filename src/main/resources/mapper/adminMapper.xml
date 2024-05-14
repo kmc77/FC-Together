@@ -664,7 +664,7 @@
     <!-- ==============  구단목록 End ============== -->
 
 
-    <!-- ==============  매치 Start ============== -->
+    <!-- ==============  k5 매치 Start ============== -->
 
 
     <select id="findK5TeamList" resultType="com.project.together.domain.Team">
@@ -692,7 +692,7 @@
         WHERE id = #{id}
     </select>
 
-    <update id="updateK5Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+    <update id="updateMatch" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
         UPDATE matches SET
         team_name = #{teamName},
         match_score = #{matchScore},
@@ -705,21 +705,65 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="deleteK5Match" parameterType="int">
+    <delete id="deleteMatch" parameterType="int">
         DELETE FROM matches
         WHERE id = #{id}
     </delete>
 
 
+    <!-- ============== k5 매치 End ============== -->
+
+
+    <!-- ==============  k7 매치 Start ============== -->
+
+
+    <select id="findK7TeamList" resultType="com.project.together.domain.Team">
+        SELECT *
+        FROM team
+        WHERE team_league_gb = 'k7';
+    </select>
+
+    <select id="findK7MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'k7'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
+    <insert id="saveK7Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matches (team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home, league_gb)
+        VALUES (#{teamName}, #{matchScore}, #{matchRelativeScore}, #{matchDate}, #{matchTime}, #{matchLocation}, #{matchStatus}, #{matchHome}, #{leagueGb})
+    </insert>
+
+
+    <!-- ============== k7 매치 End ============== -->
+
+
+    <!-- ==============  k7 매치 Start ============== -->
+
+    <select id="findW1TeamList" resultType="com.project.together.domain.Team">
+        SELECT *
+        FROM team
+        WHERE team_league_gb = 'w1';
+    </select>
+
+    <select id="findW1MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'w1'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
+    <insert id="saveW1Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matches (team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home, league_gb)
+        VALUES (#{teamName}, #{matchScore}, #{matchRelativeScore}, #{matchDate}, #{matchTime}, #{matchLocation}, #{matchStatus}, #{matchHome}, #{leagueGb})
+    </insert>
 
 
 
 
-
-
-
-
-    <!-- ==============  매치 End ============== -->
-
+    <!-- ============== k7 매치 End ============== -->
 
 </mapper>

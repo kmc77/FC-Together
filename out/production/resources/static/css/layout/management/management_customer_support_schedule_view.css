@@ -1,0 +1,184 @@
+.cpContent img {
+    max-width: 70%; /* 이미지의 최대 너비를 70%로 제한합니다. */
+    height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지합니다. */
+    display: block; /* 이미지를 블록 요소로 설정하여 가로 중앙 정렬을 적용합니다. */
+    margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 이미지를 수평 중앙 정렬합니다. */
+}
+
+.newsContainer {
+    width: 1120px;
+    box-sizing: border-box;
+    margin: 0px auto;
+    padding: 0px;
+}
+
+.mediaRoomContainer {
+   /* display: flex;*/ /*컨텐츠 내용에 따라 노출 크기 처리*/
+    margin-top: 77px;
+}
+
+.tsInformation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.111rem;
+    border-top: 3px solid rgb(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.tsInformation .titleBox > p {
+    font-size: 1.333rem;
+    line-height: 2rem;
+    font-weight: 700;
+    max-width: 910px;
+}
+
+.tsInformation .titleBox > div {
+    display: flex;
+    font-size: 0.888rem;
+    color: rgba(0, 0, 0, 0.5);
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.tsInformation .titleBox > div .titleInfo {
+    display: grid;
+    grid-template-columns: 3.3em 1fr;
+    font-weight: 400;
+}
+
+.tsInformation .titleBox > div .titleInfo p:first-child {
+    font-weight: 700;
+}
+
+.tsInformation .titleBox .line {
+    width: 1px;
+    height: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin: 0px 1.111rem;
+}
+
+.tsInformation .share {
+    display: flex;
+    gap: 0.667rem;
+}
+
+.tsContent {
+   /* border-bottom: 1px solid rgb(0, 0, 0);*/
+    font-weight: 400;
+}
+
+.tsContent .content {
+    padding: 3.111rem 2.111rem;
+    font-size: 0.944rem;
+    letter-spacing: -0.6px;
+}
+
+.post-navigation {
+    font-size: 1rem;
+    line-height: 1.777rem;
+    letter-spacing: -0.64px;
+    font-weight: 500;
+}
+
+.post-navigation > div {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 1.222rem 2.111rem;
+}
+
+.post-navigation > div > p:first-child {
+    opacity: 0.6;
+}
+
+.post-navigation .arrow {
+    width: 7px;
+    height: 7px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.6);
+    border-width: 0px 1px 1px 0px;
+    display: inline-block;
+    padding: 2px;
+    transform: rotate(45deg);
+    margin: 8px 36px 0px 20px;
+}
+
+.post-navigation .arrow.up {
+    transform: rotate(225deg);
+    margin: 7px 36px 0px 20px !important;
+}
+
+.btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #ffc954;
+}
+
+.formBtns {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.btn.btn-default {
+   /* min-width: 173px;*/
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.attachments {
+    /*margin-top: 20px;*/
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.attachments h3 {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.attachments ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.attachments li {
+    margin-bottom: 5px;
+    background-color: white; /* 배경색을 흰색으로 설정 */
+    padding: 10px;
+    border: 1px solid #eee; /* 경계선을 추가하여 각 항목을 구분 */
+    border-radius: 5px; /* 경계선의 모서리를 둥글게 처리 */
+}
+
+
+.attachments a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.attachments a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+

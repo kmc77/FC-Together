@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.MediaMapper">
+
+    <select id="findAll" resultType="com.project.together.domain.Notice">
+        SELECT * FROM Notice
+        ORDER BY notice_num DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findNoticeByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM Notice WHERE notice_num = #{noticeNum}
+    </select>
+
+    <select id="findPrevNoticeByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
+        <![CDATA[
+        SELECT * FROM Notice
+        WHERE notice_num < #{noticeNum}
+        ORDER BY notice_num DESC
+        LIMIT 1
+    ]]>
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByNoticeNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
+    </select>
+
+    <update id="updateNoticeHits">
+        UPDATE Notice SET notice_hits = #{hits} WHERE notice_num = #{noticeNum}
+    </update>
+
+    <!-- ======================================= -->
+
+    <select id="getNewsList" resultType="com.project.together.domain.News">
+        SELECT *
+        FROM News
+        ORDER BY news_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findNewsByNewsNumber" parameterType="int" resultType="com.project.together.domain.News">
+        SELECT * FROM News WHERE news_idx = #{newsNum}
+    </select>
+
+    <update id="updateNewsHits">
+        UPDATE News SET news_hits = #{hits} WHERE news_idx = #{newsIdx}
+    </update>
+
+    <select id="findPrevNewsByNewsNum" parameterType="int" resultType="com.project.together.domain.News">
+        <![CDATA[
+            SELECT * FROM News
+            WHERE news_idx < #{newsNum}
+            ORDER BY news_idx DESC
+            LIMIT 1
+        ]]>
+    </select>
+
+    <!-- ======================================= -->
+
+    <select id="getClubPhotoList" resultType="com.project.together.domain.ClubPhoto">
+        SELECT *
+        FROM ClubPhoto
+        ORDER BY cp_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findPhotosByPhotoNumber" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM ClubPhoto WHERE cp_idx = #{cpIdx}
+    </select>
+
+    <update id="updatePhotoHits">
+        UPDATE ClubPhoto SET cp_hits = #{hits} WHERE cp_idx = #{photoNum}
+    </update>
+
+    <select id="findPrevClubPhotoByCpIdx" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        <![CDATA[
+             SELECT * FROM ClubPhoto
+                WHERE cp_idx < #{cpIdx}
+                ORDER BY cp_idx DESC
+                LIMIT 1
+        ]]>
+    </select>
+
+    <!-- ======================================= -->
+
+    <select id="getVideoList" resultType="com.project.together.domain.ClubVideo">
+        SELECT *
+        FROM ClubVideo
+        ORDER BY cv_idx DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="findVideosByVideoNumber" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo WHERE cv_idx = #{cvIdx}
+    </select>
+
+
+    <update id="updateVideoHits">
+        UPDATE ClubVideo SET cv_hits = #{hits} WHERE cv_idx = #{cvIdx}
+    </update>
+
+    <select id="findPrevClubVideoByCvIdx" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        <![CDATA[
+            SELECT * FROM ClubVideo
+            WHERE cv_idx < #{cvIdx}
+            ORDER BY cv_idx DESC
+            LIMIT 1
+        ]]>
+    </select>
+
+
+
+    <!-- ======================================= -->
+
+
+
+
+</mapper>

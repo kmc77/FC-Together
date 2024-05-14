@@ -1,3 +1,4 @@
+# General files and directories to be ignored
 HELP.md
 .gradle
 build/
@@ -5,37 +6,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Ignore JwtProperties.java in the jwt config directory
+src/main/java/com/project/together/config/jwt/JwtProperties.java
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-
-### application.properties 파일이 Git에 의해 무시 ###
+# Application properties should not be tracked
 /application.properties
 src/main/resources/application.properties

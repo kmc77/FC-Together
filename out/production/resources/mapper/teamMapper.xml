@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.TeamMapper">
+
+
+    <!-- K5_Player 테이블과 file 테이블 조인 쿼리, 필요한 컬럼만 선택 -->
+    <select id="getK5Players" resultType="com.project.together.domain.K5_Player">
+        SELECT
+        p.k5_player_num,
+        p.k5_player_name,
+        p.k5_player_position,
+        p.k5_player_en_name,
+        p.k5_player_birth,
+        p.k5_player_height,
+        p.k5_player_weight,
+        f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
+        FROM K5_Player p
+        LEFT JOIN file f
+        ON f.table_idx = p.k5_player_num
+        AND f.table_gb = 'k5Player'  <!-- 테이블 그룹을 명확히 지정 -->
+    </select>
+
+
+    <!-- K7_Player 테이블과 file 테이블 조인 쿼리, 필요한 컬럼만 선택 -->
+    <select id="getK7Players" resultType="com.project.together.domain.K7_Player">
+        SELECT
+        p.k7_player_num,
+        p.k7_player_name,
+        p.k7_player_position,
+        p.k7_player_en_name,
+        p.k7_player_birth,
+        p.k7_player_height,  <!-- 선수의 키 정보를 추가 -->
+        p.k7_player_weight,  <!-- 선수의 몸무게 정보를 추가 -->
+        f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
+        FROM K7_Player p
+        LEFT JOIN file f
+        ON f.table_idx = p.k7_player_num
+        AND f.table_gb = 'k7Player'  <!-- 테이블 그룹을 명확히 지정 -->
+    </select>
+
+
+    <!-- W1_Player 테이블과 file 테이블 조인 쿼리 -->
+    <select id="getW1Players" resultType="com.project.together.domain.W1_Player">
+        SELECT
+        p.w1_player_num,
+        p.w1_player_name,
+        p.w1_player_position,
+        p.w1_player_en_name,
+        p.w1_player_birth,
+        p.w1_player_height,  <!-- 선수의 키 정보를 추가 -->
+        p.w1_player_weight,  <!-- 선수의 몸무게 정보를 추가 -->
+        f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
+        FROM W1_Player p
+        LEFT JOIN file f
+        ON f.table_idx = p.w1_player_num
+        AND f.table_gb = 'w1Player'  <!-- 테이블 그룹을 명확히 지정 -->
+    </select>
+
+    <!-- TeamStaff 정보 및 연관된 파일 정보 조회 쿼리 -->
+    <select id="getTeamStaff" resultType="com.project.together.domain.TeamStaff">
+        SELECT
+        s.team_staff_num,
+        s.team_staff_name,
+        s.team_staff_role,
+        s.team_league_gb,
+        s.team_staff_en_name,
+        s.team_staff_birth,
+        f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
+        FROM TeamStaff s
+        LEFT JOIN file f
+        ON f.table_idx = s.team_staff_num
+        AND f.table_gb = 'TeamStaff'  <!-- 테이블 그룹을 명확히 지정 -->
+    </select>
+
+
+</mapper>

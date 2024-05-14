@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.AdminMapper">
+
+
+    <select id="getAllUsers" resultType="com.project.together.domain.User">
+        SELECT * FROM user
+    </select>
+
+    <!-- ==============  QnA Start ============== -->
+
+    <select id="getAllQnAs" resultType="com.project.together.domain.Qna">
+        SELECT * FROM qna ORDER BY qna_num DESC
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.project.together.domain.Qna">
+        SELECT * FROM qna WHERE qna_num = #{qnaNum}
+    </select>
+
+    <update id="updateQnA">
+        UPDATE qna
+        SET auth_id = #{authId}, qna_reply = #{qnaReply}, qna_status = '답변완료'
+        WHERE qna_num = #{qnaNum}
+    </update>
+
+
+    <delete id="deleteQna" parameterType="list">
+        DELETE FROM qna WHERE qna_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  QnA End ============== -->
+
+
+    <!-- ==============  Notice Start ============== -->
+
+
+    <select id="getAllNotice" resultType="com.project.together.domain.Notice">
+        SELECT * FROM notice ORDER BY notice_num DESC
+    </select>
+
+    <select id="findNoticesById" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM notice WHERE notice_num = #{noticeNum}
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByNoticeNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
+    </select>
+
+
+    <delete id="deleteFilesByNoticeNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{noticeNum} AND table_gb = 'Notice'
+    </delete>
+
+    <insert id="insertNotice" parameterType="com.project.together.domain.Notice" useGeneratedKeys="true" keyProperty="noticeNum">
+        INSERT INTO notice (notice_num, username, notice_title, notice_date, notice_hits, notice_content)
+        VALUES (#{noticeNum}, #{username}, #{noticeTitle}, #{noticeDate}, #{noticeHits}, #{noticeContent})
+    </insert>
+
+
+    <insert id="insertNoticeFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <update id="updateNotice" parameterType="com.project.together.domain.Notice">
+        UPDATE notice
+        SET notice_title = #{noticeTitle}, notice_content = #{noticeContent}, notice_date = #{noticeDate}
+        WHERE notice_num = #{noticeNum}
+    </update>
+
+    <delete id="deleteNotice" parameterType="list">
+        DELETE FROM notice WHERE notice_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findNoticesByNoticeNum" parameterType="int" resultType="com.project.together.domain.Notice">
+        SELECT * FROM Notice WHERE notice_num = #{noticeNum}
+    </select>
+
+    <update id="updateNoticeHits">
+        UPDATE Notice SET notice_hits = #{noticeHits} WHERE notice_num = #{noticeNum}
+    </update>
+
+
+    <!-- ==============  Notice End ============== -->
+
+    <!-- ==============  News Start ============== -->
+
+    <select id="getAllNews" resultType="com.project.together.domain.News">
+        SELECT * FROM news ORDER BY news_idx DESC
+    </select>
+
+    <select id="findNewsById" parameterType="int" resultType="com.project.together.domain.News">
+        SELECT * FROM news WHERE news_idx = #{newsIdx}
+    </select>
+
+    <insert id="insertNews" parameterType="com.project.together.domain.News">
+        INSERT INTO news (news_idx, username, news_title, news_regdate, news_hits, news_content)
+        VALUES (#{newsIdx}, #{username}, #{newsTitle}, #{newsRegdate}, #{newsHits}, #{newsContent})
+    </insert>
+
+    <update id="updateNews" parameterType="com.project.together.domain.News">
+        UPDATE news
+        SET news_title = #{newsTitle}, news_content = #{newsContent}, news_regdate = #{newsRegdate}
+        WHERE news_idx = #{newsIdx}
+    </update>
+
+    <delete id="deleteNews" parameterType="list">
+        DELETE FROM news WHERE news_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  News End ============== -->
+
+
+    <!-- ==============  ClubPhoto Start ============== -->
+
+    <select id="getAllClubPhoto" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto ORDER BY cp_idx DESC
+    </select>
+
+    <select id="findClubPhotoById" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto WHERE cp_idx = #{cpIdx}
+    </select>
+
+    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
+        INSERT INTO clubphoto (cp_idx, username, cp_title, cp_regdate, cp_hits, cp_content)
+        VALUES (#{cpIdx}, #{username}, #{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent})
+    </insert>
+
+    <update id="updateClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
+        UPDATE clubphoto
+        SET cp_title = #{cpTitle}, cp_content = #{cpContent}, cp_regdate = #{cpRegdate}
+        WHERE cp_idx = #{cpIdx}
+    </update>
+
+    <delete id="deleteClubPhoto" parameterType="list">
+        DELETE FROM clubphoto WHERE cp_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  ClubPhoto End ============== -->
+
+
+    <!-- ==============  ClubVideo Start ============== -->
+
+
+    <select id="getAllClubVideo" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo ORDER BY cv_idx DESC
+    </select>
+
+    <select id="findClubVideoById" parameterType="int" resultType="com.project.together.domain.ClubVideo">
+        SELECT * FROM ClubVideo WHERE cv_idx = #{cvIdx}
+    </select>
+
+    <insert id="insertClubVideo" parameterType="com.project.together.domain.ClubVideo">
+        INSERT INTO ClubVideo (cv_idx, username, cv_title, cv_date, cv_hits, mv_the_origin_url, cv_content)
+        VALUES (#{cvIdx}, #{username}, #{cvTitle}, #{cvDate}, #{cvHits}, #{mvTheOriginUrl}, #{cvContent})
+    </insert>
+
+    <update id="updateClubVideo" parameterType="com.project.together.domain.ClubVideo">
+        UPDATE ClubVideo
+        SET cv_title = #{cvTitle}, cv_content = #{cvContent}, cv_date = #{cvDate}, mv_the_origin_url = #{mvTheOriginUrl}
+        WHERE cv_idx = #{cvIdx}
+    </update>
+
+    <delete id="deleteClubVideo" parameterType="list">
+        DELETE FROM ClubVideo WHERE cv_idx IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  ClubVideo End ============== -->
+
+
+    <!-- ==============  Player Start ============== -->
+
+
+    <select id="getK5Player" resultType="com.project.together.domain.K5_Player">
+        SELECT * FROM K5_Player ORDER BY k5_player_num DESC
+    </select>
+
+    <select id="getK7Player" resultType="com.project.together.domain.K7_Player">
+        SELECT * FROM K7_Player ORDER BY k7_player_num DESC
+    </select>
+
+    <select id="getW1Player" resultType="com.project.together.domain.W1_Player">
+        SELECT * FROM W1_Player ORDER BY w1_player_num DESC
+    </select>
+
+    <select id="find_k5PlayerByNum" parameterType="int" resultType="com.project.together.domain.K5_Player">
+        SELECT * FROM K5_Player WHERE k5_player_num = #{playerNum}
+    </select>
+
+    <select id="find_k7PlayerByNum" parameterType="int" resultType="com.project.together.domain.K7_Player">
+        SELECT * FROM K7_Player WHERE k7_player_num = #{playerNum}
+    </select>
+
+    <select id="find_w1PlayerByNum" parameterType="int" resultType="com.project.together.domain.W1_Player">
+        SELECT * FROM W1_Player WHERE w1_player_num = #{playerNum}
+    </select>
+
+
+    <delete id="deleteK5playerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM K5_Player
+        WHERE k5_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
+
+    <delete id="deleteK7playerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM K7_Player
+        WHERE k7_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
+
+    <delete id="deleteW1playerByPlayerNum" parameterType="java.util.List">
+        DELETE FROM W1_Player
+        WHERE w1_player_num IN
+        <foreach item="playerNum" collection="list" open="(" separator="," close=")">
+            #{playerNum}
+        </foreach>
+    </delete>
+
+
+    <insert id="registerK5Player" parameterType="com.project.together.domain.K5_Player">
+        INSERT INTO K5_Player (k5_player_num, k5_player_name, k5_player_en_name, k5_player_cap_yn, k5_player_subcap_yn, k5_player_position, k5_player_height, k5_player_weight, k5_player_birth)
+        VALUES (#{k5PlayerNum}, #{k5PlayerName}, #{k5PlayerEnName}, #{k5PlayerCapYn}, #{k5PlayerSubCapYn}, #{k5PlayerPosition}, #{k5PlayerHeight}, #{k5PlayerWeight}, #{k5PlayerBirth})
+    </insert>
+
+    <insert id="registerK7Player" parameterType="com.project.together.domain.K7_Player">
+        INSERT INTO K7_Player (k7_player_num, k7_player_name, k7_player_en_name, k7_player_cap_yn, k7_player_subcap_yn, k7_player_position, k7_player_height, k7_player_weight, k7_player_birth)
+        VALUES (#{k7PlayerNum}, #{k7PlayerName}, #{k7PlayerEnName}, #{k7PlayerCapYn}, #{k7PlayerSubCapYn}, #{k7PlayerPosition}, #{k7PlayerHeight}, #{k7PlayerWeight}, #{k7PlayerBirth})
+    </insert>
+
+    <insert id="registerW1Player" parameterType="com.project.together.domain.W1_Player">
+        INSERT INTO W1_Player (w1_player_num, w1_player_name, w1_player_en_name, w1_player_cap_yn, w1_player_subcap_yn, w1_player_position, w1_player_height, w1_player_weight, w1_player_birth)
+        VALUES (#{w1PlayerNum}, #{w1PlayerName}, #{w1PlayerEnName}, #{w1PlayerCapYn}, #{w1PlayerSubCapYn}, #{w1PlayerPosition}, #{w1PlayerHeight}, #{w1PlayerWeight}, #{w1PlayerBirth})
+    </insert>
+
+    <insert id="insertPlayerFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByK5PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{k5PlayerNum} AND table_gb = 'k5Player'
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByK7PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{k7PlayerNum} AND table_gb = 'k7Player'
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByW1PlayerNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{w1PlayerNum} AND table_gb = 'w1Player'
+    </select>
+
+    <!-- K5 선수 번호 존재 여부 확인 -->
+    <select id="existsK5PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM K5_Player
+        WHERE k5_player_num = #{playerNum}
+    </select>
+
+    <!-- K7 선수 번호 존재 여부 확인 -->
+    <select id="existsK7PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM K7_Player
+        WHERE k7_player_num = #{playerNum}
+    </select>
+
+    <!-- W1 선수 번호 존재 여부 확인 -->
+    <select id="existsW1PlayerByNum" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM w1_Player
+        WHERE w1_player_num = #{playerNum}
+    </select>
+
+    <delete id="deleteFilesByK5PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'k5Player'
+    </delete>
+
+    <delete id="deleteFilesByK7PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'k7Player'
+    </delete>
+
+    <delete id="deleteFilesByW1PlayerNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{playerNum} AND table_gb = 'w1Player'
+    </delete>
+
+    <update id="updateK5Player" parameterType="com.project.together.domain.K5_Player">
+        UPDATE K5_Player
+        SET k5_player_name = #{k5PlayerName},
+        k5_player_en_name = #{k5PlayerEnName},
+        k5_player_cap_yn = #{k5PlayerCapYn},
+        k5_player_subcap_yn = #{k5PlayerSubCapYn},
+        k5_player_position = #{k5PlayerPosition},
+        k5_player_height = #{k5PlayerHeight},
+        k5_player_weight = #{k5PlayerWeight},
+        k5_player_birth = #{k5PlayerBirth}
+        WHERE k5_player_num = #{k5PlayerNum}
+    </update>
+
+    <update id="updateK7Player" parameterType="com.project.together.domain.K7_Player">
+        UPDATE K7_Player
+        SET k7_player_name = #{k7PlayerName},
+        k7_player_en_name = #{k7PlayerEnName},
+        k7_player_cap_yn = #{k7PlayerCapYn},
+        k7_player_subcap_yn = #{k7PlayerSubCapYn},
+        k7_player_position = #{k7PlayerPosition},
+        k7_player_height = #{k7PlayerHeight},
+        k7_player_weight = #{k7PlayerWeight},
+        k7_player_birth = #{k7PlayerBirth}
+        WHERE k7_player_num = #{k7PlayerNum}
+    </update>
+
+    <update id="updateW1Player" parameterType="com.project.together.domain.W1_Player">
+        UPDATE W1_Player
+        SET w1_player_name = #{w1PlayerName},
+        w1_player_en_name = #{w1PlayerEnName},
+        w1_player_cap_yn = #{w1PlayerCapYn},
+        w1_player_subcap_yn = #{w1PlayerSubCapYn},
+        w1_player_position = #{w1PlayerPosition},
+        w1_player_height = #{w1PlayerHeight},
+        w1_player_weight = #{w1PlayerWeight},
+        w1_player_birth = #{w1PlayerBirth}
+        WHERE w1_player_num = #{w1PlayerNum}
+    </update>
+
+
+    <!-- ==============  Player End ============== -->
+
+
+    <!-- ==============  TeamStaff Start ============== -->
+
+    <select id="getTeamStaff" resultType="com.project.together.domain.TeamStaff">
+        SELECT * FROM TeamStaff ORDER BY team_staff_num DESC
+    </select>
+
+    <insert id="insertTeamStaff" parameterType="com.project.together.domain.TeamStaff" useGeneratedKeys="true" keyProperty="teamStaffNum">
+        INSERT INTO TeamStaff (team_staff_name, team_staff_en_name, team_staff_birth, team_staff_role, team_league_gb)
+        VALUES (#{teamStaffName}, #{teamStaffEnName}, #{teamStaffBirth}, #{teamStaffRole}, #{teamLeagueGb})
+    </insert>
+
+    <select id="findTeamStaffByNum" parameterType="int" resultType="com.project.together.domain.TeamStaff">
+        SELECT * FROM TeamStaff WHERE team_staff_num = #{teamStaffNum}
+    </select>
+
+    <insert id="insertTeamStaffFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByTeamStaffNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{teamStaffNum} AND table_gb = 'TeamStaff'
+    </select>
+
+    <!-- 여러 업로드 파일 조회 -->
+    <select id="findFilesByTeamStaffNums" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx IN
+        <foreach item="num" collection="list" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+        AND table_gb = 'TeamStaff'
+    </select>
+
+    <update id="updateTeamStaff" parameterType="com.project.together.domain.TeamStaff">
+        UPDATE TeamStaff
+        SET
+        team_staff_name = #{teamStaffName},
+        team_staff_en_name = #{teamStaffEnName},
+        team_staff_birth = #{teamStaffBirth},
+        team_staff_role = #{teamStaffRole},
+        team_league_gb = #{teamLeagueGb}
+        WHERE team_staff_num = #{teamStaffNum}
+    </update>
+
+    <delete id="deleteTeamStaff" parameterType="java.util.List">
+        DELETE FROM TeamStaff
+        WHERE team_staff_num IN
+        <foreach item="teamStaffNum" collection="list" open="(" separator="," close=")">
+            #{teamStaffNum}
+        </foreach>
+    </delete>
+
+    <!-- 업로드 파일 삭제 -->
+    <delete id="deleteFilesByTeamStaffNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{teamStaffNum} AND table_gb = 'TeamStaff'
+    </delete>
+
+    <!-- 여러 업로드 파일 삭제 -->
+    <delete id="deleteFilesByTeamStaffNums" parameterType="java.util.List">
+        DELETE FROM File
+        WHERE table_idx IN
+        <foreach item="num" collection="list" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+        AND table_gb = 'TeamStaff'
+    </delete>
+
+
+    <!-- ==============  TeamStaff End ============== -->
+
+
+    <!-- ==============  Rule Start ============== -->
+
+    <select id="getAllRule" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule ORDER BY rule_num DESC
+    </select>
+
+    <select id="findRuleById" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByRuleNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
+    <!-- 이미지 파일 URL 조회 -->
+    <select id="findImageUrlsByRuleNum" parameterType="int" resultType="string">
+        SELECT file_path FROM File
+        WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </select>
+
+    <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
+        INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)
+        VALUES (#{username}, #{ruleTitle}, #{ruleDate}, #{ruleHits}, #{ruleContent}, #{tableGb})
+    </insert>
+
+    <insert id="insertRuleFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <update id="updateRule" parameterType="com.project.together.domain.Rule">
+        UPDATE Rule
+        SET rule_title = #{ruleTitle}, rule_content = #{ruleContent}, rule_date = #{ruleDate}
+        WHERE rule_num = #{ruleNum}
+    </update>
+
+    <delete id="deleteFilesByRuleNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
+    </delete>
+
+    <delete id="deleteRule" parameterType="list">
+        DELETE FROM Rule WHERE rule_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findRuleByRuleNum" parameterType="int" resultType="com.project.together.domain.Rule">
+        SELECT * FROM Rule WHERE rule_num = #{ruleNum}
+    </select>
+
+    <update id="updateRuleHits">
+        UPDATE Rule SET rule_hits = #{ruleHits} WHERE rule_num = #{ruleNum}
+    </update>
+
+
+    <!-- ==============  Rule End ============== -->
+
+
+    <!-- ==============  경영공시 Start ============== -->
+
+    <select id="getAllOperation" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation ORDER BY operation_num DESC
+    </select>
+
+    <select id="findOperationById" parameterType="int" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation WHERE operation_num = #{operationNum}
+    </select>
+
+    <insert id="insertOperation" parameterType="com.project.together.domain.Operation" useGeneratedKeys="true" keyProperty="operationNum">
+        INSERT INTO Operation (username, operation_title, operation_date, operation_hits, operation_content, table_gb)
+        VALUES (#{username}, #{operationTitle}, #{operationDate}, #{operationHits}, #{operationContent}, #{tableGb})
+    </insert>
+
+    <!-- 업로드 파일 조회 -->
+    <select id="findFilesByOperationNum" resultType="com.project.together.domain.File">
+        SELECT * FROM File
+        WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </select>
+
+    <!-- 이미지 파일 URL 조회 -->
+    <select id="findImageUrlsByOperationNum" parameterType="int" resultType="string">
+        SELECT file_path FROM File
+        WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </select>
+
+    <delete id="deleteFilesByOperationNum" parameterType="int">
+        DELETE FROM File WHERE table_idx = #{operationNum} AND table_gb = 'Operation'
+    </delete>
+
+    <insert id="insertOperationFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <update id="updateOperation" parameterType="com.project.together.domain.Operation">
+        UPDATE Operation
+        SET operation_title = #{operationTitle}, operation_content = #{operationContent}, operation_date = #{operationDate}
+        WHERE operation_num = #{operationNum}
+    </update>
+
+    <delete id="deleteOperation" parameterType="list">
+        DELETE FROM Operation WHERE operation_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findOperationByOperationNum" parameterType="int" resultType="com.project.together.domain.Operation">
+        SELECT * FROM Operation WHERE Operation_num = #{operationNum}
+    </select>
+
+    <update id="updateOperationHits">
+        UPDATE Operation SET operation_hits = #{operationHits} WHERE operation_num = #{operationNum}
+    </update>
+
+
+    <!-- ==============  경영공시 End ============== -->
+
+
+    <!-- ==============  FAQ Start ============== -->
+
+
+    <select id="getAllFaq" resultType="com.project.together.domain.Faq">
+        SELECT * FROM Faq ORDER BY faq_category DESC, faq_id DESC
+    </select>
+
+    <select id="findFaqById" parameterType="int" resultType="com.project.together.domain.Faq">
+        SELECT * FROM Faq WHERE faq_id = #{faqId}
+    </select>
+
+    <insert id="insertFaq" parameterType="com.project.together.domain.Faq">
+        INSERT INTO Faq (faq_category, faq_question, faq_answer)
+        VALUES (#{faqCategory}, #{faqQuestion}, #{faqAnswer})
+    </insert>
+
+    <update id="updateFaq" parameterType="com.project.together.domain.Faq">
+        UPDATE Faq
+        SET faq_category = #{faqCategory},
+        faq_question = #{faqQuestion},
+        faq_answer = #{faqAnswer}
+        WHERE faq_id = #{faqId}
+    </update>
+
+    <delete id="deleteFaq" parameterType="list">
+        DELETE FROM Faq WHERE faq_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+    <!-- ==============  FAQ End ============== -->
+
+
+    <!-- ==============  훈련일정 Start ============== -->
+
+
+    <select id="getAllTrainingSchedule" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule ORDER BY schedule_num DESC
+    </select>
+
+    <insert id="insertTrainingSchedule" parameterType="com.project.together.domain.TrainingSchedule" useGeneratedKeys="true" keyProperty="scheduleNum">
+        INSERT INTO Training_Schedule (username, schedule_title, schedule_date, schedule_hits, schedule_content, table_gb)
+        VALUES (#{username}, #{scheduleTitle}, #{scheduleDate}, #{scheduleHits}, #{scheduleContent}, #{tableGb})
+    </insert>
+
+    <select id="findScheduleByScheduleNum" parameterType="int" resultType="com.project.together.domain.TrainingSchedule">
+        SELECT * FROM Training_Schedule WHERE schedule_num = #{scheduleNum}
+    </select>
+
+    <update id="updateTrainingScheduleHits">
+        UPDATE Training_Schedule SET schedule_hits = #{scheduleHits} WHERE schedule_num = #{scheduleNum}
+    </update>
+
+    <update id="updateTrainingSchedule" parameterType="com.project.together.domain.TrainingSchedule">
+        UPDATE Training_Schedule
+        SET schedule_title = #{scheduleTitle}, schedule_content = #{scheduleContent}, schedule_date = #{scheduleDate}
+        WHERE schedule_num = #{scheduleNum}
+    </update>
+
+    <delete id="deleteTrainingSchedule" parameterType="list">
+        DELETE FROM Training_Schedule WHERE schedule_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  훈련일정 End ============== -->
+
+
+    <!-- ==============  구단목록 Start ============== -->
+
+
+    <select id="getAllTeamList" resultType="com.project.together.domain.Team">
+        SELECT * FROM Team ORDER BY team_name DESC
+    </select>
+
+
+    <select id="findTeamsByLeague" resultType="com.project.together.domain.Team" parameterType="String">
+        SELECT * FROM Team WHERE team_league_gb = #{league} ORDER BY team_name DESC
+    </select>
+
+    <!--<insert id="insertTeamFile" parameterType="com.project.together.domain.File">
+        INSERT INTO File (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>-->
+
+    <!-- Team 정보를 데이터베이스에 삽입하는 SQL -->
+    <insert id="registerTeam" parameterType="map">
+        INSERT INTO Team (team_name, team_logo, team_league_gb)
+        VALUES (#{teamName}, #{teamLogo}, #{teamLeagueGb})
+    </insert>
+
+    <!-- 특정 팀을 찾는 쿼리 -->
+    <select id="findTeamById" resultType="com.project.together.domain.Team" parameterType="int">
+        SELECT * FROM Team WHERE id = #{id}
+    </select>
+
+    <delete id="deleteTeamByTeamId" parameterType="list">
+        DELETE FROM Team WHERE id IN
+        <foreach collection="list" item="teamId" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+
+
+    <!-- ==============  구단목록 End ============== -->
+
+
+    <!-- ==============  매치 Start ============== -->
+
+
+    <select id="findK5TeamList" resultType="com.project.together.domain.Team">
+        SELECT *
+        FROM team
+        WHERE team_league_gb = 'k5';
+    </select>
+
+    <select id="findK5MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'k5'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
+    <insert id="saveK5Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matches (team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home, league_gb)
+        VALUES (#{teamName}, #{matchScore}, #{matchRelativeScore}, #{matchDate}, #{matchTime}, #{matchLocation}, #{matchStatus}, #{matchHome}, #{leagueGb})
+    </insert>
+
+    <select id="findMatchById" resultType="com.project.together.domain.Match">
+        SELECT id, team_name, match_score, match_relative_score, match_date, match_time, match_location, match_status, match_home
+        FROM matches
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateK5Match" parameterType="com.project.together.domain.Match" useGeneratedKeys="true" keyProperty="id">
+        UPDATE matches SET
+        team_name = #{teamName},
+        match_score = #{matchScore},
+        match_relative_score = #{matchRelativeScore},
+        match_date = #{matchDate},
+        match_time = #{matchTime},
+        match_location = #{matchLocation},
+        match_status = #{matchStatus},
+        match_home = #{matchHome}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteK5Match" parameterType="int">
+        DELETE FROM matches
+        WHERE id = #{id}
+    </delete>
+
+
+
+
+
+
+
+
+
+
+    <!-- ==============  매치 End ============== -->
+
+
+</mapper>

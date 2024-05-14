@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QnaView</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/my/qnaview.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+
+<!-- contents -->
+<div id="contents" class="contents">
+    <div class="layout-inner">
+        <section class="qna-wrap view-wrap">
+            <div class="cont-top-area">
+                <h1 class="cont-tit">나의 1:1문의</h1>
+                <p class="cont-txt notice-txt">답변 운영 시간은 09:00 ~ 18:00</p>
+            </div>
+
+            <div class="content-box">
+                <div class="form-list view-list">
+                    <input type="hidden" name="no" value="">
+                    <div class="col">
+                        <dl class="flex-align-center">
+                            <dt id="date-label">등록일</dt>
+                            <dd th:text="${qna.qnaDate}"></dd>
+                        </dl>
+                        <dl>
+                            <dt id="status-label">상태</dt>
+                            <dd>
+                                <span class="badge-answer" th:text="${qna.qnaStatus}"></span>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <dl>
+                        <dt id="title-label">문의내용</dt>
+                        <dd>
+                            <em class="qna-cont-tit" th:text="${qna.qnaTitle}"></em>
+                            <div class="qna-cont ql-editor" th:utext="${qna.qnaContent}"></div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <div class="form-list">
+                    <dl>
+                        <dt id="reply-label">답변</dt>
+                        <dd th:text="${qna.qnaReply}"></dd>
+                    </dl>
+                </div>
+                <div class="formBtns">
+                    <!-- 문의글 삭제 버튼 -->
+                    <button type="button" value="삭제" class="btn btn-default" id="delete-btn"
+                            th:data-qnanum="${qna.qnaNum}">삭제
+                    </button>
+
+                    <button type="button" onclick="location.href='http://localhost:8081/my/myprofile'"
+                            class="btn btn-default">목록
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- // contents -->
+<script>
+    $(document).ready(function() {
+        // URL에서 qnaNum 추출
+        var urlParams = new URLSearchParams(window.location.search);
+        var qnaNum = urlParams.get('no');
+
+        // qnaNum에 해당하는 문의 메시지 로드
+        $.ajax({
+            url: '/my/qnaview?no=' + qnaNum,
+            type: 'GET',
+            success: function(data) {
+                // HTML 요소의 내용 업데이트
+                $('#date-label').next('dd').text(data.qnaDate);
+                $('#status-label').next('dd').find('span').text(data.qnaStatus);
+                $('#title-label').next('dd').find('em').text(data.qnaTitle);
+                $('.qna-cont').html(data.qnaContent); // 컨텐츠가 HTML인 경우 .html() 메서드 사용
+
+                // 답변을 표시
+                $('#reply-label').next('dd').text(data.qnaReply);
+            },
+            error: function(xhr, status, error) {
+                console.error('QnA 상세 정보 검색 요청 실패: ' + error);
+            }
+        });
+
+        // 삭제 버튼 클릭 시
+        $("#delete-btn").click(function() {
+            if (confirm("삭제하시겠습니까?")) {
+                var qnaNumData = $(this).data("qnanum");
+                var qnaNum = parseInt(qnaNumData); // 현재 클릭된 버튼의 data-qnanum 속성 값을 정수로 변환하여 가져옴
+                // 로컬 스토리지에서 액세스 토큰 가져오기
+                var accessToken = localStorage.getItem("accessToken");
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: '/my/qna/' + qnaNum,
+                    type: 'DELETE',
+                    beforeSend: function(xhr) {
+                        // 헤더에 액세스 토큰 추가
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                    },
+                    success: function(result) {
+                        alert("문의가 성공적으로 삭제되었습니다.");
+                        window.location.href = "/my/myprofile";
+                    },
+                    error: function(request, status, error) {
+                        alert("삭제 실패: " + request.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

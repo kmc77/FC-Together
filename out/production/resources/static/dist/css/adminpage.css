@@ -1,0 +1,126 @@
+.adminTab #nav-1 {
+    position: relative;
+    border: none;
+    border-radius: 10em;
+    display: flex;
+    list-style: none;
+    background: #f5f5f5;
+    box-shadow: 20px 40px 40px #00000033;
+    padding: 10px;
+}
+
+.adminTab #nav-1 li {
+    margin: 0px;
+}
+
+.adminTab #nav-1 li a {
+    position: relative;
+    padding: 0.6em 2em;
+    font-size: 18px;
+    border: none;
+    outline:none;
+    color: #333;
+    display: inline-block;
+    text-decoration: none;
+    z-index: 3;
+}
+
+.adminTab #nav-1 .slide1,
+.adminTab #nav-1 .slide2 {
+    position: absolute;
+    display: inline-block;
+    height: 3em;
+    border-radius: 10em;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.adminTab #nav-1 .slide1 {
+    background-color: yellowgreen;
+    z-index: 2;
+}
+
+.adminTab #nav-1 .slide2 {
+    opacity: 0;
+    background: #ddd;
+    z-index: 1;
+}
+
+.adminTab #nav-1 .squeeze {
+    transform: scale(0.9);
+}
+
+// *************************************** Demo stuff
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+html .adminTab,
+body .adminTab{
+    height: 100%;
+}
+
+body .adminTab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    font-family: Montserrat, sans-serif;
+    line-height: 1.5;
+    background: linear-gradient(
+        160deg,
+        #006604 20%,
+        #ffe501 20%,
+        #ffe501 80%,
+        #006604 80%
+    );
+}
+
+// *************************************** 테이블 css
+
+[x-cloak] {
+            display: none;
+        }
+
+        /* input:checked + svg {
+            display: block;
+        } */
+        [type="checkbox"] {
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .form-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            flex-shrink: 0;
+            color: currentColor;
+            background-color: #fff;
+            border-color: #e2e8f0;
+            border-width: 1px;
+            border-radius: 0.25rem;
+            height: 1.2em;
+            width: 1.2em;
+        }
+
+        .form-checkbox:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+// *************************************** 테이블 css and

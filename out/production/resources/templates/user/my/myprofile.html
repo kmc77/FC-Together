@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyProfile</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/user/my/myprofile.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="mypagePage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle">
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>님</span> 안녕하세요!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tabMenu">
+                <div class="container">
+                    <a href="#" data-target="#mypage" class="tabLink current">
+                        <span>마이페이지</span>
+                    </a>
+                    <a href="#" data-target="#qna" class="tabLink">
+                        <span>1:1 문의하기</span>
+                    </a>
+                    <!--  <a href="#" data-target="#myinfo" class="tabLink">
+                          <span>나의정보 수정</span>
+                      </a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="mypage" class="tabContent">
+        <div class="content">
+            <div class="listInfo">
+                <div class="cont-top-area">
+                    <h1>마이페이지</h1>
+                </div>
+                <div id="userProfile">
+                    <table class="rwd-table">
+                        <tr>
+                            <th>아이디</th>
+                            <th>이메일</th>
+                            <th>권한</th>
+                            <th>이름</th>
+                            <th>핸드폰 번호</th>
+                            <th>생일</th>
+                            <th>주소</th>
+                            <th>좋아하는 선수</th>
+                            <th>마케팅 동의</th>
+                        </tr>
+                        <tr>
+                            <td data-th="아이디" class="username"></td>
+                            <td data-th="이메일" class="email"></td>
+                            <td data-th="권한" class="authority"></td>
+                            <td data-th="이름" class="userRealName"></td>
+                            <td data-th="핸드폰 번호" class="phone-number"></td>
+                            <td data-th="생일" class="birthdate"></td>
+                            <td data-th="주소" class="userAddress"></td>
+                            <td data-th="좋아하는 선수" class="favorite-player"></td>
+                            <td data-th="마케팅 동의" class="marketing-agreement"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="btns">
+                <button class="btn large full primary1" id="delete-account-btn">회원탈퇴</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="qna" class="tabContent" style="display: none;">
+        <div id="scrollAnchor" class="container">
+            <div islogin="true" reservedata="[object Object]" class="content">
+                <div class="qnaList">
+                    <!-- 여기에 문의글 목록 노출 -->
+                    <div class="cont-top-area">
+                        <h1 class="cont-tit">나의 1:1문의 목록</h1>
+                    </div>
+
+                    <div class="list-basic">
+                        <div class="list-item list-top">
+                            <div class="col tit">제목</div>
+                            <div class="col text">내용</div>
+                            <div class="col date">등록일</div>
+                            <div class="col state">상태</div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="qnaWrite" style="display:none;">
+                    <div class="listInfo">
+                        <h1 class="list-tit">1:1 문의하기 작성</h1>
+                    </div>
+                    <div>
+                        <div class="writeTable">
+                            <div class="row">
+                                <div class="label">제목</div>
+                                <div class="cont">
+                                    <input placeholder="제목을 입력하세요" maxlength="50" class="input">
+                                    <div class="letter"><strong id="titleCount">0/50</strong></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="label">내용</div>
+                                <div class="cont">
+                            <textarea placeholder="내용을 입력하세요" oninput="updateCount(this, 'contentCount')"
+                                      class="input textarea" maxlength="500"></textarea>
+                                    <div class="letter"><strong id="contentCount">0/500</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns">
+                    <button class="btn large full primary1" id="showQnaList">문의글 목록 보기</button>
+                    <button class="btn large full primary1" id="showQnaForm">1:1 문의하기</button>
+                    <button class="btn large full primary1" id="submitQna">작성완료</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="myinfo" class="tabContent" style="display: none;">
+         <p>나의정보 수정 예시 텍스트</p>
+     </div>-->
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        if (token) {
+            // 1:1 문의하기 버튼 클릭 이벤트
+            $("#showQnaForm").click(function() {
+                $('.qnaWrite').show();
+                $('.qnaList').hide();
+                $("#showQnaForm").hide();
+                $("#showQnaList").show();
+                $("#submitQna").show();
+            });
+
+            // 문의글 목록 보기 버튼 클릭 이벤트
+            $("#showQnaList").click(function() {
+                $('.qnaList').show();
+                $('.qnaWrite').hide();
+                $("#submitQna").hide();
+                $("#showQnaList").hide();
+                $("#showQnaForm").show();
+            });
+
+            // 문의글 작성 완료 버튼 클릭 이벤트
+            $("#submitQna").click(function() {
+                var title = $('.input').val();
+                var content = $('.textarea').val();
+
+                if (!title || !content) {
+                    alert('제목과 내용을 모두 입력해주세요.');
+                    return;
+                }
+
+                var token = localStorage.getItem('accessToken');
+
+                $.ajax({
+                    url: '/my/qna',
+                    type: 'POST',
+                    data: {
+                        qnaTitle: title,
+                        qnaContent: content
+                    },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    },
+                    success: function(response) {
+                        console.log('글쓰기 요청 성공');
+                        alert('글쓰기 요청이 성공했습니다.');
+                        $('.qnaList').show();
+                        $('.qnaWrite').hide();
+                        $("#submitQna").hide();
+                        $("#showQnaList").hide();
+                        $("#showQnaForm").show();
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('글쓰기 요청 실패: ' + error);
+                    }
+                });
+            });
+
+            // 입력값 길이 체크 이벤트
+            $('.input').on('input', function() {
+                var $input = $(this);
+                var maxLength = $input.is('textarea') ? 500 : 50;
+                var currentLength = $input.val().length;
+                var $counter = $input.siblings('.letter').find('strong');
+                $counter.text(currentLength + '/' + maxLength);
+                if (currentLength > maxLength) {
+                    $input.val($input.val().slice(0, maxLength));
+                    $counter.text(maxLength + '/' + maxLength);
+                }
+            });
+
+          // 유저 정보 불러오기
+            $.ajax({
+                url: '/user/user',
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    var token = localStorage.getItem('accessToken');
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(user) {
+                    // 소셜 로그인 사용자인지 여부에 따라 열 숨기기
+                    var isSocialUser = user.provider && user.providerId;
+
+                    $('.username').text(user.username);
+                    $('.email').text(user.email);
+                    $('.authority').text(user.roles);
+                    $('.userRealName').text(user.userRealName);
+                    $('.phone-number').text(user.userPhone);
+                    $('.birthdate').text(user.userBirth);
+
+                    if (isSocialUser) {
+                        $('.userAddress').hide();
+                        $('.favorite-player').hide();
+                        $('.marketing-agreement').hide();
+                    } else {
+                        $('.userAddress').text(user.userAddress).show();
+                        $('.favorite-player').text(user.userLikePlayer).show();
+                        $('.marketing-agreement').text(user.userMarketing).show();
+                    }
+
+                    var username = user.userRealName;
+                    if (username) {
+                        $('.mobileBreak strong').text(username);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('유저 정보 요청 실패: ' + error);
+                }
+            });
+
+
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('.tabContent').hide();
+                $(activeTab).show();
+                $('.tabMenu a').removeClass('current');
+                $('a[data-target="' + activeTab + '"]').addClass('current');
+            }
+
+            // 탭 메뉴 클릭 이벤트
+            $('.tabMenu a').click(function(e) {
+                e.preventDefault();
+                var target = $(this).attr('data-target');
+                $('.tabContent').hide();
+                $(target).show();
+                $('.tabMenu a').removeClass('current');
+                $(this).addClass('current');
+                localStorage.setItem('activeTab', target);
+            });
+
+          $.ajax({
+            url: '/my/list',
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            success: function(data) {
+                data.forEach(function(qna) {
+                    var qnaContent = qna.qnaContent.length > 10 ? qna.qnaContent.substring(0, 10) + " •••" : qna.qnaContent;
+
+                    var statusClass = '';
+                    if(qna.qnaStatus === '답변완료') {
+                        statusClass = 'completed';
+                    } else if(qna.qnaStatus === '답변대기') {
+                        statusClass = 'waiting';
+                    } // 추가로 필요한 상태에 따라 else if 문을 더 추가할 수 있습니다.
+
+                    var html = '<div class="list-item">'
+                             + '    <div class="col tit">'
+                             + '        <span class="col date txt-tit">' + qna.qnaTitle + '</span>'
+                             + '    </div>'
+                             + '    <div class="col text">'
+                             + '       <a href="/my/qnaview?no=' + qna.qnaNum + '" class="qna-text">' + qnaContent + '</a>'
+                             + '    </div>'
+                             + '    <div class="col qna-info">'
+                             + '        <span class="col date txt-num">' + qna.qnaDate + '</span>'
+                             + '    </div>'
+                             + '    <div class="col state"><span class="badge-answer ' + statusClass + '">' + qna.qnaStatus + '</span></div>'
+                             + '</div>';
+                    $('.qnaList').append(html);
+                });
+                $("#submitQna").hide();
+                $("#showQnaList").hide();
+            },
+            error: function(xhr, status, error) {
+                console.error('QnA 목록 불러오기 요청 실패: ' + error);
+            }
+        });
+
+        }
+    });
+</script>
+<script>
+    $('#delete-account-btn').click(function() {
+   var token = localStorage.getItem('accessToken'); // LocalStorage에서 토큰 가져오기
+
+   if (confirm("정말 탈퇴하시겠습니까?")) {
+       $.ajax({
+           url: '/user/delete',
+           type: 'DELETE',
+           beforeSend: function(xhr) {
+               xhr.setRequestHeader('Authorization', 'Bearer ' + token); // 토큰을 헤더에 추가
+           },
+      success: function(result) {
+          // 회원 탈퇴가 성공적으로 처리되면 로컬 스토리지의 토큰 삭제
+          localStorage.removeItem('accessToken');
+          console.log('Token removed: ', !localStorage.getItem('accessToken')); // 토큰 삭제 확인
+          alert("회원 탈퇴가 성공적으로 처리되었습니다.");
+          window.location.href = "/"; // 홈페이지로 리다이렉트
+           },
+           error: function(xhr, status, error) {
+            console.error("회원 탈퇴 요청 실패:", xhr.status, xhr.responseText);
+            alert("회원 탈퇴 중 오류가 발생했습니다: " + xhr.statusText);
+        }
+       });
+   }
+ });
+
+</script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+
+</body>
+</html>

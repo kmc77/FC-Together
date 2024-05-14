@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>클럽 투게더</title>
+    <link href="/css/layout/club/clubpage.css" rel="stylesheet"/>
+</head>
+<body class="club-body">
+<header th:replace="layout/header"></header>
+<div class="club-container">
+    <div class="clubPage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle">
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>클럽 투게더</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <ul>
+                    <li><a href="#mayorGreeting" class="tab" data-target="#mayorGreeting">구청장 인사말</a></li>
+                    <li><a href="#teamPeople" class="tab" data-target="#teamPeople">축구팀 사람들</a></li>
+                </ul>
+                <div id="mayorGreeting" class="tab-content">
+                    <p>구청장님의 인사말을 여기에 표시합니다.</p>
+                </div>
+                <div id="teamPeople" class="tab-content">
+                    <p>축구팀 멤버들의 정보를 여기에 표시합니다.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="layout/footer"></footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function activateTab(hash) {
+            const target = document.querySelector(hash);
+            if (!target) return;
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            target.classList.add('active');
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.dataset.target === hash) {
+                    tab.classList.add('is-active');
+                } else {
+                    tab.classList.remove('is-active');
+                }
+            });
+        }
+
+        // 탭 버튼에 클릭 이벤트 리스너 추가
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetId = this.dataset.target;
+                window.location.hash = targetId;
+                activateTab(targetId);
+            });
+        });
+
+        // 해시 변경 감지
+        window.addEventListener('hashchange', () => {
+            activateTab(window.location.hash);
+        });
+
+        // 초기 탭 활성화
+        if (window.location.hash) {
+            activateTab(window.location.hash);
+        } else if (document.querySelectorAll('.tab').length > 0) {
+            const firstTab = document.querySelectorAll('.tab')[0].dataset.target;
+            window.location.hash = firstTab;
+            activateTab(firstTab);
+        }
+    });
+</script>
+</body>
+</html>

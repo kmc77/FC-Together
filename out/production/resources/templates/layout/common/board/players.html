@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head th:replace="layout/common/header :: load('Layout Sample Page')"></head>
+<body>
+<!-- Preloader -->
+<div th:replace="layout/common/preloader :: load()"></div>
+
+<!-- Navbar -->
+<nav th:replace="layout/common/navigator :: load()"></nav>
+
+<!-- Main Sidebar Container -->
+<aside th:replace="layout/common/sider :: load()"></aside>
+
+
+
+<!-- Content Wrapper. Contains page content -->
+<div id="app" class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">선수단 관리 페이지</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/layout/adminpage">Home</a></li>
+                        <li class="breadcrumb-item active">선수단 관리 페이지</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- 처리 결과 얼럿 -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <p th:text="${message}"></p>
+    </div>
+
+    <!-- Main content -->
+    <div class="adminTab">
+        <ul id="nav-1">
+            <li class="slide1"></li>
+            <li class="slide2"></li>
+            <li class="slide3"></li>
+            <li class="slide4"></li>
+            <li class="slide5"></li>
+            <li><a th:href="@{./players}" data-player-type="k5">K5 선수 목록</a></li>
+            <li><a href="#/" data-player-type="k7">K7 선수 목록</a></li>
+            <li><a href="#/" data-player-type="w1">Woman 선수 목록</a></li>
+            <li id="active-players"><a href="#/">현역 선수 목록</a></li>
+            <li id="register-player"><a href="#/">선수 등록</a></li>
+        </ul>
+        <script src="/dist/js/players_management.js"></script>
+    </div>
+
+    <!-- 선수 등록 -->
+    <div class="cnt_bbs" id="cnt_bbs" style="display: none;">
+        <h1 class="text-3xl py-4 border-b mb-10">선수 정보</h1>
+
+        <div id="viewContainer" class="container mx-auto py-6 px-4 textarea">
+            <form action="/admin/layout/updatePlayerInfo" method="post" enctype="multipart/form-data">
+                <div class="content-box">
+                    <div class="form-list view-list">
+                        <input type="hidden" name="no" value="">
+                        <div class="col">
+                            <dl class="flex-align-center">
+                                <dt id="PlayerNum-label">선수번호</dt>
+                                <dd id="PlayerNum-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="filePath-label">선수사진</dt>
+                                <dd id="filePath-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerName-label">이름</dt>
+                                <dd id="PlayerName-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerEnName-label">영문이름</dt>
+                                <dd id="PlayerEnName-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerCapYn-label">주장여부</dt>
+                                <dd id="PlayerCapYn-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerSubCapYn-label">부주장여부</dt>
+                                <dd id="PlayerSubCapYn-value"> </dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerPosition-label">포지션</dt>
+                                <dd id="PlayerPosition-value"> </dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerHeight-label">키</dt>
+                                <dd id="PlayerHeight-value"> </dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerWeight-label">체중</dt>
+                                <dd id="PlayerWeight-value"> </dd>
+                            </dl>
+                            <dl>
+                                <dt id="PlayerBirth-label">생년월일</dt>
+                                <dd id="PlayerBirth-value"> </dd>
+                            </dl>
+                        </div>
+                        <div class="submit-btn">
+                            <button type="submit" class="tb_btn blueM">선수 등록</button>
+                        </div>
+                        <div class="change_submit-btn">
+                            <button type="submit" class="tb_btn redM">정보 수정</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <link rel="stylesheet" href="/dist/css/video.css">
+    </div>
+    <!-- 선수 등록 Ena -->
+
+
+
+    <!-- 테이블 시작 -->
+    <div id="tableContainer" class="container mx-auto py-6 px-4">
+        <h1 class="text-3xl py-4 border-b mb-10">K5 선수 목록</h1>
+        <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex md:items-center">
+                    <div class="mr-4 flex-shrink-0">
+                        <svg class="h-8 w-8 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div id="selectionCount" class="text-teal-800 text-lg">0 rows are selected</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-4 flex justify-between items-center">
+            <!-- 테이블 검색 -->
+            <div class="flex-1 pr-4">
+                <div class="relative md:w-1/3">
+                    <input type="search" class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium" placeholder="Search...">
+                    <div class="absolute top-0 left-0 inline-flex items-center p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                            <circle cx="10" cy="10" r="7"></circle>
+                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- 테이블 검색 and -->
+            <div>
+                <div class="shadow rounded-lg flex">
+                    <div class="relative">
+                        <button id="displayButton" class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5"></path>
+                            </svg>
+                            <span class="hidden md:block">Display</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div id="columnSelection" class="z-40 absolute top-0 right-0 w-40 bg-white rounded-lg shadow-lg mt-12 -mr-1 block py-1 overflow-hidden" style="display: none;">
+                            <!-- Column checkboxes will be appended here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
+        <table id="playersTable" class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+            <thead>
+            <!-- 테이블 항목 -->
+            <tr class="text-left">
+                <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+                    <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                        <input id="selectAllCheckbox" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
+                    </label>
+                </th>
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerNum">플레이어 번호</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerName">플레이어 이름</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerEnName">플레이어 영문 이름</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerCapYn">주장 여부</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerSubCapYn">부주장 여부</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerPosition">플레이어 포지션</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerHeight">플레이어 키</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerWeight">플레이어 몸무게</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs k5PlayerBirth">플레이어 생년월일</th>
+
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs file">플레이어 프로필</th>
+            </tr>
+
+            <!-- 테이블 항목 end -->
+
+            </thead>
+        </table>
+    </div>
+    </div>
+    <!-- 테이블 and -->
+
+    <div class="buttonContainer" id="buttonContainer">
+        <div class="leftContainer">
+            <button class="deleteButton">삭제</button>
+            <button class="checkButton">보기</button>
+        </div>
+        <button class="writeButton">선수등록</button>
+        <link rel="stylesheet" href="/dist/css/qna.css">
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+<!-- Main footer -->
+<footer th:replace="layout/common/footer :: load()"></footer>
+
+<!-- common javascript -->
+<div th:include="layout/common/script :: load()"></div>
+
+<script th:inline="javascript">
+
+    document.addEventListener('DOMContentLoaded', function() {
+     document.querySelector('.change_submit-btn button').addEventListener('click', function(event) {
+         event.preventDefault(); // 폼 제출 방지
+
+         var isEditMode = this.getAttribute('data-edit-mode') === 'true';
+         var selectedPlayerType = localStorage.getItem('selectedPlayerType'); // 로컬 스토리지에서 selectedPlayerType 값을 가져옴
+
+         if (!isEditMode) {
+             document.querySelectorAll('.content-box .col dl').forEach(function(dl) {
+                 var dd = dl.querySelector('dd');
+                 var dt = dl.querySelector('dt');
+                 var value = dd.innerText.trim();
+
+                 if (dt.id !== "PlayerNum-label") {
+                     var input;
+
+                     if (dt.id === "filePath-label") {
+                         // "선수사진" 영역의 경우 'id'와 'name'을 'file'로 설정
+                         input = document.createElement('input');
+                         input.type = 'file';
+                         input.id = 'file'; // 'id'를 'file'로 설정
+                         input.name = 'file'; // 'name'을 'file'로 설정
+                         input.accept = 'image/*';
+                     } else {
+                         // 그 외의 경우, selectedPlayerType을 포함한 이름을 가진 텍스트 입력 필드 생성
+                         var inputName = `${selectedPlayerType}${dt.id.replace('-label', '')}`;
+                         input = document.createElement('input');
+                         input.type = 'text';
+                         input.value = value;
+                         input.name = inputName;
+                         input.style.width = '100%';
+                     }
+
+                     dd.innerHTML = '';
+                     dd.appendChild(input);
+                 } else {
+                     // "선수번호" 영역에는 숨겨진 입력 필드를 추가하지 않고 원래의 텍스트를 유지
+                     var hiddenInput = document.createElement('input');
+                     hiddenInput.type = 'hidden';
+                     hiddenInput.value = value; // 현재 "선수번호"의 값을 설정
+                     hiddenInput.name = `${selectedPlayerType}PlayerNum`; // "selectedPlayerTypePlayerNum" 형식의 name 설정
+                     dd.appendChild(hiddenInput);
+                 }
+             });
+
+             this.setAttribute('data-edit-mode', 'true'); // 버튼 상태를 수정 모드로 변경
+             this.textContent = '정보 제출'; // 버튼 텍스트 변경
+         } else {
+             var form = document.querySelector('form[action="/admin/layout/updatePlayerInfo"]');
+             var formData = new FormData(form);
+
+             formData.append('selectedPlayerType', selectedPlayerType);
+
+             // "선수번호" 값을 숨겨진 입력 필드에서 추출하여 FormData에 추가
+             var playerNumValue = document.getElementById('PlayerNum-value').querySelector('input').value;
+             var playerNum = parseInt(playerNumValue, 10);
+             formData.append('playerNum', playerNum);
+
+             fetch('/admin/layout/updatePlayerInfo', {
+                 method: 'POST',
+                 body: formData,
+             })
+             .then(response => response.json())
+             .then(data => {
+                 console.log('Success:', data);
+                 window.location.href = '/admin/layout/players';
+             })
+             .catch((error) => {
+                 console.error('Error:', error);
+             });
+         }
+     });
+ });
+
+
+
+
+
+           // "선수등록" 버튼 클릭 이벤트
+            $('.writeButton').click(function() {
+                // 'create' 상태 설정
+                $('form').data('state', 'create');
+
+                // 폼의 action 경로, method, 그리고 enctype을 선수 등록 URL, POST 방식, multipart/form-data로 변경
+                $('form').attr('action', '/admin/layout/insertPlayerInfo')
+                .attr('method', 'post')
+                .attr('enctype', 'multipart/form-data');
+
+                // "선수등록" 버튼 클릭 시 "정보 수정" 버튼을 숨김
+                $('.change_submit-btn').hide();
+
+                // 로컬 스토리지에서 selectedPlayerType 값 가져오기
+                var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+
+                // "선수 등록" 탭 클릭
+                $("#register-player a").trigger('click');
+
+                // "선수 정보" 영역의 제목을 로컬 스토리지에서 가져온 값으로 변경
+                $('#cnt_bbs h1').text(selectedPlayerType + ' 선수등록');
+
+
+                // DOM이 완전히 로드된 후 실행되도록 지연 실행 설정
+                setTimeout(function() {
+                    // 각 입력 필드를 추가하는 함수 호출
+                    addInputField('PlayerNum-value', '선수 번호', selectedPlayerType + 'PlayerNum');
+                    // 사진 업로드 필드 추가 함수 호출
+                    addFileUploadField('filePath-value', selectedPlayerType + 'filePath');
+                    addInputField('PlayerName-value', '이름', selectedPlayerType + 'PlayerName');
+                    addInputField('PlayerEnName-value', '영문 이름', selectedPlayerType + 'PlayerEnName');
+                    addInputField('PlayerCapYn-value', 'Y 또는 N', selectedPlayerType + 'PlayerCapYn');
+                    addInputField('PlayerSubCapYn-value', 'Y 또는 N', selectedPlayerType + 'PlayerSubCapYn');
+                    addInputField('PlayerPosition-value', 'DF, FW 형식', selectedPlayerType + 'PlayerPosition');
+                    addInputField('PlayerHeight-value', '180cm 형식', selectedPlayerType + 'PlayerHeight');
+                    addInputField('PlayerWeight-value', '80kg 형식', selectedPlayerType + 'PlayerWeight');
+                    addInputField('PlayerBirth-value', 'YYYY-MM-DD 형식', selectedPlayerType + 'PlayerBirth');
+                }, 100);
+            });
+
+            function addFileUploadField(containerId) {
+                // filePath-value 영역에 파일 업로드 필드만 추가
+                // 'id'와 'name'을 'file'로 설정
+                var fileUploadHTML = '<input type="file" id="file" name="file" accept="image/*">';
+                $('#' + containerId).html(fileUploadHTML);
+            }
+
+
+      // 입력 필드를 추가하는 함수에 힌트 텍스트 매개변수 추가
+        function addInputField(id, hint, name) {
+            var container = document.getElementById(id);
+            container.innerHTML = ''; // 기존 필드 제거
+            if (container) {
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.style.width = '50%';
+                input.placeholder = hint || '';
+                input.name = name || ''; // name 속성 추가
+
+                container.appendChild(input); // 입력 필드 추가
+
+                // "PlayerNum" 필드에만 유효성 검사 추가
+                if (name.includes('PlayerNum')) {
+                    // 유효성 검사 메시지를 표시할 작은 텍스트 요소 생성
+                    var helpText = document.createElement('small');
+                    helpText.classList.add('help-text');
+                    helpText.style.display = 'block';
+                    helpText.style.marginTop = '5px';
+
+                    container.appendChild(helpText); // 도움말 텍스트 추가
+
+                    // 입력 필드에 대한 실시간 유효성 검사 이벤트 리스너 추가
+                    $(input).on('input', function() {
+                        var playerNum = $(this).val().trim();
+                        var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                        var url = `/admin/layout/check_${selectedPlayerType}PlayerNumber?playerNum=${playerNum}`;
+
+                        if (playerNum) {
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function(response) {
+                                    if (response.isUsed) {
+                                        $(helpText).text('이미 사용 중인 번호입니다.').css('color', 'red');
+                                    } else {
+                                        $(helpText).text('사용 가능한 번호입니다.').css('color', 'green');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('유효성 검사 중 에러 발생:', error);
+                                }
+                            });
+                        } else {
+                            $(helpText).text(''); // 입력 필드가 비어있을 경우 도움말 텍스트 제거
+                        }
+                    });
+                }
+            }
+        }
+
+
+
+
+       $('.submit-btn button').click(function(e) {
+            e.preventDefault(); // 기본 폼 제출 동작 방지
+
+            // 모든 필드가 채워졌는지 확인
+            var isAllFilled = true;
+            var emptyFieldName = "";
+
+            // 필수 입력 필드 목록
+            var requiredFields = [
+                '#PlayerName-value input',
+                '#PlayerEnName-value input',
+                '#PlayerCapYn-value input',
+                '#PlayerSubCapYn-value input',
+                '#PlayerPosition-value input',
+                '#PlayerHeight-value input',
+                '#PlayerWeight-value input',
+                '#PlayerBirth-value input'
+            ];
+
+            // 필수 입력 필드 검증
+            requiredFields.forEach(function(fieldId) {
+                var input = $(fieldId);
+                if (isAllFilled && !input.val().trim()) {
+                    isAllFilled = false;
+                    emptyFieldName = input.attr('name'); // 빈 필드의 name을 가져옵니다.
+                }
+            });
+
+            if (!isAllFilled) {
+                alert(emptyFieldName + "를(을) 입력해주세요.");
+                return;
+            }
+
+            var formData = new FormData($('form[action="/admin/layout/insertPlayerInfo"]')[0]);
+            var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+            formData.append('selectedPlayerType', selectedPlayerType);
+
+            // 모든 입력 필드를 formData에 추가
+            $('form[action="/admin/layout/insertPlayerInfo"] input, form[action="/admin/layout/insertPlayerInfo"] select').each(function() {
+                if (this.type === 'file') {
+                    // 파일 필드의 경우, 파일 객체 자체를 추가
+                    if (this.files.length > 0) {
+                        formData.append(this.name, this.files[0]);
+                    }
+                } else {
+                    // 다른 모든 필드
+                    if (this.name && this.value) {
+                        formData.append(this.name, this.value);
+                    }
+                }
+            });
+
+            // AJAX 요청으로 서버에 데이터 전송
+            $.ajax({
+                url: $('form').attr('action'),
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(response) {
+                    console.log('서버 응답:', response);
+                    window.location.href = '/admin/layout/players'; // 성공 시 페이지 리다이렉션
+                },
+                error: function(xhr, status, error) {
+                    console.error('에러 발생:', error);
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+            // 페이지 최초 로딩 시 selectedPlayerType 값이 없는 경우 또는 k5가 아닌 경우에만 k5를 기본값으로 설정
+            $(document).ready(function() {
+                var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                if (!selectedPlayerType || selectedPlayerType !== 'k5') {
+                    localStorage.setItem('selectedPlayerType', 'k5');
+                }
+            });
+
+            $(document).ready(function() {
+                $(".alert-success").delay(3000).fadeOut('slow');
+            });
+
+
+           // JWT 토큰을 디코딩하는 함수
+           function parseJwt(token) {
+               var base64Url = token.split('.')[1];
+               var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+               var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                   return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+               }).join(''));
+
+               return JSON.parse(jsonPayload);
+           };
+
+           // JWT 토큰이 저장된 곳에서 가져오기
+           var token = localStorage.getItem('accessToken');
+
+           // 토큰에서 사용자 이름 추출
+           var username = parseJwt(token).sub;
+
+           // 사용자 이름이 정상적으로 추출되었는지 콘솔에 로깅
+           console.log("Username: ", username);
+
+           // HTML 페이지에 사용자 이름 노출
+           document.querySelector('.d-block').textContent = username + " 관리자";
+
+           $(document).ready(function() {
+               // 선택된 행들을 저장하는 배열
+               var selectedRows = [];
+               // 표시 버튼의 상태 (열림/닫힘)
+               var isOpen = false;
+
+               // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
+               var updateSelectedCount = function() {
+                   var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
+                   $('#selectedRowsBanner').css('top', navbarHeight);
+                   // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
+                   var checkedCount = $('.rowCheckbox:checked').length;
+                   $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
+                   if (checkedCount > 0) {
+                       $('#selectedRowsBanner').show();
+                   } else {
+                       $('#selectedRowsBanner').hide();
+                   }
+               };
+
+               // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
+               $('#displayButton').click(function() {
+                   isOpen = !isOpen;
+                   if (isOpen) {
+                       $('#columnSelection').show();
+                   } else {
+                       $('#columnSelection').hide();
+                   }
+               });
+
+               // 표시 버튼이나 컬럼 선택 영역 외의 곳을 클릭하면 컬럼 선택 영역을 숨김
+               $(document).click(function(event) {
+                   if (!$(event.target).closest('#displayButton').length && !$(event.target).closest('#columnSelection').length) {
+                       isOpen = false;
+                       $('#columnSelection').hide();
+                   }
+               });
+
+               // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
+               $('#columnSelection').on('click', '.column-checkbox', function() {
+                   var key = $(this).attr('name');
+                   $('.' + key).toggleClass('hidden');
+               });
+
+               // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
+               $("#selectAllCheckbox").click(function() {
+                   $(".rowCheckbox").prop('checked', $(this).prop('checked'));
+                   selectedRows = [];
+                   if ($(this).prop('checked')) {
+                       $('.rowCheckbox').each(function() {
+                           selectedRows.push(parseInt($(this).attr('name')));
+                       });
+                   }
+                   updateSelectedCount();
+               });
+
+               // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
+               $(document).on('click', '.rowCheckbox', function() {
+                   var id = parseInt($(this).attr('name'));
+                   if ($(this).prop('checked')) {
+                       selectedRows.push(id);
+                   } else {
+                       var index = selectedRows.indexOf(id);
+                       if (index > -1) {
+                           selectedRows.splice(index, 1);
+                       }
+                   }
+
+                   // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+                   if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
+                       $('#selectAllCheckbox').prop('checked', true);
+                   } else {
+                       $('#selectAllCheckbox').prop('checked', false);
+                   }
+                   updateSelectedCount();
+               });
+
+            // "삭제" 버튼 클릭 이벤트
+            $('.deleteButton').click(function() {
+                if (selectedRows.length === 0) {
+                    alert("삭제할 글을 선택해주세요.");
+                } else {
+                    var confirmMessage = selectedRows.length > 1 ? "선택한 글을 모두 삭제 하겠습니까?" : "글을 삭제 하겠습니까?";
+                    if (confirm(confirmMessage)) {
+                        var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                        var accessToken = localStorage.getItem('accessToken');
+                        var url = "/admin/layout/playerDelete";
+
+                        // 선택된 모든 행을 한 번의 요청으로 서버로 보냅니다.
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                playerNums: selectedRows, // 여기를 수정하여 배열 전체를 보냅니다.
+                                playerType: selectedPlayerType,
+                            },
+                            traditional: true,
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                            },
+                            success: function(data) {
+                                alert("선택한 글이 모두 삭제되었습니다.");
+                                location.reload();
+                            },
+                            error: function(error) {
+                                console.log(error);
+                                alert("글 삭제에 실패하였습니다.");
+                            }
+                        });
+                    }
+                }
+            });
+
+
+
+              $('.checkButton').click(function() {
+                if (selectedRows.length === 0) {
+                    alert("확인할 글을 선택해주세요.");
+                } else if (selectedRows.length > 1) {
+                    alert("확인할 글을 하나만 선택해주세요.");
+                } else {
+                    var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                    var playerNum = selectedRows[0];
+
+                    var accessToken = localStorage.getItem('accessToken');
+                    var url = `/admin/layout/${selectedPlayerType}PlayerView?playerNum=${playerNum}`;
+
+                    $.ajax({
+                        url: url,
+                        method: "GET",
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        },
+                        success: function(response) {
+                            var playerInfo = response.player;
+                            var files = response.files;
+
+                        // localStorage에서 selectedPlayerType 값을 가져옵니다.
+                            var selectedPlayerType = localStorage.getItem('selectedPlayerType');
+                            var playerTypePrefix = selectedPlayerType + 'Player'; // 예: "k5Player"
+
+
+                            // 선수 정보 갱신
+                            $('#PlayerNum-value').text(playerInfo[playerTypePrefix + 'Num']); // 선수번호
+                            $('#PlayerName-value').text(playerInfo[playerTypePrefix + 'Name']); // 이름
+                            $('#PlayerEnName-value').text(playerInfo[playerTypePrefix + 'EnName']); // 영문이름
+                            $('#PlayerCapYn-value').text(playerInfo[playerTypePrefix + 'CapYn'] === "Y" ? "C" : "X"); // 주장여부
+                            $('#PlayerSubCapYn-value').text(playerInfo[playerTypePrefix + 'SubCapYn'] === "Y" ? "SC" : "X"); // 부주장여부
+                            $('#PlayerPosition-value').text(playerInfo[playerTypePrefix + 'Position']); // 포지션
+                            $('#PlayerHeight-value').text(playerInfo[playerTypePrefix + 'Height']); // 키
+                            $('#PlayerWeight-value').text(playerInfo[playerTypePrefix + 'Weight']); // 체중
+                            $('#PlayerBirth-value').text(playerInfo[playerTypePrefix + 'Birth']); // 생년월일
+
+
+                            // 파일 처리
+                            if (files && files.length > 0) {
+                                var profileImgUrl = files[0].filePath;
+                                $('#filePath-value').html(`<img src="${profileImgUrl}" alt="선수 프로필 사진" style="max-width: 100%; height: auto;">`);
+                            } else {
+                                $('#filePath-value').html('사진 없음');
+                            }
+
+                            // "보기" 버튼 클릭 시 "정보 업데이트" 버튼을 숨김
+                            $('.submit-btn').hide();
+
+                            // "선수 등록" 탭의 이름을 "선수 정보"로 변경합니다.
+                            $("#register-player a").text("선수 정보");
+
+                            // "선수 등록" 탭 클릭
+                            $("#register-player a").trigger('click');
+
+                            // "선수 정보" 영역의 제목을 로컬 스토리지에서 가져온 값으로 변경
+                            $('#cnt_bbs h1').text(selectedPlayerType + ' 선수정보');
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+
+
+
+
+
+               var playerKeys = {
+                    'k5Player': ['k5PlayerNum', 'k5PlayerName', 'k5PlayerEnName', 'k5PlayerCapYn', 'k5PlayerSubCapYn', 'k5PlayerPosition', 'k5PlayerHeight', 'k5PlayerWeight', 'k5PlayerBirth', 'file'],
+                    'k7Player': ['k7PlayerNum', 'k7PlayerName', 'k7PlayerEnName', 'k7PlayerCapYn', 'k7PlayerSubCapYn', 'k7PlayerPosition', 'k7PlayerHeight', 'k7PlayerWeight', 'k7PlayerBirth', 'file'],
+                    'w1Player': ['w1PlayerNum', 'w1PlayerName', 'w1PlayerEnName', 'w1PlayerCapYn', 'w1PlayerSubCapYn', 'w1PlayerPosition', 'w1PlayerHeight', 'w1PlayerWeight', 'w1PlayerBirth', 'file']
+                };
+
+
+               // 각 플레이어 타입에 대해 컬럼 선택 영역에 체크박스와 라벨 추가
+               $.each(playerKeys, function(playerType, keys) {
+                   $.each(keys, function(index, key) {
+                       var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+                       var div = $('<div/>').addClass('text-teal-600 mr-3');
+                       var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+                       var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+                       div.append(checkbox);
+                       label.append(div, divText);
+                       $('#columnSelection').append(label);
+                   });
+               });
+
+              function setColumnTitles(playerType) {
+                   var thead = $('<thead/>');
+                   var tr = $('<tr class="text-left"/>'); // text-left 클래스 추가
+
+                   // 첫 번째 <th> 요소 추가 - 전체 선택 체크박스
+                   var firstTh = $("<th/>").addClass("py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100");
+                   var label = $("<label/>").addClass("text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer");
+                   var input = $("<input/>").attr({
+                       type: "checkbox",
+                       id: "selectAllCheckbox",
+                       class: "form-checkbox focus:outline-none focus:shadow-outline"
+                   });
+
+                   label.append(input);
+                   firstTh.append(label);
+                   tr.append(firstTh);
+
+                   // 나머지 <th> 요소들 동적 추가
+                   $.each(playerKeys[playerType], function(i, key) {
+                       var dynamicClass = 'bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs ' + key;
+                       tr.append("<th class='" + dynamicClass + "'>" + key + "</th>");
+                   });
+                   thead.append(tr);
+                   $('table').append(thead);
+               }
+
+               function addPlayersToTable(playerType, playerKeys) {
+                var accessToken = localStorage.getItem('accessToken');
+
+                $.ajax({
+                    url: "/admin/layout/get_" + playerType + "PlayerInfo",
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + accessToken
+                    },
+                    success: function(data) {
+                        var players = data;
+                        $.each(players, function(i, playerData) {
+                            var player = playerData.player;
+                            var files = playerData.files;
+                            var tr = $('<tr/>');
+
+                            // 선수 번호로 체크박스 생성
+                            tr.append(`<td class='border-dashed border-t border-gray-200 px-3'>
+                                <label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'>
+                                    <input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='${player[playerKeys[0]]}' data-playerNum='${player[playerKeys[0]]}'></label></td>`);
+
+                            // 플레이어 데이터 추가
+                            $.each(playerKeys, function(j, key) {
+                                var value = player[key];
+                                if (value !== undefined && key !== 'file') { // 'file' 키는 프로필 사진 처리를 위해 별도 처리
+                                    tr.append(`<td class='border-dashed border-t border-gray-200 ${key}'>
+                                        <span class='text-gray-700 px-6 py-3 flex items-center'>${value}</span></td>`);
+                                }
+                            });
+
+                            // 프로필 사진 처리
+                            if (files.length > 0) {
+                                var fileUrl = files[0].filePath; // 첫 번째 파일이 프로필 사진이라고 가정
+                                tr.append(`<td class='border-dashed border-t border-gray-200 file'>
+                                    <img src='${fileUrl}' alt='Profile Picture' style='height: 50px;'></td>`);
+                            } else {
+                                tr.append("<td class='border-dashed border-t border-gray-200 file'>사진 없음</td>");
+                            }
+
+                            $('table#playersTable').append(tr);
+                        });
+                    }
+                });
+            }
+
+
+              $('li>a[data-player-type]').on('click', function(e) {
+                e.preventDefault();
+                var playerType = $(this).attr('data-player-type');
+
+                console.log("playerType 값:", playerType);
+
+                // 로컬 스토리지에 playerType 값 저장
+                localStorage.setItem('selectedPlayerType', playerType);
+
+                // 테이블을 비우고 새로운 데이터로 채웁니다.
+                $('#playersTable').empty();
+                // 컬럼 타이틀 설정
+                setColumnTitles(playerType + 'Player');
+                // 테이블에 선수 추가
+                addPlayersToTable(playerType, playerKeys[playerType + 'Player']);
+
+                // 체크박스 상태 리셋
+                $('#selectAllCheckbox').prop('checked', false); // "모두 선택" 체크박스를 초기화
+                selectedRows = []; // 선택된 행 배열 비우기
+                updateSelectedCount(); // 선택된 행의 수 업데이트
+
+                // 선수 목록 제목 업데이트
+                var playerTypeName = ''; // 선수 타입 이름 초기화
+                if(playerType === 'k5') {
+                    playerTypeName = 'k5 선수 목록';
+                } else if(playerType === 'k7') {
+                    playerTypeName = 'k7 선수 목록';
+                } else if(playerType === 'w1') {
+                    playerTypeName = 'Woman 선수 목록';
+                }
+
+                // h1 태그의 텍스트를 업데이트합니다.
+                $('#tableContainer h1').text(playerTypeName);
+            });
+
+
+
+
+           // 페이지 로딩 시 기본적으로 K5 플레이어 정보를 테이블에 추가
+           addPlayersToTable("k5", playerKeys["k5Player"]);
+
+
+
+           });
+
+
+
+</script>
+
+
+</body>
+</html>

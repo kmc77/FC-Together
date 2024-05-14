@@ -1,0 +1,327 @@
+/**
+ * @license Copyright (c) 2014-2024, CKSource Holding sp. z o.o. All rights reserved.
+ * This file is licensed under the terms of the MIT License (see LICENSE.md).
+ */
+
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
+/* 등록버튼.css */
+
+
+.ck-editor {
+     height: 100%;
+     width: 80%;
+     margin: 0 auto auto auto;  /* 위 여백을 0으로 설정 */
+     padding-top: 1.5rem;
+     padding-bottom: 1.5rem;
+     display: block;
+     font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+     overflow: hidden;
+     /* background: #eaf6ff; */
+     /* display: flex; */
+     align-content: stretch;
+     justify-content: space-around;
+}
+
+
+
+.ck-editor .btn {
+    border: none;
+    position: relative;
+    background: none;
+    padding: 28px 90px;
+    display: inline-block;
+    text-transform: uppercase;
+    margin: 10px;
+    color: inherit;
+    letter-spacing: 2px;
+    font-size: 0.9em;
+    outline: none;
+    transition: all 0.4s;
+    cursor: pointer;
+}
+
+.ck-editor .btn:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.4s;
+}
+
+.ck-editor .btn-perspective {
+    perspective: 800px;
+    display: inline-block;
+}
+
+.ck-editor .btn-3d {
+    color: #fff;
+    display: block;
+    outline: 1px solid transparent;
+    transform-style: preserve-3d;
+}
+
+
+/* Button Two */
+.ck-editor .btn-two {
+    background-color: #3498DB;
+}
+.ck-editor .btn-two:after {
+    width: 100%;
+    height: 40%;
+    left: 0;
+    top: 100%;
+    background: #2980D9;
+    transform-origin: 0% 0%;
+    transform: rotateX(-90deg);
+}
+.ck-editor .btn-two:hover {
+    transform: rotateX(35deg);
+}
+
+/* Button Three */
+.btn-three {
+    background-color: #1ABC9C;
+}
+.btn-three:after {
+    width: 20%;
+    height: 100%;
+    left: -20%;
+    top: 0;
+    background: #16A085;
+    transform-origin:100% 0%;
+    transform: rotateY(-90deg);
+}
+.btn-three:hover {
+    transform: rotateY(25deg);
+}
+
+/* Button Four */
+.btn-four {
+    background-color: #9B59B6;
+}
+.btn-four:after {
+    width: 20%;
+    height: 100%;
+    left: 100%;
+    top: 0;
+    background: #8E44AD;
+    transform-origin: 0% 0%;
+    transform: rotateY(90deg);
+}
+.btn-four:hover {
+    transform: rotateY(-25deg);
+}
+/* 등록버튼.css and */
+
+.editor__editable,
+/* Classic build. */
+main .ck-editor[role='application'] .ck.ck-content,
+/* Decoupled document build. */
+.ck.editor__editable[role='textbox'],
+.ck.ck-editor__editable[role='textbox'],
+/* Inline & Balloon build. */
+.ck.editor[role='textbox'] {
+	width: 100%;
+	background: #fff;
+	font-size: 1em;
+	line-height: 1.6em;
+	min-height: var(--ck-sample-editor-min-height);
+	padding: 1.5em 2em;
+}
+
+.ck.ck-editor__editable {
+	background: #fff;
+	border: 1px solid hsl(0, 0%, 70%);
+	width: 100%;
+}
+
+/* Because of sidebar `position: relative`, Edge is overriding the outline of a focused editor. */
+.ck.ck-editor__editable {
+	position: relative;
+	z-index: var(--ck-sample-editor-z-index);
+}
+
+.editor-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	position: relative;
+	width: 100%;
+	justify-content: center;
+}
+
+.editor-container--with-sidebar > .ck.ck-editor {
+	width: calc( 100% - var(--ck-sample-sidebar-width) );
+}
+
+.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+    border-radius: var(--ck-border-radius);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.editor__editable, main .ck-editor[role='application'] .ck.ck-content, .ck.editor__editable[role='textbox'], .ck.ck-editor__editable[role='textbox'], .ck.editor[role='textbox'] {
+    width: 100%;
+    background: #fff;
+    font-size: 1em;
+    line-height: 1.6em;
+    min-height: var(--ck-sample-editor-min-height);
+    padding: 1.5em 2em;
+}
+
+.ck.ck-editor__editable {
+    position: relative;
+    z-index: var(--ck-sample-editor-z-index);
+}
+
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border-color: var(--ck-color-base-border);
+}
+
+/*================== qnaView ==================*/
+.textarea.qna-wrap {
+    height: 280px;
+    padding: 20px 10px;
+    overflow: auto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #777;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+.textarea.qna-wrap.height110 {
+    height: 110px;
+}
+
+/* 서브페이지 공통 */
+.contents > .layout-inner {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 50px;
+}
+.cont-tit {
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.pagination {
+    margin-top: 30px;
+}
+
+.qna-wrap .cont-top-area,
+.privacy-wrap .cont-top-area {
+    padding-bottom: 24px;
+}
+
+.privacy-wrap .cont-top-area .cont-tit {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.qna-wrap .cont-top-area,
+.privacy-wrap .cont-top-area {
+    padding-top: 50px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #121212;
+    box-sizing: border-box;
+}
+.qna-wrap .cont-top-area::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.qna-wrap .cont-top-area + .list-basic {
+    border-top: none;
+}
+.qna-wrap .cont-top-area .cont-tit,
+.privacy-wrap .cont-top-area .cont-tit {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+.qna-wrap .cont-top-area .cont-txt {
+    margin-top: 10px;
+    line-height: 1.5;
+    color: #888;
+    font-size: 13px;
+}
+.qna-wrap .cont-top-area .cont-txt.notice-txt {
+    padding: 4px 10px 2px 30px;
+    color: #121212;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+.qna-wrap .nodata-area {
+    padding: 130px 10px;
+    font-size: 17px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    box-sizing: border-box;
+}
+.qna-wrap .list-item .col.category {
+    margin-top: 0;
+}
+.qna-wrap .account-info .email .txt {
+    margin-left: 5px;
+    font-size: 17px;
+    letter-spacing: 0;
+}
+.qna-wrap [class^="icon-mylogin-"] {
+    vertical-align: -7px;
+}
+
+.qna-wrap .cont-top-area .cont-txt.notice-txt {
+    float: right;
+    margin-top: 20px;
+    font-size: 15px;
+}
+.qna-wrap.view-wrap .cont-top-area .cont-tit {
+    margin-top: 0;
+}
+.qna-wrap.view-wrap .form-list dt {
+    padding-top: 0;
+}
+.qna-wrap.view-wrap .form-list.view-list .col {
+    display: flex;
+}
+.qna-wrap.view-wrap .form-list.view-list .col dl {
+    width: 50%;
+}
+.qna-wrap.view-wrap .file-list {
+    margin-top: 0;
+}
+
+.form-list dl {
+    display: flex;
+    padding: 15px 30px;
+}
+
+.form-list dl {
+    border-bottom: 1px solid #eee;
+}
+.form-list dt {
+    width: 110px;
+    font-size: 15px;
+}
+.form-list dd {
+    width: calc(100% - 110px);
+}
+
+.qna-cont {
+    margin-top: 10px;
+    padding: 20px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow: auto; /* 스크롤이 필요한 경우에만 스크롤바가 보이게 설정 */
+    /* overflow: scroll; 스크롤바를 항상 보이게 설정 */
+}
+
+/*================== qnaView And ==================*/

@@ -231,17 +231,18 @@
     // 폼 유효성 검사
     function validateForm(formData) {
         for (let [key, value] of formData.entries()) {
-            // 'matchScore'와 'matchRelativeScore' 필드는 유효성 검사에서 제외
-            if (key === 'matchScore' || key === 'matchRelativeScore') {
+            // 'matchScore', 'matchRelativeScore', 그리고 'id' 필드는 유효성 검사에서 제외
+            if (key === 'matchScore' || key === 'matchRelativeScore' || key === 'id') {
                 continue;
             }
             if (!value.trim()) {
-                alert(key + ' 필드는 필수입니다.');
+                alert(key + ' 필드는 필수입니다.');  // 필수 필드임을 알림
                 return false;
             }
         }
-        return true;
+        return true;  // 모든 필수 필드가 채워져 있으면 true 반환
     }
+
 
 
     // POST 요청을 보내는 함수
@@ -415,7 +416,7 @@
         postData('/admin/layout/updateK5Match', jsonObject, accessToken)
             .then(data => {
                 console.log('매치 정보가 수정되었습니다:', data);
-                alert('매치가 성공적으로 수정되었습니다.');
+                alert(data.message);
                 location.reload(); // 페이지 새로 고침
             })
             .catch(error => console.error('매치 수정 중 오류 발생:', error));
@@ -447,20 +448,18 @@
                 },
                 body: JSON.stringify({ id: matchId }) // 요청 본문에 매치 ID를 포함합니다.
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`매치 삭제 실패: 서버 상태코드 ${response.status}`); // 200이 아닌 응답을 처리합니다.
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('매치가 성공적으로 삭제되었습니다:', data);
-                alert('매치가 성공적으로 삭제되었습니다.'); // 사용자에게 성공을 알립니다.
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                console.log('매치가 성공적으로 삭제되었습니다:', data.message);
+                alert(data.message); // 사용자에게 결과를 알립니다.
                 location.reload(); // 페이지 새로 고침
             })
             .catch(error => {
                 console.error('매치 삭제 중 오류가 발생했습니다:', error);
-                alert('매치를 삭제하는데 실패했습니다. 오류: ' + error.message); // 사용자에게 오류를 알립니다.
+                alert('오류: ' + error.message); // 사용자에게 오류를 알립니다.
             });
         }
     }

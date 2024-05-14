@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userMapper))
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/**", "/api/v1/mail/send").permitAll()  // 메일 발송 API 경로 허가
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/api/v1/member/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/v1/manager/**")

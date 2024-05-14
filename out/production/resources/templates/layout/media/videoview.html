@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>video</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/media/videoview.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="newsWrapper newsContainer">
+    <div class="mediaRoomContainer">
+        <div class="mediaRoomContents">
+            <div class="videoInformation">
+                <div class="titleBox">
+                    <p th:text="${clubVideo.cvTitle}">비디오 제목</p>
+                    <div>
+                        <div class="titleInfo">
+                            <p>작성자</p>
+                            <p th:text="${clubVideo.username}">Username</p>
+                        </div>
+                        <div class="line"></div>
+                        <div class="titleInfo">
+                            <p>작성일</p>
+                            <p th:text="${clubVideo.cvDate}">Date</p>
+                        </div>
+                        <div class="line"></div>
+                        <div class="titleInfo">
+                            <p>조회수</p>
+                            <p th:text="${clubVideo.cvHits}">Hits</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cvContent">
+                <div class="content">
+                    <iframe id="videoPlayer" width="1000" height="720" th:src="${clubVideo.mvTheOriginUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <p th:utext="${clubVideo.cvContent}">Video Content</p>
+                </div>
+                <div class="previous-post post-navigation" th:if="${prevClubVideo != null}">
+                    <div>
+                        <p>이전글</p>
+                        <div class="arrow up"></div>
+                        <a class="title" th:href="@{/media/videoView(no=${prevClubVideo?.cvIdx})}" th:text="${prevClubVideo?.cvTitle}">이전글 제목</a>
+                    </div>
+                </div>
+                <div class="formBtns">
+                    <a id="default_butt" href="/media/video" class="btn btn-default">목록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+</body>
+</html>

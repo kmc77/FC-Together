@@ -174,45 +174,58 @@
      }
 
      function addPlayersToTable(players, playerType) {
-         var orderedPositions = ['GK', 'DF', 'MF', 'FW'];
-         $('.tab__content').empty();
-         orderedPositions.forEach(function(position) {
-             var playersInSection = players.filter(function(player) {
-                 return player[playerType + 'PlayerPosition'] === position;
-             });
-             if (playersInSection.length > 0) {
-                 var sectionHtml = `<section class="team-member section">
-                                      <h3 class="title title--underline">${position}</h3>
-                                      <ul class="team-member__list">`;
-                 playersInSection.forEach(function(player) {
-                     var playerHtml = `<li class="team-member__item">
-                                        <a class="team-member__link">
-                                            <div class="team-member__img-holder">
-                                                <img class="team-member__img lozad"
-                                                     src="${player.filePath}"
-                                                     alt="${player[playerType + 'PlayerEnName']}"
-                                                     data-loaded="true">
-                                            </div>
-                                            <div class="team-member__data">
-                                                <div class="team-member__data-unit">
-                                                    <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
-                                                    <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
-                                                </div>
-                                                <div class="team-member__data-unit">
-                                                    <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
-                                                    <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
-                                                    <p class="team-member__text">${player[playerType + 'PlayerBirth']}<br>${player[playerType + 'PlayerHeight']} / ${player[playerType + 'PlayerWeight']}</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                      </li>`;
-                     sectionHtml += playerHtml;
-                 });
-                 sectionHtml += `</ul></section>`;
-                 $('.tab__content').append(sectionHtml);
-             }
-         });
-     }
+        var orderedPositions = ['GK', 'DF', 'MF', 'FW'];
+        $('.tab__content').empty();
+        orderedPositions.forEach(function(position) {
+            var playersInSection = players.filter(function(player) {
+                return player[playerType + 'PlayerPosition'] === position;
+            });
+            if (playersInSection.length > 0) {
+                var sectionHtml = `<section class="team-member section">
+                                     <h3 class="title title--underline">${position}</h3>
+                                     <ul class="team-member__list">`;
+                playersInSection.forEach(function(player) {
+                    var playerBirth = player[playerType + 'PlayerBirth'] ? player[playerType + 'PlayerBirth'] : '';
+                    var playerHeight = player[playerType + 'PlayerHeight'] ? player[playerType + 'PlayerHeight'] : '';
+                    var playerWeight = player[playerType + 'PlayerWeight'] ? player[playerType + 'PlayerWeight'] : '';
+
+                    // If either playerHeight or playerWeight is missing, don't add the '/'
+                    var heightWeightText = playerHeight;
+                    if (playerHeight && playerWeight) {
+                        heightWeightText += ' / ' + playerWeight;
+                    } else if (playerWeight) {
+                        heightWeightText = playerWeight;
+                    }
+
+                    var playerHtml = `<li class="team-member__item">
+                                       <a class="team-member__link">
+                                           <div class="team-member__img-holder">
+                                               <img class="team-member__img lozad"
+                                                    src="${player.filePath}"
+                                                    alt="${player[playerType + 'PlayerEnName']}"
+                                                    data-loaded="true">
+                                           </div>
+                                           <div class="team-member__data">
+                                               <div class="team-member__data-unit">
+                                                   <p class="team-member__number">${player[playerType + 'PlayerNum']}</p>
+                                                   <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
+                                               </div>
+                                               <div class="team-member__data-unit">
+                                                   <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
+                                                   <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
+                                                   <p class="team-member__text">${playerBirth}<br>${heightWeightText}</p>
+                                               </div>
+                                           </div>
+                                       </a>
+                                     </li>`;
+                    sectionHtml += playerHtml;
+                });
+                sectionHtml += `</ul></section>`;
+                $('.tab__content').append(sectionHtml);
+            }
+        });
+    }
+
 
      function loadCoachingStaffData() {
          if (!cachedCoachingStaffData) { // 캐시된 데이터가 없을 경우에만 요청

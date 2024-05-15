@@ -530,94 +530,53 @@ a {
 
 /* profile card */
 
- .team-member:nth-child(n + 2) {
-   padding-top: 0;
- }
+.team-member__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 각 행에 4개의 항목을 표시 */
+  gap: 16px; /* 항목 간의 간격을 유지 */
+  margin-top: 30px;
+}
 
- .team-member__list {
-   display: -webkit-box;
-   display: -ms-flexbox;
-   display: flex;
-   -ms-flex-wrap: wrap;
-   flex-wrap: wrap;
-   margin-top: 30px;
- }
+@media (max-width: 1024px) {
+  .team-member__list {
+    grid-template-columns: repeat(2, 1fr); /* 화면이 작아질 경우 2개의 항목을 표시 */
+  }
+}
 
- @media (min-width: 737px) {
-   .team-member__list {
+@media (max-width: 768px) {
+  .team-member__list {
+    grid-template-columns: 1fr; /* 화면이 더 작아질 경우 1개의 항목을 표시 */
+  }
+}
 
-     margin-top: 60px;
-   }
- }
+@media (min-width: 737px) {
+  .team-member__list {
+    margin-top: 60px;
+  }
+}
 
- .team-member__list--staff .team-member__data {
-   padding-left: 10px;
- }
+.team-member__list--staff .team-member__data {
+  padding-left: 10px;
+}
 
- @media (min-width: 1024px) {
-   .team-member__list--staff .team-member__data {
-     padding-left: 20px;
-   }
- }
+@media (min-width: 1024px) {
+  .team-member__list--staff .team-member__data {
+    padding-left: 20px;
+  }
+}
 
- .team-member__list--staff .team-member__data-unit:nth-child(1) {
-   text-align: left;
-   -ms-flex-preferred-size: 100%;
-       flex-basis: 100%;
-   max-width: 100%;
-   font-family: 'D-DIN', sans-serif;
- }
-
-
-
- .team-member__item {
-   background-color: #fff;
-   -ms-flex-preferred-size: calc(50% - 8px);
-   flex-basis: calc(50% - 8px);
-   max-width: calc(50% - 8px);
-   margin-left: 16px;
-   border-bottom: 2px solid #ff9800;
-   position: relative;
-   z-index: 1;
- }
-
- @media (min-width: 1px) and (max-width: 736.98px) {
-   .team-member__item:nth-child(odd) {
-     margin-left: 0;
-   }
-   .team-member__item:nth-child(n + 3) {
-     margin-top: 15px;
-   }
- }
-
- @media (min-width: 737px) {
-   .team-member__item {
-     -ms-flex-preferred-size: calc(25% - 12px);
-     flex-basis: calc(25% - 12px);
-     max-width: calc(25% - 12px);
-     margin-left: 15px;
-   }
-   .team-member__item:nth-child(4n + 1) {
-     margin-left: 0;
-   }
-   .team-member__item:nth-child(n + 5) {
-     margin-top: 16px;
-   }
- }
-
- @media (min-width: 1024px) {
-   .team-member__item {
-     -ms-flex-preferred-size: calc(25% - 18px);
-     flex-basis: calc(25% - 18px);
-     max-width: calc(25% - 18px);
-     margin-left: 23px;
-   }
- }
-
-
+.team-member__list--staff .team-member__data-unit:nth-child(1) {
+  text-align: left;
+  flex-basis: 100%;
+  max-width: 100%;
+  font-family: 'D-DIN', sans-serif;
+}
 
 .team-member__item {
+  background-color: #fff;
+  border-bottom: 2px solid #ff9800;
   position: relative;
+  z-index: 1;
   overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
 }
 
@@ -633,6 +592,7 @@ a {
   transform: scale(1.1); /* 호버 시 이미지를 조금 더 확대 */
   opacity: 1; /* 호버 시 투명도를 완전하게 만들어 선명도 증가 */
 }
+
 
 
 

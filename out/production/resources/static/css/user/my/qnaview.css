@@ -1,0 +1,79 @@
+    /* 서브페이지 공통 */
+    .contents > .layout-inner {padding-left:0;padding-right:0;padding-bottom:50px}
+    .cont-tit {margin-bottom:30px; font-size:32px}
+    .cont-tit.txt-en {font-family:"Malgun Gothic","맑은 고딕",sans-serif}
+    .pagination {margin-top:30px}
+
+
+  .qna-wrap .cont-top-area, .privacy-wrap .cont-top-area {padding-bottom:24px;}
+
+.privacy-wrap .cont-top-area .cont-tit {display:inline-block;margin-top:8px;margin-bottom:0;vertical-align:middle}
+
+
+.qna-wrap .cont-top-area, .privacy-wrap .cont-top-area {padding-top:50px;padding-bottom:15px;border-bottom:2px solid #121212;box-sizing:border-box;}
+.qna-wrap .cont-top-area::after {content:''; display:block; clear:both}
+.qna-wrap .cont-top-area + .list-basic {border-top:none}
+.qna-wrap .cont-top-area .cont-tit,
+.privacy-wrap .cont-top-area .cont-tit {display:inline-block;margin-top:8px;margin-bottom:0;vertical-align:middle}
+.qna-wrap .cont-top-area .cont-txt {margin-top:10px; line-height:1.5; color:#888; font-size:13px}
+.qna-wrap .cont-top-area .cont-txt.notice-txt {padding:4px 10px 2px 30px; color:#121212; font-size:15px;   box-sizing:border-box}
+.qna-wrap .nodata-area {padding:130px 10px; font-size:17px; border-bottom:1px solid #eee; text-align:center; box-sizing:border-box}
+.qna-wrap .list-item .col.category {margin-top:0}
+.qna-wrap .account-info .email .txt {margin-left:5px; font-size:17px; letter-spacing:0}
+.qna-wrap [class^="icon-mylogin-"] {vertical-align:-7px}
+
+
+.qna-wrap .cont-top-area .cont-txt.notice-txt {float:right;margin-top:20px;font-size:15px}
+    .qna-wrap.view-wrap .cont-top-area .cont-tit {margin-top:0;}
+    .qna-wrap.view-wrap .form-list dt {padding-top:0}
+    .qna-wrap.view-wrap .form-list.view-list .col {display:flex}
+    .qna-wrap.view-wrap .form-list.view-list .col dl {width:50%}
+    .qna-wrap.view-wrap .file-list {margin-top:0}
+
+ .form-list dl {display:flex;padding:15px 30px;}
+
+
+ .form-list dl {border-bottom:1px solid #eee;}
+ .form-list dt {width:110px;padding-top:11px;font-size:15px;}
+ .form-list dd {width:calc(100% - 110px);}
+
+ .qna-cont {min-height:200px;margin-top:10px;padding:20px 15px;border-radius:10px;border:1px solid #ddd;box-sizing:border-box;word-break:break-word}
+
+  /* 버튼 */
+.btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #ffc954
+}
+
+.formBtns {
+    margin-top: 48px;
+    text-align: center;
+
+}
+
+.btn.btn-default {
+    min-width: 173px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* 서브페이지 */
+.contents > .layout-inner {max-width:1040px;padding:0 15px 30px;box-sizing:border-box}
+.cont-tit {display:block; margin-bottom:20px;}
+
+/* common */
+img {max-width:100%}
+.layout-inner, .foot-inner {max-width:1180px}
+.layout-inner {margin:0 auto;}
+.foot-inner {line-height:1.45}
+.btn-top-wrap .btn-position {right:-620px}
+.pc-footer {display:none}
+.mobile-footer {display:block}

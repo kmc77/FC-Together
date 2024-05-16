@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>경기 일정 / 결과</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/match/matchpage.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- CSS styles -->
+    <style>
+        /* CSS for tabs */
+        .tab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 12px;
+            transition: 0.3s;
+            display: inline-block;
+            margin-bottom: -1px;
+            width: calc(33.33% - 1px);
+        }
+
+        .tab button:hover {
+            background-color: #8bc34a;
+        }
+
+        .tab button.active {
+            background-color: #8bc34a;
+        }
+
+        .subtab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 300px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: none;
+            background-color: inherit;
+        }
+
+        .subtab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 12px;
+            transition: 0.3s;
+            display: inline-block;
+            margin-bottom: -1px;
+            width: calc(50% - 1px);
+        }
+
+        .subtab button:hover {
+            background-color: #8bc34a;
+        }
+
+        .subtab button.active {
+            background-color: #8bc34a;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        table {
+            margin: 0 auto;
+        }
+
+        /* Pagination styles */
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="matchAllArea">
+
+    <div class="tab-container">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'K5')" id="defaultOpen">K5</button>
+            <button class="tablinks" onclick="openTab(event, 'K7')">K7</button>
+            <button class="tablinks" onclick="openTab(event, 'W1')">W1</button>
+        </div>
+    </div>
+
+    <div id="K5" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K5')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_K5')">경기 결과</button>
+        </div>
+        <div id="schedule_K5" class="subtabcontent">
+            <table id="K5ScheduleTable">
+                <tr th:each="match : ${K5Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="K5ScheduleLoadMore">더보기</button>
+            </div>
+        </div>
+        <div id="results_K5" class="subtabcontent">
+            <table id="K5ResultTable">
+                <tr th:each="match : ${K5Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="K5ResultLoadMore">더보기</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="K7" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_K7')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_K7')">경기 결과</button>
+        </div>
+        <div id="schedule_K7" class="subtabcontent">
+            <table id="K7ScheduleTable">
+                <tr th:each="match : ${K7Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="K7ScheduleLoadMore">더보기</button>
+            </div>
+        </div>
+        <div id="results_K7" class="subtabcontent">
+            <table id="K7ResultTable">
+                <tr th:each="match : ${K7Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="K7ResultLoadMore">더보기</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="W1" class="tabcontent">
+        <div class="subtab">
+            <button class="subtablinks active" onclick="openSubTab(event, 'schedule_W1')">경기 일정</button>
+            <button class="subtablinks" onclick="openSubTab(event, 'results_W1')">경기 결과</button>
+        </div>
+        <div id="schedule_W1" class="subtabcontent">
+            <table id="W1ScheduleTable">
+                <tr th:each="match : ${W1Schedulelist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="W1ScheduleLoadMore">더보기</button>
+            </div>
+        </div>
+        <div id="results_W1" class="subtabcontent">
+            <table id="W1ResultTable">
+                <tr th:each="match : ${W1Resultlist}">
+                    <td th:text="${match.matchDate}"></td>
+                </tr>
+            </table>
+            <div class="pagination">
+                <button id="W1ResultLoadMore">더보기</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    // JavaScript for tabs
+       function openTab(evt, tabName) {
+           var i, tabcontent, tablinks;
+           tabcontent = document.getElementsByClassName("tabcontent");
+           for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+           }
+           tablinks = document.getElementsByClassName("tablinks");
+           for (i = 0; i < tablinks.length; i++) {
+               tablinks[i].className = tablinks[i].className.replace(" active", "");
+           }
+           document.getElementById(tabName).style.display = "block";
+           evt.currentTarget.className += " active";
+
+           // Ensure the default sub-tab is selected when changing tabs
+           var defaultSubTab = document.getElementById(tabName).getElementsByClassName("subtablinks")[0];
+           defaultSubTab.click();
+       }
+
+       function openSubTab(evt, subTabName) {
+           var i, tabcontent, subtablinks;
+           tabcontent = document.getElementsByClassName("subtabcontent");
+           for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+           }
+           subtablinks = document.getElementsByClassName("subtablinks");
+           for (i = 0; i < subtablinks.length; i++) {
+               subtablinks[i].className = subtablinks[i].className.replace(" active", "");
+           }
+           document.getElementById(subTabName).style.display = "block";
+           evt.currentTarget.className += " active";
+       }
+
+       // Open the default tab on page load
+       $(document).ready(function() {
+           document.getElementById("defaultOpen").click();
+       });
+
+
+   $(document).ready(function() {
+       var currentPage = 1;
+       var size = 5;
+
+       $('#K5ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K5ScheduleTable tr');
+               $('#K5ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K5ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K5ResultTable tr');
+               $('#K5ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K7ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K7ScheduleTable tr');
+               $('#K7ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#K7ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#K7ResultTable tr');
+               $('#K7ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#W1ScheduleLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#W1ScheduleTable tr');
+               $('#W1ScheduleTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+       $('#W1ResultLoadMore').click(function() {
+           $.get("/match/matchpage?page=" + (currentPage + 1), function(data) {
+               var newMatches = $(data).find('#W1ResultTable tr');
+               $('#W1ResultTable').append(newMatches);
+               currentPage++;
+           });
+       });
+
+   });
+</script>
+
+</body>
+</html>

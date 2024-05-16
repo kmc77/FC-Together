@@ -1,0 +1,497 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
+/*공지사항 탭 영역*/
+
+.hide-header {
+    display: none;
+}
+
+
+.photoPage .top .topTitle {
+  padding-top: 0;
+}
+
+.subTop .top .topTitle {
+  padding-top: 34px;
+  text-align: center;
+}
+
+/*.photoPage .top .topTitle .title {
+    margin-left: -90px;
+    margin-right: -40px;
+    padding-top: 110px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 500;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 90px no-repeat;
+}*/
+
+.photoPage .top .topTitle .title {
+    margin-left: -90px;
+    margin-right: -40px;
+    padding-top: 140px;
+    text-align: center;
+    font-size: 44px;
+    font-weight: 500;
+    background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
+}
+
+/** {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}*/
+
+.container {
+  position: relative;
+  max-width: 1260px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.subTop .tabMenu {
+  padding-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  vertical-align: top;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.subTop .tabMenu .current,
+.subTop .tabMenu .router-link-exact-active {
+  color: #046a38;
+}
+
+.subTop .tabMenu a {
+  display: inline-block;
+  position: relative;
+  padding: 0 36px;
+  vertical-align: middle;
+}
+
+.subTop .tabMenu a span {
+  display: inline-block;
+  position: relative;
+  padding: 25px 0;
+  vertical-align: top;
+}
+
+.tabMenu .tabLink span {
+  color: #000000; /* 검정색 */
+}
+
+.tabMenu .tabLink.current span {
+  color: #f4ae15; /* 선택된 탭의 글자 색상 */
+}
+
+.tabMenu .tabLink.current span:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffc954; /* 선택된 탭의 아래 줄 색상 */
+}
+
+.tabContent .content {
+  padding-top: 30px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.contents > .layout-inner {
+    max-width: 1040px;
+    padding: 0 15px 30px;
+    box-sizing: border-box;
+}
+
+.cont-tit {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.list-item {
+    display: flex;
+    flex-direction: column;
+    padding: 17px 10px;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+}
+
+.list-item:last-child {
+    border-color: #ddd;
+}
+
+.list-item > .col + .col {
+    margin-top: 7px;
+}
+
+.list-item.fixed {
+    background-color: #f7f7f7;
+}
+
+.list-item.fixed .notice-tit {
+    font-weight: 700;
+}
+
+.list-item .col.tit a {
+    display: block;
+    display: -webkit-box;
+    max-height: 48px;
+    line-height: 24px;
+    font-size: 18px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+
+.list-item .col.tit:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a {
+    color: #121212;
+    text-decoration: none;
+}
+.notice-wrap .btn {
+    display: inline-block;
+    min-width: 125px;
+    padding: 1.1em 1em 1em;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #ffc954;
+}
+
+.formBtns {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.btn.btn-more {
+    min-width: 173px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dot::before {
+    content: "•";
+}
+
+.txt-num, .txt-hit {
+    color: #7e7a7a;
+}
+
+
+/*공지사항 탭 and*/
+
+
+
+
+/*News 탭*/
+
+ .formBtns {
+     margin-top: 48px;
+     text-align: center;
+ }
+
+ .btn.btn-more {
+     min-width: 173px;
+     font-size: 18px;
+     font-weight: 700;
+ }
+
+button#loadMore.btn.btn-more {
+    width: 173px;
+    height: 61.8px;
+    color: #000000;
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+    font-size: 18px;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #FFC954;
+    padding: 19.8px 18px;
+}
+
+
+.news-item-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 30px;
+    padding-bottom: 60px;
+}
+
+.news-item-container {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.news-detail {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.news-detail:hover {
+    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
+}
+
+.news-detail .news-pinned {
+    margin: 12px 12px 0px 317px;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAT....);
+    background-size: auto;
+}
+
+.news-detail .news-thumbnail {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    aspect-ratio: 354 / 204;
+    border-radius: 5px;
+}
+
+.news-detail .news-contents {
+    margin-top: 20px;
+}
+
+.news-detail .news-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 25px;
+}
+
+.news-container {
+    padding-top: 30px;
+}
+
+.news-date-and-hits p {
+    color: #7e7a7a;
+}
+
+.news-table p {
+    display: inline-block;
+    padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
+    border: 2px solid #00bcd4;  /* 테두리를 추가합니다. */
+    border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
+}
+
+.news-table {
+    padding-top: 10px;  /* 위쪽 패딩을 추가합니다. 원하는 값으로 조절하세요. */
+}
+
+
+/*News 탭 and*/
+
+
+
+.photo-item-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 30px;
+    padding-bottom: 60px;
+}
+
+.photo-item-container {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.photo-detail {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.photo-detail:hover {
+    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
+}
+
+.photo-detail .photo-pinned {
+    margin: 12px 12px 0px 317px;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAT....);
+    background-size: auto;
+}
+
+.photo-detail .photo-thumbnail {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    aspect-ratio: 354 / 204;
+    border-radius: 5px;
+}
+
+.photo-detail .photo-contents {
+    margin-top: 20px;
+}
+
+.photo-detail .photo-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 25px;
+}
+
+.photo-container {
+    padding-top: 30px;
+}
+
+.photo-date-and-hits p {
+    color: #7e7a7a;
+}
+
+.photo-table p {
+    display: inline-block;
+    padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
+    border: 2px solid #cddc39;  /* 테두리를 추가합니다. */
+    border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
+}
+
+.photo-table {
+    padding-top: 10px;  /* 위쪽 패딩을 추가합니다. 원하는 값으로 조절하세요. */
+}
+
+
+
+/* ClubPhoto tab and */
+
+
+/*Video 탭*/
+
+ .formBtns {
+     margin-top: 48px;
+     text-align: center;
+ }
+
+ .btn.btn-more {
+     min-width: 173px;
+     font-size: 18px;
+     font-weight: 700;
+ }
+
+button#loadMore.btn.btn-more {
+    width: 173px;
+    height: 61.8px;
+    color: #000000;
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+    font-size: 18px;
+    border-radius: 4px;
+    border: 1px solid #034f36;
+    background-color: #FFC954;
+    padding: 19.8px 18px;
+}
+
+.video-item-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 30px;
+    padding-bottom: 60px;
+}
+
+.video-item-container {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.video-detail {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.video-detail:hover {
+    transform: scale(1.03); /* 마우스를 올렸을 때 크기를 1.03배로 확대합니다. */
+}
+
+.video-detail .video-pinned {
+    margin: 12px 12px 0px 317px;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAT....);
+    background-size: auto;
+}
+
+.video-detail .video-thumbnail {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    aspect-ratio: 354 / 204;
+    border-radius: 5px;
+}
+
+.video-detail .video-contents {
+    margin-top: 20px;
+}
+
+.video-detail .video-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 25px;
+}
+
+.video-container {
+    padding-top: 30px;
+}
+
+.video-date-and-hits p {
+    color: #7e7a7a;
+}
+
+.video-table p {
+    display: inline-block;
+    padding: 3px 3px;  /* 텍스트와 테두리 사이의 간격을 조절합니다. */
+    border: 2px solid #00bcd4;  /* 테두리를 추가합니다. */
+    border-radius: 5px;  /* 테두리를 동그라미로 만듭니다. */
+}
+
+.video-table {
+    padding-top: 10px;  /* 위쪽 패딩을 추가합니다. 원하는 값으로 조절하세요. */
+}
+
+
+
+
+
+/*Video 탭 and*/
+
+/* all tab start */
+
+/* all tab end */

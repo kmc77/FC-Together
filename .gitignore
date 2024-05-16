@@ -1,0 +1,14 @@
+# General files and directories to be ignored
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Ignore JwtProperties.java in the jwt config directory
+src/main/java/com/project/together/config/jwt/JwtProperties.java
+
+# Application properties should not be tracked
+/application.properties
+src/main/resources/application.properties

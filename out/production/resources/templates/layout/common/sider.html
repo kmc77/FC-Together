@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Main Sidebar Container -->
+<aside th:fragment="load()" class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+        <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">FC Together</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="/admin/layout/adminpage" class="d-block"></a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'qna'  ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'qna'  ? 'active' : ''}"> <!--active 클래스로 클릭 표시-->
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            My
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{./qna}"
+                               th:classappend="${currentPage == 'qna' ? 'active' : ''}" class="nav-link">
+                                <!--active 클래스로 클릭 표시-->
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>1:1 문의</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'players' || currentPage == 'staff' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'players' || currentPage == 'staff' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Team
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{./players}" th:classappend="${currentPage == 'players' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>선수단</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{./staff}" th:classappend="${currentPage == 'staff' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>스태프</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'clublist' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'w1match' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'clublist' || currentPage == 'k5match' || currentPage == 'k7match' || currentPage == 'w1match' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Match
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{./clublist}" th:classappend="${currentPage == 'clublist' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>구단목록</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{./k5match}" th:classappend="${currentPage == 'k5match' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>K5</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{./k7match}" th:classappend="${currentPage == 'k7match' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>K7</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{./w1match}"
+                               th:classappend="${currentPage == 'w1match' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>W리그</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'notice_management' || currentPage == 'news_management' || currentPage == 'photo_management' || currentPage == 'video_management' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'notice_management' || currentPage == 'news_management' || currentPage == 'photo_management' || currentPage == 'video_management' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Media
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="./notice_management"
+                               th:classappend="${currentPage == 'notice_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>공지사항</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./news_management"
+                               th:classappend="${currentPage == 'news_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>구단소식</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./photo_management"
+                               th:classappend="${currentPage == 'photo_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>구단사진</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./video_management"
+                               th:classappend="${currentPage == 'video_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>구단영상</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' || currentPage == 'rule_management' || currentPage == 'operation_management' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'faq_management' || currentPage == 'trainingSchedule_management' || currentPage == 'rule_management' || currentPage == 'operation_management' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            경영/고객 지원
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="./rule_management"
+                               th:classappend="${currentPage == 'rule_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>규정</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./operation_management"
+                               th:classappend="${currentPage == 'operation_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>경영공시</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./faq_management"
+                               th:classappend="${currentPage == 'faq_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>FAQ</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./trainingSchedule_management"
+                               th:classappend="${currentPage == 'trainingSchedule_management' ? 'active' : ''}"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>훈련일정</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-header">EXAMPLES</li>
+                <li class="nav-item">
+                    <a href="pages/calendar.html" class="nav-link">
+                        <i class="nav-icon far fa-calendar-alt"></i>
+                        <p>
+                            Calendar
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+<script>
+
+</script>
+
+
+</body>
+</html>

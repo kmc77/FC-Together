@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.project'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'mysql:mysql-connector-java:8.0.31'
+    implementation project(path: ':')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    // s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
+    //Mustache 템플릿 엔진
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+
+    //oauth2 로그인
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // Lombok
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JWT
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.3.0'
+
+
+    // JAXB
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+
+
+    // JavaMailSender
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.1'
+
+    // mail template 사용을 위해서
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework:spring-context-support'
+
+
+
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

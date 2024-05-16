@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head th:replace="layout/common/header :: load('Layout Sample Page')"></head>
+<body>
+<!-- Preloader -->
+<div th:replace="layout/common/preloader :: load()"></div>
+
+<!-- Navbar -->
+<nav th:replace="layout/common/navigator :: load()"></nav>
+
+<!-- Main Sidebar Container -->
+<aside th:replace="layout/common/sider :: load()"></aside>
+
+<!-- 에디터 코드 추가 -->
+
+
+<!-- Content Wrapper. Contains page content -->
+<div id="app" class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Staff 관리 페이지</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/layout/adminpage">Home</a></li>
+                        <li class="breadcrumb-item active">Staff 관리 페이지</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- 처리 결과 얼럿 -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <p th:text="${message}"></p>
+    </div>
+
+
+    <!-- Main content -->
+    <div class="adminTab">
+        <ul id="nav-1">
+            <li class="slide1"></li>
+            <li class="slide2"></li>
+            <li><a th:href="@{./staff}" data-staff-type="staff">스태프 목록</a></li>
+            <li id="register-staff"><a href="#/">스태프 등록</a></li>
+        </ul>
+        <script src="/dist/js/staff.js"></script>
+    </div>
+
+    <!-- 스태프 등록 -->
+    <div class="cnt_bbs" id="cnt_bbs" style="display: none;">
+        <h1 class="text-3xl py-4 border-b mb-10">스태프 정보</h1>
+
+        <div id="viewContainer" class="container mx-auto py-6 px-4 textarea">
+            <form action="/admin/layout/teamStaffUpdate" method="post" enctype="multipart/form-data">
+                <div class="content-box">
+                    <div class="form-list view-list">
+                        <input type="hidden" name="no" value="">
+                        <div class="col">
+                            <dl>
+                                <dt id="teamLeagueGb-label">소속 리그</dt>
+                                <dd id="teamLeagueGb-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffNum-label">스태프 번호</dt>
+                                <dd id="teamStaffNum-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffFilePath-label">스태프 사진</dt>
+                                <dd id="teamStaffFilePath-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffName-label">이름</dt>
+                                <dd id="teamStaffName-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffEnName-label">영문이름</dt>
+                                <dd id="teamStaffEnName-value"></dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffRole-label">역할</dt>
+                                <dd id="teamStaffRole-value"> </dd>
+                            </dl>
+                            <dl>
+                                <dt id="teamStaffBirth-label">생년월일</dt>
+                                <dd id="teamStaffBirth-value"> </dd>
+                            </dl>
+                        </div>
+                        <div class="submit-btn">
+                            <button type="submit" class="tb_btn blueM">스태프 등록</button>
+                        </div>
+                        <div class="change_submit-btn">
+                            <button type="submit" class="tb_btn redM">정보 수정</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <link rel="stylesheet" href="/dist/css/video.css">
+    </div>
+    <!-- 스태프 등록 End -->
+
+
+
+
+    <!-- 테이블 시작 -->
+    <div id="tableContainer" class="container mx-auto py-6 px-4">
+        <h1 class="text-3xl py-4 border-b mb-10">스태프 목록</h1>
+        <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex md:items-center">
+                    <div class="mr-4 flex-shrink-0">
+                        <svg class="h-8 w-8 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div id="selectionCount" class="text-teal-800 text-lg">0 rows are selected</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-4 flex justify-between items-center">
+            <!-- 테이블 검색 -->
+            <div class="flex-1 pr-4">
+                <div class="relative md:w-1/3">
+                    <input type="search" class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium" placeholder="Search...">
+                    <div class="absolute top-0 left-0 inline-flex items-center p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                            <circle cx="10" cy="10" r="7"></circle>
+                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- 테이블 검색 and -->
+            <div>
+                <div class="shadow rounded-lg flex">
+                    <div class="relative">
+                        <button id="displayButton" class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5"></path>
+                            </svg>
+                            <span class="hidden md:block">Display</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div id="columnSelection" class="z-40 absolute top-0 right-0 w-40 bg-white rounded-lg shadow-lg mt-12 -mr-1 block py-1 overflow-hidden" style="display: none;">
+                            <!-- Column checkboxes will be appended here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
+            <table id="teamStaffTable" class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+                <thead>
+                <tr class="text-left">
+                    <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+                        <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                            <input id="selectAllCheckbox" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
+                        </label>
+                    </th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamStaffNum">스태프 번호</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamStaffName">스태프 이름</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamStaffEnName">스태프 영문 이름</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamStaffBirth">스태프 생년월일</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamStaffRole">스태프 역할</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs teamLeagueGb">리그 구분</th>
+
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs file">스태프 사진</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+
+
+    <div class="buttonContainer" id="buttonContainer">
+        <div class="leftContainer">
+            <button class="deleteButton">삭제</button>
+            <button class="checkButton">보기</button>
+        </div>
+        <button class="writeButton">스태프등록</button>
+        <link rel="stylesheet" href="/dist/css/qna.css">
+    </div>
+</div>
+
+
+
+
+</div>
+
+<!-- Main footer -->
+<footer th:replace="layout/common/footer :: load()"></footer>
+
+<!-- common javascript -->
+<div th:include="layout/common/script :: load()"></div>
+
+<script th:inline="javascript">
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.change_submit-btn button').addEventListener('click', function(event) {
+            event.preventDefault(); // 폼 제출 방지
+
+            var isEditMode = this.getAttribute('data-edit-mode') === 'true';
+
+            if (!isEditMode) {
+                document.querySelectorAll('.content-box .col dl').forEach(function(dl) {
+                    var dd = dl.querySelector('dd');
+                    var dt = dl.querySelector('dt');
+                    var value = dd.innerText.trim();
+                    var input;
+
+                    if (dt.id !== 'teamStaffNum-label') { // "스태프번호" 영역을 제외
+                        if (dt.id === 'teamStaffFilePath-label') {
+                            // 파일 입력 필드 추가
+                            input = document.createElement('input');
+                            input.type = 'file';
+                            input.id = 'file';
+                            input.name = 'file';
+                            input.accept = 'image/*';
+                        } else {
+                            // 텍스트 입력 필드 추가
+                            var fieldName = dt.id.replace('-label', '');
+                            input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = value;
+                            input.name = fieldName;
+                            input.style.width = '100%';
+                        }
+
+                        dd.innerHTML = '';
+                        dd.appendChild(input);
+                    }
+                    // 여기서 "스태프번호"에 대해 별도의 처리가 필요하지 않음
+                });
+
+                this.setAttribute('data-edit-mode', 'true'); // 버튼 상태를 수정 모드로 변경
+                this.textContent = '정보 제출'; // 버튼 텍스트 변경
+            } else {
+                var form = document.querySelector('form[action="/admin/layout/teamStaffUpdate"]');
+                if (form) {
+                    var formData = new FormData(form);
+
+                    // "스태프번호" 값을 FormData에 추가하는 로직
+                    var teamStaffNumValue = document.querySelector('#teamStaffNum-value').innerText; // "스태프번호" 텍스트를 가져옴
+                    var teamStaffNum = parseInt(teamStaffNumValue, 10); // 가져온 텍스트를 정수로 변환
+                    formData.append('teamStaffNum', teamStaffNum); // 변환된 정수를 FormData에 추가
+
+                    // AJAX 요청으로 서버에 데이터 전송
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        window.location.href = '/admin/layout/staff';
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                } else {
+                    console.error("Form element not found!");
+                }
+            }
+        });
+    });
+
+
+
+
+
+      // "등록" 버튼 클릭 이벤트
+       $('.writeButton').click(function() {
+           // 'create' 상태 설정
+           $('form').data('state', 'create');
+
+           // 폼의 action 경로, method, 그리고 enctype을 스태프 등록 URL, POST 방식, multipart/form-data로 변경
+           $('form').attr('action', '/admin/layout/insertStaffInfo')
+           .attr('method', 'post')
+           .attr('enctype', 'multipart/form-data');
+
+           // "스태프 등록" 버튼 클릭 시 "정보 수정" 버튼을 숨김
+           $('.change_submit-btn').hide();
+
+           // "스태프 등록" 탭 클릭
+           $("#register-staff a").trigger('click');
+
+           // DOM이 완전히 로드된 후 실행되도록 지연 실행 설정
+           setTimeout(function() {
+               // 각 입력 필드를 추가하는 함수 호출
+               addInputField('teamLeagueGb-value', 'k5, k7, w1', 'teamLeagueGb');
+               addFileUploadField('teamStaffFilePath-value');
+               addInputField('teamStaffName-value', '이름', 'teamStaffName');
+               addInputField('teamStaffEnName-value', '영문 이름', 'teamStaffEnName');
+               addInputField('teamStaffRole-value', '감독, 코치, 피지컬코치, 데이터분석관', 'teamStaffRole');
+               addInputField('teamStaffBirth-value', 'YYYY-MM-DD 형식', 'teamStaffBirth');
+           }, 100);
+       });
+
+       // 파일 업로드 필드를 추가하는 함수
+       function addFileUploadField(containerId) {
+           var container = $('#' + containerId);
+           var fileUploadHTML = '<input type="file" id="file" name="file" accept="image/*">';
+           container.html(fileUploadHTML);
+       }
+
+       // 입력 필드를 추가하는 함수
+       function addInputField(id, hint, name) {
+           var form = document.getElementById(id);
+           if (!form) return; // form이 없으면 함수 종료
+
+           if (id === 'teamLeagueGb-value' || id === 'teamStaffRole-value') {
+               var select = document.createElement('select');
+               select.name = name || '';
+               select.style.width = '50%';
+               var defaultOption = document.createElement('option');
+               defaultOption.text = '선택하세요';
+               defaultOption.disabled = true;
+               defaultOption.selected = true;
+               select.appendChild(defaultOption);
+
+               hint.split(', ').forEach(function(item) {
+                   var option = document.createElement('option');
+                   option.value = item;
+                   option.text = item;
+                   select.appendChild(option);
+               });
+
+               form.appendChild(select);
+           } else {
+               var input = document.createElement('input');
+               input.type = 'text';
+               input.style.width = '50%';
+               input.placeholder = hint || '';
+               input.name = name || '';
+               form.appendChild(input);
+           }
+       }
+
+       $(document).ready(function() {
+          // 이벤트 위임을 사용하여 폼 제출 이벤트 처리
+          $(document).on('submit', 'form', function(e) {
+              e.preventDefault(); // 기본 폼 제출 동작을 막습니다.
+
+              var form = this;
+              var formData = new FormData(form);
+              var isAllFilled = true;
+              var emptyFieldName = "";
+
+              // '선택하세요'가 선택된 경우 검증
+              if ($('#teamLeagueGb-value').val() === '선택하세요' || $('#teamStaffRole-value').val() === '선택하세요') {
+                  alert('모든 선택 필드를 올바르게 입력해주세요.');
+                  return;
+              }
+
+              // 필수 필드가 채워졌는지 검증, "no" 필드는 제외
+              formData.forEach(function(value, key) {
+                  if (!value && key !== "no") { // "no" 필드를 제외
+                      isAllFilled = false;
+                      emptyFieldName = key; // 빈 필드의 name을 가져옵니다.
+                  }
+              });
+
+              if (!isAllFilled) {
+                  alert(emptyFieldName + " 필드를 입력해주세요.");
+                  return;
+              }
+
+              // AJAX를 사용하여 서버에 데이터를 비동기적으로 전송
+              $.ajax({
+                  url: $(form).attr('action'),
+                  type: 'POST',
+                  data: formData,
+                  processData: false, // FormData를 string으로 변환하지 않음
+                  contentType: false, // FormData의 boundary가 올바르게 설정되도록 함
+                  success: function(response) {
+                      console.log('서버 응답:', response);
+                      window.location.href = '/admin/layout/staff';
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('에러 발생:', error);
+                  }
+              });
+          });
+      });
+
+
+
+
+
+
+
+
+
+
+       // JWT 토큰을 디코딩하는 함수
+       function parseJwt(token) {
+           var base64Url = token.split('.')[1];
+           var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+           var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+               return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+           }).join(''));
+
+           return JSON.parse(jsonPayload);
+       };
+
+       // JWT 토큰이 저장된 곳에서 가져오기
+       var token = localStorage.getItem('accessToken');
+
+       // 토큰에서 사용자 이름 추출
+       var username = parseJwt(token).sub;
+
+       // 사용자 이름이 정상적으로 추출되었는지 콘솔에 로깅
+       console.log("Username: ", username);
+
+       // HTML 페이지에 사용자 이름 노출
+       document.querySelector('.d-block').textContent = username + " 관리자";
+
+         $(document).ready(function () {
+            // 선택된 행들을 저장하는 배열
+            var selectedRows = [];
+            // 표시 버튼의 상태 (열림/닫힘)
+            var isOpen = false;
+
+            // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
+            var updateSelectedCount = function() {
+                var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
+                $('#selectedRowsBanner').css('top', navbarHeight);
+                // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
+                var checkedCount = $('.rowCheckbox:checked').length;
+                $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
+                if (checkedCount > 0) {
+                    $('#selectedRowsBanner').show();
+                } else {
+                    $('#selectedRowsBanner').hide();
+                }
+            };
+
+            // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
+            $('#displayButton').click(function() {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    $('#columnSelection').show();
+                } else {
+                    $('#columnSelection').hide();
+                }
+            });
+
+            // 표시 버튼이나 컬럼 선택 영역 외의 곳을 클릭하면 컬럼 선택 영역을 숨김
+            $(document).click(function(event) {
+                if (!$(event.target).closest('#displayButton').length && !$(event.target).closest('#columnSelection').length) {
+                    isOpen = false;
+                    $('#columnSelection').hide();
+                }
+            });
+
+            // 컬럼 체크박스를 클릭하면 해당 컬럼을 표시/숨김
+            $('#columnSelection').on('click', '.column-checkbox', function () {
+                var key = $(this).attr('name');
+                $('.' + key).toggleClass('hidden');
+            });
+
+            // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
+            $("#selectAllCheckbox").click(function(){
+                $(".rowCheckbox").prop('checked', $(this).prop('checked'));
+                selectedRows = [];
+                if ($(this).prop('checked')) {
+                    $('.rowCheckbox').each(function() {
+                        selectedRows.push(parseInt($(this).attr('name')));
+                    });
+                }
+                updateSelectedCount();
+            });
+
+            // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
+            $(document).on('click', '.rowCheckbox', function(){
+                var id = parseInt($(this).attr('name'));
+                if ($(this).prop('checked')) {
+                    selectedRows.push(id);
+                } else {
+                    var index = selectedRows.indexOf(id);
+                    if (index > -1) {
+                        selectedRows.splice(index, 1);
+                    }
+                }
+
+                // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+                if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
+                    $('#selectAllCheckbox').prop('checked', true);
+                } else {
+                    $('#selectAllCheckbox').prop('checked', false);
+                }
+                updateSelectedCount();
+            });
+
+
+
+             // "삭제" 버튼 클릭 이벤트
+            $('.deleteButton').click(function() {
+                if (selectedRows.length === 0) {
+                    alert("삭제할 글을 선택해주세요.");
+                } else {
+                    var confirmMessage = selectedRows.length > 1 ? "선택한 글을 모두 삭제 하겠습니까?" : "글을 삭제 하겠습니까?";
+                    if (confirm(confirmMessage)) {
+                        var accessToken = localStorage.getItem('accessToken');
+                        var url = "/admin/layout/teamStaffDelete";
+
+                        // 선택된 모든 행을 한 번의 요청으로 서버로 보냅니다.
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                teamStaffNum: selectedRows, // 여기를 수정하여 배열 전체를 보냅니다.
+                            },
+                            traditional: true,
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                            },
+                            success: function(data) {
+                                alert("선택한 글이 모두 삭제되었습니다.");
+                                location.reload();
+                            },
+                            error: function(error) {
+                                console.log(error);
+                                alert("글 삭제에 실패하였습니다.");
+                            }
+                        });
+                    }
+                }
+            });
+
+              // 보기 클릭
+              $('.checkButton').click(function() {
+                  if (selectedRows.length === 0) {
+                      alert("확인할 스태프를 선택해주세요.");
+                  } else if (selectedRows.length > 1) {
+                      alert("확인할 스태프를 하나만 선택해주세요.");
+                  } else {
+                      var teamStaffNum = selectedRows[0];  // 선택된 스태프의 번호
+                      var accessToken = localStorage.getItem('accessToken');
+                      var url = `/admin/layout/teamStaffView?teamStaffNum=${teamStaffNum}`;
+
+                      $.ajax({
+                          url: url,
+                          method: "GET",
+                          beforeSend: function(xhr) {
+                              xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                          },
+                          success: function(response) {
+                              var teamStaff = response.teamStaff;
+                              var files = response.files;
+
+                              // 스태프 정보 표시
+                              $('#teamStaffNum-value').text(teamStaff.teamStaffNum);
+                              $('#teamLeagueGb-value').text(teamStaff.teamLeagueGb);
+                              $('#teamStaffName-value').text(teamStaff.teamStaffName);
+                              $('#teamStaffEnName-value').text(teamStaff.teamStaffEnName);
+                              $('#teamStaffRole-value').text(teamStaff.teamStaffRole);
+                              $('#teamStaffBirth-value').text(teamStaff.teamStaffBirth);
+
+                              // 파일 처리
+                              if (files && files.length > 0) {
+                                  var profileImgUrl = files[0].filePath;
+                                  $('#teamStaffFilePath-value').html(`<img src="${profileImgUrl}" alt="스태프 프로필 사진" style="max-width: 100%; height: auto;">`);
+                              } else {
+                                  $('#teamStaffFilePath-value').html('사진 없음');
+                              }
+
+                              // "보기" 버튼 클릭 시 "정보 업데이트" 버튼을 숨김
+                              $('.submit-btn').hide();
+
+                              // "스태프 등록" 탭의 이름을 "스태프 정보"로 변경합니다.
+                              $("#register-staff a").text("스태프 정보");
+
+                              // "스태프 등록" 탭 클릭
+                              $("#register-staff a").trigger('click');
+                          },
+                          error: function(error) {
+                              console.log(error);
+                          }
+                      });
+                  }
+              });
+
+
+
+
+
+
+       // 스태프 정보를 정의
+            var staffKeys = ['teamStaffNum', 'teamStaffName', 'teamStaffEnName', 'teamStaffBirth', 'teamStaffRole', 'teamLeagueGb', 'file'];
+
+            // 컬럼 선택 영역에 체크박스와 라벨 추가
+            $.each(staffKeys, function(index, key) {
+                var label = $('<label/>').addClass('flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2');
+                var div = $('<div/>').addClass('text-teal-600 mr-3');
+                var checkbox = $('<input/>').attr('type', 'checkbox').attr('name', key).addClass('form-checkbox focus:outline-none focus:shadow-outline column-checkbox').prop('checked', true);
+                var divText = $('<div/>').addClass('select-none text-gray-700').text(key);
+
+                div.append(checkbox);
+                label.append(div, divText);
+                $('#columnSelection').append(label);
+            });
+
+            var accessToken = localStorage.getItem('accessToken');
+
+       // 스태프 정보를 가져와서 테이블에 추가
+          $.ajax({
+              url: "/admin/layout/get_staffInfo",
+              method: "GET",
+              headers: {
+                  "Authorization": "Bearer " + accessToken
+              },
+              success: function(data) {
+                  $.each(data, function(i, staffData) {
+                      var staff = staffData.staff;
+                      var files = staffData.files; // 파일 정보를 포함하는 부분
+                      var tr = $('<tr/>');
+
+                      // 스태프 번호로 체크박스 생성
+                      tr.append(`<td class='border-dashed border-t border-gray-200 px-3'>
+                          <label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'>
+                              <input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='${staff.teamStaffNum}' data-staffNum='${staff.teamStaffNum}'></label></td>`);
+
+                      // 스태프 정보를 순서대로 테이블에 추가
+                      $.each(staffKeys.filter(k => k !== 'file'), function(j, key) {
+                          var value = staff[key];
+                          tr.append($("<td class='border-dashed border-t border-gray-200 " + key + "'>").append(
+                              $('<span/>', {
+                                  class: 'text-gray-700 px-6 py-3 flex items-center',
+                                  text: value
+                              })
+                          ));
+                      });
+
+                      // 파일 처리 로직: 첫 번째 파일이 프로필 사진으로 가정
+                      if (files && files.length > 0) {
+                          var profileImgUrl = files[0].filePath;
+                          tr.append($("<td class='border-dashed border-t border-gray-200 file'>").append(
+                              $('<img/>', {
+                                  src: profileImgUrl,
+                                  alt: 'Profile Picture',
+                                  style: 'height: 50px;'
+                              })
+                          ));
+                      } else {
+                          tr.append($("<td class='border-dashed border-t border-gray-200 file'>").text('사진 없음'));
+                      }
+
+                      // 완성된 행을 테이블에 추가
+                      $('table#teamStaffTable').append(tr);
+                  });
+              }
+          });
+
+
+      });
+
+</script>
+
+
+</body>
+</html>

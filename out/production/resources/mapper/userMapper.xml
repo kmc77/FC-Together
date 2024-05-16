@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.together.mapper.UserMapper">
+
+
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM user WHERE username = #{username}
+    </delete>
+
+    <select id="findByUsername" parameterType="String" resultType="com.project.together.domain.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+
+    <select id="idCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE username = #{username}
+    </select>
+
+
+    <select id="emailCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE email = #{userEmail}
+    </select>
+
+
+    <select id="getK5Players" resultType="com.project.together.domain.K5_Player">
+        SELECT k5_player_num, k5_player_name FROM K5_Player
+    </select>
+
+    <select id="getK7Players" resultType="com.project.together.domain.K7_Player">
+        SELECT k7_player_num, k7_player_name FROM K7_Player
+    </select>
+
+    <select id="getW1Players" resultType="com.project.together.domain.W1_Player">
+        SELECT w1_player_num, w1_player_name FROM W1_Player
+    </select>
+
+
+    <insert id="joinUser" parameterType="com.project.together.domain.User">
+        INSERT INTO user (username, password, email, roles, user_real_name, user_gender, user_phone,
+        user_birth, user_address, user_like_player, user_like_player_gb, user_marketing, provider, providerId)
+        VALUES (#{username}, #{password}, #{email}, #{roles}, #{userRealName}, #{userGender}, #{userPhone},
+        #{userBirth}, #{userAddress}, #{userLikePlayer}, #{userLikePlayerGb}, #{userMarketing}, #{provider},
+        #{providerId})
+    </insert>
+
+    <!-- 휴대폰 번호로 사용자 아이디(username) 찾기
+    <select id="findIDByPhoneNum" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE user_phone = #{phone}
+    </select>
+
+    &lt;!&ndash; 이메일로 사용자 아이디(username) 찾기 &ndash;&gt;
+    <select id="findIDByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE email = #{email}
+    </select>-->
+
+    <!-- 휴대폰 번호로 사용자 아이디(username) 찾기 -->
+    <select id="findUsersByPhoneNumber" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE user_phone = #{phone}
+    </select>
+
+    <!-- 이메일로 일반 로그인 사용자의 아이디(username) 찾기 -->
+    <select id="findUsersByEmail" parameterType="java.lang.String" resultType="com.project.together.domain.User">
+        SELECT username
+        FROM user
+        WHERE email = #{email} AND provider IS NULL
+    </select>
+
+    <!-- 사용자명과 이메일로 사용자 정보 조회 -->
+    <select id="findByUsernameAndEmail" parameterType="map" resultType="com.project.together.domain.User">
+        SELECT *
+        FROM user
+        WHERE username = #{username} AND email = #{email}
+    </select>
+
+    <update id="updateUserPassword" parameterType="com.project.together.domain.User">
+        UPDATE user
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
+
+
+
+
+</mapper>

@@ -184,6 +184,10 @@ public class AdminService {
         return adminMapper.getAllClubPhoto();
     }
 
+    public List<ClubPhoto> getSectionClubPhoto() {
+        return adminMapper.getSectionClubPhoto();
+    }
+
     public ClubPhoto findClubPhotoById(int cpIdx) {
         return adminMapper.findClubPhotoById(cpIdx);
     }
@@ -209,6 +213,11 @@ public class AdminService {
 
         //찾은 clubPhoto 글을 삭제
         adminMapper.deleteClubPhoto(cpIdxs);
+    }
+
+    public void saveSectionClubPhoto(ClubPhoto clubPhoto) {
+        clubPhoto.setTableGb("sectionClubPhoto");
+        adminMapper.insertClubPhoto(clubPhoto);
     }
 
 
@@ -785,6 +794,8 @@ public class AdminService {
     public void saveW1Match(Match matchRequest) {
         adminMapper.saveW1Match(matchRequest);
     }
+
+
 
 
 // ================================== k7 구단목록 + 매치목록 and

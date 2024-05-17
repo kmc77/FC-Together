@@ -1110,9 +1110,9 @@ i,em,address,optgroup {
 
 /* faq css End */
 
-/* 페이지네이션 커스텀 스타일 */
 
-#pagination .management-container {
+/* 페이지네이션 커스텀 스타일 */
+#pagination .container {
     display: flex;
     justify-content: center;
 }

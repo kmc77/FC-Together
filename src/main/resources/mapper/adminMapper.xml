@@ -130,6 +130,10 @@
         SELECT * FROM clubphoto ORDER BY cp_idx DESC
     </select>
 
+    <select id="getSectionClubPhoto" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto WHERE table_gb = 'sectionClubPhoto' ORDER BY cp_idx DESC
+    </select>
+
     <select id="findClubPhotoById" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
         SELECT * FROM clubphoto WHERE cp_idx = #{cpIdx}
     </select>
@@ -451,6 +455,10 @@
         SELECT file_path FROM File
         WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
     </select>
+
+    <delete id="deleteRuleFilesByRuleNum" parameterType="int">
+        DELETE FROM file WHERE table_idx = #{ruleNum}
+    </delete>
 
     <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
         INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)

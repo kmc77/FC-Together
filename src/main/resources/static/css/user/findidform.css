@@ -1,8 +1,6 @@
-
 .memberPage .userIdBox * {
     box-sizing: border-box;
 }
-
 
 .memberPage .userIdContent {
     color: #777777c4;
@@ -22,8 +20,10 @@
     max-width: 480px;
     margin: 0 auto;
     padding: 50px 60px 100px;
-    background-color: hsla(0,0%,100%,.9);
+    background-color: #fff;
     backdrop-filter: blur(3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 추가된 박스 그림자 */
+    border-radius: 10px; /* 추가된 모서리 둥글기 */
 }
 
 .headerTitle {
@@ -32,6 +32,8 @@
     padding-top: 110px;
     text-align: center;
     background: url(/img/FcTogether.jpg) 50% 0/auto 130px no-repeat;
+    border-radius: 10px 10px 0 0; /* 상단 모서리 둥글기 추가 */
+    overflow: hidden; /* 둥근 모서리 밖 이미지 숨김 */
 }
 
 .headerTitle .mainTitle {
@@ -58,12 +60,14 @@
     border-radius: 4px;
     border: 1px solid #ddd;
     background-color: #fff;
+    margin-bottom: 16px; /* 입력 필드 간격 추가 */
 }
 
 .formButton {
     margin-top: 24px;
 }
 
+/* 유지되는 기존 스타일 */
 .button.primary {
     color: #000;
     border-color: #034f36;
@@ -95,11 +99,8 @@
 
 .error-message {
     color: red;  /* 빨간색 텍스트 */
-    /*font-weight: bold;*/  /* 글자를 굵게 */
 }
 
 .success-message {
     color: #00b407;
-    /*font-weight: bold;*/  /* 글자를 굵게 */
 }
-

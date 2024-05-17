@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.together.mapper.ManagementMapper">
 
-    <!-- 임시 -->
     <select id="findAllRules" resultType="com.project.together.domain.Rule">
         SELECT * FROM Rule
         ORDER BY rule_num DESC

@@ -19,17 +19,8 @@
 <!-- 섹션1 -->
 <div class="slick-container">
     <div class="slick fade">
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225301988.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225000752.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225459830.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225719222.jpg}" alt="" class="swiperImg">
+        <div th:each="image : ${sliderImages}">
+            <img th:src="@{${image.filePath}}" alt="" class="swiperImg">
         </div>
     </div>
     <div class="progress-container">
@@ -105,7 +96,6 @@
                         <td>2</td>
                     </tr>
                     <tr>
-                        <td>3</td>
                         <td>3</td>
                         <td>3</td>
                         <td>3</td>
@@ -188,9 +178,7 @@
 </div>
 <!--섹션4-->
 <div class="tab-container">
-
     <p class="feeds"><strong>투게더 소식</strong></p>
-
     <div class="gnbBox">
         <ul class="mainMenuBox" id="nav-1">
             <li class="slide1"></li>
@@ -210,19 +198,15 @@
         </ul>
         <script src="/dist/js/header.js"></script>
     </div>
-
     <div class="tab-content" id="all-content">
         all
     </div>
-
     <div class="tab-content" id="tab1-content">
         notice
     </div>
-
     <div class="tab-content" id="tab2-content">
         news
     </div>
-
     <div class="tab-content" id="tab3-content">
         instagram
     </div>

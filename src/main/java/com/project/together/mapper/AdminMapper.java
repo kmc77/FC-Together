@@ -59,6 +59,8 @@ public interface AdminMapper {
 
     List<ClubPhoto> getAllClubPhoto();
 
+    List<ClubPhoto> getSectionClubPhoto();
+
     ClubPhoto findClubPhotoById(@Param("cpIdx") int cpIdx);
 
     void insertClubPhoto(ClubPhoto clubPhoto);
@@ -66,6 +68,8 @@ public interface AdminMapper {
     void updateClubPhoto(ClubPhoto clubPhoto);
 
     void deleteClubPhoto(List<Integer> cpIdxs);
+
+
 
     /* ======================================= */
 
@@ -280,4 +284,5 @@ public interface AdminMapper {
     List<Match> findW1MatchListByLeague(@Param("league") String league);
 
     void saveW1Match(Match matchRequest);
+
 }

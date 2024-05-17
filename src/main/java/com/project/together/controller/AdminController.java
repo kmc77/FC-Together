@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,37 @@ public class AdminController {
         System.out.println("users = " + users);
         return ResponseEntity.ok(users);
     }
+
+
+    // 섹션1 사진 정보 가져오기
+    @GetMapping("/layout/getSection1Photos")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ClubPhoto>> getSection1Photos() {
+        List<ClubPhoto> section1Photos = adminService.getSectionClubPhoto();
+
+        return ResponseEntity.ok(section1Photos);
+    }
+
+
+    // 섹션1 사진 업로드
+    @PostMapping("/layout/uploadSection1Photo")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String uploadSection1Photo(@ModelAttribute ClubPhoto clubPhoto,
+                                      @RequestParam("username") String username,
+                                      @RequestParam("file") MultipartFile file,
+                                      RedirectAttributes redirectAttributes) {
+        clubPhoto.setUsername(username);
+        adminService.saveSectionClubPhoto(clubPhoto);
+        System.out.println("컨트롤러 clubPhoto = " + clubPhoto);
+        if (!file.isEmpty()) {
+            // FileService를 이용하여 S3에 파일을 업로드하고 메타데이터를 저장
+            fileService.uploadSectionClubPhotoFilesToS3AndSaveMetadata(Collections.singletonList(file), clubPhoto.getTableGb());
+        }
+        redirectAttributes.addFlashAttribute("message", "사진이 성공적으로 추가되었습니다.");
+        return "redirect:/admin/layout/section1PhotoList";
+    }
+
+
 
     // ================================== QnA start
 
@@ -1008,7 +1040,7 @@ public class AdminController {
 
 
     // 규정 삭제
-    @PostMapping("/layout/ruleDelete")
+    /*@PostMapping("/layout/ruleDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
         System.out.println("칸트롤러 입장");
@@ -1016,7 +1048,31 @@ public class AdminController {
             // 먼저 각 규정 번호에 해당하는 파일을 S3에서 삭제합니다.
             ruleNums.forEach(fileService::deleteFilesByRuleNum);
             // 각 규정 번호에 해당하는 이미지 파일을 S3에서 삭제
-            ruleNums.forEach(imageService::deleteImageByRuleNum);
+            ruleNums.forEach(fileService::deleteImageByRuleNum);
+
+            // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
+            adminService.ruleDelete(ruleNums);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
+    // 규정 삭제
+    @PostMapping("/layout/ruleDelete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> ruleDelete(@RequestParam("ruleNum") List<Integer> ruleNums) {
+        System.out.println("컨트롤러 입장");
+        try {
+            // 먼저 각 규정 번호에 해당하는 파일을 S3에서 삭제합니다.
+            ruleNums.forEach(fileService::deleteFilesByRuleNum);
+
+            // 파일 이름으로 데이터 조회 후 삭제
+/*
+            fileService.findAndDeleteImagesByFilePath();
+*/
 
             // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
             adminService.ruleDelete(ruleNums);
@@ -1027,6 +1083,7 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     // ================================== Rule End
@@ -1111,7 +1168,7 @@ public class AdminController {
             // 먼저 각 번호에 해당하는 파일을 S3에서 삭제합니다.
             operationNums.forEach(fileService::deleteFilesByOperationNum);
             // 각 번호에 해당하는 이미지 파일을 S3에서 삭제
-            operationNums.forEach(imageService::deleteImageByOperationNum);
+            operationNums.forEach(fileService::deleteImageByOperationNum);
 
             // 모든 파일이 S3에서 삭제된 후, 데이터베이스에서 규정을 삭제합니다.
             adminService.operationDelete(operationNums);

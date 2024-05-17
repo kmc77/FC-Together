@@ -35,23 +35,18 @@
         <ul id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-            <li><a href="#/">목록</a></li>
-            <li><a href="#/">Beta</a></li>
-            <li><a href="#/">Gamma</a></li>
-            <li><a href="#/">Delta</a></li>`
-            <li><a href="#/">Epsilon</a></li>
+            <li><a href="#/list">User 목록</a></li>
+            <li><a href="#/section1photos">섹션 사진목록</a></li>
+            <li><a href="#/gamma">Gamma</a></li>
+            <li><a href="#/section1photoregistration">섹션 사진등록</a></li>
         </ul>
         <script src="/dist/js/adminpage.js"></script>
     </div>
 
-
-
-<!-- 테이블 시작 -->
-    <div class="container mx-auto py-6 px-4" >
+    <!-- 테이블 시작 -->
+    <div class="container mx-auto py-6 px-4" id="listContent"> <!-- 목록 콘텐츠 -->
         <h1 class="text-3xl py-4 border-b mb-10">User 목록</h1>
         <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
-
-        <!--<div id="selectedRowsBanner" class="bg-teal-200 fixed top-0 left-0 right-0 z-40 w-full shadow" style="display: none;">-->
             <div class="container mx-auto px-4 py-4">
                 <div class="flex md:items-center">
                     <div class="mr-4 flex-shrink-0">
@@ -63,7 +58,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="mb-4 flex justify-between items-center">
             <div class="flex-1 pr-4">
@@ -101,7 +95,7 @@
         </div>
 
         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
-            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative" id="mainTable">
                 <thead>
 
                 <!-- 테이블 항목 -->
@@ -141,17 +135,44 @@
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs providerId">소셜로그인 플렛폼</th>
 
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs provider">소셜로그인아이디</th>
-
-
                 </tr>
-                <!-- 테이블 항목 and -->
-
+                <!-- 테이블 항목 끝 -->
                 </thead>
+                <tbody id="userTableBody">
+                <!-- 사용자 데이터가 여기에 추가됩니다 -->
+                </tbody>
             </table>
         </div>
     </div>
-    <!-- 테이블 and -->
+    <!-- 테이블 끝 -->
 
+    <!-- 섹션1 사진 목록 -->
+    <div id="section1PhotoList" class="container mx-auto py-6 px-4" style="display: none;">
+        <!-- 섹션1 사진 목록이 여기에 추가됩니다 -->
+    </div>
+
+    <!-- 섹션1 사진 등록 폼 -->
+    <div id="section1PhotoForm" class="container mx-auto py-6 px-4" style="display: none;">
+        <h1 class="text-3xl py-4 border-b mb-10">섹션1 사진 등록</h1>
+        <form id="section1PhotoUploadForm" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="cpTitle" class="block text-gray-700">Title:</label>
+                <input type="text" id="cpTitle" name="cpTitle" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="cpContent" class="block text-gray-700">Content:</label>
+                <textarea id="cpContent" name="cpContent" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="file" class="block text-gray-700">Upload File:</label>
+                <input type="file" id="file" name="file" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+    <!-- 섹션1 사진 등록 폼 끝 -->
 
 </div>
 
@@ -180,12 +201,14 @@
     document.querySelector('.d-block').textContent = username + " 관리자";
 
     $(document).ready(function () {
+        // 기존 로직
+
         // 선택된 행들을 저장하는 배열
         var selectedRows = [];
         // 표시 버튼의 상태 (열림/닫힘)
         var isOpen = false;
 
-        // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를정하는 함수
+        // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
         var updateSelectedCount = function() {
             var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
             $('#selectedRowsBanner').css('top', navbarHeight);
@@ -198,7 +221,6 @@
                 $('#selectedRowsBanner').hide();
             }
         };
-
 
         // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
         $('#displayButton').click(function() {
@@ -294,15 +316,163 @@
                         }
                     });
 
-                    $('table').append(tr);
+                    $('#userTableBody').append(tr);
                 });
             }
         });
+
+        // 섹션1 사진 목록 탭 클릭 이벤트 추가
+        $('#nav-1 a[href="#/section1photos"]').click(function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            $('#listContent').hide(); // User 목록을 숨김
+            $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            loadSection1Photos(); // 섹션1 사진 데이터 로드 함수 호출
+            $('#section1PhotoList').show(); // 섹션1 사진 목록을 표시
+        });
+
+        // 섹션1 사진 등록 탭 클릭 이벤트 추가
+        $('#nav-1 a[href="#/section1photoregistration"]').click(function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            $('#listContent').hide(); // User 목록을 숨김
+            $('#section1PhotoList').hide(); // 섹션1 사진 목록을 숨김
+            $('#section1PhotoForm').show(); // 섹션1 사진 등록 폼을 표시
+        });
+
+        // 다른 탭 클릭 시 섹션1 사진 등록 폼과 목록을 숨김
+        $('#nav-1 a[href!="#/section1photos"][href!="#/section1photoregistration"]').click(function (event) {
+            $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            $('#section1PhotoList').hide(); // 섹션1 사진 목록을 숨김
+            $('#listContent').show(); // User 목록을 표시
+        });
+
+        function loadSection1Photos() {
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/getSection1Photos", // 섹션1 사진 데이터를 가져오는 API 엔드포인트
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                },
+                success: function (data) {
+                    var photos = data; // 받은 데이터
+                    var content = '<div class="container mx-auto py-6 px-4">';
+                    content += '<h1 class="text-3xl py-4 border-b mb-10">섹션1 사진 목록</h1>';
+                    content += '<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">';
+                    content += '<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">';
+                    content += '<thead>';
+                    content += '<tr class="text-left">';
+                    content += '<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">';
+                    content += '<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">';
+                    content += '<input id="selectAllCheckboxPhotos" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">';
+                    content += '</label>';
+                    content += '</th>';
+
+                    content += '<template>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"></th>';
+                    content += '</template>';
+
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpTitle">파일명</th>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs cpContent">파일 경로</th>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs tableGb">테이블 구분</th>';
+                    content += '</tr>';
+                    content += '</thead>';
+                    content += '<tbody>';
+
+                    // 파일 데이터 추가
+                    $.each(photos, function (i, photo) {
+                        // 사진 URL 추출
+                        var imgSrc = $(photo.cpContent).find('img').attr('src');
+
+                        content += '<tr>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-3"><label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"><input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" name="' + photo.cp_idx + '"></label></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 cpTitle"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.cpTitle + '</span></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 cpContent"><span class="text-gray-700 px-6 py-3 flex items-center"><img src="' + imgSrc + '" style="max-width: 100px;"></span></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 tableGb"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.tableGb + '</span></td>';
+                        content += '</tr>';
+                    });
+
+                    content += '</tbody>';
+                    content += '</table>';
+                    content += '</div>';
+                    content += '</div>';
+
+                    // 기존 콘텐츠를 섹션1 사진 목록으로 교체
+                    $('#section1PhotoList').html(content);
+
+                    // 체크박스 이벤트 다시 바인딩
+                    bindCheckboxEvents();
+                }
+            });
+        }
+
+        function bindCheckboxEvents() {
+            // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
+            $("#selectAllCheckboxPhotos").click(function(){
+                $(".rowCheckbox").prop('checked', $(this).prop('checked'));
+                selectedRows = [];
+                if ($(this).prop('checked')) {
+                    $('.rowCheckbox').each(function() {
+                        selectedRows.push(parseInt($(this).attr('name')));
+                    });
+                }
+                updateSelectedCount();
+            });
+
+            // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
+            $(document).on('click', '.rowCheckbox', function(){
+                var id = parseInt($(this).attr('name'));
+                if ($(this).prop('checked')) {
+                    selectedRows.push(id);
+                } else {
+                    var index = selectedRows.indexOf(id);
+                    if (index > -1) {
+                        selectedRows.splice(index, 1);
+                    }
+                }
+
+                // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+                if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
+                    $('#selectAllCheckboxPhotos').prop('checked', true);
+                } else {
+                    $('#selectAllCheckboxPhotos').prop('checked', false);
+                }
+                updateSelectedCount();
+            });
+        }
+
+        bindCheckboxEvents(); // 초기 로드 시 이벤트 바인딩
+
+        // 섹션1 사진 등록 폼 제출 시 username 값 추가
+        $('#section1PhotoUploadForm').submit(function(event) {
+            event.preventDefault(); // 기본 동작 방지
+
+            // username 값을 폼 데이터에 추가
+            var formData = new FormData(this);
+            formData.append('username', username);
+
+            // AJAX 요청으로 폼 데이터 전송
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('사진이 성공적으로 업로드되었습니다.');
+                    // 섹션1 사진 목록 갱신
+                    loadSection1Photos();
+                    // 섹션1 사진 등록 폼 숨기기
+                    $('#section1PhotoForm').hide();
+                    // 섹션1 사진 목록 표시
+                    $('#section1PhotoList').show();
+                },
+                error: function(error) {
+                    alert('사진 업로드에 실패하였습니다.');
+                }
+            });
+        });
     });
 </script>
-
-
-
 
 </body>
 </html>

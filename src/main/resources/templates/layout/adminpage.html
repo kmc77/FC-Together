@@ -45,8 +45,11 @@
 
     <!-- 테이블 시작 -->
     <div class="container mx-auto py-6 px-4" id="listContent"> <!-- 목록 콘텐츠 -->
-        <h1 class="text-3xl py-4 border-b mb-10">User 목록</h1>
-        <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-3xl py-4 border-b mb-10">User 목록</h1>
+            <button id="deleteUserButton" class="bg-red-500 text-white px-4 py-2 rounded-lg">선택된 사용자 삭제</button>
+        </div>
+        <div id="selectedRowsBannerUser" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
             <div class="container mx-auto px-4 py-4">
                 <div class="flex md:items-center">
                     <div class="mr-4 flex-shrink-0">
@@ -54,7 +57,7 @@
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
-                    <div id="selectionCount" class="text-teal-800 text-lg">0 rows are selected</div>
+                    <div id="selectionCountUser" class="text-teal-800 text-lg">0 행이 선택되었습니다.</div>
                 </div>
             </div>
         </div>
@@ -102,7 +105,7 @@
                 <tr class="text-left">
                     <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
                         <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                            <input id="selectAllCheckbox" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
+                            <input id="selectAllCheckboxUser" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
                         </label>
                     </th>
 
@@ -147,8 +150,26 @@
     <!-- 테이블 끝 -->
 
     <!-- 섹션1 사진 목록 -->
-    <div id="section1PhotoList" class="container mx-auto py-6 px-4" style="display: none;">
-        <!-- 섹션1 사진 목록이 여기에 추가됩니다 -->
+    <div id="section1PhotoListContainer" class="container mx-auto py-6 px-4" style="display: none;">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-3xl py-4 border-b mb-10">섹션1 사진 목록</h1>
+            <button id="deletePhotoButton" class="bg-red-500 text-white px-4 py-2 rounded-lg">선택된 사진 삭제</button>
+        </div>
+        <div id="selectedRowsBannerPhoto" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex md:items-center">
+                    <div class="mr-4 flex-shrink-0">
+                        <svg class="h-8 w-8 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div id="selectionCountPhoto" class="text-teal-800 text-lg">0 행이 선택되었습니다.</div>
+                </div>
+            </div>
+        </div>
+        <div id="section1PhotoList">
+            <!-- 섹션1 사진 목록이 여기에 추가됩니다 -->
+        </div>
     </div>
 
     <!-- 섹션1 사진 등록 폼 -->
@@ -204,21 +225,35 @@
         // 기존 로직
 
         // 선택된 행들을 저장하는 배열
-        var selectedRows = [];
+        var selectedRowsUser = [];
+        var selectedRowsPhoto = [];
         // 표시 버튼의 상태 (열림/닫힘)
         var isOpen = false;
 
         // 선택된 행의 수를 업데이트하고, 배너의 위치와 표시 상태를 정하는 함수
-        var updateSelectedCount = function() {
+        var updateSelectedCountUser = function() {
             var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
-            $('#selectedRowsBanner').css('top', navbarHeight);
+            $('#selectedRowsBannerUser').css('top', navbarHeight);
             // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
-            var checkedCount = $('.rowCheckbox:checked').length;
-            $('#selectionCount').text(checkedCount + " 행이 선택되었습니다.");
+            var checkedCount = $('.rowCheckboxUser:checked').length;
+            $('#selectionCountUser').text(checkedCount + " 행이 선택되었습니다.");
             if (checkedCount > 0) {
-                $('#selectedRowsBanner').show();
+                $('#selectedRowsBannerUser').show();
             } else {
-                $('#selectedRowsBanner').hide();
+                $('#selectedRowsBannerUser').hide();
+            }
+        };
+
+        var updateSelectedCountPhoto = function() {
+            var navbarHeight = $('.main-header.navbar.navbar-expand.navbar-white.navbar-light').outerHeight();
+            $('#selectedRowsBannerPhoto').css('top', navbarHeight);
+            // 체크된 rowCheckbox의 개수를 세어서 카운트를 업데이트
+            var checkedCount = $('.rowCheckboxPhoto:checked').length;
+            $('#selectionCountPhoto').text(checkedCount + " 행이 선택되었습니다.");
+            if (checkedCount > 0) {
+                $('#selectedRowsBannerPhoto').show();
+            } else {
+                $('#selectedRowsBannerPhoto').hide();
             }
         };
 
@@ -246,37 +281,70 @@
             $('.' + key).toggleClass('hidden');
         });
 
-        // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
-        $("#selectAllCheckbox").click(function(){
-            $(".rowCheckbox").prop('checked', $(this).prop('checked'));
-            selectedRows = [];
+        // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제 (User)
+        $("#selectAllCheckboxUser").click(function(){
+            $(".rowCheckboxUser").prop('checked', $(this).prop('checked'));
+            selectedRowsUser = [];
             if ($(this).prop('checked')) {
-                $('.rowCheckbox').each(function() {
-                    selectedRows.push(parseInt($(this).attr('name')));
+                $('.rowCheckboxUser').each(function() {
+                    selectedRowsUser.push(parseInt($(this).attr('name')));
                 });
             }
-            updateSelectedCount();
+            updateSelectedCountUser();
         });
 
-        // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
-        $(document).on('click', '.rowCheckbox', function(){
+        // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제 (Photo)
+        $("#selectAllCheckboxPhoto").click(function(){
+            $(".rowCheckboxPhoto").prop('checked', $(this).prop('checked'));
+            selectedRowsPhoto = [];
+            if ($(this).prop('checked')) {
+                $('.rowCheckboxPhoto').each(function() {
+                    selectedRowsPhoto.push(parseInt($(this).attr('name')));
+                });
+            }
+            updateSelectedCountPhoto();
+        });
+
+        // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제 (User)
+        $(document).on('click', '.rowCheckboxUser', function(){
             var id = parseInt($(this).attr('name'));
             if ($(this).prop('checked')) {
-                selectedRows.push(id);
+                selectedRowsUser.push(id);
             } else {
-                var index = selectedRows.indexOf(id);
+                var index = selectedRowsUser.indexOf(id);
                 if (index > -1) {
-                    selectedRows.splice(index, 1);
+                    selectedRowsUser.splice(index, 1);
                 }
             }
 
             // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
-            if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
-                $('#selectAllCheckbox').prop('checked', true);
+            if ($('.rowCheckboxUser:checked').length == $('.rowCheckboxUser').length) {
+                $('#selectAllCheckboxUser').prop('checked', true);
             } else {
-                $('#selectAllCheckbox').prop('checked', false);
+                $('#selectAllCheckboxUser').prop('checked', false);
             }
-            updateSelectedCount();
+            updateSelectedCountUser();
+        });
+
+        // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제 (Photo)
+        $(document).on('click', '.rowCheckboxPhoto', function(){
+            var id = parseInt($(this).attr('name'));
+            if ($(this).prop('checked')) {
+                selectedRowsPhoto.push(id);
+            } else {
+                var index = selectedRowsPhoto.indexOf(id);
+                if (index > -1) {
+                    selectedRowsPhoto.splice(index, 1);
+                }
+            }
+
+            // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+            if ($('.rowCheckboxPhoto:checked').length == $('.rowCheckboxPhoto').length) {
+                $('#selectAllCheckboxPhoto').prop('checked', true);
+            } else {
+                $('#selectAllCheckboxPhoto').prop('checked', false);
+            }
+            updateSelectedCountPhoto();
         });
 
         // 사용자 정보 키
@@ -308,7 +376,7 @@
                 $.each(users, function(i, principalDetails) {
                     var user = principalDetails.user;
                     var tr = $('<tr/>');
-                    tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckbox focus:outline-none focus:shadow-outline' name='" + user.userId + "'></label></td>");
+                    tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckboxUser focus:outline-none focus:shadow-outline' name='" + user.id + "'></label></td>");
 
                     $.each(user, function(key, value) {
                         if (userKeys.includes(key)) {
@@ -318,6 +386,7 @@
 
                     $('#userTableBody').append(tr);
                 });
+                updateSelectedCountUser(); // 초기화
             }
         });
 
@@ -326,23 +395,31 @@
             event.preventDefault(); // 기본 동작 방지
             $('#listContent').hide(); // User 목록을 숨김
             $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            $('#section1PhotoListContainer').show(); // 섹션1 사진 목록을 표시
+            selectedRowsPhoto = []; // 선택 항목 초기화
+            updateSelectedCountPhoto(); // 선택 항목 수 초기화
             loadSection1Photos(); // 섹션1 사진 데이터 로드 함수 호출
-            $('#section1PhotoList').show(); // 섹션1 사진 목록을 표시
         });
 
         // 섹션1 사진 등록 탭 클릭 이벤트 추가
         $('#nav-1 a[href="#/section1photoregistration"]').click(function (event) {
             event.preventDefault(); // 기본 동작 방지
             $('#listContent').hide(); // User 목록을 숨김
-            $('#section1PhotoList').hide(); // 섹션1 사진 목록을 숨김
+            $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
             $('#section1PhotoForm').show(); // 섹션1 사진 등록 폼을 표시
+            selectedRowsPhoto = []; // 선택 항목 초기화
+            updateSelectedCountPhoto(); // 선택 항목 수 초기화
         });
 
         // 다른 탭 클릭 시 섹션1 사진 등록 폼과 목록을 숨김
         $('#nav-1 a[href!="#/section1photos"][href!="#/section1photoregistration"]').click(function (event) {
             $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
-            $('#section1PhotoList').hide(); // 섹션1 사진 목록을 숨김
+            $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
             $('#listContent').show(); // User 목록을 표시
+            selectedRowsUser = []; // 선택 항목 초기화
+            selectedRowsPhoto = []; // 선택 항목 초기화
+            updateSelectedCountUser(); // 선택 항목 수 초기화
+            updateSelectedCountPhoto(); // 선택 항목 수 초기화
         });
 
         function loadSection1Photos() {
@@ -355,15 +432,13 @@
                 },
                 success: function (data) {
                     var photos = data; // 받은 데이터
-                    var content = '<div class="container mx-auto py-6 px-4">';
-                    content += '<h1 class="text-3xl py-4 border-b mb-10">섹션1 사진 목록</h1>';
-                    content += '<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">';
+                    var content = '<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">';
                     content += '<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">';
                     content += '<thead>';
                     content += '<tr class="text-left">';
                     content += '<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">';
                     content += '<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">';
-                    content += '<input id="selectAllCheckboxPhotos" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">';
+                    content += '<input id="selectAllCheckboxPhoto" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">';
                     content += '</label>';
                     content += '</th>';
 
@@ -384,7 +459,7 @@
                         var imgSrc = $(photo.cpContent).find('img').attr('src');
 
                         content += '<tr>';
-                        content += '<td class="border-dashed border-t border-gray-200 px-3"><label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"><input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" name="' + photo.cp_idx + '"></label></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-3"><label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"><input type="checkbox" class="form-checkbox rowCheckboxPhoto focus:outline-none focus:shadow-outline" name="' + photo.cpIdx + '"></label></td>';
                         content += '<td class="border-dashed border-t border-gray-200 cpTitle"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.cpTitle + '</span></td>';
                         content += '<td class="border-dashed border-t border-gray-200 cpContent"><span class="text-gray-700 px-6 py-3 flex items-center"><img src="' + imgSrc + '" style="max-width: 100px;"></span></td>';
                         content += '<td class="border-dashed border-t border-gray-200 tableGb"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.tableGb + '</span></td>';
@@ -393,7 +468,6 @@
 
                     content += '</tbody>';
                     content += '</table>';
-                    content += '</div>';
                     content += '</div>';
 
                     // 기존 콘텐츠를 섹션1 사진 목록으로 교체
@@ -406,37 +480,70 @@
         }
 
         function bindCheckboxEvents() {
-            // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제
-            $("#selectAllCheckboxPhotos").click(function(){
-                $(".rowCheckbox").prop('checked', $(this).prop('checked'));
-                selectedRows = [];
+            // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제 (User)
+            $("#selectAllCheckboxUser").click(function(){
+                $(".rowCheckboxUser").prop('checked', $(this).prop('checked'));
+                selectedRowsUser = [];
                 if ($(this).prop('checked')) {
-                    $('.rowCheckbox').each(function() {
-                        selectedRows.push(parseInt($(this).attr('name')));
+                    $('.rowCheckboxUser').each(function() {
+                        selectedRowsUser.push(parseInt($(this).attr('name')));
                     });
                 }
-                updateSelectedCount();
+                updateSelectedCountUser();
             });
 
-            // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제
-            $(document).on('click', '.rowCheckbox', function(){
+            // "모두 선택" 체크박스를 클릭하면 모든 행을 선택/선택 해제 (Photo)
+            $("#selectAllCheckboxPhoto").click(function(){
+                $(".rowCheckboxPhoto").prop('checked', $(this).prop('checked'));
+                selectedRowsPhoto = [];
+                if ($(this).prop('checked')) {
+                    $('.rowCheckboxPhoto').each(function() {
+                        selectedRowsPhoto.push(parseInt($(this).attr('name')));
+                    });
+                }
+                updateSelectedCountPhoto();
+            });
+
+            // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제 (User)
+            $(document).on('click', '.rowCheckboxUser', function(){
                 var id = parseInt($(this).attr('name'));
                 if ($(this).prop('checked')) {
-                    selectedRows.push(id);
+                    selectedRowsUser.push(id);
                 } else {
-                    var index = selectedRows.indexOf(id);
+                    var index = selectedRowsUser.indexOf(id);
                     if (index > -1) {
-                        selectedRows.splice(index, 1);
+                        selectedRowsUser.splice(index, 1);
                     }
                 }
 
                 // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
-                if ($('.rowCheckbox:checked').length == $('.rowCheckbox').length) {
-                    $('#selectAllCheckboxPhotos').prop('checked', true);
+                if ($('.rowCheckboxUser:checked').length == $('.rowCheckboxUser').length) {
+                    $('#selectAllCheckboxUser').prop('checked', true);
                 } else {
-                    $('#selectAllCheckboxPhotos').prop('checked', false);
+                    $('#selectAllCheckboxUser').prop('checked', false);
                 }
-                updateSelectedCount();
+                updateSelectedCountUser();
+            });
+
+            // 행 체크박스를 클릭하면 해당 행을 선택/선택 해제 (Photo)
+            $(document).on('click', '.rowCheckboxPhoto', function(){
+                var id = parseInt($(this).attr('name'));
+                if ($(this).prop('checked')) {
+                    selectedRowsPhoto.push(id);
+                } else {
+                    var index = selectedRowsPhoto.indexOf(id);
+                    if (index > -1) {
+                        selectedRowsPhoto.splice(index, 1);
+                    }
+                }
+
+                // 모든 행이 선택되었으면 "모두 선택" 체크박스를 체크, 그렇지 않으면 체크 해제
+                if ($('.rowCheckboxPhoto:checked').length == $('.rowCheckboxPhoto').length) {
+                    $('#selectAllCheckboxPhoto').prop('checked', true);
+                } else {
+                    $('#selectAllCheckboxPhoto').prop('checked', false);
+                }
+                updateSelectedCountPhoto();
             });
         }
 
@@ -464,13 +571,90 @@
                     // 섹션1 사진 등록 폼 숨기기
                     $('#section1PhotoForm').hide();
                     // 섹션1 사진 목록 표시
-                    $('#section1PhotoList').show();
+                    $('#section1PhotoListContainer').show();
                 },
                 error: function(error) {
                     alert('사진 업로드에 실패하였습니다.');
                 }
             });
         });
+
+        // 삭제 버튼 클릭 이벤트
+        $('#deleteUserButton').click(function() {
+            deleteSelectedItems(selectedRowsUser, '/admin/layout/deleteUsers', 'users');
+        });
+
+        $('#deletePhotoButton').click(function() {
+            deleteSelectedItems(selectedRowsPhoto, '/admin/layout/deleteSection1Photos', 'photos');
+        });
+
+        // 선택된 항목 삭제 함수
+        function deleteSelectedItems(selectedItems, apiUrl, itemType) {
+            if (selectedItems.length === 0) {
+                alert('삭제할 항목을 선택해주세요.');
+                return;
+            }
+
+            if (confirm('선택한 항목을 삭제하시겠습니까?')) {
+                var accessToken = localStorage.getItem('accessToken');
+                $.ajax({
+                    url: apiUrl,
+                    method: 'DELETE',
+                    headers: {
+                        "Authorization": "Bearer " + accessToken,
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify(selectedItems),
+                    success: function() {
+                        alert('선택한 항목이 삭제되었습니다.');
+                        if (itemType === 'users') {
+                            // User 목록을 갱신
+                            loadUserList();
+                        } else if (itemType === 'photos') {
+                            // 섹션1 사진 목록을 갱신
+                            loadSection1Photos();
+                        }
+                        // 선택 항목 초기화
+                        selectedRowsUser = [];
+                        selectedRowsPhoto = [];
+                        updateSelectedCountUser();
+                        updateSelectedCountPhoto();
+                    },
+                    error: function() {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+
+        // 사용자 목록 갱신 함수
+        function loadUserList() {
+            $.ajax({
+                url: "/admin/layout/getUserInfo",
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                },
+                success: function(data) {
+                    $('#userTableBody').empty(); // 기존 사용자 목록 비우기
+                    var users = data;
+                    $.each(users, function(i, principalDetails) {
+                        var user = principalDetails.user;
+                        var tr = $('<tr/>');
+                        tr.append("<td class='border-dashed border-t border-gray-200 px-3'><label class='text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer'><input type='checkbox' class='form-checkbox rowCheckboxUser focus:outline-none focus:shadow-outline' name='" + user.id + "'></label></td>");
+
+                        $.each(user, function(key, value) {
+                            if (userKeys.includes(key)) {
+                                tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                            }
+                        });
+
+                        $('#userTableBody').append(tr);
+                    });
+                    updateSelectedCountUser(); // 초기화
+                }
+            });
+        }
     });
 </script>
 

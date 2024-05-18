@@ -34,10 +34,6 @@ public class MyController {
         String username = principalDetails.getUsername();
         int userId = principalDetails.getId();
 
-        System.out.println("컨트롤러 qnaTitle = " + qnaTitle);
-        System.out.println("컨트롤러 qnaContent = " + qnaContent);
-        System.out.println("컨트롤러 username = " + username);
-        System.out.println("컨트롤러 userId = " + userId);
 
         // qnaTitle과 qnaContent를 사용하여 qna 테이블에 저장하는 로직 구현
         myService.saveQna(qnaTitle, qnaContent, userId, username);

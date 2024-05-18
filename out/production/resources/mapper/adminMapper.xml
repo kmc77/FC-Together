@@ -7,6 +7,46 @@
         SELECT * FROM user
     </select>
 
+    <!-- 사용자를 삭제하는 쿼리 -->
+    <delete id="deleteUsers">
+        DELETE FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 섹션1 사진을 삭제하는 쿼리 -->
+    <delete id="deleteSection1Photos">
+        DELETE FROM ClubPhoto WHERE cp_idx IN
+        <foreach item="id" collection="photoIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findUsersByIds" resultType="com.project.together.domain.User">
+        SELECT * FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteQnaByUsernames">
+        DELETE FROM qna WHERE username IN
+        <foreach item="username" collection="usernames" open="(" separator="," close=")">
+            #{username}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUser">
+        DELETE FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
     <!-- ==============  QnA Start ============== -->
 
     <select id="getAllQnAs" resultType="com.project.together.domain.Qna">

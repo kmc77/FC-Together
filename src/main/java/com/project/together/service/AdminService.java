@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private final AdminMapper adminMapper;
+
+
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -44,6 +47,30 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         return principalDetailsList;
+    }
+
+
+    public void deleteUsers(List<Long> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            throw new IllegalArgumentException("User ID list must not be null or empty");
+        }
+
+        // 중복된 ID 제거
+        Set<Long> uniqueUserIds = userIds.stream().collect(Collectors.toSet());
+
+        // uniqueUserIds 값을 이용해서 사용자 정보 추출
+        List<User> users = adminMapper.findUsersByIds(uniqueUserIds);
+        List<String> usernames = users.stream().map(User::getUsername).collect(Collectors.toList());
+
+        // Qna 테이블에서 관련 레코드를 먼저 삭제합니다.
+        adminMapper.deleteQnaByUsernames(usernames);
+
+        // User 테이블에서 해당 사용자를 삭제합니다.
+        adminMapper.deleteUser(uniqueUserIds);
+    }
+
+    public void deleteSection1Photos(List<Long> photoIds) {
+        adminMapper.deleteSection1Photos(photoIds);
     }
 
     // ================================== QnA start

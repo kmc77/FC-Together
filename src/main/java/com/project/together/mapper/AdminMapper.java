@@ -6,11 +6,16 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mapper
 public interface AdminMapper {
 
     List<User> getAllUsers();
+
+    void deleteUsers(@Param("userIds") List<Long> userIds);
+
+    void deleteSection1Photos(@Param("photoIds") List<Long> photoIds);
 
     List<Qna> getAllQnAs();
 
@@ -19,6 +24,13 @@ public interface AdminMapper {
     int updateQnA(@Param("qnaNum") String qnaNum, @Param("authId") String authId, @Param("qnaReply") String qnaReply);
 
     void deleteQna(List<Integer> qnaNums);
+
+
+    List<User> findUsersByIds(@Param("userIds") Set<Long> userIds);
+    void deleteQnaByUsernames(@Param("usernames") List<String> usernames);
+    void deleteUser(@Param("userIds") Set<Long> userIds);
+
+
 
     /* ======================================= */
 
@@ -284,5 +296,6 @@ public interface AdminMapper {
     List<Match> findW1MatchListByLeague(@Param("league") String league);
 
     void saveW1Match(Match matchRequest);
+
 
 }

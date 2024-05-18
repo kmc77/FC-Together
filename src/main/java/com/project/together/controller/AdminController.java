@@ -30,12 +30,10 @@ public class AdminController {
 
     private final AdminService adminService;
     private final FileService fileService;
-    private final ImageService imageService;
 
-    public AdminController(AdminService adminService, FileService fileService, ImageService imageService) {
+    public AdminController(AdminService adminService, FileService fileService) {
         this.adminService = adminService;
         this.fileService = fileService;
-        this.imageService = imageService;
     }
 
     // 사용자 정보 가져오기
@@ -43,7 +41,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<PrincipalDetails>> getUserInfo() {
         List<PrincipalDetails> users = adminService.getAllUsers();
-        System.out.println("users = " + users);
+
         return ResponseEntity.ok(users);
     }
 
@@ -74,6 +72,25 @@ public class AdminController {
         }
         redirectAttributes.addFlashAttribute("message", "사진이 성공적으로 추가되었습니다.");
         return "redirect:/admin/layout/section1PhotoList";
+    }
+
+
+    // 사용자 삭제
+    @DeleteMapping("/layout/deleteUsers")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteUsers(@RequestBody List<Long> userIds) {
+
+        adminService.deleteUsers(userIds);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    // 섹션1 사진 삭제
+    @DeleteMapping("/layout/deleteSection1Photos")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteSection1Photos(@RequestBody List<Long> photoIds) {
+        adminService.deleteSection1Photos(photoIds);
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -649,22 +666,26 @@ public class AdminController {
     // 선수 삭제
     @PostMapping("/layout/playerDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> playerDelete(@RequestParam("playerNums") List<Integer> playerNums, @RequestParam("playerType") String playerType, HttpServletResponse response) {
-        System.out.println("컨트롤러 playerNums = " + playerNums + ", playerType = " + playerType);
+    public ResponseEntity<Map<String, String>> playerDelete(@RequestBody Map<String, Object> requestData) {
+        Map<String, String> response = new HashMap<>();
         try {
+            List<Integer> playerNums = (List<Integer>) requestData.get("playerNums");
+            String playerType = (String) requestData.get("playerType");
+
             // 한 번의 호출로 모든 선수 번호 처리
             adminService.playerDelete(playerNums, playerType);
-            System.out.println("선수 삭제 완료!!");
-
             fileService.deleteS3FilesByPlayerNumsAndType(playerNums, playerType);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            response.put("message", "선수 삭제가 성공적으로 완료되었습니다.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "선수 삭제 중 오류가 발생했습니다.");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 
     // 선수 등록

@@ -178,9 +178,9 @@
         SELECT * FROM clubphoto WHERE cp_idx = #{cpIdx}
     </select>
 
-    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
-        INSERT INTO clubphoto (cp_idx, username, cp_title, cp_regdate, cp_hits, cp_content)
-        VALUES (#{cpIdx}, #{username}, #{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent})
+    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto" useGeneratedKeys="true" keyProperty="cpIdx">
+        INSERT INTO clubphoto (cp_title, cp_regdate, cp_hits, cp_content, table_gb, username)
+        VALUES (#{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent}, #{tableGb}, #{username})
     </insert>
 
     <update id="updateClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
@@ -195,6 +195,25 @@
             #{item}
         </foreach>
     </delete>
+
+    <insert id="insertFile" parameterType="com.project.together.domain.File">
+        INSERT INTO file (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <select id="findFilesByTableGb" resultType="com.project.together.domain.File">
+        SELECT * FROM file WHERE table_gb = #{tableGb}
+    </select>
+
+    <select id="findFileByFileIdx" resultType="com.project.together.domain.File">
+        SELECT * FROM file WHERE file_idx = #{fileIdx}
+    </select>
+
+    <delete id="deleteFileByFileIdx">
+        DELETE FROM file WHERE file_idx = #{fileIdx}
+    </delete>
+
+
 
 
     <!-- ==============  ClubPhoto End ============== -->

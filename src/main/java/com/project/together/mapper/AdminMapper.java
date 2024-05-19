@@ -82,7 +82,6 @@ public interface AdminMapper {
     void deleteClubPhoto(List<Integer> cpIdxs);
 
 
-
     /* ======================================= */
 
     List<ClubVideo> getAllClubVideo();
@@ -297,5 +296,11 @@ public interface AdminMapper {
 
     void saveW1Match(Match matchRequest);
 
+    void insertFile(File photoMetadata);
 
+    List<File> findFilesByTableGb(String sectionClubPhoto);
+
+    File findFileByFileIdx(Long fileIdx);
+
+    void deleteFileByFileIdx(Long fileIdx);
 }

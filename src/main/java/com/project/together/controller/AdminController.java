@@ -49,9 +49,8 @@ public class AdminController {
     // 섹션1 사진 정보 가져오기
     @GetMapping("/layout/getSection1Photos")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<ClubPhoto>> getSection1Photos() {
-        List<ClubPhoto> section1Photos = adminService.getSectionClubPhoto();
-
+    public ResponseEntity<List<File>> getSection1Photos() {
+        List<File> section1Photos = adminService.getSectionClubPhotoFiles();
         return ResponseEntity.ok(section1Photos);
     }
 
@@ -59,20 +58,16 @@ public class AdminController {
     // 섹션1 사진 업로드
     @PostMapping("/layout/uploadSection1Photo")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String uploadSection1Photo(@ModelAttribute ClubPhoto clubPhoto,
-                                      @RequestParam("username") String username,
-                                      @RequestParam("file") MultipartFile file,
-                                      RedirectAttributes redirectAttributes) {
-        clubPhoto.setUsername(username);
-        adminService.saveSectionClubPhoto(clubPhoto);
-        System.out.println("컨트롤러 clubPhoto = " + clubPhoto);
+    public ResponseEntity<String> uploadSection1Photo(@RequestParam("username") String username,
+                                                      @RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
-            // FileService를 이용하여 S3에 파일을 업로드하고 메타데이터를 저장
-            fileService.uploadSectionClubPhotoFilesToS3AndSaveMetadata(Collections.singletonList(file), clubPhoto.getTableGb());
+            // S3에 파일 업로드하고 메타데이터 저장
+            fileService.uploadSectionClubPhotoFilesToS3AndSaveMetadata(Collections.singletonList(file), "sectionClubPhoto", username);
+            System.out.println("파일이 성공적으로 업로드되었습니다.");
         }
-        redirectAttributes.addFlashAttribute("message", "사진이 성공적으로 추가되었습니다.");
-        return "redirect:/admin/layout/section1PhotoList";
+        return ResponseEntity.ok("사진이 성공적으로 추가되었습니다.");
     }
+
 
 
     // 사용자 삭제
@@ -88,10 +83,12 @@ public class AdminController {
     // 섹션1 사진 삭제
     @DeleteMapping("/layout/deleteSection1Photos")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteSection1Photos(@RequestBody List<Long> photoIds) {
-        adminService.deleteSection1Photos(photoIds);
+    public ResponseEntity<Void> deleteSection1Photos(@RequestBody List<Long> fileIdx) {
+        fileIdx.forEach(fileService::deleteFilesByFileIdx);
+        adminService.deleteSection1Photos(fileIdx);
         return ResponseEntity.noContent().build();
     }
+
 
 
 

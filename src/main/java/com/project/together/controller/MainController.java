@@ -1,7 +1,9 @@
 package com.project.together.controller;
 
+import com.project.together.domain.ClubVideo;
 import com.project.together.domain.File;
 import com.project.together.service.FileService;
+import com.project.together.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +15,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    /*private final FileService fileService;
+    private final FileService fileService;
+    private final MainService mainService;
 
-    public MainController(FileService fileService) {
-        this.fileService = fileService;
+
+    /*@GetMapping({"/", ""})
+    public String mainpage(Model model) {
+        List<File> sliderImages = fileService.getImagesForSectionClubPhoto();
+        model.addAttribute("sliderImages", sliderImages);
+        return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
     }*/
-
 
     @GetMapping({"/", ""})
     public String mainpage(Model model) {
-        /*List<File> sliderImages = fileService.getImagesForSection1Slider();
-        model.addAttribute("sliderImages", sliderImages);*/
+        List<File> sliderImages = fileService.getImagesForSectionClubPhoto();
+        List<ClubVideo> clubVideos = mainService.getAllClubVideos();
+        model.addAttribute("sliderImages", sliderImages);
+        model.addAttribute("clubVideos", clubVideos);
         return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
     }
 

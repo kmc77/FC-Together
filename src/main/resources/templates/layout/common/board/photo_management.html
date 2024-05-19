@@ -11,7 +11,6 @@
 <!-- Main Sidebar Container -->
 <aside th:replace="layout/common/sider :: load()"></aside>
 
-
 <!-- Content Wrapper. Contains page content -->
 <div id="app" class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -35,13 +34,12 @@
         <p th:text="${message}"></p>
     </div>
 
-
     <!-- Main content -->
     <div class="adminTab">
         <ul id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-            <li><a href="#/">구단사진 목록</a></li>
+            <li><a href="#/photos">구단사진 목록</a></li>
             <li><a href="#/">사진 등록</a></li>
         </ul>
         <script src="/dist/js/photo_management.js"></script>
@@ -106,11 +104,11 @@
         </script>
     </div>
 
-    <!-- CK Editor and -->
+    <!-- CK Editor end -->
 
     <!-- 테이블 시작 -->
     <div id="tableContainer" class="container mx-auto py-6 px-4">
-        <h1 class="text-3xl py-4 border-b mb-10">구단소식 목록</h1>
+        <h1 class="text-3xl py-4 border-b mb-10">구단사진 목록</h1>
         <div id="selectedRowsBanner" class="bg-teal-200 fixed top-60 left-0 right-0 z-50 w-full shadow" style="display: none;">
             <div class="container mx-auto px-4 py-4">
                 <div class="flex md:items-center">
@@ -139,17 +137,17 @@
                     </div>
                 </div>
             </div>
-            <!-- 테이블 검색 and -->
+            <!-- 테이블 검색 end -->
             <div>
                 <div class="shadow rounded-lg flex">
                     <div class="relative">
                         <button id="displayButton" class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/1999/xhtml" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
                                 <path d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5"></path>
                             </svg>
                             <span class="hidden md:block">Display</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/1999/xhtml" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
@@ -163,7 +161,7 @@
         </div>
 
         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
-            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative" id="photoTable">
                 <thead>
                 <!-- 테이블 항목 -->
                 <tr class="text-left">
@@ -186,16 +184,15 @@
 
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs tableGb">테이블 구분</th>
                 </tr>
-
-
-
-                <!-- 테이블 항목 and -->
+                <!-- 테이블 항목 end -->
                 </thead>
+                <tbody id="photoTableBody">
+                <!-- 데이터가 여기 추가됩니다 -->
+                </tbody>
             </table>
         </div>
     </div>
-    <!-- 테이블 and -->
-
+    <!-- 테이블 end -->
 
     <div class="buttonContainer" id="buttonContainer">
         <div class="leftContainer">
@@ -242,7 +239,7 @@
     // hidden input field에 username 설정
     document.querySelector('#username').value = username;
 
-     $(document).ready(function () {
+    $(document).ready(function () {
         // 선택된 행들을 저장하는 배열
         var selectedRows = [];
         // 표시 버튼의 상태 (열림/닫힘)
@@ -361,55 +358,52 @@
             } else if (selectedRows.length > 1) {
                 alert("확인할 글을 하나만 선택해주세요.");
             } else {
-                for (var i = 0; i < selectedRows.length; i++) {
-                    var cpIdx = selectedRows[i];
-                    var accessToken = localStorage.getItem('accessToken');
-                    // 선택된 newsIdx 해당하는 문의글 뷰페이지로 이동
-                    $.ajax({
-                        url: "/admin/layout/clubPhotoView",
-                        method: "GET",
-                        data: { cpIdx: cpIdx },
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-                        },
-                        success: function(clubPhotos) {
+                var cpIdx = selectedRows[0];
+                var accessToken = localStorage.getItem('accessToken');
+                // 선택된 cpIdx 해당하는 문의글 뷰페이지로 이동
+                $.ajax({
+                    url: "/admin/layout/clubPhotoView",
+                    method: "GET",
+                    data: { cpIdx: cpIdx },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                    },
+                    success: function(clubPhotos) {
 
-                            // 'update' 상태 설정
-                            $('form').data('state', 'update');
+                        // 'update' 상태 설정
+                        $('form').data('state', 'update');
 
-                            // 응답받은 데이터로 화면 갱신
-                            $('#num-value').text(clubPhotos.cpIdx); // 번호
-                            $('#date-value').text(clubPhotos.cpRegdate); // 등록일
-                            $('#title-value').text(clubPhotos.cpTitle); // 제목
-                            $('#content-html-value').html(clubPhotos.cpContent); // HTML 내용
+                        // 응답받은 데이터로 화면 갱신
+                        $('#num-value').text(clubPhotos.cpIdx); // 번호
+                        $('#date-value').text(clubPhotos.cpRegdate); // 등록일
+                        $('#title-value').text(clubPhotos.cpTitle); // 제목
+                        $('#content-html-value').html(clubPhotos.cpContent); // HTML 내용
 
+                        // "사진 등록" 탭 클릭
+                        $("#nav-1 li:contains('사진 등록') a").click();
 
-                            // "사진 등록" 탭 클릭
-                            $("#nav-1 li:contains('사진 등록') a").click();
+                        // 탭의 텍스트를 "사진 정보"으로 변경
+                        $("#nav-1 li a:contains('사진 등록')").text("사진 정보");
 
-                            // 탭의 텍스트를 "사진 정보"으로 변경
-                            $("#nav-1 li a:contains('사진 등록')").text("사진 정보");
+                        // Form submit 버튼의 텍스트를 "수정"으로 변경
+                        $(".btn-perspective .btn").text("수정");
 
-                            // Form submit 버튼의 텍스트를 "수정"으로 변경
-                            $(".btn-perspective .btn").text("수정");
+                        // 구단사진 수정을 위한 요청을 보내도록 폼의 action 속성 변경
+                        $('form').attr('action', '/admin/layout/clubPhotoUpdate/' + clubPhotos.cpIdx);
 
-                            // 구단사진 수정을 위한 요청을 보내도록 폼의 action 속성 변경
-                            $('form').attr('action', '/admin/layout/clubPhotoUpdate/' + clubPhotos.cpIdx);
+                        // cpIdx 값을 hidden input에 설정
+                        $("input[name='cpIdx']").val(clubPhotos.cpIdx);
+                    },
 
-                            // cpIdx 값을 hidden input에 설정
-                            $("input[name='cpIdx']").val(clubPhotos.cpIdx);
-                        },
-
-                        error: function(error) {
-                            // 에러 처리
-                            console.log(error);
-                        }
-                    });
-                }
+                    error: function(error) {
+                        // 에러 처리
+                        console.log(error);
+                    }
+                });
             }
         });
-     $('.writeButton').click(function() {
 
+        $('.writeButton').click(function() {
             // 'create' 상태 설정
             $('form').data('state', 'create');
 
@@ -428,7 +422,6 @@
             $("input[name='cpIdx']").remove();
         });
 
-        //
         $(document).ready(function() {
             $(".alert-success").delay(3000).fadeOut('slow');
         });
@@ -461,7 +454,7 @@
             }
         });
 
-    // ClubPhoto 정보 키
+        // ClubPhoto 정보 키
         var ClubPhotoKeys = ['cpIdx', 'username', 'cpTitle', 'cpContent', 'cpRegdate', 'cpHits', 'tableGb'];
 
         // 컬럼 선택 영역에 체크박스와 라벨을 추가
@@ -494,22 +487,35 @@
                     // ClubPhotoKeys 배열에 따라 순서대로 테이블에 데이터 추가
                     $.each(ClubPhotoKeys, function(j, key) {
                         var value = ClubPhoto[key];
-                        if (value !== undefined) {
-                            if (key === 'cpContent') {
-                                value = value.length > 10 ? value.substring(0, 10) + " • • •" : value;
-                            }
-
-                            tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
+                        if (key === 'cpContent' && value != null) {
+                            // cpContent에서 이미지 URL 추출
+                            var imgSrc = $(value).find('img').attr('src');
+                            value = '<img src="' + imgSrc + '" alt="이미지" style="max-width: 100px; max-height: 100px;">';
+                        } else {
+                            // value가 null이거나 undefined인 경우 빈 문자열로 설정
+                            value = value != null ? value : '';
                         }
+
+                        tr.append("<td class='border-dashed border-t border-gray-200 " + key + "'><span class='text-gray-700 px-6 py-3 flex items-center'>" + value + "</span></td>");
                     });
-                    $('table').append(tr);
+                    $('#photoTableBody').append(tr); // 변경된 부분
                 });
+            },
+            error: function(error) {
+                console.error('Error:', error);
             }
         });
+
+        // 구단사진 목록 탭 클릭 이벤트 추가
+        $('#nav-1 a[href="#/photos"]').click(function(event) {
+            event.preventDefault(); // 기본 동작 방지
+            selectedRows = []; // 선택 항목 초기화
+            $(".rowCheckbox").prop('checked', false); // 체크박스 상태 초기화
+            $('#selectAllCheckbox').prop('checked', false); // "모두 선택" 체크박스 상태 초기화
+            updateSelectedCount(); // 선택 항목 수 초기화
+        });
     });
-
 </script>
-
 
 </body>
 </html>

@@ -80,12 +80,18 @@
                         </dd>
                     </dl>
                     <dl>
-                        <dt id="content-label">영상내용</dt>
+                        <dt id="content-label">영상</dt>
                         <dd>
                             <iframe id="content-html-value" width="1000" height="720" src=""
                                     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                             </iframe>
                             <div class="notice-cont ql-editor" ></div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt id="contents-label">영상내용</dt>
+                        <dd>
+                            <em class="content-display" id="contents-value"></em>
                         </dd>
                     </dl>
                 </div>
@@ -407,9 +413,9 @@
                         $('#num-value').text(clubVideos.cvIdx); // 번호
                         $('#date-value').text(clubVideos.cvDate); // 등록일
                         $('#title-value').text(clubVideos.cvTitle); // 제목
-                        $('#content-html-value').html(clubVideos.cvContent); // HTML 내용
                         $('#tableGb-value').text(clubVideos.tableGb); // tableGb 값
                         $('#content-html-value').attr('src', clubVideos.mvTheOriginUrl);
+                        $('#contents-value').html(clubVideos.cvContent); // HTML 내용
 
                         // "영상 등록" 탭 클릭
                         $("#nav-1 li:contains('영상 등록') a").click();

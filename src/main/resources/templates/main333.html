@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
@@ -28,7 +30,7 @@
         <!-- 버튼은 JavaScript에서 동적으로 추가됩니다 -->
     </div>
 </div>
-<!-- 섹션2 -->
+<!--섹션2-->
 <div class="matchSchedule">
     <div class="matchImgDiv">
         <img src="/img/FcTogether.jpg" alt="" class="matchImg">
@@ -95,8 +97,10 @@
                         <td>3</td>
                         <td>3</td>
                         <td>3</td>
+                        <td>3</td>
                     </tr>
                     <tr>
+                        <td>4</td>
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
@@ -118,19 +122,56 @@
         </div>
     </div>
 </div>
-<!-- 섹션3 -->
+<!--섹션3-->
 <div class="videoDiv">
     <div class="v-story-wrap con">
         <div class="v-story-slider" data-aos="fade-up">
-            <div class="slider-item" th:each="video : ${clubVideos}">
-                <div class="img-box block">
-                    <iframe th:src="@{${video.mvTheOriginUrl}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box block">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="#" class="block">
+                    <div class="img-box">
+                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </div>
-<!-- 섹션4 -->
+<!--섹션4-->
 <div class="tab-container">
     <p class="feeds"><strong>투게더 소식</strong></p>
     <div class="gnbBox">
@@ -171,7 +212,7 @@
 </footer>
 
 <script>
-    // 섹션1
+    <!-- 섹션1 -->
     $(document).ready(function(){
         var $slickElement = $('.fade');
         var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
@@ -239,7 +280,7 @@
     function goToSlide(index) {
         $('.fade').slick('slickGoTo', index);
     }
-    // 섹션2
+    <!--    섹션2-->
     let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
@@ -283,7 +324,7 @@
     function nextSlide2() {
         showSlide2(currentIndex2 + 1);
     }
-    // 섹션3
+    <!--    섹션3-->
     console.clear();
     // animation on scroll
     AOS.init({
@@ -324,7 +365,7 @@
             });
         }
     });
-    // 섹션4
+    <!--    섹션4-->
     $(document).ready(function () {
         showTab('all');
     });

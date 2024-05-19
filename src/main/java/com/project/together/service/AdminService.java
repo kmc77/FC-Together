@@ -242,9 +242,8 @@ public class AdminService {
         adminMapper.deleteClubPhoto(cpIdxs);
     }
 
-    public void saveSectionClubPhoto(ClubPhoto clubPhoto) {
-        clubPhoto.setTableGb("sectionClubPhoto");
-        adminMapper.insertClubPhoto(clubPhoto);
+    public List<File> getSectionClubPhotoFiles() {
+        return adminMapper.findFilesByTableGb("sectionClubPhoto");
     }
 
 

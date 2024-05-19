@@ -291,8 +291,38 @@ public class FileService {
     }
 
     // SectionClubPhoto add
-    public void uploadSectionClubPhotoFilesToS3AndSaveMetadata(List<MultipartFile> multipartFiles, String tableGb) {
+    public void uploadSectionClubPhotoFilesToS3AndSaveMetadata(List<MultipartFile> multipartFiles, String tableGb, String username) {
+        for (MultipartFile file : multipartFiles) {
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String originalFilename = file.getOriginalFilename();
+                    String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                    String filePath = "sectionClubPhoto/" + fileName;
+
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(file.getSize());
+                    metadata.setContentType(file.getContentType());
+                    amazonS3.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), metadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+
+                    String fileUrl = amazonS3.getUrl(bucketName, filePath).toString();
+
+                    File photoMetadata = new File();
+                    photoMetadata.setFilePath(fileUrl);
+                    photoMetadata.setTableIdx(0); // 필요에 따라 수정
+                    photoMetadata.setFileName(originalFilename);
+                    photoMetadata.setTableGb(tableGb);
+                    adminMapper.insertFile(photoMetadata);
+                } catch (Exception e) {
+                    throw new RuntimeException("클럽 사진 업로드 실패: " + e.getMessage());
+                }
+            }
+        }
     }
+
+
+
+
 
     public void deleteFilesByStaffNum(int teamStaffNum) {
         List<File> filesToDelete = adminMapper.findFilesByTeamStaffNum(teamStaffNum);
@@ -448,6 +478,18 @@ public class FileService {
         }
     }
 
+    public void deleteFilesByFileIdx(Long fileIdx) {
+        File fileToDelete = adminMapper.findFileByFileIdx(fileIdx);
+        if (fileToDelete != null) {
+            String fileKey = getFileKeyFromUrl(fileToDelete.getFilePath());
+            if (fileKey != null && !fileKey.isEmpty()) {
+                amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileKey));
+            }
+            adminMapper.deleteFileByFileIdx(fileIdx);
+        }
+    }
+
+
     public void deleteImageByOperationNum(int operationNum) {
         List<String> imageUrls = adminMapper.findImageUrlsByOperationNum(operationNum);
         for (String imageUrl : imageUrls) {
@@ -482,5 +524,7 @@ public class FileService {
     }
 
 
-
+    public List<File> getImagesForSectionClubPhoto() {
+        return adminMapper.findFilesByTableGb("sectionClubPhoto");
+    }
 }

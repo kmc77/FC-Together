@@ -10,8 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
@@ -26,14 +24,11 @@
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
-    <div class="btn-bullets">
-        <button class="btn-bullet" onclick="goToSlide(0)"></button>
-        <button class="btn-bullet" onclick="goToSlide(1)"></button>
-        <button class="btn-bullet" onclick="goToSlide(2)"></button>
-        <button class="btn-bullet" onclick="goToSlide(3)"></button>
+    <div class="btn-bullets" id="btn-bullets">
+        <!-- 버튼은 JavaScript에서 동적으로 추가됩니다 -->
     </div>
 </div>
-<!--섹션2-->
+<!-- 섹션2 -->
 <div class="matchSchedule">
     <div class="matchImgDiv">
         <img src="/img/FcTogether.jpg" alt="" class="matchImg">
@@ -93,7 +88,6 @@
                         <td>2</td>
                         <td>2</td>
                         <td>2</td>
-                        <td>2</td>
                     </tr>
                     <tr>
                         <td>3</td>
@@ -101,10 +95,8 @@
                         <td>3</td>
                         <td>3</td>
                         <td>3</td>
-                        <td>3</td>
                     </tr>
                     <tr>
-                        <td>4</td>
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
@@ -113,7 +105,6 @@
                         <td>4</td>
                     </tr>
                     <tr>
-                        <td>5</td>
                         <td>5</td>
                         <td>5</td>
                         <td>5</td>
@@ -127,56 +118,19 @@
         </div>
     </div>
 </div>
-<!--섹션3-->
+<!-- 섹션3 -->
 <div class="videoDiv">
     <div class="v-story-wrap con">
         <div class="v-story-slider" data-aos="fade-up">
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box block">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
+            <div class="slider-item" th:each="video : ${clubVideos}">
+                <div class="img-box block">
+                    <iframe th:src="@{${video.mvTheOriginUrl}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--섹션4-->
+<!-- 섹션4 -->
 <div class="tab-container">
     <p class="feeds"><strong>투게더 소식</strong></p>
     <div class="gnbBox">
@@ -217,7 +171,7 @@
 </footer>
 
 <script>
-    <!--    섹션1-->
+    // 섹션1
     $(document).ready(function(){
         var $slickElement = $('.fade');
         var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
@@ -229,7 +183,7 @@
             cssEase: 'linear',
             autoplay: true,
             autoplaySpeed: autoplaySpeed, // 자동 재생 속도 설정
-            dots: true
+            dots: false // slick-dots를 비활성화
         });
 
         function startProgressBar() {
@@ -246,14 +200,24 @@
             });
         }
 
-        $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            resetProgressBar();
-        });
+        function updateBullets(slideCount) {
+            var bulletsContainer = $('#btn-bullets');
+            bulletsContainer.empty(); // 기존 버튼들 삭제
+            for (var i = 0; i < slideCount; i++) {
+                var bullet = $('<button class="btn-bullet"></button>');
+                bullet.attr('onclick', 'goToSlide(' + i + ')');
+                bulletsContainer.append(bullet);
+            }
+        }
 
-        $slickElement.on('afterChange', function(event, slick, currentSlide){
+        $slickElement.on('init reInit afterChange', function(event, slick, currentSlide){
             startProgressBar();
             $('.btn-bullet').removeClass('active');
             $('.btn-bullet').eq(currentSlide).addClass('active');
+        });
+
+        $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            resetProgressBar();
         });
 
         $('.btn-bullet').on('click', function(){
@@ -265,9 +229,17 @@
             $slickElement.slick('slickNext');
         });
 
+        // 초기화 후 동적으로 버튼 업데이트
+        var slideCount = $('.fade').slick('getSlick').slideCount;
+        updateBullets(slideCount);
+
         startProgressBar(); // 초기 프로그레스 바 상태 시작
     });
-    <!--    섹션2-->
+
+    function goToSlide(index) {
+        $('.fade').slick('slickGoTo', index);
+    }
+    // 섹션2
     let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
@@ -311,7 +283,7 @@
     function nextSlide2() {
         showSlide2(currentIndex2 + 1);
     }
-    <!--    섹션3-->
+    // 섹션3
     console.clear();
     // animation on scroll
     AOS.init({
@@ -352,7 +324,7 @@
             });
         }
     });
-    <!--    섹션4-->
+    // 섹션4
     $(document).ready(function () {
         showTab('all');
     });

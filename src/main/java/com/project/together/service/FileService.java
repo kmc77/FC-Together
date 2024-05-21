@@ -524,7 +524,4 @@ public class FileService {
     }
 
 
-    public List<File> getImagesForSectionClubPhoto() {
-        return adminMapper.findFilesByTableGb("sectionClubPhoto");
-    }
 }

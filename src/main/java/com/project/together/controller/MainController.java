@@ -15,25 +15,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final FileService fileService;
     private final MainService mainService;
 
 
-    /*@GetMapping({"/", ""})
-    public String mainpage(Model model) {
-        List<File> sliderImages = fileService.getImagesForSectionClubPhoto();
-        model.addAttribute("sliderImages", sliderImages);
-        return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
-    }*/
-
     @GetMapping({"/", ""})
     public String mainpage(Model model) {
-        List<File> sliderImages = fileService.getImagesForSectionClubPhoto();
+        List<File> sliderImages = mainService.getImagesForSectionClubPhoto();
         List<ClubVideo> clubVideos = mainService.getAllClubVideos();
+
+        // 비디오 목록을 최대 5개까지만 자르기
+        if (clubVideos.size() > 5) {
+            clubVideos = clubVideos.subList(0, 5);
+        }
+
         model.addAttribute("sliderImages", sliderImages);
         model.addAttribute("clubVideos", clubVideos);
         return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
     }
+
 
 
     @GetMapping("/club/clubpage")

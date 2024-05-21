@@ -6,5 +6,9 @@
         SELECT * FROM clubvideo
     </select>
 
+    <select id="findFilesByTableGb" resultType="com.project.together.domain.File">
+        SELECT * FROM file WHERE table_gb = #{tableGb}
+    </select>
+
 
 </mapper>

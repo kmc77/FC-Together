@@ -69,7 +69,6 @@ public class AdminController {
     }
 
 
-
     // 사용자 삭제
     @DeleteMapping("/layout/deleteUsers")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

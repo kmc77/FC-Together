@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>newsView</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/newsview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -13,18 +15,29 @@
     <div class="mediaRoomContainer">
         <div class="mediaRoomContents">
             <div class="newsInformation">
-                <div class="titleBox"><p th:text="${news.newsTitle}"></p>
+                <div class="titleBox">
+                    <p th:text="${news.newsTitle}"></p>
                     <div>
-                        <div class="titleInfo"><p>작성자</p>
-                            <p th:text="${news.username}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-user"></i>
+                            <p>작성자</p>
+                            <p th:text="${news.username}"></p>
+                        </div>
                         <div class="line"></div>
-                        <div class="titleInfo"><p>작성일</p>
-                            <p th:text="${news.newsRegdate}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-calendar"></i>
+                            <p>작성일</p>
+                            <p th:text="${news.newsRegdate}"></p>
+                        </div>
                         <div class="line"></div>
-                        <div class="titleInfo"><p>조회수</p>
-                            <p th:text="${news.newsHits}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-eye"></i>
+                            <p>조회수</p>
+                            <p th:text="${news.newsHits}"></p>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="newsContent">
                 <div class="content">

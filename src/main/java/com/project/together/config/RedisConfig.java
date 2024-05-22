@@ -1,4 +1,3 @@
-/*
 package com.project.together.config;
 
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,6 +13,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
+/*
 @Configuration
 @EnableCaching
 public class RedisConfig {

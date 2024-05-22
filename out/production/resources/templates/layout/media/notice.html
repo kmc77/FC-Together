@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/notice.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -97,8 +99,8 @@
                             '<a href="/media/noticeview?no=' + notice.noticeNum + '" class="notice-tit">' + notice.noticeTitle + '</a>' +
                             '</div>' +
                             '<div class="col">' +
-                            '<span class="txt-num">' + notice.noticeDate + '</span>' +
-                            '<span class="txt-hit dot">' + notice.noticeHits + '</span>' +
+                            '<span class="txt-num"><i class="fa-regular fa-calendar"></i> ' + notice.noticeDate + '</span>' +
+                            '<span class="txt-hit dot"><i class="fa-regular fa-eye"></i> ' + notice.noticeHits + '</span>' +
                             '</div>' +
                             '</div>';
                     });

@@ -1073,7 +1073,7 @@ a {
 .faq-item-tit:hover {text-decoration:none}
 .faq-item-tit .faq-q {display:block; line-height:1.5; font-size:17px}
 .faq-item-tit .faq-category {display:inline-block; min-width:70px; height:23px; margin-bottom:5px; padding:0px 5px; border-radius:5px; line-height:25px; color:#fff; font-size:12px; text-align:center; white-space:nowrap; box-sizing:border-box}
-.faq-item-tit .faq-category.faq-cate {background:#f71b73}
+.faq-item-tit .faq-category.faq-cate {background:#0b6f0f}
 .faq-item-tit .faq-category.faq-cate.회원가입 { background: #1b73f7; }
 
 .faq-item-tit .is-file {margin-left:2px}

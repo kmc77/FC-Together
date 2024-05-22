@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>photo</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/photoview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -15,14 +17,23 @@
             <div class="photoInformation">
                 <div class="titleBox"><p th:text="${clubPhoto.cpTitle}"></p>
                     <div>
-                        <div class="titleInfo"><p>작성자</p>
-                            <p th:text="${clubPhoto.username}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-user"></i>
+                            <p>작성자</p>
+                            <p th:text="${clubPhoto.username}"></p>
+                        </div>
                         <div class="line"></div>
-                        <div class="titleInfo"><p>작성일</p>
-                            <p th:text="${clubPhoto.cpRegdate}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-calendar"></i>
+                            <p>작성일</p>
+                            <p th:text="${clubPhoto.cpRegdate}"></p>
+                        </div>
                         <div class="line"></div>
-                        <div class="titleInfo"><p>조회수</p>
-                            <p th:text="${clubPhoto.cpHits}"></p></div>
+                        <div class="titleInfo">
+                            <i class="fa-regular fa-eye"></i>
+                            <p>조회수</p>
+                            <p th:text="${clubPhoto.cpHits}"></p>
+                        </div>
                     </div>
                 </div>
             </div>

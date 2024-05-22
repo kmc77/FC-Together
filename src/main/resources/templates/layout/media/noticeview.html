@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${notice.noticeTitle}">Title</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/noticeview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -18,21 +20,22 @@
                     <p th:text="${notice.noticeTitle}">제목</p>
                     <div>
                         <div class="titleInfo">
-                            <p>작성자</p>
+                            <p><i class="fa-regular fa-user"></i> 작성자</p>
                             <p th:text="${notice.username}">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p>작성일</p>
+                            <p><i class="fa-regular fa-calendar"></i> 작성일</p>
                             <p th:text="${notice.noticeDate}">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p>조회수</p>
+                            <p><i class="fa-regular fa-eye"></i> 조회수</p>
                             <p th:text="${notice.noticeHits}">Hits</p>
                         </div>
                     </div>
                 </div>
+                <div class="share"><div class="shareBtn link">"공유 아이콘 추가예정"</div></span></div>
             </div>
             <div class="noticeContent">
                 <!-- 글 내용 -->

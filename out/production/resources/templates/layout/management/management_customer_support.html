@@ -2,7 +2,9 @@
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>management_customer_support</title>
+    <title>경영 / 고객 지원</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/management/management_customer_support.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -200,11 +202,12 @@
                     var title = item[`${sectionName}Title`];
                     var date = item[`${sectionName}Date`];
                     var hits = item[`${sectionName}Hits`];
-                    var additionalInfo = `<td>${item.username}</td><td>${hits}</td>`;
+                    var additionalInfo = `<td>${item.username}</td>
+                                          <td><i class="fa-regular fa-eye"></i> ${hits}</td>`;
                     htmlContent += `<tr>
                                         <td>${num}</td>
-                                        <th><a href="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <span class="file-icon">📎</span>' : ''}</th>
-                                        <td>${date}</td>
+                                        <th><a href="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <i class="fa-solid fa-paperclip file-icon"></i>' : ''}</th>
+                                        <td><i class="fa-regular fa-calendar"></i> ${date}</td>
                                         ${additionalInfo}
                                     </tr>`;
                 });

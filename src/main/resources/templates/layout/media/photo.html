@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
      <title>photo</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/photo.css" rel="stylesheet"/>
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -119,8 +121,10 @@
                             '<div class="photo-thumbnail" style="background-image: url(' + imgSrc + ');"></div>' +
                             '<div class="photo-contents">' +
                             '<div class="photo-title">' + photo.cpTitle + '</div>' +
-                            '<div class="photo-date-and-hits">' + photo.cpRegdate + ' • ' + photo.cpHits + '</div>' +
-                            // 여기에 새로운 영역을 추가합니다.
+                            '<div class="photo-date-and-hits">' +
+                                            '<i class="fa-regular fa-calendar"></i> ' + photo.cpRegdate +
+                                            ' <i class="fa-regular fa-eye"></i> ' + photo.cpHits +
+                                        '</div>' +
                             '<div class="photo-table">' +
                                 '<p>' + photo.tableGb + '</p>' +
                             '</div>' +

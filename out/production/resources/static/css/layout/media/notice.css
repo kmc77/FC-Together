@@ -195,12 +195,9 @@ a {
     font-weight: 700;
 }
 
-.dot::before {
-    content: "•";
-}
 
-.txt-num, .txt-hit {
-    color: #7e7a7a;
+.txt-num {
+    margin-right: 10px; /* 원하는 오른쪽 마진 값으로 설정 */
 }
 
 

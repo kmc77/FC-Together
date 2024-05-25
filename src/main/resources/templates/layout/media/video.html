@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
-     <meta charset="UTF-8">
-     <title>notice</title>
+    <meta charset="UTF-8">
+    <title>notice</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/video.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -125,8 +127,11 @@
                                 <div class="video-thumbnail" style="background-image: url('${thumbnailUrl}');"></div>
                                 <div class="video-contents">
                                     <div class="video-title">${video.cvTitle}</div>
-                                    <div class="video-date-and-hits">${video.cvDate} • ${video.cvHits}</div>
-                                    <div class="video-table">${video.tableGb}</div>
+                                    <div class="video-date-and-hits">
+                                        <i class="fa-regular fa-calendar"></i> ${video.cvDate}
+                                        <i class="fa-regular fa-eye"></i> ${video.cvHits}
+                                    </div>
+                                    <div class="video-table"><p>${video.tableGb}</p></div>
                                 </div>
                             </div>
                         </a>`;

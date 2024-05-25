@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>header</title>
+    <!-- 파비콘 설정 -->
+    <link rel="icon" href="/img/FcTogether-removebg.png" type="image/png">
     <link href="/css/layout/header.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -30,6 +32,29 @@
      <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
  </div>-->
 </div>
+<script>
+    function setTokenAndRedirect(event, url) {
+         event.preventDefault();
+         const token = localStorage.getItem('accessToken');
+         if (token) {
+             const xhr = new XMLHttpRequest();
+             xhr.open('GET', url, true);
+             xhr.setRequestHeader('Authorization', token);
+             xhr.onreadystatechange = function () {
+                 if (xhr.readyState === XMLHttpRequest.DONE) {
+                     if (xhr.status === 200) {
+                         window.location.href = url;
+                     } else {
+                         console.error('Failed to load page:', xhr.status);
+                     }
+                 }
+             };
+             xhr.send();
+         } else {
+             window.location.href = url;
+         }
+     }
+</script>
 
 <header class="l-header p-header" role="banner">
     <div class="p-header-wrapper">
@@ -75,12 +100,12 @@
                         </ul>
                     </li>
                     <li>
-                        <a th:href="@{/media/notice}">미디어 센터</a>
+                        <a href="#" onclick="setTokenAndRedirect(event, '/media/notice')">미디어 센터</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/media/notice}">공지 사항</a></li>
-                            <li><a th:href="@{/media/news}">구단 소식</a></li>
-                            <li><a th:href="@{/media/photo}">구단 사진</a></li>
-                            <li><a th:href="@{/media/video}">구단 영상</a></li>
+                            <li><a href="#" onclick="setTokenAndRedirect(event, '/media/notice')">공지 사항</a></li>
+                            <li><a href="#" onclick="setTokenAndRedirect(event, '/media/news')">구단 소식</a></li>
+                            <li><a href="#" onclick="setTokenAndRedirect(event, '/media/photo')">구단 사진</a></li>
+                            <li><a href="#" onclick="setTokenAndRedirect(event, '/media/video')">구단 영상</a></li>
                         </ul>
                     </li>
                     <li>
@@ -237,6 +262,7 @@
         location.href = '/user/Logout';
     }
 </script>
+
 
 
 <script>

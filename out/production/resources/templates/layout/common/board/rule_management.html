@@ -42,7 +42,7 @@
         <ul id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-            <li><a href="#/">규정 목록</a></li>
+            <li><a href="#/" id="ruleListTab">규정 목록</a></li>
             <li><a href="#/">규정 작성</a></li>
         </ul>
         <script src="/dist/js/rule_management.js"></script>
@@ -264,6 +264,18 @@
                 $('#selectedRowsBanner').hide();
             }
         };
+
+        // 규정 목록 탭 클릭 이벤트 핸들러
+        $('#ruleListTab').click(function() {
+            // 모든 체크박스 해제
+            $(".rowCheckbox").prop('checked', false);
+            $("#selectAllCheckbox").prop('checked', false);
+            // 선택된 행 배열 초기화
+            selectedRows = [];
+            // 선택된 행 수 업데이트
+            updateSelectedCount();
+        });
+
 
         // 표시 버튼을 클릭하면 열림/닫힘 상태를 토글하고, 컬럼 선택 영역을 표시/숨김
         $('#displayButton').click(function() {

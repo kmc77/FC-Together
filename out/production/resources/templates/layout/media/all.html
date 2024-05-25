@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>all</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/all.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -197,7 +199,10 @@
                         <div class="notice-thumbnail" style="background-image: url('${imgUrl}');"></div>
                         <div class="notice-contents">
                             <p class="notice-title">${title}</p>
-                            <div class="notice-date-and-hits">${regdate} • ${hits}</div>
+                            <div class="notice-date-and-hits">
+                                <i class="fa-regular fa-calendar"></i> ${regdate}
+                                <i class="fa-regular fa-eye"></i> ${hits}
+                            </div>
                             <div class="notice-table">
                                 <p>${tableGb}</p>
                             </div>
@@ -214,7 +219,10 @@
                         <div class="${type}-thumbnail" style="background-image: url('${imgUrl}');"></div>
                         <div class="${type}-contents">
                             <p class="${type}-title">${title}</p>
-                            <div class="${type}-date-and-hits">${regdate} • ${hits}</div>
+                            <div class="${type}-date-and-hits">
+                                <i class="fa-regular fa-calendar"></i> ${regdate}
+                                <i class="fa-regular fa-eye"></i> ${hits}
+                            </div>
                             <div class="${type}-table">
                                 <p>${tableGb}</p>
                             </div>

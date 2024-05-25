@@ -1,24 +1,39 @@
 package com.project.together.controller;
 
-import com.project.together.config.auth.PrincipalDetails;
+import com.project.together.domain.ClubVideo;
+import com.project.together.domain.File;
+import com.project.together.service.FileService;
+import com.project.together.service.MainService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
+    private final MainService mainService;
+
 
     @GetMapping({"/", ""})
-    public String mainpage() {
-        return "main";
+    public String mainpage(Model model) {
+        List<File> sliderImages = mainService.getImagesForSectionClubPhoto();
+        List<ClubVideo> clubVideos = mainService.getAllClubVideos();
+
+        // 비디오 목록을 최대 5개까지만 자르기
+        if (clubVideos.size() > 5) {
+            clubVideos = clubVideos.subList(0, 5);
+        }
+
+        model.addAttribute("sliderImages", sliderImages);
+        model.addAttribute("clubVideos", clubVideos);
+        return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
     }
+
+
 
     @GetMapping("/club/clubpage")
     public String clubpage() {
@@ -48,24 +63,5 @@ public class MainController {
 
 
 
- /*   @GetMapping("/test/login")
-    public @ResponseBody String testLogin(Authentication authentication,
-                                          @AuthenticationPrincipal UserDetails userDetails) {
-        System.out.println("/test/login ========");
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("authentication : " + principalDetails.getUser());
-
-        System.out.println(" userDetails: " + userDetails.getUsername());
-        return "세션 정보 확인하기";
-    }
-
-    @GetMapping("/test/oauth/login")
-    public @ResponseBody String testOAuthLogin(
-            Authentication authentication) { //DI(의존성 주입)
-        System.out.println("/test/oauth/login =========");
-        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-        System.out.println("authentication : " + oauth2User.getAttributes());
-        return "OAuth 세션 ! 정보 확인하기";
-    }*/
 
 }

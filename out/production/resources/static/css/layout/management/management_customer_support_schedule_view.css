@@ -1,3 +1,6 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
 .cpContent img {
     max-width: 70%; /* 이미지의 최대 너비를 70%로 제한합니다. */
     height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지합니다. */
@@ -27,7 +30,7 @@
 }
 
 .tsInformation .titleBox > p {
-    font-size: 1.333rem;
+    font-size: 35px;
     line-height: 2rem;
     font-weight: 700;
     max-width: 910px;
@@ -37,18 +40,18 @@
     display: flex;
     font-size: 0.888rem;
     color: rgba(0, 0, 0, 0.5);
-    -webkit-box-align: center;
     align-items: center;
 }
 
 .tsInformation .titleBox > div .titleInfo {
-    display: grid;
-    grid-template-columns: 3.3em 1fr;
+    display: flex;
+    align-items: center;
     font-weight: 400;
+    margin-right: 1rem;
 }
 
-.tsInformation .titleBox > div .titleInfo p:first-child {
-    font-weight: 700;
+.tsInformation .titleBox > div .titleInfo p {
+    margin: 0 0.5rem;
 }
 
 .tsInformation .titleBox .line {
@@ -70,7 +73,7 @@
 
 .tsContent .content {
     padding: 3.111rem 2.111rem;
-    font-size: 0.944rem;
+    font-size: 1.1rem;
     letter-spacing: -0.6px;
 }
 

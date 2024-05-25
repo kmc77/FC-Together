@@ -5,9 +5,15 @@
     <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
+  <component name="DBNavigator.Project.DatabaseBrowserManager">
+    <autoscroll-to-editor value="false" />
+    <autoscroll-from-editor value="true" />
+    <show-object-properties value="true" />
+    <loaded-nodes />
+  </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="35262da7-d3c0-416d-90c6-c5ff591d4983">
-      <console name="Connection" type="STANDARD" schema="together" session="Main"><![CDATA[select * from teamstaff;]]></console>
+      <console name="Connection" type="STANDARD" schema="together" session="Main">select * from teamstaff;</console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -15,6 +21,10 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.ObjectQuickFilterManager">
+    <last-used-operator value="EQUAL" />
+    <filters />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>

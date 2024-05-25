@@ -10,31 +10,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
-<!--섹션1-->
+<!-- 섹션1 -->
 <div class="slick-container">
     <div class="slick fade">
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225301988.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225000752.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225459830.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225719222.jpg}" alt="" class="swiperImg">
+        <div th:each="image : ${sliderImages}">
+            <img th:src="@{${image.filePath}}" alt="" class="swiperImg">
         </div>
     </div>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="btn-bullets" id="btn-bullets">
+        <!-- 버튼은 JavaScript에서 동적으로 추가됩니다 -->
+    </div>
 </div>
-<!--섹션2-->
+<!-- 섹션2 -->
 <div class="matchSchedule">
     <div class="matchImgDiv">
         <img src="/img/FcTogether.jpg" alt="" class="matchImg">
@@ -47,11 +41,9 @@
                     <div class="slide">matchResult3</div>
                 </div>
             </div>
-
             <button onclick="prevSlide1()"> <</button>
             <button onclick="nextSlide1()"> ></button>
         </div>
-
         <div class="nextMatch">
             <h2 class="nextSchedule">다음 경기 일정</h2>
             <div class="slider-container2">
@@ -64,7 +56,6 @@
             <button onclick="prevSlide2()"> <</button>
             <button onclick="nextSlide2()"> ></button>
         </div>
-
         <div class="leagueRanking">
             <h3 class="leagueRank">리그 순위</h3>
             <div class="rankingTable">
@@ -97,11 +88,8 @@
                         <td>2</td>
                         <td>2</td>
                         <td>2</td>
-                        <td>2</td>
                     </tr>
                     <tr>
-                        <td>3</td>
-                        <td>3</td>
                         <td>3</td>
                         <td>3</td>
                         <td>3</td>
@@ -115,10 +103,8 @@
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
-                        <td>4</td>
                     </tr>
                     <tr>
-                        <td>5</td>
                         <td>5</td>
                         <td>5</td>
                         <td>5</td>
@@ -132,92 +118,49 @@
         </div>
     </div>
 </div>
-<!--섹션3-->
+<!-- 섹션3 -->
 <div class="videoDiv">
     <div class="v-story-wrap con">
         <div class="v-story-slider" data-aos="fade-up">
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box block">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
+            <div class="slider-item" th:each="video, iterStat : ${clubVideos}">
+                <div class="img-box block">
+                    <iframe th:src="@{${video.mvTheOriginUrl}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--섹션4-->
+<!-- 섹션4 -->
 <div class="tab-container">
-
     <p class="feeds"><strong>투게더 소식</strong></p>
-
     <div class="gnbBox">
         <ul class="mainMenuBox" id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
-                <li class="mainMenu">
-                    <a onclick="showTab('all')">전체</a>
-                </li>
-                <li class="mainMenu">
-                    <a onclick="showTab('tab1')">notice</a>
-                </li>
-                <li class="mainMenu">
-                    <a onclick="showTab('tab2')">news</a>
-                </li>
-                <li class="mainMenu">
-                    <a onclick="showTab('tab3')">instagram</a>
-                </li>
+            <li class="mainMenu">
+                <a onclick="showTab('all')">전체</a>
+            </li>
+            <li class="mainMenu">
+                <a onclick="showTab('tab1')">notice</a>
+            </li>
+            <li class="mainMenu">
+                <a onclick="showTab('tab2')">news</a>
+            </li>
+            <li class="mainMenu">
+                <a onclick="showTab('tab3')">instagram</a>
+            </li>
         </ul>
         <script src="/dist/js/header.js"></script>
     </div>
-
     <div class="tab-content" id="all-content">
         all
     </div>
-
     <div class="tab-content" id="tab1-content">
         notice
     </div>
-
     <div class="tab-content" id="tab2-content">
         news
     </div>
-
     <div class="tab-content" id="tab3-content">
         instagram
     </div>
@@ -228,79 +171,125 @@
 </footer>
 
 <script>
-    <!--    섹션1-->
-         $(document).ready(function(){
-            $('.fade').slick({
-                infinite: true,
-                speed: 800,
-                fade: true,
-                cssEase: 'linear',
-                autoplay: true,
-                autoplaySpeed: 3000
-            });
+    // 섹션1
+    $(document).ready(function(){
+        var $slickElement = $('.fade');
+        var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
 
-            $('.fade').on('click', function(){
-                $('.fade').slick('slickNext');
-            });
+        $slickElement.slick({
+            infinite: true,
+            speed: 300, // 애니메이션 속도를 빠르게 설정
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: autoplaySpeed, // 자동 재생 속도 설정
+            dots: false // slick-dots를 비활성화
         });
-    <!--    섹션2-->
-         let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        const sliderWrapper = document.querySelector('.slider-wrapper');
 
-        function showSlide(index) {
-            if (index < 0 || index >= totalSlides) {
-                return;
+        function startProgressBar() {
+            $(".progress-bar").css({
+                width: "100%",
+                transition: "width " + autoplaySpeed + "ms linear"
+            });
+        }
+
+        function resetProgressBar() {
+            $(".progress-bar").css({
+                width: 0,
+                transition: "width 0s"
+            });
+        }
+
+        function updateBullets(slideCount) {
+            var bulletsContainer = $('#btn-bullets');
+            bulletsContainer.empty(); // 기존 버튼들 삭제
+            for (var i = 0; i < slideCount; i++) {
+                var bullet = $('<button class="btn-bullet"></button>');
+                bullet.attr('onclick', 'goToSlide(' + i + ')');
+                bulletsContainer.append(bullet);
             }
-
-            const translateValue = -index * 100 + '%';
-            sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
-            currentIndex = index;
         }
 
-        function prevSlide1() {
-            showSlide(currentIndex - 1);
+        $slickElement.on('init reInit afterChange', function(event, slick, currentSlide){
+            startProgressBar();
+            $('.btn-bullet').removeClass('active');
+            $('.btn-bullet').eq(currentSlide).addClass('active');
+        });
+
+        $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            resetProgressBar();
+        });
+
+        $('.btn-bullet').on('click', function(){
+            var index = $(this).index();
+            $slickElement.slick('slickGoTo', index);
+        });
+
+        $('.swiperImg').on('click', function(){
+            $slickElement.slick('slickNext');
+        });
+
+        // 초기화 후 동적으로 버튼 업데이트
+        var slideCount = $('.fade').slick('getSlick').slideCount;
+        updateBullets(slideCount);
+
+        startProgressBar(); // 초기 프로그레스 바 상태 시작
+    });
+
+    function goToSlide(index) {
+        $('.fade').slick('slickGoTo', index);
+    }
+    // 섹션2
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const sliderWrapper = document.querySelector('.slider-wrapper');
+
+    function showSlide(index) {
+        if (index < 0 || index >= totalSlides) {
+            return;
         }
+        const translateValue = -index * 100 + '%';
+        sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
+        currentIndex = index;
+    }
 
-        function nextSlide1() {
-            showSlide(currentIndex + 1);
+    function prevSlide1() {
+        showSlide(currentIndex - 1);
+    }
+
+    function nextSlide1() {
+        showSlide(currentIndex + 1);
+    }
+
+    let currentIndex2 = 0;
+    const slides2 = document.querySelectorAll('.slide2');
+    const totalSlides2 = slides2.length;
+    const sliderWrapper2 = document.querySelector('.slider-wrapper2');
+
+    function showSlide2(index) {
+        if (index < 0 || index >= totalSlides2) {
+            return;
         }
+        const translateValue2 = -index * 100 + '%';
+        sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
+        currentIndex2 = index;
+    }
 
-        let currentIndex2 = 0;
-        const slides2 = document.querySelectorAll('.slide2');
-        const totalSlides2 = slides2.length;
-        const sliderWrapper2 = document.querySelector('.slider-wrapper2');
+    function prevSlide2() {
+        showSlide2(currentIndex2 - 1);
+    }
 
-        function showSlide2(index) {
-            if (index < 0 || index >= totalSlides2) {
-                return;
-            }
-
-            const translateValue2 = -index * 100 + '%';
-            sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
-            currentIndex2 = index;
-        }
-
-        function prevSlide2() {
-            showSlide2(currentIndex2 - 1);
-        }
-
-        function nextSlide2() {
-            showSlide2(currentIndex2 + 1);
-        }
-
-
-    <!--    섹션3-->
-        console.clear();
-
+    function nextSlide2() {
+        showSlide2(currentIndex2 + 1);
+    }
+    // 섹션3
+    console.clear();
     // animation on scroll
     AOS.init({
         duration:800,
         easing: 'ease',
     });
-
-
     $('.v-story-slider').slick({
         dots:true,
         draggable:false,
@@ -324,19 +313,10 @@
             },
         ],
     }).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-        /* 자바스크립트
-        if (currentSlide !== nextSlide) {
-            document.querySelectorAll('.slick-center + .slick-cloned').forEach((next) => {
-                // timeout required or Slick will overwrite the classes
-                setTimeout(() => next.classList.add('slick-current', 'slick-center'));
-            });
-        }
-        */
         // IE 호환성을 고려한 제이쿼리
         if (currentSlide !== nextSlide) {
             $('.slick-center + .slick-cloned').each(function(index, node) {
                 var $node = $(node);
-
                 setTimeout(function() {
                     $node.addClass('slick-current');
                     $node.addClass('slick-center');
@@ -344,17 +324,14 @@
             });
         }
     });
-
-    <!--    섹션4-->
-         $(document).ready(function () {
+    // 섹션4
+    $(document).ready(function () {
         showTab('all');
     });
-
     function showTab(tabName) {
         $('.tab-content').removeClass('active');
         $('#' + tabName + '-content').addClass('active');
     }
 </script>
-
 </body>
 </html>

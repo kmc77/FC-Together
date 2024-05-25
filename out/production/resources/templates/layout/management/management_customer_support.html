@@ -2,12 +2,13 @@
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>management_customer_support</title>
+    <title>경영 / 고객 지원</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/management/management_customer_support.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 </head>
 <body>
 <div class="management-container">
@@ -36,7 +37,7 @@
             </div>
 
             <section class="rule">
-                <!-- board seach area -->
+                <!-- board search area -->
                 <div id="board-search">
                     <div class="container">
                         <div class="search-window">
@@ -65,16 +66,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                          <!--  <tr th:each="rule : ${ruleList}">
-                                <td th:text="${rule.ruleNum}">번호</td>
-                                <th>
-                                    <a th:href="@{/management/management_customer_support_view(no=${rule.ruleNum})}" th:text="${rule.ruleTitle}">제목</a>
-                                    <span th:if="${filePresenceMap[rule.ruleNum]}" class="file-icon">📎</span> &lt;!&ndash; 파일이 있는 경우 아이콘 표시 &ndash;&gt;
-                                </th>
-                                <td th:text="${rule.ruleDate}">등록일</td>
-                                <td th:text="${rule.username}">작성자</td>
-                                <td th:text="${rule.ruleHits}">조회수</td>
-                            </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -82,7 +73,7 @@
             </section>
 
             <section class="operation" style="display: none;">
-                <!-- board seach area -->
+                <!-- board search area -->
                 <div id="operation_board-search">
                     <div class="container">
                         <div class="search-window">
@@ -97,7 +88,7 @@
                     </div>
                 </div>
 
-                <!-- operation_board list area -->
+                <!-- operation board list area -->
                 <div id="operation_board-list">
                     <div class="container">
                         <table class="board-table">
@@ -111,17 +102,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                           <!-- <tr th:each="operation : ${operationList}">
-                                <td th:text="${operation.operationNum}">번호</td>
-                                <th>
-                                    <a th:href="@{/management/management_customer_support_view(no=${operation.operationNum})}" th:text="${operation.operationTitle}">제목</a>
-                                    <span th:if="${filePresenceMap[operation.operationNum]}" class="file-icon">📎</span> &lt;!&ndash; 파일이 있는 경우 아이콘 표시 &ndash;&gt;
-                                </th>
-                                <td th:text="${operation.operationDate}">등록일</td>
-                                <td th:text="${operation.username}">작성자</td>
-                                <td th:text="${operation.operationHits}">조회수</td>
-                            </tr>-->
-
                             </tbody>
                         </table>
                     </div>
@@ -130,7 +110,6 @@
 
             <section class="faq" style="display: none;">
                 <div class="faq-list">
-                     <!-- Faq 데이터 목록 -->
                 </div>
             </section>
 
@@ -161,7 +140,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- 훈련일정 목록 항목 -->
                             </tbody>
                         </table>
                     </div>
@@ -172,52 +150,41 @@
                 <div class="container">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <!-- 페이지네이션 컨텐츠는 JavaScript에 의해 동적으로 생성될 것입니다 -->
                         </ul>
                     </nav>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
 <script>
     $(document).ready(function() {
-       // 데이터 캐시를 저장하기 위한 객체
         var sectionDataCache = {};
 
-        // 섹션 데이터를 로드하고 화면에 표시하는 함수
         function loadSectionData(sectionName, page = 0) {
-            // 캐시된 데이터가 있는 경우 캐시에서 로드
             if (sectionDataCache[sectionName] && sectionDataCache[sectionName].page === page) {
                 updateSectionHTML(sectionName, sectionDataCache[sectionName].data);
                 updatePagination(sectionName, sectionDataCache[sectionName].pageInfo);
                 return;
             }
 
-            // AJAX 요청을 통해 서버에서 섹션 데이터 로드
             $.ajax({
                 url: `/management/get${sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}Data?page=${page}`,
                 type: 'GET',
                 success: function(response) {
-                    // 섹션 이름에 따라 적절한 데이터 처리 로직 선택
                     let data;
                     if (sectionName === 'rule' || sectionName === 'operation' || sectionName === 'schedule') {
-                        data = response[`${sectionName}s`]; // 예: 'rules', 'operations', 'schedules'
-                        // 파일 존재 여부 추가 (rule 및 operation 섹션에만 적용)
+                        data = response[`${sectionName}s`];
                         if (sectionName !== 'schedule') {
                             data.forEach(item => item.file = response.filePresenceMap[item[`${sectionName}Num`]]);
                         }
                     } else if (sectionName === 'faq') {
-                        data = response.faqs; // FAQ 데이터 처리
+                        data = response.faqs;
                     } else {
-                        data = response.data; // 기타 섹션 데이터 처리
+                        data = response.data;
                     }
 
-                    // 캐시에 데이터 저장
                     sectionDataCache[sectionName] = {data: data, pageInfo: response.pageInfo};
-                    // HTML 업데이트
                     updateSectionHTML(sectionName, data);
                     updatePagination(sectionName, response.pageInfo);
                 },
@@ -227,99 +194,85 @@
             });
         }
 
-        // 섹션별 HTML 내용을 업데이트하는 함수
-       function updateSectionHTML(sectionName, data) {
-        var htmlContent = '';
-        if (sectionName === 'rule' || sectionName === 'operation' || sectionName === 'schedule') {
-            data.forEach(function(item) {
-                var num = item[`${sectionName}Num`];
-                var title = item[`${sectionName}Title`];
-                var date = item[`${sectionName}Date`];
-                var hits = item[`${sectionName}Hits`];
-
-                // 'schedule', 'rule', 'operation' 섹션에 공통적으로 적용되는 추가 정보
-                var additionalInfo = `<td>${item.username}</td><td>${hits}</td>`;
-
-                htmlContent += `<tr>
-                                    <td>${num}</td>
-                                    <th><a href="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <span class="file-icon">📎</span>' : ''}</th>
-                                    <td>${date}</td>
-                                    ${additionalInfo}
-                                </tr>`;
-            });
-        } else if (sectionName === 'faq') {
-            // FAQ 데이터를 카테고리별로 분류
-            let categories = {};
-            data.forEach(function(item) {
-                if (!categories[item.faqCategory]) {
-                    categories[item.faqCategory] = [];
-                }
-                categories[item.faqCategory].push(item);
-            });
-
-            // 각 카테고리별로 HTML 컨텐츠 생성
-            Object.keys(categories).forEach(function(category) {
-                htmlContent += `<div class="faq-category-title" aria-hidden="true" style="display:none;">${category}</div>`;
-                categories[category].forEach(function(item) {
-                    htmlContent += `<div class="faq-item" data-no="${item.faqId}">
-                                        <a role="button" class="faq-item-tit">
-                                            <span class="faq-category faq-cate">${item.faqCategory}</span>
-                                            <em class="faq-q">${item.faqQuestion}</em>
-                                        </a>
-                                        <div class="faq-item-cont">
-                                            <div class="faq-cont-area">
-                                                <div class="faq-a editor-area">${item.faqAnswer}</div>
-                                            </div>
-                                        </div>
-                                    </div>`;
+        function updateSectionHTML(sectionName, data) {
+            var htmlContent = '';
+            if (sectionName === 'rule' || sectionName === 'operation' || sectionName === 'schedule') {
+                data.forEach(function(item) {
+                    var num = item[`${sectionName}Num`];
+                    var title = item[`${sectionName}Title`];
+                    var date = item[`${sectionName}Date`];
+                    var hits = item[`${sectionName}Hits`];
+                    var additionalInfo = `<td>${item.username}</td>
+                                          <td><i class="fa-regular fa-eye"></i> ${hits}</td>`;
+                    htmlContent += `<tr>
+                                        <td>${num}</td>
+                                        <th><a href="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <i class="fa-solid fa-paperclip file-icon"></i>' : ''}</th>
+                                        <td><i class="fa-regular fa-calendar"></i> ${date}</td>
+                                        ${additionalInfo}
+                                    </tr>`;
                 });
-            });
+            } else if (sectionName === 'faq') {
+                let categories = {};
+                data.forEach(function(item) {
+                    if (!categories[item.faqCategory]) {
+                        categories[item.faqCategory] = [];
+                    }
+                    categories[item.faqCategory].push(item);
+                });
 
-            $('.faq-list').html(htmlContent);
+                Object.keys(categories).forEach(function(category) {
+                    htmlContent += `<div class="faq-category-title" aria-hidden="true" style="display:none;">${category}</div>`;
+                    categories[category].forEach(function(item) {
+                        htmlContent += `<div class="faq-item" data-no="${item.faqId}">
+                                            <a role="button" class="faq-item-tit">
+                                                <span class="faq-category faq-cate">${item.faqCategory}</span>
+                                                <em class="faq-q">${item.faqQuestion}</em>
+                                            </a>
+                                            <div class="faq-item-cont">
+                                                <div class="faq-cont-area">
+                                                    <div class="faq-a editor-area">${item.faqAnswer}</div>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                    });
+                });
+
+                $('.faq-list').html(htmlContent);
+            }
+
+            if (sectionName !== 'faq') {
+                $(`#${sectionName}_board-list table tbody`).html(htmlContent);
+            }
         }
 
-       // 섹션별로 HTML 컨텐츠 업데이트
-        if (sectionName !== 'faq') {
-            $(`#${sectionName}_board-list table tbody`).html(htmlContent);
-        }
-    }
+        function updatePagination(sectionName, pageInfo) {
+            var $pagination = $('#pagination .pagination');
+            $pagination.empty();
 
-
-
-      function updatePagination(sectionName, pageInfo) {
-            var $pagination = $('#pagination .pagination'); // 페이지네이션을 담고 있는 <ul> 태그 선택
-            $pagination.empty(); // 기존 페이지네이션 내용 제거
-
-            var totalPages = Math.ceil(pageInfo.total / pageInfo.size); // 전체 페이지 수 계산
-
-            // 데이터가 없거나 한 페이지만 필요한 경우에도 페이지네이션 버튼을 노출
+            var totalPages = Math.ceil(pageInfo.total / pageInfo.size);
             totalPages = Math.max(totalPages, 1);
 
             for (let i = 0; i < totalPages; i++) {
                 var isActive = pageInfo.page === i;
-                var isDisabled = pageInfo.total === 0; // 데이터가 없는 경우 비활성화
-                var $pageItem = $(`<li class="page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}"><a class="page-link" href="#">${i + 1}</a></li>`); // 페이지 아이템 생성
+                var isDisabled = pageInfo.total === 0;
+                var $pageItem = $(`<li class="page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}"><a class="page-link" href="#">${i + 1}</a></li>`);
 
                 if (!isDisabled) {
                     $pageItem.click(function(e) {
-                        e.preventDefault(); // 기본 이벤트 방지
-                        loadSectionData(sectionName, i); // 해당 페이지의 데이터 로드
+                        e.preventDefault();
+                        loadSectionData(sectionName, i);
                     });
                 }
 
-                $pagination.append($pageItem); // 페이지네이션에 페이지 아이템 추가
+                $pagination.append($pageItem);
             }
         }
-
-
-
 
         var waveBtnInit = function() {
             var mainTabs = document.querySelectorAll('.main-tab.wave');
             var mainIndicator = document.querySelector('.tab-bar .indicator');
             var sections = document.querySelectorAll('section');
 
-            // 인디케이터 위치 업데이트 함수
             function updateIndicator(indicator, tabIndex) {
                 var tab = mainTabs[tabIndex];
                 var tabWidth = tab.offsetWidth;
@@ -328,19 +281,17 @@
                 indicator.style.transform = `translateX(${tabOffset}px)`;
             }
 
-            // 섹션 표시 및 인디케이터 업데이트 함수
             function showSection(index) {
                 sections.forEach((section, i) => {
                     section.style.display = i === index ? 'block' : 'none';
                 });
-                updateIndicator(mainIndicator, index); // 인디케이터 위치 업데이트
+                updateIndicator(mainIndicator, index);
                 var sectionNames = ['rule', 'operation', 'faq', 'schedule'];
                 var sectionName = sectionNames[index];
-                loadSectionData(sectionName); // AJAX로 섹션 데이터 로드
-                updateMobileBreakText(index); // mobileBreak 텍스트 업데이트
+                loadSectionData(sectionName);
+                updateMobileBreakText(index);
             }
 
-            // 탭 클릭 이벤트 핸들러 및 웨이브 효과
             function addWaveEffect(tabs) {
                 tabs.forEach((tab, index) => {
                     tab.addEventListener('click', function(e) {
@@ -354,40 +305,36 @@
                         newRound.style.top = y + "px";
                         tab.appendChild(newRound);
 
-                        window.location.hash = 'tab' + (index + 1); // 해시 업데이트
-                        showSection(index); // 섹션 표시
+                        window.location.hash = 'tab' + (index + 1);
+                        showSection(index);
 
                         setTimeout(() => newRound.remove(), 1200);
                     });
                 });
             }
 
-            // mobileBreak 텍스트 업데이트 함수
             function updateMobileBreakText(index) {
-                var selectedTabText = mainTabs[index].querySelector('a').textContent.trim(); // 선택된 탭의 텍스트
+                var selectedTabText = mainTabs[index].querySelector('a').textContent.trim();
                 document.querySelector('.mobileBreak').textContent = selectedTabText;
             }
 
             function init() {
-            // URL 해시를 기반으로 해당 섹션을 표시하는 로직
-            var hash = window.location.hash;
-            var tabIndex = 0; // Default to first tab
-            if (hash) {
-                var tabsArray = Array.from(mainTabs); // NodeList를 배열로 변환
-                var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
-                tabIndex = match >= 0 ? match : 0;
+                var hash = window.location.hash;
+                var tabIndex = 0;
+                if (hash) {
+                    var tabsArray = Array.from(mainTabs);
+                    var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
+                    tabIndex = match >= 0 ? match : 0;
+                }
+                addWaveEffect(mainTabs);
+                showSection(tabIndex);
             }
-            addWaveEffect(mainTabs); // 웨이브 이펙트 및 탭 클릭 이벤트 추가
-            showSection(tabIndex); // 기반 URL 해시에 따른 탭 활성화
-        }
-
 
             init();
         };
 
-        waveBtnInit(); // 웨이브 버튼 초기화 함수 실행
+        waveBtnInit();
 
-       // 동적으로 생성된 FAQ 항목에 대한 토글 기능
         $(document).on('click', '.faq-item-tit', function() {
             $(this).parent('.faq-item').toggleClass('on');
         });

@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+import com.project.together.service.FileService;
 import com.project.together.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,12 @@ import java.util.Map;
 @RequestMapping("/image")
 public class ImageController {
 
-    private ImageService imageService;
+    private FileService fileService;
 
     @Autowired
-    public ImageController(ImageService imageService) {
+    public ImageController(FileService fileService) {
 
-        this.imageService = imageService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/upload")
@@ -35,7 +36,7 @@ public class ImageController {
 
         try {
 
-            String s3Url = imageService.imageUpload(request);
+            String s3Url = fileService.imageUpload(request);
 
             responseData.put("uploaded", true);
             responseData.put("url", s3Url);
@@ -59,7 +60,7 @@ public class ImageController {
             MultipartFile file = request.getFile("upload");
 
             // 이미지 업로드를 처리하는 서비스 메서드를 호출합니다.
-            String s3Url = imageService.ruleImageUpload(file); // 서비스 메서드 수정
+            String s3Url = fileService.ruleImageUpload(file); // 서비스 메서드 수정
 
             responseData.put("uploaded", true);
             responseData.put("url", s3Url);

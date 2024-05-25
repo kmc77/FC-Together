@@ -1,4 +1,27 @@
 package com.project.together.service;
 
+import com.project.together.domain.ClubVideo;
+import com.project.together.domain.File;
+import com.project.together.mapper.MainMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
 public class MainService {
+
+    private final MainMapper mainMapper;
+
+    /*@Cacheable(value = "clubVideosCache")*/
+    public List<ClubVideo> getAllClubVideos() {
+        return mainMapper.getAllClubVideos();
+    }
+
+    /*@Cacheable(value = "sliderImagesCache")*/
+    public List<File> getImagesForSectionClubPhoto() {
+        return mainMapper.findFilesByTableGb("sectionClubPhoto");
+    }
 }

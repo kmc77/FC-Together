@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/css/layout/footer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 <footer>
@@ -13,7 +14,7 @@
                 src="/img/footer/seongdonggu.png" alt="서울특별시 성동구" title=""></a>
         <a class="item" href="http://www.sdsportal.or.kr/" target="_blank"><img
                 src="/img/footer/seongdonggu-sportsClub.png" alt="성동구 체육회" title=""></a>
-        <a class="item" href="http://www.sdsportal.or.kr/" target="_blank"><img
+        <a class="item" href="https://www.google.com/search?q=%EC%84%B1%EB%8F%99%EA%B5%AC+%EC%8B%9C%EC%84%A4%EA%B4%80%EB%A6%AC%EA%B3%B5%EB%8B%A8&sca_esv=64bfd657b885de45&sca_upv=1&hl=ko&sxsrf=ADLYWIIfCrgnICpC4_0qlFkCSzcHh0T4mw%3A1715842089054&ei=KaxFZqvvArak2roPxpGViAg&udm=&oq=%EC%84%B1%EB%8F%99%EA%B5%AC+%EC%8B%9C%EC%84%A4&gs_lp=Egxnd3Mtd2l6LXNlcnAiEOyEseuPmeq1rCDsi5zshKQqAggAMgUQABiABDIFEAAYgAQyBBAAGB4yBBAAGB4yBhAAGB4YDzIGEAAYCBgeMgIQJjICECYyAhAmMgIQJkiSV1DTCVj5S3ADeAGQAQGYAcYBoAGBFKoBBDAuMTW4AQPIAQD4AQGYAgmgApoIqAIUwgIHECMYJxjqAsICEBAAGAMYtAIY6gIYjwHYAQHCAhAQLhgDGLQCGOoCGI8B2AEBwgIKECMYgAQYJxiKBcICCxAAGIAEGLEDGIMBwgILEC4YgAQYsQMYgwHCAgQQIxgnwgIREC4YgAQYsQMY0QMYgwEYxwHCAgQQLhgDwgIEEAAYA8ICERAuGIAEGLEDGIMBGMcBGK8BwgILEC4YgAQYxwEYrwHCAggQLhiABBjUAsICBRAuGIAEmAMFugYGCAEQARgKkgcDMy42oAeF0wE&sclient=gws-wiz-serp/" target="_blank"><img
                 src="/img/footer/sdsportal.png" alt="성동구 시설관리공단"></a>
         <a class="item" href="https://sdfa.oopy.io/" target="_blank"><img
                 src="/img/footer/sdfa.oopy.png" alt="성동구 축구협회"></a>
@@ -39,13 +40,33 @@
     <div>
         <div class="information container">
             <img src="/img/FcTogether-removebg.png">
-            <div>사업장 소재지: 서울특별시 중구 퇴계로 187, 907-3호(필동1가) | 등록번호: 549-82-0049 | 대표자: 주효진, 윤영웅 (공동대표) | 법인등록번호: 110351-0017695
-                | <br>본점 소재지: 서울특별시 중구 퇴계로 187, 9층 907-2호(필동1가, 국제빌딩) | 대표전화: 000-0000-0000 | 이메일: fctogether@naver.com
+            <div>
+                사업장 소재지: 서울특별시 중구 퇴계로 187, 907-3호(필동1가) | 등록번호: 549-82-0049 | 대표자: 주효진, 윤영웅 (공동대표) | 법인등록번호: 110351-0017695
+                | <br>본점 소재지: 서울특별시 중구 퇴계로 187, 9층 907-2호(필동1가, 국제빌딩) | 대표전화: 010-3907-6051 | 이메일: fctogether@naver.com
             </div>
+            <button id="topBtn" class="top-button"><i class="fas fa-arrow-up"></i></button>
         </div>
     </div>
 
+
 </footer>
+<script>
+    // 버튼이 스크롤 위치에 따라 나타나거나 숨기도록 설정
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("topBtn").style.display = "block";
+        } else {
+            document.getElementById("topBtn").style.display = "none";
+        }
+    }
+
+    // 버튼 클릭 시 페이지 맨 위로 스크롤하는 함수
+    document.getElementById("topBtn").onclick = function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+</script>
 
 </body>
 </html>

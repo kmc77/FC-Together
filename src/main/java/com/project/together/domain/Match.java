@@ -2,6 +2,8 @@ package com.project.together.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Match {
     private int id;
@@ -15,4 +17,8 @@ public class Match {
     private String matchHome;
     private String leagueGb;
     private String teamLogo;
+    private Object obChild;
+    private Object obChild2;
+    private Object obChild3;
+    private List<Team> team;
 }

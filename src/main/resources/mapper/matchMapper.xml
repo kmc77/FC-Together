@@ -20,6 +20,15 @@
         AND m.match_score is not null
     </select>
 
+    <select id="K5leagueGb" resultType="com.project.together.domain.Team">
+        select t.*
+        from team t
+        join matches m on m.team_name = t.team_name
+        where m.league_gb = 'k5'
+    </select>
+
+
+
     <select id="K7selectSchedule" resultType="com.project.together.domain.Match">
         SELECT m.*
         FROM matches m

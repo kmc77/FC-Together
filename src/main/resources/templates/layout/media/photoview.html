@@ -36,6 +36,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="share">
+                    <div class="shareOptions">
+                        <a href="#" id="copy-link"><i class="fa-solid fa-copy"></i></a>
+                        <p class="copy-success-message" id="copy-success-message">링크가 복사되었습니다.</p>
+                    </div>
+                </div>
             </div>
             <div class="cpContent">
                 <div class="content">
@@ -59,5 +65,19 @@
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>
+
+<script>
+    $(document).ready(function() {
+        $('#copy-link').click(function() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(function() {
+                $('#copy-success-message').fadeIn().delay(1000).fadeOut();
+            }, function(err) {
+                $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

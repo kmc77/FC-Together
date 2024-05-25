@@ -6,6 +6,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +26,11 @@ public class ManagementController {
 
     private final ManagementService managementService;
 
-    @Autowired
-    public ManagementController(ManagementService managementService) {
-        this.managementService = managementService;
-    }
-
+    /*@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")*/
     @GetMapping("/management_customer_support")
     public String getRuleList(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(defaultValue = "8") int limit, Model model) {
+
         int start = (page - 1) * limit;
 
         Map<String, Integer> params = new HashMap<>();
@@ -55,6 +53,11 @@ public class ManagementController {
         model.addAttribute("totalPages", totalPages);
 
         return "layout/management/management_customer_support";
+    }
+
+    @Autowired
+    public ManagementController(ManagementService managementService) {
+        this.managementService = managementService;
     }
 
     @GetMapping("/get{sectionName}Data")

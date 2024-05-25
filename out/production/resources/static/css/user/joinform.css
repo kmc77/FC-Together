@@ -22,8 +22,8 @@
 }
 
 .memberPage .wide .topTitle {
-    padding-top: 0;
-    background: none;
+    padding-top: 10;
+    /*background: none;*/
 }
 
 .memberPage .wide .topTitle .subTitle {
@@ -41,9 +41,10 @@
 .memberPage .topTitle {
     margin-left: -40px;
     margin-right: -40px;
-    padding-top: 110px;
+    padding-top: 120px;
     text-align: center;
-    background: url(/img/logo_180.6a44e4e2.png) 50% 0/auto 90px no-repeat
+    background: url(/img/FcTogether.jpg) 50% 0/auto 140px no-repeat;
+
 }
 
  .pcBreak {
@@ -196,7 +197,23 @@
 }
 
 
+.inputWithIcon {
+            position: relative;
+        }
 
+        .inputWithIcon .input {
+            width: 100%;
+            padding-right: 30px; /* 아이콘을 위한 공간 확보 */
+        }
+
+        .togglePassword,
+        .togglePasswordConfirm {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
 
 
 

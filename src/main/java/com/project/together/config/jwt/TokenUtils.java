@@ -84,4 +84,16 @@ public class TokenUtils {
             throw new RuntimeException("Invalid token");
         }
     }
+
+    // 토큰 디코드 메서드
+    /*public static DecodedJWT decodeToken(String jwtToken) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC512(JwtProperties.SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            return verifier.verify(jwtToken);
+        } catch (JWTVerificationException exception) {
+            // 토큰 검증 실패 시 예외 처리
+            throw new RuntimeException("Invalid token", exception);
+        }
+    }*/
 }

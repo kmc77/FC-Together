@@ -1,16 +1,15 @@
-// MatchController.java
-
 package com.project.together.controller;
 
 import com.project.together.domain.Match;
+import com.project.together.domain.Team;
 import com.project.together.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,6 +22,8 @@ public class MatchController {
     public String matchResult(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
         List<Match> K5matchSchedule = matchService.K5selectSchedule();
         List<Match> K5matchResult = matchService.K5selectResult();
+        List<Team> K5leagueGb = matchService.K5leagueGb();
+
         List<Match> K7matchSchedule = matchService.K7selectSchedule();
         List<Match> K7matchResult = matchService.K7selectResult();
         List<Match> W1matchSchedule = matchService.W1selectSchedule();
@@ -30,21 +31,42 @@ public class MatchController {
 
         System.out.println("k5Schedule" + K5matchSchedule);
         System.out.println("k5Result" + K5matchResult);
+        System.out.println("paginatedK5leagueGb" + K5leagueGb);
+
         System.out.println("k7Schedule" + K7matchSchedule);
         System.out.println("k7Result" + K7matchResult);
         System.out.println("W1Schedule" + W1matchSchedule);
         System.out.println("W1Result" + W1matchResult);
 
+        // Set K5leagueGb data to each K5matchSchedule Match
+        if (K5matchSchedule != null && K5leagueGb != null) {
+            for (int i = 0; i < K5matchSchedule.size(); i++) {
+                Match match = K5matchSchedule.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
         // Pagination logic
-        List<Match> paginatedK5Schedule = getPaginatedList(K5matchSchedule, page, size);
-        List<Match> paginatedK5Result = getPaginatedList(K5matchResult, page, size);
-        List<Match> paginatedK7Schedule = getPaginatedList(K7matchSchedule, page, size);
-        List<Match> paginatedK7Result = getPaginatedList(K7matchResult, page, size);
-        List<Match> paginatedW1Schedule = getPaginatedList(W1matchSchedule, page, size);
-        List<Match> paginatedW1Result = getPaginatedList(W1matchResult, page, size);
+        List<Match> paginatedK5Schedule = getMatchPaginatedList(K5matchSchedule, page, size);
+        List<Match> paginatedK5Result = getMatchPaginatedList(K5matchResult, page, size);
+        List<Team> paginatedK5leagueGb = getTeamPaginatedList(K5leagueGb, page, size);
+
+        List<Match> paginatedK7Schedule = getMatchPaginatedList(K7matchSchedule, page, size);
+        List<Match> paginatedK7Result = getMatchPaginatedList(K7matchResult, page, size);
+        List<Match> paginatedW1Schedule = getMatchPaginatedList(W1matchSchedule, page, size);
+        List<Match> paginatedW1Result = getMatchPaginatedList(W1matchResult, page, size);
 
         model.addAttribute("K5Schedulelist", paginatedK5Schedule);
         model.addAttribute("K5Resultlist", paginatedK5Result);
+        model.addAttribute("K5leagueGb", paginatedK5leagueGb);
+
         model.addAttribute("K7Schedulelist", paginatedK7Schedule);
         model.addAttribute("K7Resultlist", paginatedK7Result);
         model.addAttribute("W1Schedulelist", paginatedW1Schedule);
@@ -54,7 +76,16 @@ public class MatchController {
         return "layout/match/matchpage";
     }
 
-    private List<Match> getPaginatedList(List<Match> list, int page, int size) {
+    private List<Match> getMatchPaginatedList(List<Match> list, int page, int size) {
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, list.size());
+        if (startIndex > endIndex) {
+            startIndex = endIndex;
+        }
+        return list.subList(startIndex, endIndex);
+    }
+
+    private List<Team> getTeamPaginatedList(List<Team> list, int page, int size) {
         int startIndex = (page - 1) * size;
         int endIndex = Math.min(startIndex + size, list.size());
         if (startIndex > endIndex) {

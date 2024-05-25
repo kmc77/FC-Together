@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${notice.noticeTitle}">Title</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/noticeview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -18,19 +20,25 @@
                     <p th:text="${notice.noticeTitle}">제목</p>
                     <div>
                         <div class="titleInfo">
-                            <p>작성자</p>
+                            <p><i class="fa-regular fa-user"></i> 작성자</p>
                             <p th:text="${notice.username}">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p>작성일</p>
+                            <p><i class="fa-regular fa-calendar"></i> 작성일</p>
                             <p th:text="${notice.noticeDate}">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p>조회수</p>
+                            <p><i class="fa-regular fa-eye"></i> 조회수</p>
                             <p th:text="${notice.noticeHits}">Hits</p>
                         </div>
+                    </div>
+                </div>
+                <div class="share">
+                    <div class="shareOptions">
+                        <a href="#" id="copy-link"><i class="fa-solid fa-copy"></i></a>
+                        <p class="copy-success-message" id="copy-success-message">링크가 복사되었습니다.</p>
                     </div>
                 </div>
             </div>
@@ -68,5 +76,18 @@
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>
+
+<script>
+    $(document).ready(function() {
+        $('#copy-link').click(function() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(function() {
+                $('#copy-success-message').fadeIn().delay(1000).fadeOut();
+            }, function(err) {
+                $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
+            });
+        });
+    });
+</script>
 </body>
 </html>

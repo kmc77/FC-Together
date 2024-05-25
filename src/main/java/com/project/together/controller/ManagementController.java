@@ -6,6 +6,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,16 +26,11 @@ public class ManagementController {
 
     private final ManagementService managementService;
 
-    @Autowired
-    public ManagementController(ManagementService managementService) {
-        this.managementService = managementService;
-    }
-
-
-    // 규정 목록
+    /*@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")*/
     @GetMapping("/management_customer_support")
     public String getRuleList(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(defaultValue = "8") int limit, Model model) {
+
         int start = (page - 1) * limit;
 
         Map<String, Integer> params = new HashMap<>();
@@ -59,8 +55,11 @@ public class ManagementController {
         return "layout/management/management_customer_support";
     }
 
+    @Autowired
+    public ManagementController(ManagementService managementService) {
+        this.managementService = managementService;
+    }
 
-    // 각 섹션 데이터 로드
     @GetMapping("/get{sectionName}Data")
     public ResponseEntity<?> getSectionData(@PathVariable String sectionName,
                                             @RequestParam(defaultValue = "0") int page,
@@ -97,10 +96,10 @@ public class ManagementController {
                     response.put("pageInfo", createPageInfo(page, size, totalOperations));
                     break;
                 case "faq":
-                    List<Faq> faqs = managementService.getAllFaqData(); // 모든 FAQ 데이터 조회
+                    List<Faq> faqs = managementService.getAllFaqData();
                     response.put("faqs", faqs);
                     break;
-                case "schedule": // 변경된 부분
+                case "schedule":
                     List<TrainingSchedule> schedules = managementService.getTrainingScheduleData(offset, size);
                     int totalSchedules = managementService.countTrainingSchedules();
                     response.put("schedules", schedules);
@@ -119,16 +118,12 @@ public class ManagementController {
     private Map<String, Object> createPageInfo(int currentPage, int size, int totalElements) {
         Map<String, Object> pageInfo = new HashMap<>();
         int totalPages = (int) Math.ceil((double) totalElements / size);
-        pageInfo.put("currentPage", currentPage);
-        pageInfo.put("totalPages", totalPages);
-        pageInfo.put("totalElements", totalElements);
+        pageInfo.put("page", currentPage);
+        pageInfo.put("total", totalElements);
         pageInfo.put("size", size);
         return pageInfo;
     }
 
-
-
-    // 규정 상세보기 페이지
     @GetMapping("/management_customer_support_rule_view")
     public String supportViewPage(@RequestParam("no") int ruleNum, Model model) throws NotFoundException {
         managementService.increaseRuleHits(ruleNum);
@@ -137,14 +132,10 @@ public class ManagementController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rule not found with id: " + ruleNum);
         }
 
-        // 규정 번호에 해당하는 파일 목록 조회
         List<File> files = managementService.findFilesByRuleNum(ruleNum);
-
-        // 모델에 규정 상세 정보와 파일 목록 추가
         model.addAttribute("rule", rule);
-        model.addAttribute("files", files); // 파일 목록을 모델에 추가
+        model.addAttribute("files", files);
 
-        // 현재 규정의 날짜를 기준으로 이전 규정을 찾습니다.
         LocalDate currentRuleDate = LocalDate.parse(rule.getRuleDate());
         Rule prevRule = managementService.findPrevRuleByCurrentRuleDate(currentRuleDate);
         if (prevRule != null) {
@@ -154,7 +145,6 @@ public class ManagementController {
         return "layout/management/management_customer_support_rule_view";
     }
 
-    // 경영공시 상세보기 페이지
     @GetMapping("/management_customer_support_operation_view")
     public String operationViewPage(@RequestParam("no") int operationNum, Model model) throws NotFoundException {
         managementService.increaseOperationHits(operationNum);
@@ -163,14 +153,10 @@ public class ManagementController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + operationNum);
         }
 
-        // 규정 번호에 해당하는 파일 목록 조회
         List<File> files = managementService.findFilesByOperationNum(operationNum);
-
-        // 모델에 규정 상세 정보와 파일 목록 추가
         model.addAttribute("operation", operation);
-        model.addAttribute("files", files); // 파일 목록을 모델에 추가
+        model.addAttribute("files", files);
 
-        // 현재 규정의 날짜를 기준으로 이전 규정을 찾습니다.
         LocalDate currentOperationDate = LocalDate.parse(operation.getOperationDate());
         Operation prevOperation = managementService.findPrevOperationByCurrentOperationDate(currentOperationDate);
         if (prevOperation != null) {
@@ -180,7 +166,6 @@ public class ManagementController {
         return "layout/management/management_customer_support_operation_view";
     }
 
-    // 훈련일정 상세보기 페이지
     @GetMapping("/management_customer_support_schedule_view")
     public String scheduleViewPage(@RequestParam("no") int scheduleNum, Model model) throws NotFoundException {
         managementService.increaseScheduleHits(scheduleNum);
@@ -189,10 +174,8 @@ public class ManagementController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + scheduleNum);
         }
 
-        // 모델에 규정 상세 정보와 파일 목록 추가
         model.addAttribute("trainingSchedule", trainingSchedule);
 
-        // 현재 규정의 날짜를 기준으로 이전 규정을 찾습니다.
         LocalDate currentScheduleDate = LocalDate.parse(trainingSchedule.getScheduleDate());
         TrainingSchedule prevSchedule = managementService.findPrevScheduleByCurrentScheduleDate(currentScheduleDate);
         if (prevSchedule != null) {
@@ -201,9 +184,4 @@ public class ManagementController {
 
         return "layout/management/management_customer_support_schedule_view";
     }
-
-
-
-
-
 }

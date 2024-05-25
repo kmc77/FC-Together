@@ -34,7 +34,8 @@ public class User {
     private String providerId; //소셜 계정 고유값(id)
 
     @Builder
-    public User(String username, String password, String email, String roles, String provider, String providerId, String user_real_name, String user_phone, String user_birth, String user_address) {
+    public User(int id, String username, String password, String email, String roles, String provider, String providerId, String user_real_name, String user_phone, String user_birth, String user_address) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;

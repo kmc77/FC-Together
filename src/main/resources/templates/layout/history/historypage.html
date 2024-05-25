@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>제목</title>
     <link href="/css/layout/history/historypage.css" rel="stylesheet"/>
-    <!-- Swiper의 CSS 포함 -->
     <th:block th:include="layout/header"></th:block>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800">
@@ -18,120 +17,110 @@
     <div class="timeline">
         <div class="swiper-container swiper-container-vertical">
             <div class="swiper-wrapper">
-               <!-- <div class="swiper-slide swiper-slide-active" style="background-image: url(&quot;https://unsplash.it/1920/500?image=11&quot;); height: 600px;" data-year="2011">
-                    <div class="swiper-slide-content"><span class="timeline-year">2011</span>
-                        <h4 class="timeline-title">창단</h4>
-                        <p class="timeline-text">FC TOGETHER가 창단되었습니다. 이는 지역 사회에서 축구를 활성화하고 팀의 역사를 시작하는 중요한 순간이었습니다.</p>
-                    </div>
-                </div>-->
-                <div class="swiper-slide swiper-slide-active" style="background-image: url('/img/historypage/2017 FC TOGETHER 창단.jpeg'); height: 600px;" data-year="2017">
+                <div class="swiper-slide" style="background-image: url('/img/historypage/2017 FC TOGETHER 창단.jpeg'); height: 600px;" data-year="2017">
                     <div class="swiper-slide-content"><span class="timeline-year">2017</span>
                         <h4 class="timeline-title">FC TOGETHER 창단</h4>
-                        <p class="timeline-text">K7 리그 참하였습니다.</p>
+                        <p class="timeline-text">K7 리그 참가</p>
                     </div>
                 </div>
-
-                <div class="swiper-slide swiper-slide-next" style="background-image: url('/img/historypage/2018 K6리그 참가.jpeg'); height: 600px;" data-year="2018">
+                <div class="swiper-slide" style="background-image: url('/img/historypage/2018 K6리그 참가.jpeg'); height: 600px;" data-year="2018">
                     <div class="swiper-slide-content"><span class="timeline-year">2018</span>
                         <h4 class="timeline-title">두 번째 시즌</h4>
-                        <p class="timeline-text">K6 리그로 승격하여 두 번째 시즌을 시작하였습니다.</p>
+                        <p class="timeline-text">K6 리그로 승격하여 두 번째 시즌 시작</p>
                     </div>
                 </div>
                 <div class="swiper-slide" style="background-image: url('/img/historypage/2019 B팀 창단 K7리그 참가.jpeg'); height: 600px;" data-year="2019">
                     <div class="swiper-slide-content"><span class="timeline-year">2019</span>
-                        <h4 class="timeline-title">세 번째 시즌</h4>
-                        <p class="timeline-text">K5 리그로 승격하여 세 번째 시즌을 시작하였습니다.</p>
+                        <h4 class="timeline-title">FC TOGETHER <br>B팀 창단</h4>
+                        <p class="timeline-text">B팀 K7 리그 참가</p>
                     </div>
                 </div>
                 <div class="swiper-slide" style="background-image: url('/img/historypage/2020 K5 챔피언쉽 3위.jpeg'); height: 600px;" data-year="2020">
                     <div class="swiper-slide-content"><span class="timeline-year">2020</span>
-                        <h4 class="timeline-title">2020챔피언쉽 3위</h4>
-                        <p class="timeline-text">2020 디비전 K5리그 우승(전승)</p>
+                        <h4 class="timeline-title">챔피언쉽 3위</h4>
+                        <p class="timeline-text">디비전 K5리그 우승(전승)</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url(&quot;https://unsplash.it/1920/500?image=15&quot;); height: 600px;" data-year="2015">
-                    <div class="swiper-slide-content"><span class="timeline-year">2015</span>
-                        <h4 class="timeline-title">역대 최다 득점 기록</h4>
-                        <p class="timeline-text">FC TOGETHER는 역대 최다 득점 기록을 세우며 리그에서 뛰어난 성과를 거두었습니다. 이는 팀의 공격력과 전략의 성공을 보여주었습니다.</p>
+                <div class="swiper-slide" style="background-image: url('/img/historypage/2021 하나은행 FA컵.jpeg'); height: 600px;" data-year="2021">
+                    <div class="swiper-slide-content"><span class="timeline-year">2021</span>
+                        <h4 class="timeline-title">하나은행 FA CUP 창단 첫 출전</h4>
+                        <p class="timeline-text">現 코리아 컵</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url(&quot;https://unsplash.it/1920/500?image=16&quot;); height: 600px;" data-year="2016">
-                    <div class="swiper-slide-content"><span class="timeline-year">2016</span>
-                        <h4 class="timeline-title">리그 우승</h4>
-                        <p class="timeline-text">FC TOGETHER는 열정과 팀워크를 바탕으로 리그에서 우승하였습니다. 이는 팀의 노력과 능력의 결과로써 큰 성취였습니다.</p>
+                <!-- 추가 연도 슬라이드 -->
+                <div class="swiper-slide" style="background-image: url('/img/historypage/2022성동구민축구단 출범.jpeg'); height: 600px;" data-year="2022">
+                    <div class="swiper-slide-content"><span class="timeline-year">2022</span>
+                        <h4 class="timeline-title">성동구민축구단 <br>출범</h4>
+                        <p class="timeline-text">FC TOGETHER 위민(여성팀) 창단</p>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('/img/historypage/2023 K5리그 2위.jpeg'); height: 600px;" data-year="2023">
+                    <div class="swiper-slide-content"><span class="timeline-year">2023</span>
+                        <h4 class="timeline-title">K5 리그 2위,<br>챔피언쉽 8강</h4>
+                        <p class="timeline-text">하나은행 FA CUP 출전</p>
                     </div>
                 </div>
             </div>
-            <div class="swiper-button-prev swiper-button-disabled"></div>
+            <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
-            <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active">2011</span><span class="swiper-pagination-bullet">2012</span><span class="swiper-pagination-bullet">2013</span><span class="swiper-pagination-bullet">2014</span><span class="swiper-pagination-bullet">2015</span><span class="swiper-pagination-bullet">2016</span></div>
+            <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"></div>
         </div>
     </div>
 </div>
-<!-- Swiper JS and Initialization -->
+<!-- Swiper JS 및 초기화 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
 <script>
     var timelineSwiper = new Swiper('.timeline .swiper-container', {
-      direction: 'vertical',
-      loop: false,
-      speed: 1600,
-      pagination: '.swiper-pagination',
-      paginationBulletRender: function (swiper, index, className) {
-        var year = document.querySelectorAll('.swiper-slide')[index].getAttribute('data-year');
-        return '<span class="' + className + '">' + year + '</span>';
-      },
-      paginationClickable: true,
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-      breakpoints: {
-        768: {
-          direction: 'horizontal'
+        direction: 'vertical',
+        loop: false,
+        speed: 1600,
+        pagination: '.swiper-pagination',
+        paginationBulletRender: function (swiper, index, className) {
+            var year = document.querySelectorAll('.swiper-slide')[index].getAttribute('data-year');
+            return '<span class="' + className + '">' + year + '</span>';
+        },
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        breakpoints: {
+            768: {
+                direction: 'horizontal'
+            }
         }
-      }
     });
 </script>
 
-<!-- Automatic Scroll Down on Page Load -->
+<!-- 페이지 로드 시 자동 스크롤 -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // 목표 위치: .container 요소
-      const containerElement = document.querySelector('.container');
-      const targetY = containerElement.offsetTop;
+        const containerElement = document.querySelector('.container');
+        const targetY = containerElement.offsetTop;
 
-      function smoothScrollTo(endY, duration) {
-        const startY = window.scrollY || window.pageYOffset;
-        const distanceY = endY - startY;
-        const startTime = new Date().getTime();
+        function smoothScrollTo(endY, duration) {
+            const startY = window.scrollY || window.pageYOffset;
+            const distanceY = endY - startY;
+            const startTime = new Date().getTime();
 
-        function scroll() {
-          const currentTime = new Date().getTime();
-          const time = Math.min(1, ((currentTime - startTime) / duration));
+            function scroll() {
+                const currentTime = new Date().getTime();
+                const time = Math.min(1, ((currentTime - startTime) / duration));
+                const easedT = easeInOutCubic(time);
+                window.scrollTo(0, startY + (distanceY * easedT));
 
-          // 이징 함수를 사용하여 속도 조절 (예: easeInOutCubic)
-          const easedT = easeInOutCubic(time);
-          window.scrollTo(0, startY + (distanceY * easedT));
+                if (time < 1) {
+                    requestAnimationFrame(scroll);
+                }
+            }
 
-          // 목표 위치에 도달하지 않았다면 계속 스크롤
-          if (time < 1) {
-            requestAnimationFrame(scroll);
-          }
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+            }
+
+            scroll();
         }
 
-        // 이징 함수 정의
-        function easeInOutCubic(t) {
-          return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-        }
-
-        scroll();
-      }
-
-      // 스크롤 애니메이션 실행, 2000ms(2초) 동안 진행
-      smoothScrollTo(targetY, 1300);
+        smoothScrollTo(targetY, 1300);
     });
 </script>
-<!-- 부트스트랩 css 충돌 -->
-<!--<footer>
-    <th:block th:include="layout/footer"></th:block>
-</footer>-->
 </body>
 </html>

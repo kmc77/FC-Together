@@ -7,6 +7,46 @@
         SELECT * FROM user
     </select>
 
+    <!-- 사용자를 삭제하는 쿼리 -->
+    <delete id="deleteUsers">
+        DELETE FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 섹션1 사진을 삭제하는 쿼리 -->
+    <delete id="deleteSection1Photos">
+        DELETE FROM ClubPhoto WHERE cp_idx IN
+        <foreach item="id" collection="photoIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findUsersByIds" resultType="com.project.together.domain.User">
+        SELECT * FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteQnaByUsernames">
+        DELETE FROM qna WHERE username IN
+        <foreach item="username" collection="usernames" open="(" separator="," close=")">
+            #{username}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUser">
+        DELETE FROM user WHERE id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
     <!-- ==============  QnA Start ============== -->
 
     <select id="getAllQnAs" resultType="com.project.together.domain.Qna">
@@ -130,13 +170,17 @@
         SELECT * FROM clubphoto ORDER BY cp_idx DESC
     </select>
 
+    <select id="getSectionClubPhoto" resultType="com.project.together.domain.ClubPhoto">
+        SELECT * FROM clubphoto WHERE table_gb = 'sectionClubPhoto' ORDER BY cp_idx DESC
+    </select>
+
     <select id="findClubPhotoById" parameterType="int" resultType="com.project.together.domain.ClubPhoto">
         SELECT * FROM clubphoto WHERE cp_idx = #{cpIdx}
     </select>
 
-    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
-        INSERT INTO clubphoto (cp_idx, username, cp_title, cp_regdate, cp_hits, cp_content)
-        VALUES (#{cpIdx}, #{username}, #{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent})
+    <insert id="insertClubPhoto" parameterType="com.project.together.domain.ClubPhoto" useGeneratedKeys="true" keyProperty="cpIdx">
+        INSERT INTO clubphoto (cp_title, cp_regdate, cp_hits, cp_content, username)
+        VALUES (#{cpTitle}, #{cpRegdate}, #{cpHits}, #{cpContent}, #{username})
     </insert>
 
     <update id="updateClubPhoto" parameterType="com.project.together.domain.ClubPhoto">
@@ -151,6 +195,25 @@
             #{item}
         </foreach>
     </delete>
+
+    <insert id="insertFile" parameterType="com.project.together.domain.File">
+        INSERT INTO file (file_path, table_idx, file_name, table_gb)
+        VALUES (#{filePath}, #{tableIdx}, #{fileName}, #{tableGb})
+    </insert>
+
+    <select id="findFilesByTableGb" resultType="com.project.together.domain.File">
+        SELECT * FROM file WHERE table_gb = #{tableGb}
+    </select>
+
+    <select id="findFileByFileIdx" resultType="com.project.together.domain.File">
+        SELECT * FROM file WHERE file_idx = #{fileIdx}
+    </select>
+
+    <delete id="deleteFileByFileIdx">
+        DELETE FROM file WHERE file_idx = #{fileIdx}
+    </delete>
+
+
 
 
     <!-- ==============  ClubPhoto End ============== -->
@@ -451,6 +514,10 @@
         SELECT file_path FROM File
         WHERE table_idx = #{ruleNum} AND table_gb = 'Rule'
     </select>
+
+    <delete id="deleteRuleFilesByRuleNum" parameterType="int">
+        DELETE FROM file WHERE table_idx = #{ruleNum}
+    </delete>
 
     <insert id="insertRule" parameterType="com.project.together.domain.Rule" useGeneratedKeys="true" keyProperty="ruleNum">
         INSERT INTO Rule (username, rule_title, rule_date, rule_hits, rule_content, table_gb)

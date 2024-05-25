@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -127,8 +128,14 @@ public class UserController {
 
     // 로그인 폼 페이지
     @GetMapping("/loginform")
-    public String loginFormPage() {
-        return "user/loginform";
+    public String loginFormPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        String authMessage = (String) session.getAttribute("authMessage");
+        if (authMessage != null) {
+            model.addAttribute("authMessage", authMessage);
+            session.removeAttribute("authMessage");
+        }
+        return "user/loginform"; // user/loginform.html로 렌더링
     }
 
     // 회원 가입 폼 페이지

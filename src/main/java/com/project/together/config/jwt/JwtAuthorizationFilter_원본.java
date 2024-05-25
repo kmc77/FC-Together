@@ -22,11 +22,11 @@ import java.io.IOException;
 // 권한이나 인증이 필요한 특정 주소를 요청했을 때 위 필터를 무조건 타게 되어있음.
 // 만약에 권한이 인증이 필요한 주소가 아니라면 이 필터를 안타요.
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter_원본 extends BasicAuthenticationFilter {
 
     private UserMapper userMapper;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserMapper userMapper) {
+    public JwtAuthorizationFilter_원본(AuthenticationManager authenticationManager, UserMapper userMapper) {
         super(authenticationManager);
         this.userMapper = userMapper;
     }
@@ -38,15 +38,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         System.out.println("인증이나 권한이 필요한 주소 요청됨");
 
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
-        System.out.println("jwtHeader = " + jwtHeader);
-        System.out.println("Request URL = " + request.getRequestURL());
+        System.out.println("jwtHeaher = " + jwtHeader);
 
-        // Header 가 있는지 확인
+        //Header 가 있는지 확인
         if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
-
         // JWT 토큰을 검증을 해서 정상적인 사용자인지 확인
         String jwtToken = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
@@ -63,8 +61,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 // Jwt 토큰 서명을 통해서 서명이 정상이면 Authentication 객체를 만듬
                 Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
-                // 강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장
+                //강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                chain.doFilter(request, response);
             }
         } catch (TokenExpiredException e) {
             // 토큰이 만료되었을 때의 처리
@@ -72,8 +72,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             response.getWriter().write("토큰이 만료되었습니다.");
             return;
         }
-
-        chain.doFilter(request, response);
     }
 
 }

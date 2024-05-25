@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="" class="memberPage" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" class="memberPage" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>LoginForm</title>
     <th:block th:include="layout/header"></th:block>
     <link href="/css/user/LoginForm.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body class="memberPage">
 <div id="app" class="">
-    <div>
     <div class="memberContent" id="content">
         <div class="login-container">
             <div class="memberBox">
                 <div class="topTitle">
                     <p class="title">로그인</p>
-                    <p class="subTitle">FC투게더<br>웹사이트 방문을 환영합니다.</p>
+                    <p class="subTitle">FC Together<br>웹사이트 방문을 환영합니다.</p>
                 </div>
 
                 <!-- 로그인 폼 -->
@@ -36,9 +36,15 @@
                 </form>
 
                 <div class="formBtns formBtns2 memberLinks">
-                    <a href="/user/joinform" class="link">회원가입</a>
-                    <a href="/user/findidform" class="findid">아이디찾기</a>
-                    <a href="/user/findpwform" class="findpw">비밀번호찾기</a>
+                    <a href="/user/joinform" class="link">
+                        <i class="fas fa-user"></i> 회원가입
+                    </a>
+                    <a href="/user/findidform" class="findid">
+                        <i class="fas fa-search"></i> 아이디찾기
+                    </a>
+                    <a href="/user/findpwform" class="findpw">
+                        <i class="fas fa-lock"></i> 비밀번호찾기
+                    </a>
                 </div>
                 <div class="snsLogin">
                     <a href="/oauth2/authorization/naver" class="naver">네이버<br>로그인</a>
@@ -49,7 +55,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     $(function() {
         // 아이디와 비밀번호 입력 상태를 확인하여 로그인 버튼 활성화/비활성화
@@ -101,22 +107,33 @@
                 },
                 error: function(xhr, status, error) {
                     console.error("로그인 실패:", error);
-                    if (xhr.responseJSON.statusCode === 404) {
+                    if (xhr.responseJSON && xhr.responseJSON.statusCode === 404) {
                         alert("아이디와 비밀번호를 확인하여 주세요.");
                     } else {
-                        alert("서버에 문제가 발생하였습니다.");
+                        alert("아이디와 비밀번호를 확인하여 주세요.");
                     }
                 }
             });
         });
     });
-</script>
-<script>
+
+    // 서버에서 전달된 경고 메시지를 확인하고 알림을 표시
+    $(document).ready(function() {
+        var authMessage = /*[[${authMessage}]]*/ '[[${authMessage}]]';
+        if (authMessage) {
+            alert(authMessage);
+        }
+    });
+
+    // 회원가입 완료 메시지 표시 및 URL 파라미터 제거
     $(document).ready(function(){
         const urlParams = new URLSearchParams(window.location.search);
         const success = urlParams.get('success');
         if(success === 'true'){
             alert('회원가입이 완료되었습니다. 로그인해주세요.');
+            // URL 파라미터 제거
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
         }
     });
 </script>

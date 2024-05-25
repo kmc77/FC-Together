@@ -6,6 +6,8 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +41,7 @@ public class MediaController {
     }
 
     // 공지사항 페이지
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
     @GetMapping("/notice")
     public String noticePage() {
         return "/layout/media/notice";

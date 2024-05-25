@@ -313,7 +313,8 @@
                                 <span th:text="${match.matchTime}" style="font-size:35px;"></span>
                                 <div class="location-home">
                                     <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                    <span style="font-size:18px;">(</span><span th:text="${match.matchHome}" style="font-size:18px;">
+                                    <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
+                                                                                style="font-size:18px;">
 
                                 </span><span style="font-size:18px;">)</span>
                                 </div>
@@ -321,7 +322,9 @@
                             <div class="right-info">
                                 <div>
                                     <span th:text="${match.teamName}" style="font-size:80px;"></span>
-                                    <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLogo}" ></span>
+                                    <span th:if="${#lists.size(match.team) > 0}">
+                                    <img th:src="${match.team[0].teamLogo}" alt="Team Logo"/>
+                                    </span>
                                 </div>
                                 <div class="versus-info">
                                     <div class="versus" style="font-size:20px;">vs</div>

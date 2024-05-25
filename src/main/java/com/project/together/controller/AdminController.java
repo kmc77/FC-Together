@@ -759,7 +759,7 @@ public class AdminController {
                 paramMap.put(entry.getKey(), entry.getValue());
             }
 
-             adminService.updatePlayer(paramMap, selectedPlayerType);
+            adminService.updatePlayer(paramMap, selectedPlayerType);
 
             // 성공 응답 반환
             return ResponseEntity.ok(Map.of("message", "선수 정보가 성공적으로 처리되었습니다."));

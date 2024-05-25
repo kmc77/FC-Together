@@ -582,7 +582,7 @@ public class AdminService {
 // ================================== Rule and
 
 
-// ================================== 경영공시 start
+    // ================================== 경영공시 start
     public List<Operation> getAllOperation() {
         return adminMapper.getAllOperation();
     }

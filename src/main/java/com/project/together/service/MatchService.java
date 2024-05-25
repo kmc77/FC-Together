@@ -1,6 +1,7 @@
 package com.project.together.service;
 
 import com.project.together.domain.Match;
+import com.project.together.domain.Team;
 import com.project.together.mapper.MatchMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class MatchService {
     public List<Match> K5selectResult() {
 
         return matchMapper.K5selectResult();
+    }
+
+    public List<Team> K5leagueGb() {
+
+        return matchMapper.K5leagueGb();
     }
 
 

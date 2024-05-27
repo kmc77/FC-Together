@@ -26,6 +26,8 @@ dependencies {
     implementation project(path: ':')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
 
     // s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'

@@ -10,8 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
@@ -30,7 +28,7 @@
         <!-- 버튼은 JavaScript에서 동적으로 추가됩니다 -->
     </div>
 </div>
-<!--섹션2-->
+<!-- 섹션2 -->
 <div class="matchSchedule">
     <div class="matchImgDiv">
         <img src="/img/FcTogether.jpg" alt="" class="matchImg">
@@ -97,11 +95,8 @@
                         <td>3</td>
                         <td>3</td>
                         <td>3</td>
-                        <td>3</td>
                     </tr>
                     <tr>
-                        <td>4</td>
-                        <td>4</td>
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
@@ -122,56 +117,19 @@
         </div>
     </div>
 </div>
-<!--섹션3-->
+<!-- 섹션3 -->
 <div class="videoDiv">
     <div class="v-story-wrap con">
         <div class="v-story-slider" data-aos="fade-up">
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box block">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
+            <div class="slider-item" th:each="video, iterStat : ${clubVideos}">
+                <div class="img-box block">
+                    <iframe th:src="@{${video.mvTheOriginUrl}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--섹션4-->
+<!-- 섹션4 -->
 <div class="tab-container">
     <p class="feeds"><strong>투게더 소식</strong></p>
     <div class="gnbBox">
@@ -179,16 +137,16 @@
             <li class="slide1"></li>
             <li class="slide2"></li>
             <li class="mainMenu">
-                <a onclick="showTab('all')">전체</a>
+                <a onclick="showTab('all')">ALL</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab1')">notice</a>
+                <a onclick="showTab('tab1')">NOTICE</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab2')">news</a>
+                <a onclick="showTab('tab2')">NEWS</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab3')">instagram</a>
+                <a onclick="showTab('tab3')">INSTAGRAM</a>
             </li>
         </ul>
         <script src="/dist/js/header.js"></script>
@@ -212,7 +170,7 @@
 </footer>
 
 <script>
-    <!-- 섹션1 -->
+    // 섹션1
     $(document).ready(function(){
         var $slickElement = $('.fade');
         var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
@@ -280,7 +238,7 @@
     function goToSlide(index) {
         $('.fade').slick('slickGoTo', index);
     }
-    <!--    섹션2-->
+    // 섹션2
     let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
@@ -324,7 +282,7 @@
     function nextSlide2() {
         showSlide2(currentIndex2 + 1);
     }
-    <!--    섹션3-->
+    // 섹션3
     console.clear();
     // animation on scroll
     AOS.init({
@@ -365,10 +323,66 @@
             });
         }
     });
-    <!--    섹션4-->
+    // 섹션4
     $(document).ready(function () {
         showTab('all');
+        checkAndRefreshToken();
     });
+
+    document.querySelector("a[onclick=\"showTab('tab3')\"]").addEventListener('click', fetchInstagramPosts);
+
+    let longLivedAccessToken = "IGQWRNRmNHejhqNUxYbENocHhWNjNyUGt3c0VXRlYyM3JOUjZA6UElDbjM0c1lZAa2V0QzRsMWItTldWMXc3UTZAQVGh3RUxWRmY5WW9YX0VLTFBRYTA0SWR4MkxVUllleU9fanFTa2NRcF9fdwZDZD";
+    const refreshTokenEndpoint = "https://graph.instagram.com/refresh_access_token";
+    const instagramPostsEndpoint = "https://graph.instagram.com/me/media";
+
+    async function fetchInstagramPosts() {
+        try {
+            const response = await fetch(`${instagramPostsEndpoint}?fields=id,caption,media_type,media_url,permalink,timestamp,username&access_token=${longLivedAccessToken}`);
+            const data = await response.json();
+            displayInstagramPosts(data.data);
+        } catch (error) {
+            console.error("Error fetching Instagram posts:", error);
+        }
+    }
+
+    function displayInstagramPosts(posts) {
+        const instagramContent = document.getElementById('tab3-content');
+        instagramContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'instagram-post';
+
+            if (post.media_type === 'IMAGE' || post.media_type === 'CAROUSEL_ALBUM') {
+                postElement.innerHTML = `<img src="${post.media_url}" alt="${post.caption}">`;
+            } else if (post.media_type === 'VIDEO') {
+                postElement.innerHTML = `<video src="${post.media_url}" controls></video>`;
+            }
+
+            const captionElement = document.createElement('p');
+            captionElement.textContent = post.caption;
+            postElement.appendChild(captionElement);
+
+            instagramContent.appendChild(postElement);
+        });
+    }
+
+    async function refreshToken() {
+        try {
+            const response = await fetch(`${refreshTokenEndpoint}?grant_type=ig_refresh_token&access_token=${longLivedAccessToken}`);
+            const data = await response.json();
+            longLivedAccessToken = data.access_token;
+            console.log("Access token refreshed:", longLivedAccessToken);
+        } catch (error) {
+            console.error("Error refreshing access token:", error);
+        }
+    }
+
+    function checkAndRefreshToken() {
+        const refreshInterval = 60 * 24 * 60 * 60 * 1000; // 60 days
+        setInterval(refreshToken, refreshInterval);
+    }
+
     function showTab(tabName) {
         $('.tab-content').removeClass('active');
         $('#' + tabName + '-content').addClass('active');

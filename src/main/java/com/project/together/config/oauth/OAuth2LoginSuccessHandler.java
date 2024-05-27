@@ -1,12 +1,8 @@
 package com.project.together.config.oauth;
 
-
 import com.project.together.config.auth.PrincipalDetails;
-import com.project.together.config.jwt.JwtAuthenticationFilter;
-import com.project.together.config.jwt.JwtProperties;
 import com.project.together.config.jwt.TokenUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -22,10 +18,6 @@ import java.io.PrintWriter;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println("OAuth2LoginSuccessHandler 입장 request = " + request);
@@ -40,7 +32,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         System.out.println("========= jwtToken = " + jwtToken);
 
         // 응답에 토큰을 추가합니다.
-        /*response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);*/
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
@@ -55,10 +46,5 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         out.print("</script>");
         out.print("</body></html>");
         out.flush();
-
-        // 토큰 정보를 확인할 수 있는 페이지로 리다이렉트
-        response.sendRedirect("/");
     }
-
 }
-

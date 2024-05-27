@@ -7,6 +7,7 @@ import java.util.Map;
 import com.project.together.domain.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -36,7 +37,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
 
     //해당 유저의 권한을 리턴하는 로직
-    @Override
+    /*@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
         collect.add(new GrantedAuthority() {
@@ -46,6 +47,14 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
             }
         });
         return collect;
+    }*/
+
+    // 해당 유저의 권한을 리턴하는 로직
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> collet = new ArrayList<GrantedAuthority>();
+        collet.add(()->{ return user.getRoles();});
+        return collet;
     }
 
 

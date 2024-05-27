@@ -102,7 +102,6 @@
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
-                        <td>4</td>
                     </tr>
                     <tr>
                         <td>5</td>
@@ -138,16 +137,16 @@
             <li class="slide1"></li>
             <li class="slide2"></li>
             <li class="mainMenu">
-                <a onclick="showTab('all')">전체</a>
+                <a onclick="showTab('all')">ALL</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab1')">notice</a>
+                <a onclick="showTab('tab1')">NOTICE</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab2')">news</a>
+                <a onclick="showTab('tab2')">NEWS</a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab3')">instagram</a>
+                <a onclick="showTab('tab3')">INSTAGRAM</a>
             </li>
         </ul>
         <script src="/dist/js/header.js"></script>
@@ -162,7 +161,7 @@
         news
     </div>
     <div class="tab-content" id="tab3-content">
-        instagram
+        <!-- 인스타그램 게시글이 여기 표시됩니다 -->
     </div>
 </div>
 
@@ -327,11 +326,72 @@
     // 섹션4
     $(document).ready(function () {
         showTab('all');
+        checkAndRefreshToken();
     });
+
+    document.querySelector("a[onclick=\"showTab('tab3')\"]").addEventListener('click', fetchInstagramPosts);
+
+    let longLivedAccessToken = "IGQWRNRmNHejhqNUxYbENocHhWNjNyUGt3c0VXRlYyM3JOUjZA6UElDbjM0c1lZAa2V0QzRsMWItTldWMXc3UTZAQVGh3RUxWRmY5WW9YX0VLTFBRYTA0SWR4MkxVUllleU9fanFTa2NRcF9fdwZDZD";
+    const refreshTokenEndpoint = "https://graph.instagram.com/refresh_access_token";
+    const instagramPostsEndpoint = "https://graph.instagram.com/me/media";
+
+    async function fetchInstagramPosts() {
+        try {
+            const response = await fetch(`${instagramPostsEndpoint}?fields=id,caption,media_type,media_url,permalink,timestamp,thumbnail_url&access_token=${longLivedAccessToken}`);
+            const data = await response.json();
+            displayInstagramPosts(data.data);
+        } catch (error) {
+            console.error("Error fetching Instagram posts:", error);
+        }
+    }
+
+    function displayInstagramPosts(posts) {
+        const instagramContent = document.getElementById('tab3-content');
+        instagramContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'instagram-post';
+
+            const mediaUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+
+            postElement.innerHTML = `
+                <a href="${post.permalink}" target="_blank" class="instagram-post-link">
+                    <div class="instagram-post-image" style="background-image: url('${mediaUrl}');"></div>
+                    <div class="instagram-post-caption">${post.caption}</div>
+                    <div class="instagram-post-timestamp">${new Date(post.timestamp).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            instagramContent.appendChild(postElement);
+        });
+    }
+
+
+
+    async function refreshToken() {
+        try {
+            const response = await fetch(`${refreshTokenEndpoint}?grant_type=ig_refresh_token&access_token=${longLivedAccessToken}`);
+            const data = await response.json();
+            longLivedAccessToken = data.access_token;
+            console.log("Access token refreshed:", longLivedAccessToken);
+        } catch (error) {
+            console.error("Error refreshing access token:", error);
+        }
+    }
+
+    function checkAndRefreshToken() {
+        const refreshInterval = 60 * 24 * 60 * 60 * 1000; // 60 days
+        setInterval(refreshToken, refreshInterval);
+    }
+
     function showTab(tabName) {
         $('.tab-content').removeClass('active');
         $('#' + tabName + '-content').addClass('active');
     }
+
+
+
 </script>
 </body>
 </html>

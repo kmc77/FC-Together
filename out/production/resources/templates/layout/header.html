@@ -13,47 +13,35 @@
 
 </head>
 <body>
-<!--<div class="top">
-    <div class="logo">
-        <a href="/">
-            <img src="/img/FcTogether.jpg" alt="" id="logoImg">
-        </a>
-    </div>-->
-
-<!-- <div class="utils">
-     &lt;!&ndash; 로그인 상태를 보여주는 부분 &ndash;&gt;
-     <span id="account-info" style="display: none;"></span>
-     <a id="MyProfile-link" href="/my/myprofile" class="link" style="display: none;">내 정보</a>
-     <a id="adminPage-link" href="/admin/layout/adminpage" class="link" style="display: none;">관리 페이지</a>
-     <a id="logout-link" href="/user/Logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
-
-     &lt;!&ndash; 로그아웃 상태를 보여주는 부분 &ndash;&gt;
-     <a id="login-link" href="/user/loginform" class="link" style="display: none;">로그인</a>
-     <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
- </div>-->
 </div>
 <script>
     function setTokenAndRedirect(event, url) {
-         event.preventDefault();
-         const token = localStorage.getItem('accessToken');
-         if (token) {
-             const xhr = new XMLHttpRequest();
-             xhr.open('GET', url, true);
-             xhr.setRequestHeader('Authorization', token);
-             xhr.onreadystatechange = function () {
-                 if (xhr.readyState === XMLHttpRequest.DONE) {
-                     if (xhr.status === 200) {
-                         window.location.href = url;
-                     } else {
-                         console.error('Failed to load page:', xhr.status);
-                     }
-                 }
-             };
-             xhr.send();
-         } else {
-             window.location.href = url;
-         }
-     }
+    event.preventDefault();
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Authorization', token); // 'Bearer ' 접두사 제거
+        xhr.onreadystatechange = function () {
+            console.log(`xhr.readyState: ${xhr.readyState}, xhr.status: ${xhr.status}`);
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    window.location.href = url;
+                } else {
+                    console.error('Failed to load page:', xhr.status);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        window.location.href = '/login';
+                    }
+                }
+            }
+        };
+        xhr.send();
+    } else {
+        window.location.href = '/login';
+    }
+}
+
 </script>
 
 <header class="l-header p-header" role="banner">
@@ -130,48 +118,8 @@
                 <a id="login-link" href="/user/loginform" class="link" style="display: none;">로그인</a>
                 <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
             </div>
-            <!-- .p-nav-sub -->
-
-            <!-- 메뉴바 -->
-            <!--    <div class="p-menu-button">
-                    <a id="js-menu-button" href="javascript:void(0)">
-                        <div class="p-hamburger">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                </div>-->
-
-
-            <div id="js-mega-menu" class="p-mega-menu" style="display: none; top: 105px;">
-                <!--<div class="p-search">
-                    <form action="https://www.zelvia.co.jp/" method="get" role="search">
-                        <input type="search" class="p-search-field" placeholder="サイト内検索" value="" name="s"
-                               role="search">
-                    </form>
-                </div>-->
-
-
-
-                <div class="p-mega-menu-footer">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-8">
-
-                            </div>
-
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container -->
-                </div>
-                <!-- /.p-mega-menu-footer -->
-            </div>
-            <!-- /.p-mega-menu -->
         </nav>
     </div>
-    <!-- .p-header-wrapper -->
 </header>
 
 <script>

@@ -1,6 +1,7 @@
 package com.project.together.config;
 
 import com.project.together.config.handler.CustomAccessDeniedHandler;
+import com.project.together.config.handler.CustomAuthenticationEntryPoint;
 import com.project.together.config.jwt.JwtAuthenticationFilter;
 import com.project.together.config.jwt.JwtAuthorizationFilter;
 import com.project.together.config.oauth.OAuth2LoginSuccessHandler;
@@ -22,7 +23,6 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
-/*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -44,22 +44,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
+    // JwtAuthenticationFilter를 빈으로 등록하지 않음
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManagerBean());
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
+        return new JwtAuthenticationFilter(authenticationManagerBean());
     }
 
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationManagerBean(), userMapper);
+    // JwtAuthorizationFilter를 빈으로 등록하지 않음
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(userMapper);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
-                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter)
@@ -68,17 +66,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/user/**").permitAll()
-                /*.antMatchers("/media/**")
-                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")*/
-                .antMatchers("/api/v1/member/**")
-                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/v1/manager/**")
-                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/v1/admin/**")
-                .access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/", "/main.html", "/css/**", "/js/**", "/img/**", "/webjars/**", "/static/**", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif").permitAll()
+                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**").permitAll()
+                .antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .antMatchers("/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .antMatchers("/oauth2/authorization/**").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/error").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
@@ -87,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(oAuth2LoginSuccessHandler)
                 .and()
                 .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(customAccessDeniedHandler);
     }
 }

@@ -5,6 +5,7 @@ import com.project.together.domain.File;
 import com.project.together.service.FileService;
 import com.project.together.service.MainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,12 @@ public class MainController {
     private final MainService mainService;
 
 
+    @Value("${instagram.user.id}")
+    private String instagramUserId;
+
+    @Value("${instagram.access.token}")
+    private String instagramAccessToken;
+
     @GetMapping({"/", ""})
     public String mainpage(Model model) {
         List<File> sliderImages = mainService.getImagesForSectionClubPhoto();
@@ -30,6 +37,9 @@ public class MainController {
 
         model.addAttribute("sliderImages", sliderImages);
         model.addAttribute("clubVideos", clubVideos);
+        model.addAttribute("instagramUserId", instagramUserId);
+        model.addAttribute("instagramAccessToken", instagramAccessToken);
+
         return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
     }
 

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link th:href="@{/css/main/main.css}" rel="stylesheet"/>
     <th:block th:include="layout/header"></th:block>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -79,7 +80,6 @@
                         <td>1</td>
                         <td>1</td>
                         <td>1</td>
-                        <td>1</td>
                     </tr>
                     <tr>
                         <td>2</td>
@@ -102,10 +102,8 @@
                         <td>4</td>
                         <td>4</td>
                         <td>4</td>
-                        <td>4</td>
                     </tr>
                     <tr>
-                        <td>5</td>
                         <td>5</td>
                         <td>5</td>
                         <td>5</td>
@@ -132,43 +130,53 @@
 </div>
 <!-- 섹션4 -->
 <div class="tab-container">
-    <p class="feeds"><strong>투게더 소식</strong></p>
+    <p class="feeds"><strong>FC Together Issue</strong></p>
     <div class="gnbBox">
         <ul class="mainMenuBox" id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
             <li class="mainMenu">
-                <a onclick="showTab('all')">전체</a>
+                <a id="tab1-link" onclick="showTab('tab1', 'instagram')">
+                    INSTAGRAM <i class="fab fa-instagram"></i>
+                </a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab1')">notice</a>
+                <a id="tab2-link" onclick="showTab('tab2', 'notice')">
+                    NOTICE <i class="far fa-bell"></i>
+                </a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab2')">news</a>
-            </li>
-            <li class="mainMenu">
-                <a onclick="showTab('tab3')">instagram</a>
+                <a id="tab3-link" onclick="showTab('tab3', 'news')">
+                    NEWS <i class="far fa-newspaper"></i>
+                </a>
             </li>
         </ul>
-        <script src="/dist/js/header.js"></script>
-    </div>
-    <div class="tab-content" id="all-content">
-        all
     </div>
     <div class="tab-content" id="tab1-content">
-        notice
+        <!-- 인스타그램 게시글이 여기 표시됩니다 -->
     </div>
     <div class="tab-content" id="tab2-content">
-        news
+        <!-- 공지사항 게시글이 여기 표시됩니다 -->
     </div>
     <div class="tab-content" id="tab3-content">
-        instagram
+        <!-- 구단소식 게시글이 여기 표시됩니다 -->
+    </div>
+    <div class="more-button-container">
+        <button id="more-button" class="more-button" onclick="redirectToMore('instagram')">
+            더보기 <i class="fas fa-angle-right"></i>
+        </button>
     </div>
 </div>
+
 
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>
+
+<script th:inline="javascript">
+    var instagramUserId = /*[[${instagramUserId}]]*/ 'defaultUserId';
+    var instagramAccessToken = /*[[${instagramAccessToken}]]*/ 'defaultAccessToken';
+</script>
 
 <script>
     // 섹션1
@@ -325,13 +333,106 @@
         }
     });
     // 섹션4
-    $(document).ready(function () {
-        showTab('all');
+    $(document).ready(function() {
+        var firstTabPosition = $("#tab1-link").parent().position();
+        var firstTabWidth = $("#tab1-link").parent().width();
+
+        $("#nav-1 .slide1").css({ opacity: 1, left: firstTabPosition.left, width: firstTabWidth });
+
+        $("#nav-1 a").on("click", function() {
+            var position = $(this).parent().position();
+            var width = $(this).parent().width();
+            $("#nav-1 .slide1").css({ opacity: 1, left: position.left, width: width });
+            var tabId = $(this).attr('id').replace('-link', '');
+            showTab(tabId, tabId);
+        });
+
+        $("#nav-1 a").on("mouseover", function() {
+            var position = $(this).parent().position();
+            var width = $(this).parent().width();
+            $("#nav-1 .slide2").css({
+                opacity: 1, left: position.left, width: width
+            }).addClass("squeeze");
+        });
+
+        $("#nav-1 a").on("mouseout", function() {
+            $("#nav-1 .slide2").css({ opacity: 0 }).removeClass("squeeze");
+        });
+
+        showTab('tab1', 'instagram'); // 인스타그램 탭을 첫 번째로 설정
+        $('#tab1-link').addClass('active'); // 탭 클릭 효과 추가
+
+        // 인스타그램 게시물 불러오기
+        fetchInstagramPosts();
     });
-    function showTab(tabName) {
-        $('.tab-content').removeClass('active');
-        $('#' + tabName + '-content').addClass('active');
+
+    document.querySelector("#tab1-link").addEventListener('click', fetchInstagramPosts);
+
+    let longLivedAccessToken = instagramAccessToken; // 민감 정보 주입
+
+    const instagramPostsEndpoint = "https://graph.instagram.com/me/media";
+
+    async function fetchInstagramPosts() {
+        try {
+            const response = await fetch(`${instagramPostsEndpoint}?fields=id,caption,media_type,media_url,permalink,timestamp,thumbnail_url&access_token=${longLivedAccessToken}&limit=12`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayInstagramPosts(data.data);
+        } catch (error) {
+            console.error("Error fetching Instagram posts:", error);
+        }
     }
+
+    function displayInstagramPosts(posts) {
+        const instagramContent = document.getElementById('tab1-content');
+        instagramContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'instagram-post';
+
+            const mediaUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+
+            postElement.innerHTML = `
+                <a href="${post.permalink}" target="_blank" class="instagram-post-link">
+                    <div class="instagram-post-image" style="background-image: url('${mediaUrl}');"></div>
+                    <div class="instagram-post-caption">${post.caption}</div>
+                    <div class="instagram-post-timestamp">${new Date(post.timestamp).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            instagramContent.appendChild(postElement);
+        });
+    }
+
+
+    function redirectToMore(tabName) {
+        switch(tabName) {
+            case 'instagram':
+                window.location.href = 'https://www.instagram.com/fc_together_seongdong_gu/';
+                break;
+            case 'notice':
+                window.location.href = '/notice-page-url';
+                break;
+            case 'news':
+                window.location.href = '/news-page-url';
+                break;
+            default:
+                console.error('Invalid tab name:', tabName);
+        }
+    }
+
+    function showTab(tabName, moreButtonTarget) {
+        $('.tab-content').removeClass('active').hide(); // 모든 탭 콘텐츠를 숨김
+        $('#' + tabName + '-content').addClass('active').show(); // 선택한 탭 콘텐츠만 보임
+        $('.mainMenuBox .mainMenu a').removeClass('active'); // 모든 탭 링크에서 active 클래스 제거
+        $('#' + tabName + '-link').addClass('active'); // 선택한 탭 링크에 active 클래스 추가
+        $('#more-button').attr('onclick', `redirectToMore('${moreButtonTarget}')`); // 더보기 버튼의 onclick 이벤트를 업데이트
+    }
+
+
 </script>
 </body>
 </html>

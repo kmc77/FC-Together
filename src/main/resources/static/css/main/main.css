@@ -1,3 +1,7 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
+
 body {
     margin: 0;
     padding: 0;
@@ -167,6 +171,13 @@ body {
 
 
 /* 섹션3 end */
+
+/* INSTAGRAM tab */
+
+
+
+
+/* INSTAGRAM tab end */
 
 
 
@@ -552,7 +563,18 @@ fieldset {
     margin: 0 auto;
     color: #000;
     font-size: 24px;
+    font-family: 'Font Awesome 5 Free'; /* Font Awesome 폰트 지정 */
+    font-weight: 900; /* 아이콘 스타일을 위해 */
 }
+
+.v-story-wrap .v-story-slider .slick-prev::before {
+    content: '\f053'; /* Font Awesome 왼쪽 화살표 아이콘 */
+}
+
+.v-story-wrap .v-story-slider .slick-next::before {
+    content: '\f054'; /* Font Awesome 오른쪽 화살표 아이콘 */
+}
+
 
 /* visual story 하단 페이지 버튼 */
 .v-story-wrap .v-story-slider .slick-dots > li {
@@ -653,7 +675,6 @@ fieldset {
 }
 
 .tab-container {
-    height: 800px;
     width: 100%;
     margin: 0 auto;
     padding-top: 50px;
@@ -688,5 +709,125 @@ fieldset {
     margin: 5px;
 }
 
+/* Instagram 탭 전용 스타일 */
+#tab1-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    gap: 20px; /* 아이템 간 간격 추가 */
+}
 
+.instagram-post {
+    position: relative;
+    width: calc(25% - 20px); /* 간격을 둔 4개 항목 */
+    height: auto;
+    aspect-ratio: 1/1; /* 1:1 비율 유지 */
+    border: 1px solid #ddd;
+    border-radius: 0; /* 각지게 처리 */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.instagram-post-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 텍스트 색상 상속 */
+}
+
+.instagram-post-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instagram-post:hover .instagram-post-image {
+    transform: scale(1.2); /* 확대 비율 조정 */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* 더 큰 그림자 */
+}
+
+.instagram-post-caption,
+.instagram-post-timestamp {
+    padding: 5px 15px; /* 위아래 간격 좁게 조정 */
+    color: #fff9f9;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 2; /* 항상 보이게 유지 */
+    /* opacity: 0.9; */ /* 약간의 투명도 추가 */
+    transition: opacity 0.3s ease; /* 호버 시 불투명하게 */
+}
+
+.instagram-post-caption {
+    bottom: 30px; /* 캡션을 아래에 유지 */
+    font-size: 19px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px; /* 캡션과 타임스탬프 사이 간격 좁게 조정 */
+}
+
+.instagram-post-timestamp {
+    bottom: 10px; /* 타임스탬프를 캡션 아래로 이동 */
+    font-size: 14px;
+}
+
+.instagram-post-image::before {
+    content: '';
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+    z-index: 1; /* 배경에 적용되도록 */
+}
+
+.instagram-post:hover .instagram-post-image::before {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+.more-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.more-button {
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff; /* 텍스트 색상은 그대로 유지 */
+    background-color: #404040; /* 기본 색상 변경 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 50px;
+}
+
+.more-button i {
+    margin-left: 5px;
+}
+
+.more-button:hover {
+    background-color: #585858; /* 호버 색상 변경 */
+    transform: scale(1.05);
+}
 

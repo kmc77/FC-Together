@@ -25,13 +25,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        System.out.println("JwtAuthenticationFilter 로그인 시도중 = ");
+        System.out.println("JwtAuthenticationFilter 로그인 시도중");
 
-        // 1. username, password 받음
         try {
             ObjectMapper om = new ObjectMapper();
             User user = om.readValue(request.getInputStream(), User.class);
@@ -40,12 +38,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 
-
-            // PrincipalDetailsSerivce의 loadUserByUsername() 함수가 실행됨
             Authentication authentication =
                     authenticationManager.authenticate(authenticationToken);
 
-            // authentication 객체가 session 영역에 저장 => 로그인이 되었다는 뜻
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
             System.out.println(principalDetails.getUser().getUsername());
 
@@ -56,22 +51,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return null;
     }
 
-
     @Override
-    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                         Authentication authResult) throws IOException, ServletException {
-        System.out.println("successfulAuthentication 실행됨: 인증이 완료되었다는 것이여~");
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
+        System.out.println("successfulAuthentication 실행됨: 인증이 완료됨");
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-        // 토큰 생성
         String jwtToken = TokenUtils.createJwtToken(principalDetails);
         String refreshToken = TokenUtils.createRefreshToken(principalDetails);
 
-
-        // 응답에 토큰 추가
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-        response.addCookie(cookie);
+        response.addCookie(new Cookie("refreshToken", refreshToken));
     }
 }

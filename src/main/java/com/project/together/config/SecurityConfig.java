@@ -67,9 +67,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "/main.html", "/css/**", "/js/**", "/img/**", "/webjars/**", "/static/**", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif").permitAll()
-                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**").permitAll()
-                .antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                .antMatchers("/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/media/**", "/management/**", "/my/**").permitAll()
+                /*.antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .antMatchers("/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")*/
                 .antMatchers("/oauth2/authorization/**").permitAll()
                 .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()

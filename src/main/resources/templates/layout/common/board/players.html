@@ -362,21 +362,12 @@
                 container.appendChild(formGroup); // 생년월일 필드 추가
             } else if (name.includes('PlayerPosition')) {
                 // 포지션 필드의 경우
-                var positions = ['GK', 'DF', 'MF', 'FW'];
-                positions.forEach(function(position) {
-                    var label = document.createElement('label');
-                    label.style.marginRight = '10px';
-
-                    var input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = name;
-                    input.value = position;
-
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(position));
-
-                    container.appendChild(label);
-                });
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.name = name;
+                input.placeholder = hint || '';
+                container.appendChild(input);
             } else if (name.includes('PlayerCapYn') || name.includes('PlayerSubCapYn')) {
                 // PlayerCapYn 및 PlayerSubCapYn 필드의 경우
                 var options = {'Y': '예', 'N': '아니요'};
@@ -394,8 +385,8 @@
 
                     container.appendChild(label);
                 }
+            // 키 입력 필드의 경우
             } else if (name.includes('PlayerHeight')) {
-                // 키 입력 필드의 경우
                 var inputGroup = document.createElement('div');
                 inputGroup.className = 'input-group mb-3';
 
@@ -418,13 +409,25 @@
                 inputGroupText.id = 'heightDisplay';
                 inputGroupText.innerText = '175 cm'; // 초기 값
 
+                var clearButton = document.createElement('button');
+                clearButton.type = 'button';
+                clearButton.className = 'btn btn-outline-secondary';
+                clearButton.innerText = 'Clear';
+                clearButton.onclick = function() {
+                    input.value = '';
+                    inputGroupText.innerText = '';
+                };
+
                 inputGroupAppend.appendChild(inputGroupText);
+                inputGroupAppend.appendChild(clearButton);
                 inputGroup.appendChild(input);
                 inputGroup.appendChild(inputGroupAppend);
 
                 container.appendChild(inputGroup);
-            } else if (name.includes('PlayerWeight')) {
-                // 체중 입력 필드의 경우
+            }
+
+            // 체중 입력 필드의 경우
+            else if (name.includes('PlayerWeight')) {
                 var inputGroup = document.createElement('div');
                 inputGroup.className = 'input-group mb-3';
 
@@ -447,12 +450,23 @@
                 inputGroupText.id = 'weightDisplay';
                 inputGroupText.innerText = '70 kg'; // 초기 값
 
+                var clearButton = document.createElement('button');
+                clearButton.type = 'button';
+                clearButton.className = 'btn btn-outline-secondary';
+                clearButton.innerText = 'Clear';
+                clearButton.onclick = function() {
+                    input.value = '';
+                    inputGroupText.innerText = '';
+                };
+
                 inputGroupAppend.appendChild(inputGroupText);
+                inputGroupAppend.appendChild(clearButton);
                 inputGroup.appendChild(input);
                 inputGroup.appendChild(inputGroupAppend);
 
                 container.appendChild(inputGroup);
-            } else {
+            }
+             else {
                 var input = document.createElement('input');
                 input.type = 'text';
                 input.style.width = '50%';

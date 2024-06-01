@@ -130,36 +130,36 @@
 </div>
 <!-- 섹션4 -->
 <div class="tab-container">
-    <p class="feeds"><strong>FC Together Issue</strong></p>
+    <p class="contents"><strong>FC Together Contents</strong></p>
     <div class="gnbBox">
         <ul class="mainMenuBox" id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
             <li class="mainMenu">
-                <a id="tab1-link" onclick="showTab('tab1', 'instagram')">
+                <a id="tab1-link" data-more-target="instagram" onclick="showTab('tab1', 'instagram')">
                     INSTAGRAM <i class="fab fa-instagram"></i>
                 </a>
             </li>
             <li class="mainMenu">
-                <a id="tab2-link" onclick="showTab('tab2', 'notice')">
+                <a id="tab2-link" data-more-target="notice" onclick="showTab('tab2', 'notice')">
                     NOTICE <i class="far fa-bell"></i>
                 </a>
             </li>
             <li class="mainMenu">
-                <a id="tab3-link" onclick="showTab('tab3', 'news')">
+                <a id="tab3-link" data-more-target="news" onclick="showTab('tab3', 'news')">
                     NEWS <i class="far fa-newspaper"></i>
                 </a>
             </li>
         </ul>
     </div>
     <div class="tab-content" id="tab1-content">
-        <!-- 인스타그램 게시글이 여기 표시됩니다 -->
+        <!-- 인스타그램 게시글이 여기 표시 -->
     </div>
     <div class="tab-content" id="tab2-content">
-        <!-- 공지사항 게시글이 여기 표시됩니다 -->
+        <!-- 공지사항 게시글이 여기 표시 -->
     </div>
     <div class="tab-content" id="tab3-content">
-        <!-- 구단소식 게시글이 여기 표시됩니다 -->
+        <!-- 구단소식 게시글이 여기 표시 -->
     </div>
     <div class="more-button-container">
         <button id="more-button" class="more-button" onclick="redirectToMore('instagram')">
@@ -247,6 +247,7 @@
     function goToSlide(index) {
         $('.fade').slick('slickGoTo', index);
     }
+
     // 섹션2
     let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');
@@ -291,6 +292,7 @@
     function nextSlide2() {
         showSlide2(currentIndex2 + 1);
     }
+
     // 섹션3
     console.clear();
     // animation on scroll
@@ -332,6 +334,7 @@
             });
         }
     });
+
     // 섹션4
     $(document).ready(function() {
         var firstTabPosition = $("#tab1-link").parent().position();
@@ -344,7 +347,7 @@
             var width = $(this).parent().width();
             $("#nav-1 .slide1").css({ opacity: 1, left: position.left, width: width });
             var tabId = $(this).attr('id').replace('-link', '');
-            showTab(tabId, tabId);
+            showTab(tabId, $(this).attr('data-more-target'));
         });
 
         $("#nav-1 a").on("mouseover", function() {
@@ -367,6 +370,8 @@
     });
 
     document.querySelector("#tab1-link").addEventListener('click', fetchInstagramPosts);
+    document.querySelector("#tab2-link").addEventListener('click', fetchNoticePosts);
+    document.querySelector("#tab3-link").addEventListener('click', fetchNewsPosts);
 
     let longLivedAccessToken = instagramAccessToken; // 민감 정보 주입
 
@@ -407,6 +412,86 @@
         });
     }
 
+    async function fetchNoticePosts() {
+        try {
+            const response = await fetch('/media/notice/list?start=0&limit=12');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayNoticePosts(data);
+        } catch (error) {
+            console.error("Error fetching notice posts:", error);
+        }
+    }
+
+    function displayNoticePosts(posts) {
+        const noticeContent = document.getElementById('tab2-content');
+        noticeContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'notice-post'; // 클래스 이름 변경
+
+            // Create a temporary element to manipulate the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.noticeContent;
+
+            // Remove figure tags
+            tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
+
+            postElement.innerHTML = `
+                <a href="/media/noticeview?no=${post.noticeNum}" target="_blank" class="notice-post-link">
+                    <div class="notice-post-title">${post.noticeTitle}</div>
+                    <div class="notice-post-content">${tempDiv.innerHTML}</div>
+                    <div class="notice-post-timestamp">${new Date(post.noticeDate).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            noticeContent.appendChild(postElement);
+        });
+    }
+
+    async function fetchNewsPosts() {
+        try {
+            const response = await fetch('/media/news/list?start=0&limit=12');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayNewsPosts(data);
+        } catch (error) {
+            console.error("Error fetching news posts:", error);
+        }
+    }
+
+    function displayNewsPosts(posts) {
+        const newsContent = document.getElementById('tab3-content');
+        newsContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'news-post'; // 클래스 이름 변경
+
+            // Create a temporary element to manipulate the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.newsContent;
+
+            // Remove figure tags
+            tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
+
+            postElement.innerHTML = `
+                <a href="/media/newsview?no=${post.newsIdx}" target="_blank" class="news-post-link">
+                    <div class="news-post-title">${post.newsTitle}</div>
+                    <div class="news-post-content">${tempDiv.innerHTML}</div>
+                    <div class="news-post-timestamp">${new Date(post.newsRegdate).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            newsContent.appendChild(postElement);
+        });
+    }
+
 
     function redirectToMore(tabName) {
         switch(tabName) {
@@ -414,10 +499,10 @@
                 window.location.href = 'https://www.instagram.com/fc_together_seongdong_gu/';
                 break;
             case 'notice':
-                window.location.href = '/notice-page-url';
+                window.location.href = '/media/notice';
                 break;
             case 'news':
-                window.location.href = '/news-page-url';
+                window.location.href = '/media/news';
                 break;
             default:
                 console.error('Invalid tab name:', tabName);
@@ -432,7 +517,7 @@
         $('#more-button').attr('onclick', `redirectToMore('${moreButtonTarget}')`); // 더보기 버튼의 onclick 이벤트를 업데이트
     }
 
-
 </script>
+
 </body>
 </html>

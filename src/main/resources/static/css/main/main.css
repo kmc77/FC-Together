@@ -197,7 +197,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(25%);
+    filter: brightness(30%) blur(8px);
 }
 
 .pastMatch {
@@ -218,15 +218,15 @@ body {
 
 .slider-container {
     width: 100%;
-    height: 80%;
+    /*height: 80%;*/
     overflow: hidden;
 }
 
 .slider-wrapper {
-    display: flex;
+    /*display: flex;
     transition: transform 0.5s ease-in-out;
     background-color: rgba(0, 0, 0, 0.85);
-    height: 100%;
+    height: 100%;*/
 }
 
 .slide {
@@ -256,15 +256,14 @@ body {
 
 .slider-container2 {
     width: 100%;
-    height: 80%;
+    /*height: 80%;*/
     overflow: hidden;
 }
 
 .slider-wrapper2 {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+    /*transition: transform 0.5s ease-in-out;
     background-color: rgba(0, 0, 0, 0.85);
-    height: 100%;
+    height: 100%;*/
 }
 
 .slide2 {
@@ -709,7 +708,7 @@ fieldset {
     margin: 5px;
 }
 
-/* 이슈 탭 전용 스타일 */
+/* 컨텐츠 탭 전용 스타일 */
 #tab1-content {
     display: flex;
     flex-wrap: wrap;
@@ -759,14 +758,12 @@ fieldset {
 .instagram-post-caption,
 .instagram-post-timestamp {
     padding: 5px 15px; /* 위아래 간격 좁게 조정 */
-    color: #fff9f9;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    color: #fff;
     box-sizing: border-box;
     position: absolute;
     left: 0;
     width: 100%;
     z-index: 2; /* 항상 보이게 유지 */
-    /* opacity: 0.9; */ /* 약간의 투명도 추가 */
     transition: opacity 0.3s ease; /* 호버 시 불투명하게 */
 }
 
@@ -778,11 +775,17 @@ fieldset {
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 5px; /* 캡션과 타임스탬프 사이 간격 좁게 조정 */
+    background: rgba(0, 0, 0, 0.3); /* 반투명한 어두운 배경색 추가 */
+    padding: 10px;
+    /* border-radius: 5px; */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); /* 은은한 그림자 효과 추가 */
 }
+
 
 .instagram-post-timestamp {
     bottom: 10px; /* 타임스탬프를 캡션 아래로 이동 */
     font-size: 14px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .instagram-post-image::before {
@@ -1069,4 +1072,248 @@ fieldset {
     border-top: 1px solid #ddd; /* 상단에 경계선 추가 */
     padding-top: 10px; /* 패딩 추가 */
     margin-top: 15px; /* 내용과 타임스탬프 사이의 여유 공간 추가 */
+}
+
+/* 입단 신청하기 버튼 */
+
+.animated-button {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #343a40; /* 기본 어두운 색상 */
+    border: none;
+    border-radius: 50px; /* 부드러운 둥근 모서리 */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: glowing 1.5s infinite;
+}
+
+.animated-button:hover {
+    transform: translateY(-3px); /* 살짝 떠오르는 효과 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button:active {
+    transform: translateY(1px); /* 눌리는 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 5px #343a40, 0 0 10px #343a40, 0 0 15px #343a40, 0 0 20px #343a40, 0 0 25px #343a40;
+    }
+    50% {
+        box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 25px #ffffff;
+    }
+    100% {
+        box-shadow: 0 0 5px #343a40, 0 0 10px #343a40, 0 0 15px #343a40, 0 0 20px #343a40, 0 0 25px #343a40;
+    }
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: calc(10% + 60px); /* 버튼 바로 아래에 위치 */
+    right: 5%;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 부드러운 그림자 */
+    z-index: 20;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.dropdown.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown a {
+    display: block;
+    padding: 14px 24px;
+    color: #495057; /* 더 고급스러운 색상 */
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 16px;
+    border-bottom: 1px solid #e9ecef;
+    border-radius: 8px; /* 둥근 모서리 유지 */
+}
+
+.dropdown a:last-child {
+    border-bottom: none;
+}
+
+.dropdown a:hover {
+    background-color: #e9ecef; /* 더 밝은 배경색 */
+    color: #212529; /* 텍스트 색상 변경 */
+    border-radius: 8px; /* 호버 시 둥근 모서리 유지 */
+}
+
+.dropdown a:focus {
+    background-color: #dee2e6;
+    color: #212529;
+    outline: none;
+    border-radius: 8px; /* 포커스 시 둥근 모서리 유지 */
+}
+
+
+/* 매치 데이터 스타일 */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-enter {
+    animation: fadeIn 0.5s forwards;
+}
+
+.fade-exit {
+    animation: fadeOut 0.5s forwards;
+}
+
+.matchResult button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.nextSchedule button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.button-container button i {
+    font-size: 1em; /* 아이콘 크기를 축소합니다 */
+    color: #ff6347; /* 기본 색상 */
+}
+
+button.disabled i {
+    color: #9e9e9e; /* 비활성화된 상태의 색상 */
+}
+
+.matchItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #9e9e9e21;
+    margin-bottom: 10px;
+}
+
+.matchItem .date {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #9E9E9E;
+}
+
+.matchItem .matchInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.matchItem .home, .matchItem .away {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.matchItem .home .name, .matchItem .away .name {
+    margin-top: 5px;
+    color: white;
+}
+
+.matchItem .minfo {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(240 240 240 / 5%);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.matchItem .vs {
+    font-size: 1.5em;
+    margin: 10px;
+    color: #9e9e9ea3;
+    /*font-weight: bold;*/
+}
+
+.slider-container2 .matchItem .vs {
+    font-size: 1.5em;
+    margin: 10px;
+    color: #9e9e9ea3;
+    font-weight: bold;
+}
+
+.matchItem .score {
+    font-size: 2em;
+    margin: 10px;
+    color: #9e9e9ede;
+}
+
+.matchItem .matchScore {
+    font-size: 2em;
+    margin: 10px;
+    color: #a0ef44;
+}
+
+.matchItem .game {
+    font-size: 1.2em;
+}
+
+.matchItem .stadium {
+    text-align: center;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+.teamLogo {
+    width: 80px; /* 로고 크기를 80px로 설정 */
+    height: 80px;
+    object-fit: contain;
+    margin: 5px;
+}
+
+.matchResult, .nextSchedule {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }

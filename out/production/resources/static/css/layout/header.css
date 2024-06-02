@@ -138,6 +138,7 @@ body .gnbBox {
     line-height: 0;
     transition: all 0.3s ease;
     max-height: 103px; /* 최대 높이 설정을 추가하여 세로 크기 제한 */
+    padding-left: 10px;
 }
 
     @media (max-width: 1350px) {
@@ -168,25 +169,30 @@ body .gnbBox {
     padding-left: 240px; }
 
 
-    /* 추가된 유틸 클래스 스타일 */
-    .p-header .p-nav-global .utils {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
-      /*font-weight: bold;*/ /* 볼드 스타일 적용 */
-      font-size: 19px;
-    }
+/* 추가된 유틸 클래스 스타일 */
+.p-header .p-nav-global .utils {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 추가 */
+    /*font-weight: bold;*/ /* 볼드 스타일 적용 */
+    font-size: 19px;
+}
 
+/* 유틸 클래스 내의 링크 스타일 조정 */
+.p-header .p-nav-global .utils a {
+    padding: 0 5px; /* 좌우 패딩을 10px로 설정 */
+    font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 유지 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: #000; /* 텍스트 색상 설정 */
+}
 
-    /* 유틸 클래스 내의 링크 스타일 조정 */
-    .p-header .p-nav-global .utils a {
-        padding: 0 5px; /* 좌우 패딩을 10px로 설정 */
-        font-family: 'D-DIN', sans-serif; /* 폰트 패밀리 유지 */
-        text-decoration: none; /* 밑줄 제거 */
-        color: #000; /* 텍스트 색상 설정 */
-    }
+/* 로그아웃 및 회원가입 링크의 오른쪽에 공백 추가 */
+.p-header .p-nav-global .utils #logout-link,
+.p-header .p-nav-global .utils #join-link {
+    margin-right: 20px; /* 원하는 공백 크기로 설정 */
+}
 
 
     .p-header .p-nav-global .p-nav-sub {

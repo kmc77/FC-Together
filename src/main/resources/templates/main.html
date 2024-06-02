@@ -22,6 +22,13 @@
             <img th:src="@{${image.filePath}}" alt="" class="swiperImg">
         </div>
     </div>
+    <button class="animated-button" onclick="toggleDropdown()">입단 신청하기</button>
+
+    <!-- 드롭다운 리스트 -->
+    <div class="dropdown" id="dropdown">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7KTSJ6aOTX_W9awQinNvKjXlsvv-9Tg7lCne-HaQBi0WGqg/viewform" target="_blank">남성팀</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNe9NGwfBnXN3zAobKiczd-mP-C2LjUI9djwU32TC6c44lZw/viewform" target="_blank">여성팀</a>
+    </div>
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
@@ -32,30 +39,32 @@
 <!-- 섹션2 -->
 <div class="matchSchedule">
     <div class="matchImgDiv">
-        <img src="/img/FcTogether.jpg" alt="" class="matchImg">
+        <img src="/img/matchSectionPhoto.webp" alt="" class="matchImg">
         <div class="pastMatch">
-            <h2 class="matchResult">지난 경기 결과</h2>
+            <h2 class="matchResult">지난 경기 결과
+                <div class="button-container">
+                    <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </h2>
             <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slide">matchResult1</div>
-                    <div class="slide">matchResult2</div>
-                    <div class="slide">matchResult3</div>
+                <div class="slider-wrapper" id="pastMatches">
+                    <!-- 과거 경기 결과가 여기에 표시됩니다 -->
                 </div>
             </div>
-            <button onclick="prevSlide1()"> <</button>
-            <button onclick="nextSlide1()"> ></button>
         </div>
         <div class="nextMatch">
-            <h2 class="nextSchedule">다음 경기 일정</h2>
+            <h2 class="nextSchedule">다가오는 경기
+                <div class="button-container">
+                    <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </h2>
             <div class="slider-container2">
-                <div class="slider-wrapper2">
-                    <div class="slide2">nextMatch1</div>
-                    <div class="slide2">nextMatch2</div>
-                    <div class="slide2">nextMatch3</div>
+                <div class="slider-wrapper2" id="nextMatches">
+                    <!-- 다음 경기 일정이 여기에 표시됩니다 -->
                 </div>
             </div>
-            <button onclick="prevSlide2()"> <</button>
-            <button onclick="nextSlide2()"> ></button>
         </div>
         <div class="leagueRanking">
             <h3 class="leagueRank">리그 순위</h3>
@@ -72,50 +81,16 @@
                         <th>승점</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                    </tr>
+                    <tbody id="leagueRankings">
+                    <!-- 리그 순위가 여기에 표시됩니다 -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
 <!-- 섹션3 -->
 <div class="videoDiv">
     <div class="v-story-wrap con">
@@ -249,49 +224,120 @@
     }
 
     // 섹션2
-    let currentIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-    const sliderWrapper = document.querySelector('.slider-wrapper');
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchMatchData();
+    });
 
-    function showSlide(index) {
-        if (index < 0 || index >= totalSlides) {
-            return;
+    function fetchMatchData() {
+        fetch('/getK5MatchList')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data);
+                data.forEach(match => {
+                    const date = new Date(match.matchDate);
+                    const days = ['일', '월', '화', '수', '목', '금', '토'];
+                    match.matchDay = days[date.getDay()]; // 요일 추가
+                });
+                displayPastMatches(data);
+                displayNextMatches(data);
+            })
+            .catch(error => console.error('Error fetching match data:', error));
+    }
+
+    function displayPastMatches(matches) {
+        const pastMatchesContainer = document.getElementById('pastMatches');
+        pastMatchesContainer.innerHTML = '';
+
+        const pastMatches = matches.filter(match => match.matchScore);
+        pastMatches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)); // 최근 날짜 순으로 정렬
+        displayMatchesInChunks(pastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
+    }
+
+    function displayNextMatches(matches) {
+        const nextMatchesContainer = document.getElementById('nextMatches');
+        nextMatchesContainer.innerHTML = '';
+
+        const nextMatches = matches.filter(match => !match.matchScore);
+        displayMatchesInChunks(nextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
+    }
+
+    function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
+        const chunkSize = 3;
+        let currentPage = 0;
+
+        const nextButton = document.getElementById(nextButtonId);
+        const prevButton = document.getElementById(prevButtonId);
+
+        nextButton.addEventListener('click', () => {
+            currentPage++;
+            renderMatches('next');
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentPage--;
+            renderMatches('prev');
+        });
+
+        function renderMatches(direction) {
+            container.classList.remove('fade-enter', 'fade-exit');
+            void container.offsetWidth; // Trigger reflow to restart animation
+            container.classList.add('fade-exit');
+
+            setTimeout(() => {
+                container.innerHTML = '';
+                const start = currentPage * chunkSize;
+                const end = start + chunkSize;
+                const currentMatches = matches.slice(start, end);
+
+                currentMatches.forEach(match => {
+                    const matchElement = document.createElement('div');
+                    matchElement.className = 'matchItem';
+                    matchElement.innerHTML = `
+                        <div class="date">${match.matchDate} (${match.matchDay}) ${match.matchTime}</div>
+                        <div class="matchInfo">
+                            <div class="team home">
+                                <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                <div class="name">투게더</div>
+                            </div>
+                            <div class="minfo">
+                                ${match.matchScore ? `<div class="matchScore">${match.matchScore}</div>` : ''}
+                                <div class="vs">VS</div>
+                                ${match.matchRelativeScore ? `<div class="score">${match.matchRelativeScore}</div>` : ''}
+                            </div>
+                            <div class="team away">
+                                <img src="${match.teamLogo}" alt="${match.teamName}" class="teamLogo">
+                                <div class="name">${match.teamName}</div>
+                            </div>
+                        </div>
+                        <div class="stadium"><i class="fas fa-map-marker-alt"></i> <span>${match.matchLocation} | ${match.matchHome}</span></div>
+                    `;
+                    container.appendChild(matchElement);
+                });
+
+                prevButton.disabled = currentPage === 0;
+                nextButton.disabled = end >= matches.length;
+
+                if (prevButton.disabled) {
+                    prevButton.classList.add('disabled');
+                } else {
+                    prevButton.classList.remove('disabled');
+                }
+
+                if (nextButton.disabled) {
+                    nextButton.classList.add('disabled');
+                } else {
+                    nextButton.classList.remove('disabled');
+                }
+
+                container.classList.remove('fade-exit');
+                container.classList.add('fade-enter');
+            }, 500); // Animation duration
         }
-        const translateValue = -index * 100 + '%';
-        sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
-        currentIndex = index;
+
+        renderMatches();
     }
 
-    function prevSlide1() {
-        showSlide(currentIndex - 1);
-    }
 
-    function nextSlide1() {
-        showSlide(currentIndex + 1);
-    }
-
-    let currentIndex2 = 0;
-    const slides2 = document.querySelectorAll('.slide2');
-    const totalSlides2 = slides2.length;
-    const sliderWrapper2 = document.querySelector('.slider-wrapper2');
-
-    function showSlide2(index) {
-        if (index < 0 || index >= totalSlides2) {
-            return;
-        }
-        const translateValue2 = -index * 100 + '%';
-        sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
-        currentIndex2 = index;
-    }
-
-    function prevSlide2() {
-        showSlide2(currentIndex2 - 1);
-    }
-
-    function nextSlide2() {
-        showSlide2(currentIndex2 + 1);
-    }
 
     // 섹션3
     console.clear();
@@ -473,11 +519,11 @@
             const postElement = document.createElement('div');
             postElement.className = 'news-post'; // 클래스 이름 변경
 
-            // Create a temporary element to manipulate the content
+            // 콘텐츠를 조작하기 위한 임시 요소 만들기
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = post.newsContent;
 
-            // Remove figure tags
+            // 그림 태그 제거
             tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
 
             postElement.innerHTML = `
@@ -516,6 +562,96 @@
         $('#' + tabName + '-link').addClass('active'); // 선택한 탭 링크에 active 클래스 추가
         $('#more-button').attr('onclick', `redirectToMore('${moreButtonTarget}')`); // 더보기 버튼의 onclick 이벤트를 업데이트
     }
+
+
+function toggleDropdown() {
+    var dropdown = document.getElementById('dropdown');
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+//입단 신청하기 버튼
+function toggleDropdown() {
+    var dropdown = document.getElementById('dropdown');
+    if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+    } else {
+        dropdown.classList.add('show');
+    }
+}
+
+$(document).ready(function(){
+    var $slickElement = $('.fade');
+    var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
+
+    $slickElement.slick({
+        infinite: true,
+        speed: 300, // 애니메이션 속도를 빠르게 설정
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: autoplaySpeed, // 자동 재생 속도 설정
+        dots: false // slick-dots를 비활성화
+    });
+
+    function startProgressBar() {
+        $(".progress-bar").css({
+            width: "100%",
+            transition: "width " + autoplaySpeed + "ms linear"
+        });
+    }
+
+    function resetProgressBar() {
+        $(".progress-bar").css({
+            width: 0,
+            transition: "width 0s"
+        });
+    }
+
+    function updateBullets(slideCount) {
+        var bulletsContainer = $('#btn-bullets');
+        bulletsContainer.empty(); // 기존 버튼들 삭제
+        for (var i = 0; i < slideCount; i++) {
+            var bullet = $('<button class="btn-bullet"></button>');
+            bullet.attr('onclick', 'goToSlide(' + i + ')');
+            bulletsContainer.append(bullet);
+        }
+    }
+
+    $slickElement.on('init reInit afterChange', function(event, slick, currentSlide){
+        startProgressBar();
+        $('.btn-bullet').removeClass('active');
+        $('.btn-bullet').eq(currentSlide).addClass('active');
+    });
+
+    $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+        resetProgressBar();
+    });
+
+    $('.btn-bullet').on('click', function(){
+        var index = $(this).index();
+        $slickElement.slick('slickGoTo', index);
+    });
+
+    $('.swiperImg').on('click', function(){
+        $slickElement.slick('slickNext');
+    });
+
+    // 초기화 후 동적으로 버튼 업데이트
+    var slideCount = $('.fade').slick('getSlick').slideCount;
+    updateBullets(slideCount);
+
+    startProgressBar(); // 초기 프로그레스 바 상태 시작
+});
+
+function goToSlide(index) {
+    $('.fade').slick('slickGoTo', index);
+}
+
+
 
 </script>
 

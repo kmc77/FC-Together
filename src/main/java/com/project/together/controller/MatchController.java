@@ -53,6 +53,76 @@ public class MatchController {
             }
         }
 
+        if (K5matchResult != null && K5leagueGb != null) {
+            for (int i = 0; i < K5matchResult.size(); i++) {
+                Match match = K5matchResult.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
+        if (K7matchSchedule != null && K5leagueGb != null) {
+            for (int i = 0; i < K7matchSchedule.size(); i++) {
+                Match match = K7matchSchedule.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
+        if (K7matchResult != null && K5leagueGb != null) {
+            for (int i = 0; i < K7matchResult.size(); i++) {
+                Match match = K7matchResult.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
+        if (W1matchSchedule != null && K5leagueGb != null) {
+            for (int i = 0; i < W1matchSchedule.size(); i++) {
+                Match match = W1matchSchedule.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
+        if (W1matchResult != null && K5leagueGb != null) {
+            for (int i = 0; i < W1matchResult.size(); i++) {
+                Match match = W1matchResult.get(i);
+                // Ensure team list is initialized
+                if (match.getTeam() == null) {
+                    match.setTeam(new ArrayList<>());
+                }
+                // Add K5leagueGb team to the match's team list
+                if (i < K5leagueGb.size()) {
+                    match.getTeam().add(K5leagueGb.get(i));
+                }
+            }
+        }
+
         // Pagination logic
         List<Match> paginatedK5Schedule = getMatchPaginatedList(K5matchSchedule, page, size);
         List<Match> paginatedK5Result = getMatchPaginatedList(K5matchResult, page, size);

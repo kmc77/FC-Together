@@ -9,7 +9,9 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k5'
         AND m.match_score IS  NULL
+        AND m.match_relative_score IS NULL
         AND m.league_gb = 'k5'
+        ORDER BY match_date DESC
     </select>
 
     <select id="K5selectResult" resultType="com.project.together.domain.Match">

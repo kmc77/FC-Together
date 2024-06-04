@@ -1,10 +1,14 @@
+@import url('https://fonts.cdnfonts.com/css/d-din');
+
+
+
 .joinPage-container {
     position: relative;
     max-width: 1260px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
 }
 
 .memberPage .memberBox.join {
@@ -13,9 +17,11 @@
 }
 
 .memberPage .memberBox.wide.join {
-    padding: 100px 150px;
+    padding: 50px 130px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 
 .memberPage .memberBox.join .myjoinBox {
     padding: 80px 200px 0;
@@ -70,6 +76,11 @@
 .formGroup .label .required {
     font-weight: 400;
     color: #FF0000;
+}
+
+.formGroup .label .selective {
+    font-weight: 400;
+    color: #9e9e9e;
 }
 
 .formGroup .invalidMessage {
@@ -196,31 +207,20 @@
     text-align: center;
 }
 
-
 .inputWithIcon {
-            position: relative;
-        }
+    position: relative;
+}
 
-        .inputWithIcon .input {
-            width: 100%;
-            padding-right: 30px; /* 아이콘을 위한 공간 확보 */
-        }
+.inputWithIcon .input {
+    width: 100%;
+    padding-right: 30px; /* 아이콘을 위한 공간 확보 */
+}
 
-        .togglePassword,
-        .togglePasswordConfirm {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-
-
-
-
-
-
-
-
-
-
+.togglePassword,
+.togglePasswordConfirm {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

@@ -229,7 +229,7 @@
     });
 
     function fetchMatchData() {
-        fetch('/getK5MatchList')
+        fetch('/mainMatch/getK5MatchList')
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched data:', data);
@@ -250,7 +250,9 @@
 
         const pastMatches = matches.filter(match => match.matchScore);
         pastMatches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)); // 최근 날짜 순으로 정렬
-        displayMatchesInChunks(pastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
+        const limitedPastMatches = pastMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+        displayMatchesInChunks(limitedPastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
     }
 
     function displayNextMatches(matches) {
@@ -258,7 +260,10 @@
         nextMatchesContainer.innerHTML = '';
 
         const nextMatches = matches.filter(match => !match.matchScore);
-        displayMatchesInChunks(nextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
+        nextMatches.sort((a, b) => new Date(a.matchDate) - new Date(b.matchDate)); // 최근 날짜 순으로 정렬
+        const limitedNextMatches = nextMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+        displayMatchesInChunks(limitedNextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
     }
 
     function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
@@ -270,15 +275,15 @@
 
         nextButton.addEventListener('click', () => {
             currentPage++;
-            renderMatches('next');
+            renderMatches();
         });
 
         prevButton.addEventListener('click', () => {
             currentPage--;
-            renderMatches('prev');
+            renderMatches();
         });
 
-        function renderMatches(direction) {
+        function renderMatches() {
             container.classList.remove('fade-enter', 'fade-exit');
             void container.offsetWidth; // Trigger reflow to restart animation
             container.classList.add('fade-exit');
@@ -336,6 +341,7 @@
 
         renderMatches();
     }
+
 
 
 

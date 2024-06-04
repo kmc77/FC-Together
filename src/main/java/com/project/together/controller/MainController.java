@@ -48,7 +48,7 @@ public class MainController {
 
 
     // 매치목록 가져오기
-    @GetMapping({"/", "/getK5MatchList"})
+    @GetMapping({"/", "/mainMatch/getK5MatchList"})
     public ResponseEntity<List<Match>> getK5MatchList() {
         List<Match> k5Match = mainService.findK5MatchListByLeague("k5");
         return ResponseEntity.ok(k5Match);

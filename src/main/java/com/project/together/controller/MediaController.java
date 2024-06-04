@@ -42,6 +42,7 @@ public class MediaController {
     }
 
     // 공지사항 페이지
+
     @GetMapping("/notice")
     public String noticePage() {
         return "/layout/media/notice";

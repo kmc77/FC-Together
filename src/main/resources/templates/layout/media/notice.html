@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/notice.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
+<header class="l-header p-header" role="banner">
+    <!-- Your existing header HTML here -->
+</header>
 <div class="notice-container">
     <div class="noticePage" id="content">
         <div class="subTop">
@@ -79,12 +81,18 @@
         });
 
         function loadNoticeList(start, limit) {
+            var token = localStorage.getItem('accessToken');
+
+
             $.ajax({
                 url: "/media/notice/list",
                 type: "get",
                 data: {
                     start: start,
                     limit: limit
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', token);
                 },
                 success: function(response) {
                     if (response.length === 0) {
@@ -96,7 +104,7 @@
                     response.forEach(function(notice) {
                         listHtml += '<div class="list-item">' +
                             '<div class="col tit">' +
-                            '<a href="/media/noticeview?no=' + notice.noticeNum + '" class="notice-tit">' + notice.noticeTitle + '</a>' +
+
                             '</div>' +
                             '<div class="col">' +
                             '<span class="txt-num"><i class="fa-regular fa-calendar"></i> ' + notice.noticeDate + '</span>' +
@@ -118,7 +126,7 @@
     });
 </script>
 <footer>
-    <th:block th:include="layout/footer"></th:block>
+    <!-- Your existing footer HTML here -->
 </footer>
 </body>
 </html>

@@ -60,16 +60,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(corsFilter)
+                .cors() // Spring MVC의 CORS 설정을 사용하도록 활성화
+                .and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().disable()
                 .httpBasic().disable()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/**", "/main.html", "/css/**", "/js/**", "/img/**", "/webjars/**", "/static/**", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif").permitAll()
-                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/media/**", "/management/**", "/my/**", "/image/**").permitAll()
-                /*.antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                .antMatchers("/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")*/
+                .antMatchers("/", "/main.html", "/css/**", "/js/**", "/img/**", "/webjars/**", "/static/**", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif").permitAll()
+                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/management/**", "/my/**", "/image/**", "/mainMatch/**").permitAll()
+                .antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .antMatchers("/oauth2/authorization/**").permitAll()
                 .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()

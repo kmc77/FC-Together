@@ -1,158 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>header</title>
-    <!-- 파비콘 설정 -->
     <link rel="icon" href="/img/FcTogether-removebg.png" type="image/png">
     <link href="/css/layout/header.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <link href="https://fonts.cdnfonts.com/css/d-din" rel="stylesheet">
-
-
 </head>
 <body>
-<!--<div class="top">
-    <div class="logo">
-        <a href="/">
-            <img src="/img/FcTogether.jpg" alt="" id="logoImg">
-        </a>
-    </div>-->
-
-<!-- <div class="utils">
-     &lt;!&ndash; 로그인 상태를 보여주는 부분 &ndash;&gt;
-     <span id="account-info" style="display: none;"></span>
-     <a id="MyProfile-link" href="/my/myprofile" class="link" style="display: none;">내 정보</a>
-     <a id="adminPage-link" href="/admin/layout/adminpage" class="link" style="display: none;">관리 페이지</a>
-     <a id="logout-link" href="/user/Logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
-
-     &lt;!&ndash; 로그아웃 상태를 보여주는 부분 &ndash;&gt;
-     <a id="login-link" href="/user/loginform" class="link" style="display: none;">로그인</a>
-     <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
- </div>-->
-</div>
 
 <header class="l-header p-header" role="banner">
     <div class="p-header-wrapper">
         <div class="p-site-branding">
             <h1 class="p-site-branding__logo">
-                <a href="/"><img
-                        src="/img/FcTogether-removebg.png"
-                        alt="FC-TOGETHER"></a>
+                <a href="/"><img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER"></a>
             </h1>
         </div>
         <nav class="p-nav-global" role="navigation">
-
             <div class="p-nav-sub">
                 <ul class="p-nav-sub__parent">
                     <li>
-                        <a th:href="@{/club/clubpage}">클럽 투게더</a>
+                        <a href="/club/clubpage">클럽 투게더</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/club/clubpage}">인사말</a></li>
-                            <li><a th:href="@{/club/clubpage#teamPeople}">조직도</a></li>
+                            <li><a href="/club/clubpage">인사말</a></li>
+                            <li><a href="/club/clubpage#teamPeople">조직도</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a th:href="@{/team/teampage}">선수단 소개</a>
+                        <a href="/team/teampage">선수단 소개</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/team/teampage#tab1}">K5 선수단</a></li>
-                            <li><a th:href="@{/team/teampage#tab2}">K7 선수단</a></li>
-                            <li><a th:href="@{/team/teampage#tab3}">여성팀 선수단</a></li>
-                            <li><a th:href="@{/team/teampage#tab4}">스태프</a></li>
+                            <li><a href="/team/teampage#tab1">K5 선수단</a></li>
+                            <li><a href="/team/teampage#tab2">K7 선수단</a></li>
+                            <li><a href="/team/teampage#tab3">여성팀 선수단</a></li>
+                            <li><a href="/team/teampage#tab4">스태프</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a th:href="@{/match/matchpage}">경기 일정/결과</a>
+                        <a href="/match/matchpage">경기 일정/결과</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/match/matchpage#tab1}">K5 경기 일정/결과</a></li>
-                            <li><a th:href="@{/match/matchpage#tab2}">K7 경기 일정/결과</a></li>
-                            <li><a th:href="@{/match/matchpage#tab3}">여성팀 경기 일정/결과</a></li>
+                            <li><a href="/match/matchpage#tab1">K5 경기 일정/결과</a></li>
+                            <li><a href="/match/matchpage#tab2">K7 경기 일정/결과</a></li>
+                            <li><a href="/match/matchpage#tab3">여성팀 경기 일정/결과</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a th:href="@{/history/historypage}">클럽 역사</a>
+                        <a href="/history/historypage">클럽 역사</a>
+                    </li>
+                    <li>
+                        <a href="/media/notice" class="auth-link">미디어 센터</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-
+                            <li><a href="/media/notice" class="auth-link">공지 사항</a></li>
+                            <li><a href="/media/news" class="auth-link">구단 소식</a></li>
+                            <li><a href="/media/photo" class="auth-link">구단 사진</a></li>
+                            <li><a href="/media/video" class="auth-link">구단 영상</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a th:href="@{/media/notice}">미디어 센터</a>
+                        <a href="/management/management_customer_support" class="auth-link">경영/고객 지원</a>
                         <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/media/notice}">공지 사항</a></li>
-                            <li><a th:href="@{/media/news}">구단 소식</a></li>
-                            <li><a th:href="@{/media/photo}">구단 사진</a></li>
-                            <li><a th:href="@{/media/video}">구단 영상</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a th:href="@{/management/management_customer_support}">경영/고객 지원</a>
-                        <ul class="p-nav-sub__child" style="display: none;">
-                            <li><a th:href="@{/management/management_customer_support#tab1}">규정</a></li>
-                            <li><a th:href="@{/management/management_customer_support#tab2}">경영 공시</a></li>
-                            <li><a th:href="@{/management/management_customer_support#tab3}">FAQ</a></li>
-                            <li><a th:href="@{/management/management_customer_support#tab4}">훈련 일정</a></li>
+                            <li><a href="/management/management_customer_support#tab1" class="auth-link">규정</a></li>
+                            <li><a href="/management/management_customer_support#tab2" class="auth-link">경영 공시</a></li>
+                            <li><a href="/management/management_customer_support#tab3" class="auth-link">FAQ</a></li>
+                            <li><a href="/management/management_customer_support#tab4" class="auth-link">훈련 일정</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div class="utils">
-                <!-- 로그인 상태를 보여주는 부분 -->
                 <span id="account-info" style="display: none;"></span>
                 <a id="MyProfile-link" href="/my/myprofile" class="link" style="display: none;">내 정보</a>
                 <a id="adminPage-link" href="/admin/layout/adminpage" class="link" style="display: none;">관리 페이지</a>
                 <a id="logout-link" href="/user/Logout" class="link" style="display: none;" onclick="logout()">로그아웃</a>
-
-                <!-- 로그아웃 상태를 보여주는 부분 -->
                 <a id="login-link" href="/user/loginform" class="link" style="display: none;">로그인</a>
                 <a id="join-link" href="/user/joinform" class="link" style="display: none;">회원가입</a>
             </div>
-            <!-- .p-nav-sub -->
-
-            <!-- 메뉴바 -->
-            <!--    <div class="p-menu-button">
-                    <a id="js-menu-button" href="javascript:void(0)">
-                        <div class="p-hamburger">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                </div>-->
-
-
-            <div id="js-mega-menu" class="p-mega-menu" style="display: none; top: 105px;">
-                <!--<div class="p-search">
-                    <form action="https://www.zelvia.co.jp/" method="get" role="search">
-                        <input type="search" class="p-search-field" placeholder="サイト内検索" value="" name="s"
-                               role="search">
-                    </form>
-                </div>-->
-
-
-
-                <div class="p-mega-menu-footer">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-8">
-
-                            </div>
-
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container -->
-                </div>
-                <!-- /.p-mega-menu-footer -->
-            </div>
-            <!-- /.p-mega-menu -->
         </nav>
     </div>
-    <!-- .p-header-wrapper -->
 </header>
 
 <script>
-    // JWT 토큰에서 권한 정보만 추출하는 함수
     function parseJwt(token) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -168,7 +96,6 @@
         return JSON.parse(jsonPayload).roles;
     }
 
-    // 서버에 새로운 토큰을 요청하는 함수
     function refreshToken() {
         $.ajax({
             url: '/user/refresh_token',
@@ -176,37 +103,42 @@
             success: function (data) {
                 localStorage.setItem('accessToken', data.accessToken);
                 console.log('엑세스 토큰이 성공적으로 갱신되었습니다.');
-                $('#account-info').text(data.userRealName + '님, 반갑습니다.'); // 사용자 정보 갱신
+                $('#account-info').text(data.userRealName + '님, 반갑습니다.');
                 $('#logout-link, #MyProfile-link, #account-info').show();
-                $('#login-link, #join-link').hide(); // 버튼 숨김
-                location.href = '/'; // 메인 페이지로 리디렉션
+                $('#login-link, #join-link').hide();
+                location.href = '/';
             },
             error: function () {
                 console.error('새로운 토큰을 발급받는 데 실패했습니다.');
-                showSessionExpiredDialog(); // 실패 시 세션 만료 대화 상자 표시
+                showSessionExpiredDialog();
             },
         });
     }
 
-    // 세션 만료 대화 상자 표시 함수
     function showSessionExpiredDialog() {
         var confirmResponse = confirm('세션 유효 시간이 만료되었습니다. 로그인을 연장하시겠습니까?');
         if (confirmResponse) {
-            refreshToken(); // 사용자가 세션 연장을 원할 경우 토큰 재발급 요청
+            refreshToken();
         } else {
-            logout(); // 사용자가 세션 연장을 원하지 않을 경우 로그아웃 처리
+            logout();
         }
+    }
+
+    function logout() {
+        localStorage.removeItem('accessToken');
+        alert('로그아웃 되었습니다.');
+        location.href = '/user/Logout';
     }
 
     $(document).ready(function () {
         var token = localStorage.getItem('accessToken');
         if (token) {
-            var roles = parseJwt(token);  // 권한 정보 추출
+            var roles = parseJwt(token);
             $.ajax({
                 url: '/user/tokenAll',
                 type: 'GET',
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    xhr.setRequestHeader('Authorization', token);
                 },
                 success: function (data) {
                     $('#account-info').text(data.userRealName + '님, 반갑습니다.');
@@ -220,7 +152,7 @@
                 },
                 error: function (xhr) {
                     if (xhr.status === 401) {
-                        showSessionExpiredDialog();  // 토큰 만료 시 세션 만료 대화 상자 표시
+                        showSessionExpiredDialog();
                     } else {
                         console.error('사용자 정보를 가져오는 데 실패했습니다.');
                         $('#login-link, #join-link').show();
@@ -231,34 +163,49 @@
         } else {
             $('#login-link, #join-link').show();
         }
+
+       $('.auth-link').on('click', function(e) {
+            e.preventDefault();
+            var targetUrl = $(this).attr('href');
+            var token = localStorage.getItem('accessToken');
+            if (token) {
+                $.ajax({
+                    url: targetUrl,
+                    type: 'GET',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    },
+                    xhrFields: {
+                        withCredentials: true // CORS 문제를 우회하기 위해 자격 증명을 포함
+                    },
+                    success: function () {
+                        window.location.href = targetUrl;
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error, xhr.responseText);
+                        alert('권한이 없습니다. 로그인이 필요합니다.');
+                        window.location.href = '/user/loginform';
+                    }
+                });
+            } else {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/user/loginform';
+            }
+        });
     });
 
-    function logout() {
-        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
-        alert('로그아웃 되었습니다.');
-        location.href = '/user/Logout';
-    }
-</script>
-
-
-<script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 부모 메뉴 아이템 선택
         var parentMenuItems = document.querySelectorAll('.p-nav-sub__parent > li');
 
         parentMenuItems.forEach(function(item) {
-            // 마우스 오버 이벤트 리스너 추가
             item.addEventListener('mouseover', function() {
-                // 하위 메뉴 찾기 및 활성화
                 var childMenu = this.querySelector('.p-nav-sub__child');
-                if (childMenu && childMenu.children.length > 0) { // 하위 메뉴에 자식 요소가 있는지 확인
+                if (childMenu && childMenu.children.length > 0) {
                     childMenu.style.display = 'block';
                 }
             });
 
-            // 마우스 아웃 이벤트 리스너 추가
             item.addEventListener('mouseout', function() {
-                // 하위 메뉴 찾기 및 비활성화
                 var childMenu = this.querySelector('.p-nav-sub__child');
                 if (childMenu) {
                     childMenu.style.display = 'none';
@@ -266,15 +213,14 @@
             });
         });
 
-        // 자식 요소가 없는 하위 메뉴의 초기 상태 설정
         var subMenus = document.querySelectorAll('.p-nav-sub__child');
         subMenus.forEach(function(menu) {
             if (menu.children.length === 0) {
-                menu.style.display = 'none'; // 자식 요소가 없으면 메뉴를 숨김
+                menu.style.display = 'none';
             }
         });
     });
-
 </script>
+
 </body>
 </html>

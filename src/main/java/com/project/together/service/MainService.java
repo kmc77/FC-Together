@@ -2,6 +2,7 @@ package com.project.together.service;
 
 import com.project.together.domain.ClubVideo;
 import com.project.together.domain.File;
+import com.project.together.domain.Match;
 import com.project.together.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,5 +24,9 @@ public class MainService {
     /*@Cacheable(value = "sliderImagesCache")*/
     public List<File> getImagesForSectionClubPhoto() {
         return mainMapper.findFilesByTableGb("sectionClubPhoto");
+    }
+
+    public List<Match> findK5MatchListByLeague(String k5) {
+        return mainMapper.findK5MatchListByLeague(k5);
     }
 }

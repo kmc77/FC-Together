@@ -73,7 +73,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="formGroup">
                     <label class="label" for="phoneNumber">휴대폰번호 <span class="required">(필수)</span></label>
                     <input type="text" id="phoneNumber" class="input" name="userPhone" placeholder="000-0000-0000 형식">
@@ -91,7 +90,29 @@
                     <input class="input" type="text" name="userBirth" id="user_birth" placeholder="YYYY-MM-DD 형식">
                 </div>
                 <div class="formGroup">
-                    <label class="label">광고성 수신동의 <span class="required">(선택)</span></label>
+                    <label class="label" for="sample4_postcode">우편번호 검색 <span class="required">(필수)</span></label>
+                    <div class="withBtn">
+                        <input type="text" id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
+                        <button class="btn whiteLightgrey" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">우편번호 찾기<br></button>
+                        <input type="text" id="sample4_roadAddress" name="userAddress" placeholder="도로명주소" class="input">
+                        <input type="text" id="sample4_jibunAddress" placeholder="지번주소" class="input">
+                        <span id="guide" style="color:#999;display:none"></span>
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label class="label" for="selectLeague">응원하는 선수 선택 <span class="selective"><br>(선택)</span></label>
+                    <select class="input" name="userLikePlayerGb" id="selectLeague">
+                        <option value="">리그선택</option>
+                        <option value="K5_Player">K5</option>
+                        <option value="K7_Player">K7</option>
+                        <option value="W1_Player">W리그</option>
+                    </select>
+                    <select class="input" name="userLikePlayer" id="playerSelect">
+                        <option value="">선수선택</option>
+                    </select>
+                </div>
+                <div class="formGroup">
+                    <label class="label">광고성 수신동의 <span class="selective"><br>(선택)</span></label>
                     <div class="textarea height110">
                         FC투게더 주식회사(이하 'FC투게더')는 자사의 웹사이트 이용 고객들에게 더욱 맞춤화된 마케팅 경험을 제공하고자, 고객의 개인 정보를 마케팅 목적으로 활용하는 데 대한 동의를 요청하고 있습니다.<br><br>
                         ① 마케팅 활동에서 활용되는 개인정보 범위<br>
@@ -117,28 +138,6 @@
                             <label for="agree_sms_n">미동의</label>
                         </div>
                     </div>
-                </div>
-                <div class="formGroup">
-                    <label class="label" for="sample4_postcode">우편번호 검색 <span class="required">(필수)</span></label>
-                    <div class="withBtn">
-                        <input type="text" id="sample4_postcode" placeholder="우편번호를 검색하세요" class="input">
-                        <button class="btn whiteLightgrey" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">우편번호 찾기<br></button>
-                        <input type="text" id="sample4_roadAddress" name="userAddress" placeholder="도로명주소" class="input">
-                        <input type="text" id="sample4_jibunAddress" placeholder="지번주소" class="input">
-                        <span id="guide" style="color:#999;display:none"></span>
-                    </div>
-                </div>
-                <div class="formGroup">
-                    <label class="label" for="selectLeague">좋아하는 선수 선택 <span class="required">(필수)</span></label>
-                    <select class="input" name="userLikePlayerGb" id="selectLeague">
-                        <option value="">리그선택</option>
-                        <option value="K5_Player">K5</option>
-                        <option value="K7_Player">K7</option>
-                        <option value="W1_Player">W리그</option>
-                    </select>
-                    <select class="input" name="userLikePlayer" id="playerSelect">
-                        <option value="">선수선택</option>
-                    </select>
                 </div>
                 <div class="formBtns">
                     <button type='submit' value="Sign up" class='btn signup_butt' id='signup_butt'>회원가입</button>
@@ -386,7 +385,7 @@
         }).open();
     }
 
-    //좋아하는 선수 처리
+    //응원하는 선수 처리
     var leagueSelect = document.getElementById('selectLeague');
     leagueSelect.onchange = function() {
         var playerSelect = document.getElementById('playerSelect');

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -60,8 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors() // Spring MVC의 CORS 설정을 사용하도록 활성화
-                .and()
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().disable()
                 .httpBasic().disable()
@@ -69,8 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "/main.html", "/css/**", "/js/**", "/img/**", "/webjars/**", "/static/**", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif").permitAll()
-                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/management/**", "/my/**", "/image/**", "/mainMatch/**").permitAll()
-                .antMatchers("/media/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/my/**", "/image/**", "/mainMatch/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/media/**", "/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .antMatchers("/oauth2/authorization/**").permitAll()
                 .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()

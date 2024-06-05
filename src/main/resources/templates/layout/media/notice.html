@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/notice.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-<header class="l-header p-header" role="banner">
-    <!-- Your existing header HTML here -->
-</header>
 <div class="notice-container">
     <div class="noticePage" id="content">
         <div class="subTop">
@@ -63,36 +61,18 @@
         var limit = 8; // 한 번에 조회할 공지사항의 개수
         var start = 0; // 조회 시작 위치
         var activeTabHref = $(".tabLink.router-link-exact-active.router-link-active.current").attr("href");
-
-        $("#loadMore").click(function() {
-            start += limit;
-            loadNoticeList(start, limit);
-        });
-
-        $("body").on("click", ".tabLink", function(e) {
-            var clickedTabHref = $(this).attr("href");
-            if (activeTabHref !== clickedTabHref) {
-                window.location.href = clickedTabHref; // 클릭된 탭의 링크로 페이지 이동
-                return; // 이 함수의 추가 실행을 방지
-            }
-
-            // 이미 활성화된 탭을 다시 클릭한 경우 기본 동작 방지
-            e.preventDefault();
-        });
+        var token = localStorage.getItem('accessToken');
 
         function loadNoticeList(start, limit) {
-            var token = localStorage.getItem('accessToken');
-
-
             $.ajax({
                 url: "/media/notice/list",
-                type: "get",
+                type: "GET",
                 data: {
                     start: start,
                     limit: limit
                 },
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', token);
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
                 success: function(response) {
                     if (response.length === 0) {
@@ -104,7 +84,7 @@
                     response.forEach(function(notice) {
                         listHtml += '<div class="list-item">' +
                             '<div class="col tit">' +
-
+                            '<a href="/media/noticeview?no=' + notice.noticeNum + '" class="notice-tit">' + notice.noticeTitle + '</a>' +
                             '</div>' +
                             '<div class="col">' +
                             '<span class="txt-num"><i class="fa-regular fa-calendar"></i> ' + notice.noticeDate + '</span>' +
@@ -121,12 +101,51 @@
             });
         }
 
+        $("#loadMore").click(function() {
+            start += limit;
+            loadNoticeList(start, limit);
+        });
+
+        $("body").on("click", ".tabLink", function(e) {
+            var clickedTabHref = $(this).attr("href");
+            if (activeTabHref !== clickedTabHref) {
+                e.preventDefault(); // 링크의 기본 동작을 막음
+                loadPage(clickedTabHref, token);
+                return;
+            }
+
+            e.preventDefault();
+        });
+
+        function loadPage(url, token) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    $('body').html(data);
+                    if (history.pushState) {
+                        history.pushState(null, null, url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
         // 초기 목록 로딩
         loadNoticeList(start, limit);
     });
 </script>
 <footer>
-    <!-- Your existing footer HTML here -->
+    <th:block th:include="layout/footer"></th:block>
 </footer>
 </body>
 </html>

@@ -81,6 +81,14 @@
 </header>
 
 <script>
+    // 쿠키에서 특정 쿠키 값을 읽어오는 함수
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // JWT 토큰에서 권한 정보만 추출하는 함수
     function parseJwt(token) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -96,49 +104,55 @@
         return JSON.parse(jsonPayload).roles;
     }
 
+    // 서버에 새로운 토큰을 요청하는 함수
     function refreshToken() {
+        const refreshToken = getCookie('refreshToken');
+                console.log('리프레시 토큰:', refreshToken); // 콘솔에 리프레시 토큰 출력
+
+        if (!refreshToken) {
+            console.error('리프레시 토큰이 쿠키에 없습니다.');
+            alert('로그인 세션이 만료되었습니다. 다시 로그인해 주세요.');
+            logout();
+            return;
+        }
+
         $.ajax({
             url: '/user/refresh_token',
             type: 'POST',
+            data: { refreshToken: refreshToken },
             success: function (data) {
                 localStorage.setItem('accessToken', data.accessToken);
                 console.log('엑세스 토큰이 성공적으로 갱신되었습니다.');
-                $('#account-info').text(data.userRealName + '님, 반갑습니다.');
-                $('#logout-link, #MyProfile-link, #account-info').show();
-                $('#login-link, #join-link').hide();
-                location.href = '/';
+                alert('엑세스 토큰이 성공적으로 갱신되었습니다.');
+
             },
             error: function () {
                 console.error('새로운 토큰을 발급받는 데 실패했습니다.');
-                showSessionExpiredDialog();
+                alert('새로운 토큰을 발급받는 데 실패했습니다.');
+                logout(); // 실패 시 로그아웃 처리
             },
         });
     }
 
+    // 세션 만료 대화 상자 표시 함수
     function showSessionExpiredDialog() {
         var confirmResponse = confirm('세션 유효 시간이 만료되었습니다. 로그인을 연장하시겠습니까?');
         if (confirmResponse) {
-            refreshToken();
+            refreshToken(); // 사용자가 세션 연장을 원할 경우 토큰 재발급 요청
         } else {
-            logout();
+            logout(); // 사용자가 세션 연장을 원하지 않을 경우 로그아웃 처리
         }
-    }
-
-    function logout() {
-        localStorage.removeItem('accessToken');
-        alert('로그아웃 되었습니다.');
-        location.href = '/user/Logout';
     }
 
     $(document).ready(function () {
         var token = localStorage.getItem('accessToken');
         if (token) {
-            var roles = parseJwt(token);
+            var roles = parseJwt(token);  // 권한 정보 추출
             $.ajax({
                 url: '/user/tokenAll',
                 type: 'GET',
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', token);
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
                 success: function (data) {
                     $('#account-info').text(data.userRealName + '님, 반갑습니다.');
@@ -149,10 +163,20 @@
                         $('#adminPage-link').show();
                         $('#MyProfile-link').hide();
                     }
+
+                    // auth-link 클래스에 대한 페이지 이동 처리
+                    $('.auth-link').each(function () {
+                        var link = $(this);
+                        link.click(function (e) {
+                            e.preventDefault(); // 링크의 기본 동작을 막음
+                            var targetUrl = link.attr('href');
+                            loadPage(targetUrl, token);
+                        });
+                    });
                 },
                 error: function (xhr) {
                     if (xhr.status === 401) {
-                        showSessionExpiredDialog();
+                        showSessionExpiredDialog();  // 토큰 만료 시 세션 만료 대화 상자 표시
                     } else {
                         console.error('사용자 정보를 가져오는 데 실패했습니다.');
                         $('#login-link, #join-link').show();
@@ -164,35 +188,42 @@
             $('#login-link, #join-link').show();
         }
 
-       $('.auth-link').on('click', function(e) {
-            e.preventDefault();
-            var targetUrl = $(this).attr('href');
-            var token = localStorage.getItem('accessToken');
-            if (token) {
-                $.ajax({
-                    url: targetUrl,
-                    type: 'GET',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                    },
-                    xhrFields: {
-                        withCredentials: true // CORS 문제를 우회하기 위해 자격 증명을 포함
-                    },
-                    success: function () {
-                        window.location.href = targetUrl;
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', status, error, xhr.responseText);
-                        alert('권한이 없습니다. 로그인이 필요합니다.');
-                        window.location.href = '/user/loginform';
-                    }
-                });
-            } else {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/user/loginform';
+        window.onpopstate = function (event) {
+            if (event.state) {
+                loadPage(event.state.url, token, false);
+            }
+        };
+    });
+
+    function loadPage(url, token, pushState = true) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            success: function (data) {
+                $('body').html(data);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('페이지 로드 실패:', error);
+                if (xhr.status === 401) {
+                    alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                    location.href = '/user/loginform';
+                }
             }
         });
-    });
+    }
+
+    function logout() {
+        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
+        document.cookie = 'refreshToken=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // 쿠키에서 리프레시 토큰 제거
+        alert('로그아웃 되었습니다.');
+        location.href = '/user/Logout';
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         var parentMenuItems = document.querySelectorAll('.p-nav-sub__parent > li');
@@ -221,6 +252,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>

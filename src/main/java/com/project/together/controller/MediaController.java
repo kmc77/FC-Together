@@ -1,5 +1,6 @@
 package com.project.together.controller;
 
+import com.project.together.config.auth.PrincipalDetails;
 import com.project.together.domain.*;
 import com.project.together.service.MediaService;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +44,11 @@ public class MediaController {
     }
 
     // 공지사항 페이지
-
     @GetMapping("/notice")
-    public String noticePage() {
+    public String noticePage(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails != null) {
+            System.out.println("User: " + principalDetails.getUsername());
+        }
         return "/layout/media/notice";
     }
 
@@ -69,6 +73,9 @@ public class MediaController {
 
     // 공지사항 목록 조회
     @GetMapping("/notice/list")
+/*
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+*/
     public ResponseEntity<List<Notice>> getNoticeList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "8") int limit) {
         Map<String, Integer> params = new HashMap<>();
         params.put("start", start);
@@ -77,9 +84,11 @@ public class MediaController {
         return new ResponseEntity<>(noticeList, HttpStatus.OK);
     }
 
-
     // 공지사항 상세보기 페이지
     @GetMapping("/noticeview")
+/*
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+*/
     public String noticeViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
         mediaService.increaseNoticeHits(noticeNum); // 조회수 증가
         Notice notice = mediaService.getNotice(noticeNum);
@@ -87,14 +96,11 @@ public class MediaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notice not found with id: " + noticeNum);
         }
 
-        // 공지사항 번호에 해당하는 파일 목록 조회
         List<File> files = mediaService.findFilesByNoticeNum(noticeNum);
-
         model.addAttribute("notice", notice);
         model.addAttribute("files", files); // 파일 목록을 모델에 추가
 
         Notice prevNotice = mediaService.findPrevNoticeByNoticeNum(noticeNum);
-        System.out.println("======== 컨트롤러 prevNotice = " + prevNotice);
         if (prevNotice != null) {
             model.addAttribute("prevNotice", prevNotice);
         }

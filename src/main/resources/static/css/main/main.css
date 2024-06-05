@@ -55,8 +55,8 @@ body {
 }
 
 .swiperImg {
-    width: 100%;
-    height: 100%;
+    width: 100vw; /* 뷰포트 너비로 고정 */
+    height: 100vh; /* 뷰포트 높이로 고정 */
     object-fit: cover;
     cursor: pointer;
     filter: brightness(60%);
@@ -108,6 +108,7 @@ body {
 .btn-bullet:hover {
     background-color: rgba(0, 0, 0, 0.2); /* 더 높은 투명도 유지 */
 }
+
 
 /* 섹션 1 end */
 

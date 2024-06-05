@@ -20,6 +20,7 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k5'
         AND m.match_score is not null
+        AND m.match_relative_score IS NOT NULL
     </select>
 
     <select id="K5leagueGb" resultType="com.project.together.domain.Team">
@@ -37,7 +38,9 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k7'
         AND m.match_score IS  NULL
+        AND m.match_relative_score IS NULL
         AND m.league_gb = 'k7'
+        ORDER BY match_date DESC
     </select>
 
     <select id="K7selectResult" resultType="com.project.together.domain.Match">
@@ -46,6 +49,14 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k7'
         AND m.match_score is not null
+        AND m.match_relative_score IS NOT NULL
+    </select>
+
+    <select id="K7leagueGb" resultType="com.project.together.domain.Team">
+        select t.*
+        from team t
+        join matches m on m.team_name = t.team_name
+        where m.league_gb = 'k7'
     </select>
 
     <select id="W1selectSchedule" resultType="com.project.together.domain.Match">
@@ -54,7 +65,9 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'w1'
         AND m.match_score IS  NULL
+        AND m.match_relative_score IS NULL
         AND m.league_gb = 'w1'
+        ORDER BY match_date DESC
     </select>
 
     <select id="W1selectResult" resultType="com.project.together.domain.Match">
@@ -63,5 +76,13 @@
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'w1'
         AND m.match_score is not null
+        AND m.match_relative_score IS NOT NULL
+    </select>
+
+    <select id="W1leagueGb" resultType="com.project.together.domain.Team">
+        select t.*
+        from team t
+        join matches m on m.team_name = t.team_name
+        where m.league_gb = 'w1'
     </select>
 </mapper>

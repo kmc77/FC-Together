@@ -18,7 +18,11 @@ public interface MatchMapper {
 
     List<Match> K7selectResult();
 
+    List<Team> K7leagueGb();
+
     List<Match> W1selectSchedule();
 
     List<Match> W1selectResult();
+
+    List<Team> W1leagueGb();
 }

@@ -26,8 +26,11 @@ public class MatchController {
 
         List<Match> K7matchSchedule = matchService.K7selectSchedule();
         List<Match> K7matchResult = matchService.K7selectResult();
+        List<Team> K7leagueGb = matchService.K7leagueGb();
+
         List<Match> W1matchSchedule = matchService.W1selectSchedule();
         List<Match> W1matchResult = matchService.W1selectResult();
+        List<Team> W1leagueGb = matchService.W1leagueGb();
 
         System.out.println("k5Schedule" + K5matchSchedule);
         System.out.println("k5Result" + K5matchResult);
@@ -67,7 +70,7 @@ public class MatchController {
             }
         }
 
-        if (K7matchSchedule != null && K5leagueGb != null) {
+        if (K7matchSchedule != null && K7leagueGb != null) {
             for (int i = 0; i < K7matchSchedule.size(); i++) {
                 Match match = K7matchSchedule.get(i);
                 // Ensure team list is initialized
@@ -75,13 +78,13 @@ public class MatchController {
                     match.setTeam(new ArrayList<>());
                 }
                 // Add K5leagueGb team to the match's team list
-                if (i < K5leagueGb.size()) {
-                    match.getTeam().add(K5leagueGb.get(i));
+                if (i < K7leagueGb.size()) {
+                    match.getTeam().add(K7leagueGb.get(i));
                 }
             }
         }
 
-        if (K7matchResult != null && K5leagueGb != null) {
+        if (K7matchResult != null && K7leagueGb != null) {
             for (int i = 0; i < K7matchResult.size(); i++) {
                 Match match = K7matchResult.get(i);
                 // Ensure team list is initialized
@@ -89,13 +92,13 @@ public class MatchController {
                     match.setTeam(new ArrayList<>());
                 }
                 // Add K5leagueGb team to the match's team list
-                if (i < K5leagueGb.size()) {
-                    match.getTeam().add(K5leagueGb.get(i));
+                if (i < K7leagueGb.size()) {
+                    match.getTeam().add(K7leagueGb.get(i));
                 }
             }
         }
 
-        if (W1matchSchedule != null && K5leagueGb != null) {
+        if (W1matchSchedule != null && W1leagueGb != null) {
             for (int i = 0; i < W1matchSchedule.size(); i++) {
                 Match match = W1matchSchedule.get(i);
                 // Ensure team list is initialized
@@ -103,13 +106,13 @@ public class MatchController {
                     match.setTeam(new ArrayList<>());
                 }
                 // Add K5leagueGb team to the match's team list
-                if (i < K5leagueGb.size()) {
-                    match.getTeam().add(K5leagueGb.get(i));
+                if (i < W1leagueGb.size()) {
+                    match.getTeam().add(W1leagueGb.get(i));
                 }
             }
         }
 
-        if (W1matchResult != null && K5leagueGb != null) {
+        if (W1matchResult != null && W1leagueGb != null) {
             for (int i = 0; i < W1matchResult.size(); i++) {
                 Match match = W1matchResult.get(i);
                 // Ensure team list is initialized
@@ -117,8 +120,8 @@ public class MatchController {
                     match.setTeam(new ArrayList<>());
                 }
                 // Add K5leagueGb team to the match's team list
-                if (i < K5leagueGb.size()) {
-                    match.getTeam().add(K5leagueGb.get(i));
+                if (i < W1leagueGb.size()) {
+                    match.getTeam().add(W1leagueGb.get(i));
                 }
             }
         }
@@ -130,8 +133,12 @@ public class MatchController {
 
         List<Match> paginatedK7Schedule = getMatchPaginatedList(K7matchSchedule, page, size);
         List<Match> paginatedK7Result = getMatchPaginatedList(K7matchResult, page, size);
+        List<Team> paginatedK7leagueGb = getTeamPaginatedList(K7leagueGb, page, size);
+
+
         List<Match> paginatedW1Schedule = getMatchPaginatedList(W1matchSchedule, page, size);
         List<Match> paginatedW1Result = getMatchPaginatedList(W1matchResult, page, size);
+        List<Team> paginatedW1leagueGb = getTeamPaginatedList(W1leagueGb, page, size);
 
         model.addAttribute("K5Schedulelist", paginatedK5Schedule);
         model.addAttribute("K5Resultlist", paginatedK5Result);
@@ -139,8 +146,11 @@ public class MatchController {
 
         model.addAttribute("K7Schedulelist", paginatedK7Schedule);
         model.addAttribute("K7Resultlist", paginatedK7Result);
+        model.addAttribute("K7leagueGb", paginatedK7leagueGb);
+
         model.addAttribute("W1Schedulelist", paginatedW1Schedule);
         model.addAttribute("W1Resultlist", paginatedW1Result);
+        model.addAttribute("W1leagueGb", paginatedW1leagueGb);
         model.addAttribute("currentPage", page);
 
         return "layout/match/matchpage";

@@ -41,6 +41,11 @@ public class MatchService {
         return matchMapper.K7selectResult();
     }
 
+    public List<Team> K7leagueGb() {
+
+        return matchMapper.K7leagueGb();
+    }
+
     public List<Match> W1selectSchedule() {
 
         return matchMapper.W1selectSchedule();
@@ -49,5 +54,10 @@ public class MatchService {
     public List<Match> W1selectResult() {
 
         return matchMapper.W1selectResult();
+    }
+
+    public List<Team> W1leagueGb() {
+
+        return matchMapper.W1leagueGb();
     }
 }

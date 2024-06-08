@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${notice.noticeTitle}">Title</title>
+    <title>공지사항 상세보기</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -17,21 +17,21 @@
             <div class="noticeInformation">
                 <div class="titleBox">
                     <!-- 제목, 작성자, 작성일, 조회수 -->
-                    <p th:text="${notice.noticeTitle}">제목</p>
+                    <p id="notice-title">제목</p>
                     <div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-user"></i> 작성자</p>
-                            <p th:text="${notice.username}">Username</p>
+                            <p id="notice-username">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-calendar"></i> 작성일</p>
-                            <p th:text="${notice.noticeDate}">Date</p>
+                            <p id="notice-date">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-eye"></i> 조회수</p>
-                            <p th:text="${notice.noticeHits}">Hits</p>
+                            <p id="notice-hits">Hits</p>
                         </div>
                     </div>
                 </div>
@@ -45,40 +45,126 @@
             <div class="noticeContent">
                 <!-- 글 내용 -->
                 <div class="content">
-                    <p th:utext="${notice.noticeContent}">Content</p>
+                    <p id="notice-content">Content</p>
                 </div>
                 <!-- 첨부 파일 목록 -->
                 <div class="attachments">
                     <h3>첨부 파일</h3>
-                    <ul>
-                        <li th:each="file : ${files}">
-                            <a th:href="@{${file.filePath}}" th:text="${file.fileName}">File Name</a>
-                        </li>
+                    <ul id="file-list">
+                        <!-- 파일 목록 -->
                     </ul>
                 </div>
                 <!-- 이전 글 링크 -->
-                <div class="previous-post post-navigation" th:if="${prevNotice != null}">
+                <div class="previous-post post-navigation" id="prev-notice-container" style="display:none;">
                     <div>
                         <p>이전글</p>
                         <div class="arrow up"></div>
-                        <a th:href="@{/media/noticeview(no=${prevNotice.noticeNum})}" th:text="${prevNotice.noticeTitle}">Previous Notice Title</a>
+                        <a href="#" id="prev-notice-link">Previous Notice Title</a>
                     </div>
                 </div>
 
                 <!-- 목록으로 돌아가기 버튼 -->
                 <div class="formBtns">
-                    <a id="default_butt" href="/media/notice" class="btn btn-default">목록</a>
+                    <a href="#" id="default-butt" class="btn btn-default">목록</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<footer>
-    <th:block th:include="layout/footer"></th:block>
-</footer>
 
 <script>
     $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var noticeId = new URLSearchParams(window.location.search).get('no');
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+
+        function loadNoticeView(noticeId, token) {
+            if (loadedPages['/media/noticeview?no=' + noticeId]) {
+                renderNoticeView(loadedPages['/media/noticeview?no=' + noticeId]);
+                return;
+            }
+
+            $.ajax({
+                url: "/media/noticeview/data",
+                type: "GET",
+                data: { no: noticeId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/media/noticeview?no=' + noticeId] = response;
+                    renderNoticeView(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('공지사항 상세 조회 에러:', error);
+                }
+            });
+        }
+
+        function renderNoticeView(data) {
+            $('#notice-title').text(data.notice.noticeTitle);
+            $('#notice-username').text(data.notice.username);
+            $('#notice-date').text(data.notice.noticeDate);
+            $('#notice-hits').text(data.notice.noticeHits);
+            $('#notice-content').html(data.notice.noticeContent);
+
+            var fileListHtml = '';
+            data.files.forEach(function(file) {
+                fileListHtml += '<li><a href="' + file.filePath + '">' + file.fileName + '</a></li>';
+            });
+            $('#file-list').html(fileListHtml);
+
+            if (data.prevNotice) {
+                $('#prev-notice-link').attr('href', '#').text(data.prevNotice.noticeTitle).data('id', data.prevNotice.noticeNum);
+                $('#prev-notice-container').show();
+            } else {
+                $('#prev-notice-container').hide();
+            }
+        }
+
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        $('#prev-notice-link').click(function(e) {
+            e.preventDefault();
+            var noticeId = $(this).data('id');
+            loadPage('/media/noticeview?no=' + noticeId, token);
+        });
+
+        $('#default-butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/media/notice', token);
+        });
+
         $('#copy-link').click(function() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(function() {
@@ -87,7 +173,12 @@
                 $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
             });
         });
+
+        loadNoticeView(noticeId, token);
     });
 </script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
 </body>
 </html>

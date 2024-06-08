@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/news.css" rel="stylesheet"/>
+    <script src="/js/layout/header.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -62,7 +63,10 @@
     $(document).ready(function() {
         var limit = 9; // 한 번에 뉴스 목록을 조회할 개수
         var start = 0; // 조회 시작 위치
-        var activeTabHref = $(".tabLink.router-link-exact-active.router-link-active.current").attr("href");
+        var token = localStorage.getItem('accessToken');
+        var isDataLoaded = false; // 데이터 로드 여부 확인 변수
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+        var isRequestInProgress = false; // 요청이 진행 중인지 확인하는 변수
 
         loadNewsList(start, limit); // 초기 뉴스 목록 로딩
 
@@ -73,16 +77,54 @@
 
         $("body").on("click", ".tabLink", function(e) {
             var clickedTabHref = $(this).attr("href");
-            if (activeTabHref !== clickedTabHref) {
-                window.location.href = clickedTabHref; // 클릭된 탭의 링크로 페이지 이동
-                return; // 이 함수의 추가 실행을 방지
+            if ($(this).hasClass('router-link-exact-active')) {
+                e.preventDefault(); // 이미 활성화된 탭일 경우 기본 동작을 막음
+                return;
             }
-
-            // 이미 활성화된 탭을 다시 클릭한 경우 기본 동작 방지
-            e.preventDefault();
+            e.preventDefault(); // 링크의 기본 동작을 막음
+            loadPage(clickedTabHref, token);
         });
 
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                return;
+            }
+
+            isRequestInProgress = true; // 요청 시작
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료
+                }
+            });
+        }
+
         function loadNewsList(start, limit) {
+            if (isDataLoaded || isRequestInProgress) return; // 데이터가 이미 로드된 경우 또는 요청이 진행 중인 경우 추가 요청 방지
+
+            isRequestInProgress = true; // 요청 시작
             $.ajax({
                 url: '/media/news/list',
                 type: 'GET',
@@ -91,27 +133,37 @@
                     limit: limit
                 },
                 dataType: 'json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
                 success: function(newsList) {
                     if (newsList.length === 0) {
                         alert('더 이상 표시할 뉴스가 없습니다.');
+                        isDataLoaded = true; // 더 이상 로드할 데이터가 없음을 표시
                         return;
                     }
 
-                    if(start === 0) $('.news-item-container').empty(); // 새 탭에서는 목록을 초기화
-
-                    $.each(newsList, function(index, news) {
-                        var newsItem = createNewsItem(news); // 뉴스 아이템 생성 함수
-                        $('.news-item-container').append(newsItem);
-                    });
+                    renderNewsList(newsList);
                 },
                 error: function(error) {
                     console.error('뉴스를 가져오는데 실패했습니다.', error);
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료
                 }
             });
         }
 
-        // 뉴스 아이템 생성 함수
-       function createNewsItem(news) {
+        function renderNewsList(newsList) {
+            var newsHtml = '';
+            newsList.forEach(function(news) {
+                newsHtml += createNewsItem(news);
+            });
+
+            $(".news-item-container").append(newsHtml);
+        }
+
+        function createNewsItem(news) {
             var srcRegex = /<img[^>]+src="([^">]+)"/;
             var match = news.newsContent.match(srcRegex);
             var imgSrc = match ? match[1] : '/img/FcTogether.jpg'; // 기본 이미지 사용
@@ -125,7 +177,6 @@
                                             '<i class="fa-regular fa-calendar"></i> ' + news.newsRegdate +
                                             ' <i class="fa-regular fa-eye"></i> ' + news.newsHits +
                                         '</div>' +
-                        // 여기에 새로운 영역을 추가합니다.
                         '<div class="news-table">' +
                             '<p>' + news.tableGb + '</p>' +
                         '</div>' +
@@ -135,6 +186,16 @@
 
             return newsItem;
         }
+
+        window.onpopstate = function (event) {
+            var token = localStorage.getItem('accessToken'); // 뒤로 가기 시 토큰 재획득
+            if (event.state) {
+                loadPage(event.state.url, token, false);
+            }
+        };
+
+        // 초기 목록 로딩
+        loadNewsList(start, limit);
     });
 </script>
 <footer>

@@ -13,6 +13,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "승인되지 않음: 인증 토큰이 누락되었거나 유효하지 않습니다..");
+        // 인증 실패 메시지 request에 추가
+        request.getSession().setAttribute("authMessage", "접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.");
+
+        // 로그인 페이지로 리다이렉트
+        response.sendRedirect("/user/loginform");
     }
 }

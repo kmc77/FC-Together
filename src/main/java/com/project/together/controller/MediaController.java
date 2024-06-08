@@ -86,26 +86,28 @@ public class MediaController {
 
     // 공지사항 상세보기 페이지
     @GetMapping("/noticeview")
-/*
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-*/
     public String noticeViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
+        return "/layout/media/noticeview";
+    }
+
+    // 공지사항 상세 데이터 조회
+    @GetMapping("/noticeview/data")
+    public ResponseEntity<Map<String, Object>> getNoticeViewData(@RequestParam("no") int noticeNum) throws NotFoundException {
         mediaService.increaseNoticeHits(noticeNum); // 조회수 증가
         Notice notice = mediaService.getNotice(noticeNum);
         if (notice == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notice not found with id: " + noticeNum);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID가 포함된 공지를 찾을 수 없습니다. : " + noticeNum);
         }
 
         List<File> files = mediaService.findFilesByNoticeNum(noticeNum);
-        model.addAttribute("notice", notice);
-        model.addAttribute("files", files); // 파일 목록을 모델에 추가
-
         Notice prevNotice = mediaService.findPrevNoticeByNoticeNum(noticeNum);
-        if (prevNotice != null) {
-            model.addAttribute("prevNotice", prevNotice);
-        }
 
-        return "layout/media/noticeview";
+        Map<String, Object> response = new HashMap<>();
+        response.put("notice", notice);
+        response.put("files", files);
+        response.put("prevNotice", prevNotice);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

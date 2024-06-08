@@ -62,7 +62,7 @@
                             <div class="right-info">
                                 <div>
                                     <span style="font-size:80px;">FC 투게더</span>
-                                    <img src="" alt="teamLogo">
+                                    <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
                                 </div>
                                 <div class="versus-info">
                                     <div class="versus" style="font-size:20px;">vs</div>
@@ -101,7 +101,8 @@
                         <div class="right-info">
                             <div>
                                 <span style="font-size:80px;">FC 투게더</span>
-                                <img src="" alt="teamLogo">
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
                             </div>
                             <div class="versus-info">
                                 <div class="versus" style="font-size:20px;">vs</div>
@@ -109,7 +110,6 @@
                             </div>
                             <span th:if="${#lists.size(match.team) > 0}">
                         <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                            <span th:text="${match.matchScore}" style="font-size:80px;"></span>
                     </span>
                             <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
                             <span th:text="${match.teamName}" style="font-size:80px;"></span>
@@ -153,7 +153,7 @@
                         <div class="right-info">
                             <div>
                                 <span style="font-size:80px;">FC 투게더</span>
-                                <img src="" alt="teamLogo">
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
                             </div>
                             <div class="versus-info">
                                 <div class="versus" style="font-size:20px;">vs</div>
@@ -189,7 +189,8 @@
                         <div class="right-info">
                             <div>
                                 <span style="font-size:80px;">FC 투게더</span>
-                                <img src="" alt="teamLogo">
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
                             </div>
                             <div class="versus-info">
                                 <div class="versus" style="font-size:20px;">vs</div>
@@ -198,6 +199,7 @@
                             <span th:if="${#lists.size(match.team) > 0}">
                         <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
                     </span>
+                            <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
                             <span th:text="${match.teamName}" style="font-size:80px;"></span>
                         </div>
                     </div>
@@ -239,7 +241,7 @@
                         <div class="right-info">
                             <div>
                                 <span style="font-size:80px;">FC 투게더</span>
-                                <img src="" alt="teamLogo">
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
                             </div>
                             <div class="versus-info">
                                 <div class="versus" style="font-size:20px;">vs</div>
@@ -275,7 +277,8 @@
                         <div class="right-info">
                             <div>
                                 <span style="font-size:80px;">FC 투게더</span>
-                                <img src="" alt="teamLogo">
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
                             </div>
                             <div class="versus-info">
                                 <div class="versus" style="font-size:20px;">vs</div>
@@ -284,6 +287,7 @@
                             <span th:if="${#lists.size(match.team) > 0}">
                         <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
                     </span>
+                            <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
                             <span th:text="${match.teamName}" style="font-size:80px;"></span>
                         </div>
                     </div>

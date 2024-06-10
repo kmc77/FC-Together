@@ -415,61 +415,61 @@
         });
 
         function loadSection1Photos() {
-    var accessToken = localStorage.getItem('accessToken');
-    $.ajax({
-        url: "/admin/layout/getSection1Photos", // 섹션1 사진 데이터를 가져오는 API 엔드포인트
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + accessToken
-        },
-        success: function (data) {
-            var photos = data; // 받은 데이터
-            var content = '<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">';
-            content += '<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">';
-            content += '<thead>';
-            content += '<tr class="text-left">';
-            content += '<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">';
-            content += '<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">';
-            content += '<input id="selectAllCheckboxPhoto" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">';
-            content += '</label>';
-            content += '</th>';
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/getSection1Photos", // 섹션1 사진 데이터를 가져오는 API 엔드포인트
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                },
+                success: function (data) {
+                    var photos = data; // 받은 데이터
+                    var content = '<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">';
+                    content += '<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">';
+                    content += '<thead>';
+                    content += '<tr class="text-left">';
+                    content += '<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">';
+                    content += '<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">';
+                    content += '<input id="selectAllCheckboxPhoto" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">';
+                    content += '</label>';
+                    content += '</th>';
 
-            content += '<template>';
-            content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"></th>';
-            content += '</template>';
+                    content += '<template>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"></th>';
+                    content += '</template>';
 
-            content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">파일명</th>';
-            content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">파일 경로</th>';
-            content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">테이블 구분</th>';
-            content += '</tr>';
-            content += '</thead>';
-            content += '<tbody>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">파일명</th>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">파일 경로</th>';
+                    content += '<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">테이블 구분</th>';
+                    content += '</tr>';
+                    content += '</thead>';
+                    content += '<tbody>';
 
-            // 파일 데이터 추가
-            $.each(photos, function (i, photo) {
-                content += '<tr>';
-                content += '<td class="border-dashed border-t border-gray-200 px-3"><label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"><input type="checkbox" class="form-checkbox rowCheckboxPhoto focus:outline-none focus:shadow-outline" name="' + photo.fileIdx + '"></label></td>';
-                content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.fileName + '</span></td>';
-                content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center"><img src="' + photo.filePath + '" style="max-width: 100px;"></span></td>';
-                content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.tableGb + '</span></td>';
-                content += '</tr>';
+                    // 파일 데이터 추가
+                    $.each(photos, function (i, photo) {
+                        content += '<tr>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-3"><label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"><input type="checkbox" class="form-checkbox rowCheckboxPhoto focus:outline-none focus:shadow-outline" name="' + photo.fileIdx + '"></label></td>';
+                        content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.fileName + '</span></td>';
+                        content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center"><img src="' + photo.filePath + '" style="max-width: 100px;"></span></td>';
+                        content += '<td class="border-dashed border-t border-gray-200"><span class="text-gray-700 px-6 py-3 flex items-center">' + photo.tableGb + '</span></td>';
+                        content += '</tr>';
+                    });
+
+                    content += '</tbody>';
+                    content += '</table>';
+                    content += '</div>';
+
+                    // 기존 콘텐츠를 섹션1 사진 목록으로 교체
+                    $('#section1PhotoList').html(content);
+
+                    // 체크박스 이벤트 다시 바인딩
+                    bindCheckboxEvents();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
             });
-
-            content += '</tbody>';
-            content += '</table>';
-            content += '</div>';
-
-            // 기존 콘텐츠를 섹션1 사진 목록으로 교체
-            $('#section1PhotoList').html(content);
-
-            // 체크박스 이벤트 다시 바인딩
-            bindCheckboxEvents();
-        },
-        error: function (error) {
-            console.error('Error:', error);
         }
-    });
-}
 
 
         function bindCheckboxEvents() {
@@ -559,14 +559,14 @@
                 contentType: false,
                 success: function(response) {
                     alert('사진이 성공적으로 업로드되었습니다.');
-                    // 섹션1 사진 목록 탭 클릭
-                    $('#nav-1 a[href="#/section1photos"]').click();
+                    location.reload();
                 },
                 error: function(error) {
                     alert('사진 업로드에 실패하였습니다.');
                 }
             });
         });
+
 
         // 삭제 버튼 클릭 이벤트
         $('#deleteUserButton').click(function() {
@@ -596,18 +596,7 @@
                     data: JSON.stringify(selectedItems),
                     success: function() {
                         alert('선택한 항목이 삭제되었습니다.');
-                        if (itemType === 'users') {
-                            // User 목록을 갱신
-                            loadUserList();
-                        } else if (itemType === 'photos') {
-                            // 섹션1 사진 목록을 갱신
-                            loadSection1Photos();
-                        }
-                        // 선택 항목 초기화
-                        selectedRowsUser = [];
-                        selectedRowsPhoto = [];
-                        updateSelectedCountUser();
-                        updateSelectedCountPhoto();
+                        location.reload();
                     },
                     error: function() {
                         alert('삭제 중 오류가 발생했습니다.');

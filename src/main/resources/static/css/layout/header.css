@@ -150,7 +150,7 @@ body .gnbBox {
 }
 
 /* 추가된 유틸 클래스 스타일 */
-.p-header .p-nav-global .utils {
+.utils {
     position: absolute;
     right: 0;
     top: 50%;
@@ -159,15 +159,15 @@ body .gnbBox {
     font-size: 19px;
 }
 
-.p-header .p-nav-global .utils a {
+.utils a {
     padding: 0 5px;
     font-family: 'D-DIN', sans-serif;
     text-decoration: none;
     color: #000;
 }
 
-.p-header .p-nav-global .utils #logout-link,
-.p-header .p-nav-global .utils #join-link {
+.utils #logout-link,
+.utils #join-link {
     margin-right: 20px;
 }
 

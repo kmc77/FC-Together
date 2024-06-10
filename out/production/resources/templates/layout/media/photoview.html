@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>photo</title>
+    <title>구단사진 상세보기</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -15,24 +15,24 @@
     <div class="mediaRoomContainer">
         <div class="mediaRoomContents">
             <div class="photoInformation">
-                <div class="titleBox"><p th:text="${clubPhoto.cpTitle}"></p>
+                <div class="titleBox"><p id="photo-title" th:text="${clubPhoto.cpTitle}"></p>
                     <div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-user"></i>
                             <p>작성자</p>
-                            <p th:text="${clubPhoto.username}"></p>
+                            <p id="photo-username" th:text="${clubPhoto.username}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-calendar"></i>
                             <p>작성일</p>
-                            <p th:text="${clubPhoto.cpRegdate}"></p>
+                            <p id="photo-date" th:text="${clubPhoto.cpRegdate}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-eye"></i>
                             <p>조회수</p>
-                            <p th:text="${clubPhoto.cpHits}"></p>
+                            <p id="photo-hits" th:text="${clubPhoto.cpHits}"></p>
                         </div>
                     </div>
                 </div>
@@ -45,12 +45,12 @@
             </div>
             <div class="cpContent">
                 <div class="content">
-                    <p th:utext="${clubPhoto.cpContent}"></p>
+                    <p id="photo-content" th:utext="${clubPhoto.cpContent}"></p>
                 </div>
-                <div class="previous-post post-navigation" th:if="${prevClubPhoto != null}">
+                <div class="previous-post post-navigation" id="prev-photo-container" th:if="${prevClubPhoto != null}">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/photoview(no=${prevClubPhoto.cpIdx})}"
+                        <a id="prev-photo-link" class="title" th:href="@{/media/photoview(no=${prevClubPhoto.cpIdx})}"
                            th:text="${prevClubPhoto.cpTitle}">이전글 제목</a>
                     </div>
                 </div>
@@ -68,6 +68,63 @@
 
 <script>
     $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var photoId = new URLSearchParams(window.location.search).get('no');
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+
+        function loadPhotoView(photoId, token) {
+            if (loadedPages['/media/photoview?no=' + photoId]) {
+                renderPhotoView(loadedPages['/media/photoview?no=' + photoId]);
+                return;
+            }
+
+            $.ajax({
+                url: "/media/photoview/data",
+                type: "GET",
+                data: { no: photoId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/media/photoview?no=' + photoId] = response;
+                    renderPhotoView(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('구단사진 상세 조회 에러:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        function renderPhotoView(data) {
+            $('#photo-title').text(data.clubPhoto.cpTitle);
+            $('#photo-username').text(data.clubPhoto.username);
+            $('#photo-date').text(data.clubPhoto.cpRegdate);
+            $('#photo-hits').text(data.clubPhoto.cpHits);
+            $('#photo-content').html(data.clubPhoto.cpContent);
+
+            if (data.prevClubPhoto) {
+                $('#prev-photo-link').attr('href', '#').text(data.prevClubPhoto.cpTitle).data('id', data.prevClubPhoto.cpIdx);
+                $('#prev-photo-container').show();
+            } else {
+                $('#prev-photo-container').hide();
+            }
+        }
+
+        $('#prev-photo-link').click(function(e) {
+            e.preventDefault();
+            var photoId = $(this).data('id');
+            loadPage('/media/photoview?no=' + photoId, token);
+        });
+
+        $('#default_butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/media/photo', token);
+        });
+
         $('#copy-link').click(function() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(function() {
@@ -76,8 +133,9 @@
                 $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
             });
         });
+
+        loadPhotoView(photoId, token);
     });
 </script>
-
 </body>
 </html>

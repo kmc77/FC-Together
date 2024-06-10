@@ -2,10 +2,10 @@
 
 .team-page-body {
     display: block;
-     margin-top: 20px; /* 상단 마진만 8px 적용 */
-     margin-right: 0; /* 오른쪽 마진 0 */
-     margin-bottom: 0; /* 하단 마진 0 */
-     margin-left: 0; /* 왼쪽 마진 0 */
+     margin-top: 10px;
+     margin-right: 0;
+     margin-bottom: 0;
+     margin-left: 0;
 }
 
 

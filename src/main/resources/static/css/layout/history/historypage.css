@@ -5,7 +5,8 @@
 
         body {
           font-size: 14px;
-           margin: 0; /* 마진 값을 없앰 */
+           margin: 0;
+           margin-top: -10px;
         }
 
         .container {

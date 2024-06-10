@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>newsView</title>
+    <title>구단뉴스 상세보기</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -16,24 +16,24 @@
         <div class="mediaRoomContents">
             <div class="newsInformation">
                 <div class="titleBox">
-                    <p th:text="${news.newsTitle}"></p>
+                    <p id="news-title" th:text="${news.newsTitle}"></p>
                     <div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-user"></i>
                             <p>작성자</p>
-                            <p th:text="${news.username}"></p>
+                            <p id="news-username" th:text="${news.username}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-calendar"></i>
                             <p>작성일</p>
-                            <p th:text="${news.newsRegdate}"></p>
+                            <p id="news-date" th:text="${news.newsRegdate}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-eye"></i>
                             <p>조회수</p>
-                            <p th:text="${news.newsHits}"></p>
+                            <p id="news-hits" th:text="${news.newsHits}"></p>
                         </div>
                     </div>
                 </div>
@@ -46,12 +46,12 @@
             </div>
             <div class="newsContent">
                 <div class="content">
-                    <p th:utext="${news.newsContent}"></p>
+                    <p id="news-content" th:utext="${news.newsContent}"></p>
                 </div>
-                <div class="previous-post post-navigation" th:if="${prevNews != null}">
+                <div class="previous-post post-navigation" id="prev-news-container" th:if="${prevNews != null}">
                     <div><p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}"
+                        <a id="prev-news-link" class="title" th:href="@{/media/newsview(no=${prevNews.newsIdx})}"
                            th:text="${prevNews.newsTitle}">이전글 제목</a>
                     </div>
                 </div>
@@ -69,6 +69,63 @@
 
 <script>
     $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var newsId = new URLSearchParams(window.location.search).get('no');
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+
+        function loadNewsView(newsId, token) {
+            if (loadedPages['/media/newsview?no=' + newsId]) {
+                renderNewsView(loadedPages['/media/newsview?no=' + newsId]);
+                return;
+            }
+
+            $.ajax({
+                url: "/media/newsview/data",
+                type: "GET",
+                data: { no: newsId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/media/newsview?no=' + newsId] = response;
+                    renderNewsView(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('구단뉴스 상세 조회 에러:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        function renderNewsView(data) {
+            $('#news-title').text(data.news.newsTitle);
+            $('#news-username').text(data.news.username);
+            $('#news-date').text(data.news.newsRegdate);
+            $('#news-hits').text(data.news.newsHits);
+            $('#news-content').html(data.news.newsContent);
+
+            if (data.prevNews) {
+                $('#prev-news-link').attr('href', '#').text(data.prevNews.newsTitle).data('id', data.prevNews.newsIdx);
+                $('#prev-news-container').show();
+            } else {
+                $('#prev-news-container').hide();
+            }
+        }
+
+        $('#prev-news-link').click(function(e) {
+            e.preventDefault();
+            var newsId = $(this).data('id');
+            loadPage('/media/newsview?no=' + newsId, token);
+        });
+
+        $('#default_butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/media/news', token);
+        });
+
         $('#copy-link').click(function() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(function() {
@@ -77,6 +134,8 @@
                 $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
             });
         });
+
+        loadNewsView(newsId, token);
     });
 </script>
 </body>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>video</title>
+    <title>구단영상 상세보기</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -16,24 +16,24 @@
         <div class="mediaRoomContents">
             <div class="videoInformation">
                 <div class="titleBox">
-                    <p th:text="${clubVideo.cvTitle}">비디오 제목</p>
+                    <p id="video-title" th:text="${clubVideo.cvTitle}">비디오 제목</p>
                     <div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-user"></i>
                             <p>작성자</p>
-                            <p th:text="${clubVideo.username}">Username</p>
+                            <p id="video-username" th:text="${clubVideo.username}">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-calendar"></i>
                             <p>작성일</p>
-                            <p th:text="${clubVideo.cvDate}">Date</p>
+                            <p id="video-date" th:text="${clubVideo.cvDate}">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <i class="fa-regular fa-eye"></i>
                             <p>조회수</p>
-                            <p th:text="${clubVideo.cvHits}">Hits</p>
+                            <p id="video-hits" th:text="${clubVideo.cvHits}">Hits</p>
                         </div>
                     </div>
                 </div>
@@ -47,13 +47,13 @@
             <div class="cvContent">
                 <div class="content">
                     <iframe id="videoPlayer" width="1000" height="720" th:src="${clubVideo.mvTheOriginUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <p th:utext="${clubVideo.cvContent}">Video Content</p>
+                    <p id="video-content" th:utext="${clubVideo.cvContent}">Video Content</p>
                 </div>
-                <div class="previous-post post-navigation" th:if="${prevClubVideo != null}">
+                <div class="previous-post post-navigation" id="prev-video-container" th:if="${prevClubVideo != null}">
                     <div>
                         <p>이전글</p>
                         <div class="arrow up"></div>
-                        <a class="title" th:href="@{/media/videoView(no=${prevClubVideo?.cvIdx})}" th:text="${prevClubVideo?.cvTitle}">이전글 제목</a>
+                        <a id="prev-video-link" class="title" th:href="@{/media/videoView(no=${prevClubVideo.cvIdx})}" th:text="${prevClubVideo.cvTitle}">이전글 제목</a>
                     </div>
                 </div>
                 <div class="formBtns">
@@ -69,6 +69,63 @@
 
 <script>
     $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var videoId = new URLSearchParams(window.location.search).get('no');
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+
+        function loadVideoView(videoId, token) {
+            if (loadedPages['/media/videoView?no=' + videoId]) {
+                renderVideoView(loadedPages['/media/videoView?no=' + videoId]);
+                return;
+            }
+
+            $.ajax({
+                url: "/media/videoView/data",
+                type: "GET",
+                data: { no: videoId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/media/videoView?no=' + videoId] = response;
+                    renderVideoView(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('구단영상 상세 조회 에러:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        function renderVideoView(data) {
+            $('#video-title').text(data.clubVideo.cvTitle);
+            $('#video-username').text(data.clubVideo.username);
+            $('#video-date').text(data.clubVideo.cvDate);
+            $('#video-hits').text(data.clubVideo.cvHits);
+            $('#video-content').html(data.clubVideo.cvContent);
+
+            if (data.prevClubVideo) {
+                $('#prev-video-link').attr('href', '#').text(data.prevClubVideo.cvTitle).data('id', data.prevClubVideo.cvIdx);
+                $('#prev-video-container').show();
+            } else {
+                $('#prev-video-container').hide();
+            }
+        }
+
+        $('#prev-video-link').click(function(e) {
+            e.preventDefault();
+            var videoId = $(this).data('id');
+            loadPage('/media/videoView?no=' + videoId, token);
+        });
+
+        $('#default_butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/media/video', token);
+        });
+
         $('#copy-link').click(function() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(function() {
@@ -77,6 +134,8 @@
                 $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
             });
         });
+
+        loadVideoView(videoId, token);
     });
 </script>
 </body>

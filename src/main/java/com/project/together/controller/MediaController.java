@@ -126,12 +126,11 @@ public class MediaController {
     // 구단 뉴스 상세보기 페이지
     @GetMapping("/newsview")
     public String newsViewPage(@RequestParam("no") int newsNum, Model model) throws NotFoundException {
-
-        mediaService.increaseNewsHits(newsNum); //조회수 증가
+        mediaService.increaseNewsHits(newsNum); // 조회수 증가
         News news = mediaService.newsViewPage(newsNum);
 
         if (news == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "News not found with id: " + newsNum);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID가 포함된 뉴스를 찾을 수 없습니다.: " + newsNum);
         }
 
         model.addAttribute("news", news);
@@ -142,6 +141,24 @@ public class MediaController {
         }
 
         return "layout/media/newsview";
+    }
+
+    // 구단 뉴스 상세 데이터 조회
+    @GetMapping("/newsview/data")
+    public ResponseEntity<Map<String, Object>> getNewsViewData(@RequestParam("no") int newsNum) throws NotFoundException {
+        mediaService.increaseNewsHits(newsNum); // 조회수 증가
+        News news = mediaService.newsViewPage(newsNum);
+        if (news == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID가 포함된 뉴스를 찾을 수 없습니다.: " + newsNum);
+        }
+
+        News prevNews = mediaService.findPrevNewsByNewsNum(newsNum);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("news", news);
+        response.put("prevNews", prevNews);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -158,6 +175,7 @@ public class MediaController {
     }
 
 
+    // 구단 사진 상세보기 페이지
     @GetMapping("/photoview")
     public String photoViewPage(@RequestParam("no") int cpIdx, Model model) throws NotFoundException {
         mediaService.increasePhotoHits(cpIdx); // 조회수 증가
@@ -177,6 +195,24 @@ public class MediaController {
         return "layout/media/photoview";
     }
 
+    // 구단 사진 상세 데이터 조회
+    @GetMapping("/photoview/data")
+    public ResponseEntity<Map<String, Object>> getPhotoViewData(@RequestParam("no") int cpIdx) throws NotFoundException {
+        mediaService.increasePhotoHits(cpIdx); // 조회수 증가
+        ClubPhoto clubPhoto = mediaService.photoViewPage(cpIdx);
+        if (clubPhoto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ClubPhoto not found with id: " + cpIdx);
+        }
+
+        ClubPhoto prevClubPhoto = mediaService.findPrevClubPhotoByCpIdx(cpIdx);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("clubPhoto", clubPhoto);
+        response.put("prevClubPhoto", prevClubPhoto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 구단 영상 목록 조회
     @GetMapping("/video/list")
     public ResponseEntity<List<ClubVideo>> getClubVideoList(@RequestParam(defaultValue = "0") int start, @RequestParam(defaultValue = "9") int limit) {
@@ -192,9 +228,11 @@ public class MediaController {
     // 구단 영상 상세보기 페이지
     @GetMapping("/videoView")
     public String videoViewPage(@RequestParam("no") int cvIdx, Model model) throws NotFoundException {
-
         mediaService.increaseVideoHits(cvIdx);
         ClubVideo clubVideo = mediaService.videoViewPage(cvIdx);
+        if (clubVideo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ClubVideo not found with id: " + cvIdx);
+        }
         model.addAttribute("clubVideo", clubVideo);
 
         // 이전 영상 조회
@@ -204,5 +242,23 @@ public class MediaController {
         }
 
         return "layout/media/videoview";
+    }
+
+    // 구단 영상 상세 데이터 조회
+    @GetMapping("/videoView/data")
+    public ResponseEntity<Map<String, Object>> getVideoViewData(@RequestParam("no") int cvIdx) throws NotFoundException {
+        mediaService.increaseVideoHits(cvIdx);
+        ClubVideo clubVideo = mediaService.videoViewPage(cvIdx);
+        if (clubVideo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ClubVideo not found with id: " + cvIdx);
+        }
+
+        ClubVideo prevClubVideo = mediaService.findPrevClubVideoByCvIdx(cvIdx);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("clubVideo", clubVideo);
+        response.put("prevClubVideo", prevClubVideo);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

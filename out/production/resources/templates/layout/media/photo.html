@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>photo</title>
+    <title>구단사진</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -28,14 +28,13 @@
                     <a href="/media/all" class="tabLink">
                         <span>전체</span>
                     </a>
-                    <a href="/media/notice"
-                       aria-current="page">
+                    <a href="/media/notice" class="tabLink">
                         <span>공지사항</span>
                     </a>
                     <a href="/media/news" class="tabLink">
                         <span>구단소식</span>
                     </a>
-                    <a href="/media/photo" class="tabLink router-link-exact-active router-link-active current">
+                    <a href="/media/photo" class="tabLink router-link-exact-active router-link-active current" aria-current="page">
                         <span>구단사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
@@ -48,17 +47,7 @@
             <div class="photo-container">
                 <div class="photo-board">
                     <div class="photo-item-container">
-                        <!-- <div class="news-detail">
-                             <div class="news-thumbnail" style="background-image: url('https://static.mims.kr/upload/suG3cOmTNpBUkM72CCXX20230925014050817314.jpg');"></div>
-                             <div class="news-contents">
-                                 <div class="news-title">
-                                     <p id="news-title"></p> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
-                                 </div>
-                                 <div class="news-date" id="news-date"> &lt;!&ndash; 수정: id 값을 추가했습니다. &ndash;&gt;
-                                 </div>
-                             </div>
-                         </div>-->
-
+                        <!-- 사진 항목은 여기에 동적으로 추가됩니다. -->
                     </div>
                 </div>
                 <div class="formBtns">
@@ -71,74 +60,143 @@
 
 <script>
     $(document).ready(function() {
-        var limit = 9; // 한 번에 photo 목록을 조회할 개수
+        var limit = 9; // 한 번에 조회할 사진의 개수
         var start = 0; // 조회 시작 위치
-        var activeTabHref = $(".tabLink.router-link-exact-active.router-link-active.current").attr("href"); // 현재 활성화된 탭의 href 저장
+        var token = localStorage.getItem('accessToken');
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+        var isRequestInProgress = false; // 요청이 진행 중인지 확인하는 변수
+        var isDataLoaded = false; // 데이터 로드 여부 확인 변수
 
-        loadPhotoList(start, limit); // 사진 목록 로딩 함수 호출
-
-        $("#loadMore").click(function() {
-            start += limit;
-            loadPhotoList(start, limit); // "더 보기" 클릭 시 추가 목록 로딩
-        });
-
-       $("body").on("click", ".tabLink", function(e) {
-            var clickedTabHref = $(this).attr("href");
-            if (activeTabHref !== clickedTabHref) {
-                // 다른 탭 클릭 시 기본 동작 수행
-                return;
-            }
-
-            e.preventDefault(); // 같은 탭을 다시 클릭한 경우 기본 동작 방지
-        });
-
-        // 사진 목록 로딩 함수
         function loadPhotoList(start, limit) {
+            if (isRequestInProgress || isDataLoaded) return; // 요청이 진행 중인 경우 또는 데이터가 이미 로드된 경우 추가 요청 방지
+
+            isRequestInProgress = true; // 요청 시작
             $.ajax({
-                url: '/media/photo/list',
-                type: 'GET',
+                url: "/media/photo/list",
+                type: "GET",
                 data: {
                     start: start,
                     limit: limit
                 },
-                dataType: 'json',
-               success: function(photoList) {
-                    if (photoList.length === 0) {
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    if (response.length === 0) {
                         alert('더 이상 표시할 구단 사진이 없습니다.');
+                        isDataLoaded = true; // 더 이상 로드할 데이터가 없음을 표시
                         return;
                     }
 
-                    // 기존 목록을 비우고 새로 로드
-                    $('.photo-item-container').empty();
-
-                    $.each(photoList, function(index, photo) {
+                    var listHtml = '';
+                    response.forEach(function(photo) {
                         var srcRegex = /<img[^>]+src="([^">]+)"/;
                         var match = photo.cpContent.match(srcRegex);
-                        var imgSrc = match ? match[1] : '/img/FcTogether.jpg';
+                        var imgSrc = match ? match[1] : '/img/FcTogether.jpg'; // 기본 이미지 사용
 
-                        var photoItem = '<a href="/media/photoview?no=' + photo.cpIdx + '">' +
+                        listHtml += '<a href="#" class="photo-link" data-id="' + photo.cpIdx + '">' +
                             '<div class="photo-detail">' +
-                            '<div class="photo-thumbnail" style="background-image: url(' + imgSrc + ');"></div>' +
-                            '<div class="photo-contents">' +
-                            '<div class="photo-title">' + photo.cpTitle + '</div>' +
-                            '<div class="photo-date-and-hits">' +
-                                            '<i class="fa-regular fa-calendar"></i> ' + photo.cpRegdate +
-                                            ' <i class="fa-regular fa-eye"></i> ' + photo.cpHits +
-                                        '</div>' +
-                            '<div class="photo-table">' +
-                                '<p>' + photo.tableGb + '</p>' +
+                                '<div class="photo-thumbnail" style="background-image: url(\'' + imgSrc + '\');"></div>' +
+                                '<div class="photo-contents">' +
+                                    '<div class="photo-title">' + photo.cpTitle + '</div>' +
+                                    '<div class="photo-date-and-hits">' +
+                                        '<i class="fa-regular fa-calendar"></i> ' + photo.cpRegdate +
+                                        ' <i class="fa-regular fa-eye"></i> ' + photo.cpHits +
+                                    '</div>' +
+                                    '<div class="photo-table">' +
+                                        '<p>' + photo.tableGb + '</p>' +
+                                    '</div>' +
+                                '</div>' +
                             '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</a>';
-                        $('.photo-item-container').append(photoItem);
+                        '</a>';
                     });
+
+                    $(".photo-item-container").append(listHtml);
                 },
-                error: function(error) {
-                    console.error('사진을 가져오는데 실패했습니다.', error);
+                error: function(xhr, status, error) {
+                    console.error('사진 목록 조회 에러:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료
                 }
             });
         }
+
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                bindEvents(); // 이벤트 바인딩
+                return;
+            }
+
+            isRequestInProgress = true; // 요청 시작
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                    bindEvents(); // 이벤트 바인딩
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료
+                }
+            });
+        }
+
+        function bindEvents() {
+            $("body").on("click", ".photo-link", function(e) {
+                e.preventDefault();
+                var photoId = $(this).data('id');
+                loadPage('/media/photoview?no=' + photoId, token); // AJAX로 페이지 로드
+            });
+
+            $("body").on("click", ".tabLink", function(e) {
+                var clickedTabHref = $(this).attr("href");
+                if ($(this).hasClass('router-link-exact-active')) {
+                    e.preventDefault(); // 이미 활성화된 탭일 경우 기본 동작을 막음
+                    return;
+                }
+                e.preventDefault(); // 링크의 기본 동작을 막음
+                loadPage(clickedTabHref, token);
+            });
+        }
+
+        $("#loadMore").click(function() {
+            start += limit;
+            loadPhotoList(start, limit);
+        });
+
+        window.onpopstate = function (event) {
+            var token = localStorage.getItem('accessToken'); // 뒤로 가기 시 토큰 재획득
+            if (event.state) {
+                loadPage(event.state.url, token, false);
+            }
+        };
+
+        // 초기 목록 로딩
+        loadPhotoList(start, limit);
+        bindEvents(); // 초기 이벤트 바인딩
     });
 </script>
 <footer>

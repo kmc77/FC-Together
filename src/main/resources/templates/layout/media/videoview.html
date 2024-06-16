@@ -106,6 +106,7 @@
             $('#video-date').text(data.clubVideo.cvDate);
             $('#video-hits').text(data.clubVideo.cvHits);
             $('#video-content').html(data.clubVideo.cvContent);
+            $('#videoPlayer').attr('src', data.clubVideo.mvTheOriginUrl); // 비디오 URL 설정
 
             if (data.prevClubVideo) {
                 $('#prev-video-link').attr('href', '#').text(data.prevClubVideo.cvTitle).data('id', data.prevClubVideo.cvIdx);
@@ -113,6 +114,40 @@
             } else {
                 $('#prev-video-container').hide();
             }
+        }
+
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                bindEvents(); // 이벤트 바인딩
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                    bindEvents(); // 이벤트 바인딩
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
         }
 
         $('#prev-video-link').click(function(e) {
@@ -123,7 +158,7 @@
 
         $('#default_butt').click(function(e) {
             e.preventDefault();
-            loadPage('/media/video', token);
+            location.href = '/media/video'; // 새로고침 처리
         });
 
         $('#copy-link').click(function() {

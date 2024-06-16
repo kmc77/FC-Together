@@ -26,7 +26,6 @@ public class ManagementController {
 
     private final ManagementService managementService;
 
-    /*@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")*/
     @GetMapping("/management_customer_support")
     public String getRuleList(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(defaultValue = "8") int limit, Model model) {

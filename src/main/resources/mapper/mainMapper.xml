@@ -18,5 +18,21 @@
         ORDER BY m.id DESC;
     </select>
 
+    <select id="findK7MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'k7'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
+    <select id="findW1MatchListByLeague" resultType="com.project.together.domain.Match">
+        SELECT m.*, t.team_logo
+        FROM Matches m
+        LEFT JOIN Team t ON m.team_name = t.team_name AND t.team_league_gb = 'w1'
+        WHERE m.league_gb = #{league}
+        ORDER BY m.id DESC;
+    </select>
+
 
 </mapper>

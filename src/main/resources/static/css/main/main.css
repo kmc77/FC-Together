@@ -181,8 +181,7 @@ body {
 
 /* INSTAGRAM tab end */
 
-
-
+/* 섹션2 */
 .matchSchedule {
     flex: 1;
     height: 100vh;
@@ -202,9 +201,35 @@ body {
     filter: brightness(30%) blur(8px);
 }
 
+.leagueTabs {
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.leagueTabButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.leagueTabButton:hover, .leagueTabButton.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
 .pastMatch {
     position: absolute;
-    top: 5%;
+    top: 12%;
     left: 5%;
     width: 25%;
     height: 80%;
@@ -220,15 +245,11 @@ body {
 
 .slider-container {
     width: 100%;
-    /*height: 80%;*/
     overflow: hidden;
 }
 
 .slider-wrapper {
-    /*display: flex;
-    transition: transform 0.5s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.85);
-    height: 100%;*/
+    /* Styles omitted for brevity */
 }
 
 .slide {
@@ -242,7 +263,7 @@ body {
 
 .nextMatch {
     position: absolute;
-    top: 5%;
+    top: 12%;
     left: 32%;
     width: 37%;
     height: 80%;
@@ -258,14 +279,11 @@ body {
 
 .slider-container2 {
     width: 100%;
-    /*height: 80%;*/
     overflow: hidden;
 }
 
 .slider-wrapper2 {
-    /*transition: transform 0.5s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.85);
-    height: 100%;*/
+    /* Styles omitted for brevity */
 }
 
 .slide2 {
@@ -279,7 +297,7 @@ body {
 
 .leagueRanking {
     position: absolute;
-    top: 5%;
+    top: 12%;
     left: 71%;
     width: 23%;
     height: 80%;
@@ -318,6 +336,9 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+/* 섹션2 end */
+
 
 /* 라이브러리 */
 .con {

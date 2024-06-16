@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" class="memberPage" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>구단사진</title>
@@ -25,9 +25,9 @@
             </div>
             <div class="tabMenu">
                 <div class="container">
-                    <a href="/media/all" class="tabLink">
+                    <!--<a href="/media/all" class="tabLink">
                         <span>전체</span>
-                    </a>
+                    </a>-->
                     <a href="/media/notice" class="tabLink">
                         <span>공지사항</span>
                     </a>
@@ -38,7 +38,7 @@
                         <span>구단사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
-                        <span>영상</span>
+                        <span>구단영상</span>
                     </a>
                 </div>
             </div>
@@ -64,11 +64,12 @@
         var start = 0; // 조회 시작 위치
         var token = localStorage.getItem('accessToken');
         var loadedPages = {}; // 로드된 페이지 추적 객체
+        var loadedData = {}; // 로드된 데이터를 추적하는 객체
         var isRequestInProgress = false; // 요청이 진행 중인지 확인하는 변수
         var isDataLoaded = false; // 데이터 로드 여부 확인 변수
 
-        function loadPhotoList(start, limit) {
-            if (isRequestInProgress || isDataLoaded) return; // 요청이 진행 중인 경우 또는 데이터가 이미 로드된 경우 추가 요청 방지
+        function loadPhotoList(start, limit, reload = false) {
+            if (isRequestInProgress || (isDataLoaded && !reload)) return; // 요청이 진행 중인 경우 또는 데이터가 이미 로드된 경우 추가 요청 방지
 
             isRequestInProgress = true; // 요청 시작
             $.ajax({
@@ -111,7 +112,13 @@
                         '</a>';
                     });
 
-                    $(".photo-item-container").append(listHtml);
+                    if (reload) {
+                        $(".photo-item-container").html(listHtml);
+                    } else {
+                        $(".photo-item-container").append(listHtml);
+                    }
+                    loadedData["/media/photo/list"] = listHtml; // 데이터 저장
+                    console.log('Photo list loaded and cached.'); // 콘솔 로그 추가
                 },
                 error: function(xhr, status, error) {
                     console.error('사진 목록 조회 에러:', error);
@@ -128,6 +135,7 @@
 
         function loadPage(url, token, pushState = true) {
             if (loadedPages[url]) {
+                console.log('Loading from cache: ', url); // 콘솔 로그 추가
                 $('body').html(loadedPages[url]);
                 if (pushState) {
                     history.pushState({ url: url }, '', url);
@@ -150,6 +158,7 @@
                         history.pushState({ url: url }, '', url);
                     }
                     bindEvents(); // 이벤트 바인딩
+                    console.log('Page loaded and cached: ', url); // 콘솔 로그 추가
                 },
                 error: function (xhr, status, error) {
                     console.error('페이지 로드 실패:', error);
@@ -165,6 +174,35 @@
         }
 
         function bindEvents() {
+            // 이벤트 위임을 사용하여 mouseover와 mouseout 이벤트 처리
+            document.querySelector('.p-nav-global').addEventListener('mouseover', function(event) {
+                var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+                if (parentMenuItem) {
+                    var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                    if (childMenu && childMenu.children.length > 0) {
+                        childMenu.style.display = 'block';
+                    }
+                }
+            });
+
+            document.querySelector('.p-nav-global').addEventListener('mouseout', function(event) {
+                var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+                if (parentMenuItem) {
+                    var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                    if (childMenu) {
+                        childMenu.style.display = 'none';
+                    }
+                }
+            });
+
+            // 초기 로드 시 하위 메뉴가 비어 있으면 숨기기
+            var subMenus = document.querySelectorAll('.p-nav-sub__child');
+            subMenus.forEach(function(menu) {
+                if (menu.children.length === 0) {
+                    menu.style.display = 'none';
+                }
+            });
+
             $("body").on("click", ".photo-link", function(e) {
                 e.preventDefault();
                 var photoId = $(this).data('id');
@@ -178,13 +216,23 @@
                     return;
                 }
                 e.preventDefault(); // 링크의 기본 동작을 막음
-                loadPage(clickedTabHref, token);
+                if (clickedTabHref === "/media/photo") {
+                    if (loadedData["/media/photo/list"]) {
+                        console.log('Loading photo list from cache.'); // 콘솔 로그 추가
+                        $(".photo-item-container").html(loadedData["/media/photo/list"]);
+                        bindEvents(); // 이벤트 다시 바인딩
+                    } else {
+                        loadPhotoList(start, limit, true);
+                    }
+                } else {
+                    location.href = clickedTabHref; // 새로고침하여 페이지 이동
+                }
             });
         }
 
         $("#loadMore").click(function() {
             start += limit;
-            loadPhotoList(start, limit);
+            loadPhotoList(start, limit, true); // 중복 요청을 허용하도록 true 전달
         });
 
         window.onpopstate = function (event) {
@@ -195,7 +243,13 @@
         };
 
         // 초기 목록 로딩
-        loadPhotoList(start, limit);
+        if (loadedData["/media/photo/list"]) {
+            console.log('Loading initial photo list from cache.'); // 콘솔 로그 추가
+            $(".photo-item-container").html(loadedData["/media/photo/list"]);
+        } else {
+            loadPhotoList(start, limit);
+        }
+
         bindEvents(); // 초기 이벤트 바인딩
     });
 </script>

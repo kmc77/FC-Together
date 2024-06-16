@@ -29,4 +29,12 @@ public class MainService {
     public List<Match> findK5MatchListByLeague(String k5) {
         return mainMapper.findK5MatchListByLeague(k5);
     }
+
+    public List<Match> findK7MatchListByLeague(String k7) {
+        return mainMapper.findK7MatchListByLeague(k7);
+    }
+
+    public List<Match> findW1MatchListByLeague(String w1) {
+        return mainMapper.findW1MatchListByLeague(w1);
+    }
 }

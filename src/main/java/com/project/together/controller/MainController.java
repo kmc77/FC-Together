@@ -47,11 +47,25 @@ public class MainController {
     }
 
 
-    // 매치목록 가져오기
+    // K5 매치목록 가져오기
     @GetMapping({"/", "/mainMatch/getK5MatchList"})
     public ResponseEntity<List<Match>> getK5MatchList() {
         List<Match> k5Match = mainService.findK5MatchListByLeague("k5");
         return ResponseEntity.ok(k5Match);
+    }
+
+    // K7 리그 매치 목록 가져오기
+    @GetMapping("/mainMatch/getK7MatchList")
+    public ResponseEntity<List<Match>> getK7MatchList() {
+        List<Match> k7Matches = mainService.findK7MatchListByLeague("k7");
+        return ResponseEntity.ok(k7Matches);
+    }
+
+    // W1 리그 매치 목록 가져오기
+    @GetMapping("/mainMatch/getW1MatchList")
+    public ResponseEntity<List<Match>> getW1MatchList() {
+        List<Match> w1Matches = mainService.findW1MatchListByLeague("w1");
+        return ResponseEntity.ok(w1Matches);
     }
 
 

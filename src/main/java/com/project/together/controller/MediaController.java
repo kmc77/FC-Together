@@ -38,10 +38,10 @@ public class MediaController {
     }
 
     // 전체 페이지
-    @GetMapping("/all")
+    /*@GetMapping("/all")
     public String allPage() {
         return "/layout/media/all";
-    }
+    }*/
 
     // 공지사항 페이지
     @GetMapping("/notice")

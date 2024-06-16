@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**", "/club/**", "/team/**", "/history/**", "/match/**", "/admin/**", "/my/**", "/image/**", "/mainMatch/**").permitAll()
                 .antMatchers("/oauth2/authorization/**", "/error").permitAll()
                 .antMatchers(HttpMethod.GET, "/management/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                .antMatchers("/media/all", "/media/notice", "/media/news", "/media/video", "/media/photo", "/media/notice/list", "/media/photo/list", "/media/news/list", "/media/video/list").permitAll()
+                .antMatchers(/*"/media/all",*/ "/media/notice", "/media/news", "/media/video", "/media/photo", "/media/notice/list", "/media/photo/list", "/media/news/list", "/media/video/list").permitAll()
                 .antMatchers(HttpMethod.GET, "/media/noticeview", "/media/newsview", "/media/videoview", "/media/photoview").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
     <link href="/css/layout/media/notice.css" rel="stylesheet"/>
-    <script src="/js/layout/header.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -26,9 +25,9 @@
             </div>
             <div class="tabMenu">
                 <div class="container">
-                    <a href="/media/all" class="tabLink">
+                    <!--<a href="/media/all" class="tabLink">
                         <span>전체</span>
-                    </a>
+                    </a>-->
                     <a href="/media/notice" class="tabLink router-link-exact-active router-link-active current"
                        aria-current="page">
                         <span>공지사항</span>
@@ -40,7 +39,7 @@
                         <span>구단사진</span>
                     </a>
                     <a href="/media/video" class="tabLink">
-                        <span>영상</span>
+                        <span>구단영상</span>
                     </a>
                 </div>
             </div>
@@ -63,11 +62,12 @@
         var start = 0; // 조회 시작 위치
         var token = localStorage.getItem('accessToken');
         var loadedPages = {}; // 로드된 페이지 추적 객체
+        var loadedData = {}; // 로드된 데이터를 추적하는 객체
         var isRequestInProgress = false; // 요청이 진행 중인지 확인하는 변수
         var isDataLoaded = false; // 데이터 로드 여부 확인 변수
 
-        function loadNoticeList(start, limit) {
-            if (isRequestInProgress || isDataLoaded) return; // 요청이 진행 중인 경우 또는 데이터가 이미 로드된 경우 추가 요청 방지
+        function loadNoticeList(start, limit, reload = false) {
+            if (isRequestInProgress || (isDataLoaded && !reload)) return; // 요청이 진행 중인 경우 또는 데이터가 이미 로드된 경우 추가 요청 방지
 
             isRequestInProgress = true; // 요청 시작
             $.ajax({
@@ -100,12 +100,14 @@
                             '</div>';
                     });
 
-                    $(".list-basic").append(listHtml);
+                    $(".list-basic").html(listHtml);
+                    loadedData["/media/notice/list"] = listHtml; // 데이터 저장
+                    console.log('Notice list loaded and cached.'); // 콘솔 로그 추가
                 },
                 error: function(xhr, status, error) {
                     console.error('공지사항 목록 조회 에러:', error);
                     if (xhr.status === 401) {
-                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
                         location.href = '/user/loginform';
                     }
                 },
@@ -117,6 +119,7 @@
 
         function loadPage(url, token, pushState = true) {
             if (loadedPages[url]) {
+                console.log('Loading from cache: ', url); // 콘솔 로그 추가
                 $('body').html(loadedPages[url]);
                 if (pushState) {
                     history.pushState({ url: url }, '', url);
@@ -139,11 +142,12 @@
                         history.pushState({ url: url }, '', url);
                     }
                     bindEvents(); // 이벤트 바인딩
+                    console.log('Page loaded and cached: ', url); // 콘솔 로그 추가
                 },
                 error: function (xhr, status, error) {
                     console.error('페이지 로드 실패:', error);
                     if (xhr.status === 401) {
-                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
                         location.href = '/user/loginform';
                     }
                 },
@@ -184,26 +188,36 @@
             });
 
             // 기존 클릭 이벤트 바인딩
-            $("body").on("click", ".notice-tit", function(e) {
+            $("body").off("click", ".notice-tit").on("click", ".notice-tit", function(e) {
                 e.preventDefault();
                 var noticeId = $(this).data('id');
                 loadPage('/media/noticeview?no=' + noticeId, token);  // AJAX로 페이지 로드
             });
 
-            $("body").on("click", ".tabLink", function(e) {
+            $("body").off("click", ".tabLink").on("click", ".tabLink", function(e) {
                 var clickedTabHref = $(this).attr("href");
                 if ($(this).hasClass('router-link-exact-active')) {
                     e.preventDefault(); // 이미 활성화된 탭일 경우 기본 동작을 막음
                     return;
                 }
                 e.preventDefault(); // 링크의 기본 동작을 막음
-                loadPage(clickedTabHref, token);
+                if (clickedTabHref === "/media/notice") {
+                    if (loadedData["/media/notice/list"]) {
+                        console.log('Loading notice list from cache.'); // 콘솔 로그 추가
+                        $(".list-basic").html(loadedData["/media/notice/list"]);
+                        bindEvents(); // 이벤트 다시 바인딩
+                    } else {
+                        loadNoticeList(start, limit, true);
+                    }
+                } else {
+                    location.href = clickedTabHref; // 새로고침하여 페이지 이동
+                }
             });
         }
 
         $("#loadMore").click(function() {
             start += limit;
-            loadNoticeList(start, limit);
+            loadNoticeList(start, limit, true); // 중복 요청을 허용하도록 true 전달
         });
 
         window.onpopstate = function (event) {
@@ -214,11 +228,15 @@
         };
 
         // 초기 목록 로딩
-        loadNoticeList(start, limit);
+        if (loadedData["/media/notice/list"]) {
+            console.log('Loading initial notice list from cache.'); // 콘솔 로그 추가
+            $(".list-basic").html(loadedData["/media/notice/list"]);
+        } else {
+            loadNoticeList(start, limit);
+        }
+
         bindEvents(); // 초기 이벤트 바인딩
     });
-
-
 </script>
 <footer>
     <th:block th:include="layout/footer"></th:block>

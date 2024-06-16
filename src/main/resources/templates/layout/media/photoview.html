@@ -122,7 +122,7 @@
 
         $('#default_butt').click(function(e) {
             e.preventDefault();
-            loadPage('/media/photo', token);
+            location.href = '/media/photo'; // 페이지 새로고침
         });
 
         $('#copy-link').click(function() {

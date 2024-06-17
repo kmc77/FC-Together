@@ -125,7 +125,7 @@ body {
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 60px 0px;
     background-color: #f0f0f0; /* 배경색 추가 */
     border-radius: 10px; /* 섹션 모서리 둥글게 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 섹션에 그림자 추가 */
@@ -445,7 +445,7 @@ fieldset {
     width: 100%;
     object-fit: cover;
     margin-bottom: 40px; /* 섹션 간격 추가 */
-    padding: 60px 20px; /* 섹션 내부 여백 */
+    padding: 60px 0px; /* 섹션 내부 여백 */
     background-color: #f0f0f0; /* 배경색 추가 */
     border-radius: 10px; /* 섹션 모서리 둥글게 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 섹션에 그림자 추가 */

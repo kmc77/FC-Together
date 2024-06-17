@@ -240,8 +240,30 @@
         fetchMatchData('K5'); // 기본적으로 K5 리그 데이터 로드
     });
 
+    function updateMatchTitles(leagueName) {
+        const matchResult = document.querySelector('.matchResult');
+        const nextSchedule = document.querySelector('.nextSchedule');
+        const leagueRank = document.querySelector('.leagueRank');
+
+        matchResult.innerHTML = `${leagueName} 경기 결과<div class="button-container">
+            <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+            <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+        </div>`;
+
+        nextSchedule.innerHTML = `${leagueName} 다가오는 경기<div class="button-container">
+            <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+            <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+        </div>`;
+
+        leagueRank.innerHTML = `${leagueName} 리그 순위`;
+    }
 
     function fetchMatchData(league) {
+        let leagueName = league;
+        if (league === 'W1') {
+            leagueName = '여성팀';
+        }
+        updateMatchTitles(leagueName);  // 리그 명칭 업데이트
         fetch(`/mainMatch/get${league}MatchList`)
             .then(response => response.json())
             .then(data => {
@@ -266,27 +288,25 @@
         const nextMatchesContainer = document.getElementById('nextMatches');
         const leagueRankingsContainer = document.getElementById('leagueRankings');
 
-        pastMatchesContainer.classList.add('fade-exit');
-        nextMatchesContainer.classList.add('fade-exit');
-        leagueRankingsContainer.classList.add('fade-exit');
+        const elementsToAnimate = [
+            pastMatchesContainer,
+            nextMatchesContainer,
+            leagueRankingsContainer
+        ];
+
+        elementsToAnimate.forEach(element => element.classList.add('fade-exit'));
 
         setTimeout(() => {
-            pastMatchesContainer.classList.remove('fade-exit');
-            nextMatchesContainer.classList.remove('fade-exit');
-            leagueRankingsContainer.classList.remove('fade-exit');
+            elementsToAnimate.forEach(element => element.classList.remove('fade-exit'));
 
             callback();
 
-            pastMatchesContainer.classList.add('fade-enter');
-            nextMatchesContainer.classList.add('fade-enter');
-            leagueRankingsContainer.classList.add('fade-enter');
+            elementsToAnimate.forEach(element => element.classList.add('fade-enter'));
 
             setTimeout(() => {
-                pastMatchesContainer.classList.remove('fade-enter');
-                nextMatchesContainer.classList.remove('fade-enter');
-                leagueRankingsContainer.classList.remove('fade-enter');
-            }, 500); // Animation duration
-        }, 500); // Animation duration
+                elementsToAnimate.forEach(element => element.classList.remove('fade-enter'));
+            }, 100); // Animation duration
+        }, 100); // Animation duration
     }
 
     function updateActiveTab(activeLeague) {
@@ -420,6 +440,7 @@
 
         renderMatches();
     }
+
 
 
 

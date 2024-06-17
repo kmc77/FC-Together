@@ -40,6 +40,14 @@
 <div class="matchSchedule">
     <div class="matchImgDiv">
         <img src="/img/matchSectionPhoto.webp" alt="" class="matchImg">
+
+        <!-- 리그 구분 탭 추가 -->
+        <div class="leagueTabs">
+            <button class="leagueTabButton" id="k5Tab">K5 리그</button>
+            <button class="leagueTabButton" id="k7Tab">K7 리그</button>
+            <button class="leagueTabButton" id="w1Tab">여성팀 리그</button>
+        </div>
+
         <div class="pastMatch">
             <h2 class="matchResult">지난 경기 결과
                 <div class="button-container">
@@ -89,6 +97,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!-- 섹션3 -->
@@ -225,11 +234,37 @@
 
     // 섹션2
     document.addEventListener('DOMContentLoaded', () => {
-        fetchMatchData();
+        document.getElementById('k5Tab').addEventListener('click', () => fetchMatchData('K5'));
+        document.getElementById('k7Tab').addEventListener('click', () => fetchMatchData('K7'));
+        document.getElementById('w1Tab').addEventListener('click', () => fetchMatchData('W1'));
+        fetchMatchData('K5'); // 기본적으로 K5 리그 데이터 로드
     });
 
-    function fetchMatchData() {
-        fetch('/mainMatch/getK5MatchList')
+    function updateMatchTitles(leagueName) {
+        const matchResult = document.querySelector('.matchResult');
+        const nextSchedule = document.querySelector('.nextSchedule');
+        const leagueRank = document.querySelector('.leagueRank');
+
+        matchResult.innerHTML = `${leagueName} 경기 결과<div class="button-container">
+            <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+            <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+        </div>`;
+
+        nextSchedule.innerHTML = `${leagueName} 다가오는 경기<div class="button-container">
+            <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+            <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+        </div>`;
+
+        leagueRank.innerHTML = `${leagueName} 리그 순위`;
+    }
+
+    function fetchMatchData(league) {
+        let leagueName = league;
+        if (league === 'W1') {
+            leagueName = '여성팀';
+        }
+        updateMatchTitles(leagueName);  // 리그 명칭 업데이트
+        fetch(`/mainMatch/get${league}MatchList`)
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched data:', data);
@@ -238,10 +273,51 @@
                     const days = ['일', '월', '화', '수', '목', '금', '토'];
                     match.matchDay = days[date.getDay()]; // 요일 추가
                 });
-                displayPastMatches(data);
-                displayNextMatches(data);
+                animateChange(() => {
+                    displayPastMatches(data);
+                    displayNextMatches(data);
+                    updateLeagueRankings(data);
+                    updateActiveTab(league);
+                });
             })
             .catch(error => console.error('Error fetching match data:', error));
+    }
+
+    function animateChange(callback) {
+        const pastMatchesContainer = document.getElementById('pastMatches');
+        const nextMatchesContainer = document.getElementById('nextMatches');
+        const leagueRankingsContainer = document.getElementById('leagueRankings');
+
+        const elementsToAnimate = [
+            pastMatchesContainer,
+            nextMatchesContainer,
+            leagueRankingsContainer
+        ];
+
+        elementsToAnimate.forEach(element => element.classList.add('fade-exit'));
+
+        setTimeout(() => {
+            elementsToAnimate.forEach(element => element.classList.remove('fade-exit'));
+
+            callback();
+
+            elementsToAnimate.forEach(element => element.classList.add('fade-enter'));
+
+            setTimeout(() => {
+                elementsToAnimate.forEach(element => element.classList.remove('fade-enter'));
+            }, 100); // Animation duration
+        }, 100); // Animation duration
+    }
+
+    function updateActiveTab(activeLeague) {
+        const tabs = document.querySelectorAll('.leagueTabButton');
+        tabs.forEach(tab => {
+            if (tab.id === `${activeLeague}Tab`) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
     }
 
     function displayPastMatches(matches) {
@@ -266,6 +342,29 @@
         displayMatchesInChunks(limitedNextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
     }
 
+    function updateLeagueRankings(matches) {
+        const leagueRankingsContainer = document.getElementById('leagueRankings');
+        leagueRankingsContainer.innerHTML = '';
+
+        // 리그 순위 데이터를 가져오는 부분은 가정합니다.
+        // 아래 예시는 match 데이터에서 순위를 가져오는 형태로 수정이 필요합니다.
+        const rankings = matches.filter(match => match.leagueRanking).slice(0, 9);
+
+        rankings.forEach(rank => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${rank.rank}</td>
+                <td>${rank.team}</td>
+                <td>${rank.games}</td>
+                <td>${rank.wins}</td>
+                <td>${rank.draws}</td>
+                <td>${rank.losses}</td>
+                <td>${rank.points}</td>
+            `;
+            leagueRankingsContainer.appendChild(row);
+        });
+    }
+
     function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
         const chunkSize = 3;
         let currentPage = 0;
@@ -285,7 +384,7 @@
 
         function renderMatches() {
             container.classList.remove('fade-enter', 'fade-exit');
-            void container.offsetWidth; // Trigger reflow to restart animation
+            void container.offsetWidth;
             container.classList.add('fade-exit');
 
             setTimeout(() => {
@@ -341,6 +440,7 @@
 
         renderMatches();
     }
+
 
 
 

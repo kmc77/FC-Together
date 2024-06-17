@@ -217,11 +217,12 @@
         }
 
         // 스코어 값이 빈 문자열일 경우 null로 처리
-        formData.set('matchScore', formData.get('matchScore') || null);
-        formData.set('matchRelativeScore', formData.get('matchRelativeScore') || null);
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value === '' ? null : value;
+        });
 
         const accessToken = localStorage.getItem('accessToken');
-        const jsonObject = Object.fromEntries(formData.entries());
 
         postData('/admin/layout/addK7Match', jsonObject, accessToken)
             .then(data => {

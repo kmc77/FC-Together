@@ -65,7 +65,7 @@
 
                 <!-- 목록으로 돌아가기 버튼 -->
                 <div class="formBtns">
-                    <a href="#" id="default-butt" class="btn btn-default">목록</a>
+                    <a href="/media/notice" id="default-butt" class="btn btn-default">목록</a>
                 </div>
             </div>
         </div>
@@ -162,7 +162,7 @@
 
         $('#default-butt').click(function(e) {
             e.preventDefault();
-            loadPage('/media/notice', token);
+            window.location.href = '/media/notice'; // 페이지 새로고침을 위해 window.location.href 사용
         });
 
         $('#copy-link').click(function() {

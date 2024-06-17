@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>경영 / 고객 지원</title>
@@ -27,10 +27,10 @@
             <div class="tabMenu">
                 <div class="container">
                     <ul class="tab-bar">
-                        <li data-num="1" class="tab wave dark main-tab"><a href="#">규정</a></li>
-                        <li data-num="2" class="tab wave dark main-tab"><a href="#">경영공시</a></li>
-                        <li data-num="3" class="tab wave dark main-tab"><a href="#">FAQ</a></li>
-                        <li data-num="4" class="tab wave dark main-tab"><a href="#">훈련일정</a></li>
+                        <li data-num="1" class="tab wave dark main-tab"><a href="#tab1">규정</a></li>
+                        <li data-num="2" class="tab wave dark main-tab"><a href="#tab2">경영공시</a></li>
+                        <li data-num="3" class="tab wave dark main-tab"><a href="#tab3">FAQ</a></li>
+                        <li data-num="4" class="tab wave dark main-tab"><a href="#tab4">훈련일정</a></li>
                         <div class="indicator"></div>
                     </ul>
                 </div>
@@ -160,6 +160,28 @@
 <script>
     $(document).ready(function() {
         var sectionDataCache = {};
+        var token = localStorage.getItem('accessToken');
+        var currentTabIndex = 0;
+
+        function ajaxRequest(options) {
+            $.ajax({
+                url: options.url,
+                type: options.type || 'GET',
+                data: options.data || {},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: options.success,
+                error: options.error || function(xhr, status, error) {
+                    console.error('Request failed:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                },
+                complete: options.complete
+            });
+        }
 
         function loadSectionData(sectionName, page = 0) {
             if (sectionDataCache[sectionName] && sectionDataCache[sectionName].page === page) {
@@ -168,9 +190,8 @@
                 return;
             }
 
-            $.ajax({
+            ajaxRequest({
                 url: `/management/get${sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}Data?page=${page}`,
-                type: 'GET',
                 success: function(response) {
                     let data;
                     if (sectionName === 'rule' || sectionName === 'operation' || sectionName === 'schedule') {
@@ -206,7 +227,7 @@
                                           <td><i class="fa-regular fa-eye"></i> ${hits}</td>`;
                     htmlContent += `<tr>
                                         <td>${num}</td>
-                                        <th><a href="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <i class="fa-solid fa-paperclip file-icon"></i>' : ''}</th>
+                                        <th><a href="#" class="item-link" data-url="/management/management_customer_support_${sectionName}_view?no=${num}">${title}</a>${item.file ? ' <i class="fa-solid fa-paperclip file-icon"></i>' : ''}</th>
                                         <td><i class="fa-regular fa-calendar"></i> ${date}</td>
                                         ${additionalInfo}
                                     </tr>`;
@@ -296,6 +317,9 @@
                 tabs.forEach((tab, index) => {
                     tab.addEventListener('click', function(e) {
                         e.preventDefault();
+                        if (currentTabIndex === index) return; // 이미 활성화된 탭이면 반환
+                        currentTabIndex = index;
+
                         var newRound = document.createElement('div');
                         var x = e.clientX - tab.getBoundingClientRect().left;
                         var y = e.clientY - tab.getBoundingClientRect().top;
@@ -326,6 +350,7 @@
                     var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
                     tabIndex = match >= 0 ? match : 0;
                 }
+                currentTabIndex = tabIndex;
                 addWaveEffect(mainTabs);
                 showSection(tabIndex);
             }
@@ -338,6 +363,79 @@
         $(document).on('click', '.faq-item-tit', function() {
             $(this).parent('.faq-item').toggleClass('on');
         });
+
+        function bindEvents() {
+            // 이벤트 위임을 사용하여 mouseover와 mouseout 이벤트 처리
+            document.querySelector('.p-nav-global').addEventListener('mouseover', function(event) {
+                var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+                if (parentMenuItem) {
+                    var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                    if (childMenu && childMenu.children.length > 0) {
+                        childMenu.style.display = 'block';
+                    }
+                }
+            });
+
+            document.querySelector('.p-nav-global').addEventListener('mouseout', function(event) {
+                var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+                if (parentMenuItem) {
+                    var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                    if (childMenu) {
+                        childMenu.style.display = 'none';
+                    }
+                }
+            });
+
+            // 초기 로드 시 하위 메뉴가 비어 있으면 숨기기
+            var subMenus = document.querySelectorAll('.p-nav-sub__child');
+            subMenus.forEach(function(menu) {
+                if (menu.children.length === 0) {
+                    menu.style.display = 'none';
+                }
+            });
+
+            // 각 항목 클릭 시 페이지 로드
+            $(document).on('click', '.item-link', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                ajaxRequest({
+                    url: url,
+                    success: function(data) {
+                        $('body').html(data);
+                        bindEvents();
+                    }
+                });
+            });
+        }
+
+        bindEvents();
+
+        // 뒤로 가기 시 처리
+        window.onpopstate = function (event) {
+            var token = localStorage.getItem('accessToken');
+            if (event.state) {
+                loadSectionData(event.state.sectionName, event.state.page);
+            }
+        };
+
+        $(window).on('hashchange', function() {
+            var hash = window.location.hash;
+            var tabIndex = 0;
+            if (hash) {
+                var tabsArray = Array.from(document.querySelectorAll('.main-tab.wave'));
+                var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
+                tabIndex = match >= 0 ? match : 0;
+            }
+            currentTabIndex = tabIndex;
+            showSection(tabIndex);
+        });
+
+        // 새로고침 시 처리
+        if (!window.location.hash) {
+            window.location.hash = '#tab1'; // 기본 탭 설정
+        }
+        var initialTabIndex = window.location.hash.replace('#tab', '') - 1;
+        showSection(initialTabIndex);
     });
 </script>
 

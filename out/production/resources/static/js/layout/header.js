@@ -128,7 +128,7 @@
             error: function (xhr, status, error) {
                 console.error('페이지 로드 실패:', error);
                 if (xhr.status === 401) {
-                    alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                    alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
                     location.href = '/user/loginform';
                 }
             }

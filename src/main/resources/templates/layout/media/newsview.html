@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="formBtns">
-                    <a id="default_butt" href="/media/news" class="btn btn-default">목록</a>
+                    <a id="default_butt" href="#" class="btn btn-default">목록</a>
                 </div>
             </div>
         </div>
@@ -115,6 +115,38 @@
             }
         }
 
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
         $('#prev-news-link').click(function(e) {
             e.preventDefault();
             var newsId = $(this).data('id');
@@ -123,7 +155,7 @@
 
         $('#default_butt').click(function(e) {
             e.preventDefault();
-            loadPage('/media/news', token);
+            location.href = '/media/news'; // 새로고침 처리
         });
 
         $('#copy-link').click(function() {

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>경기 일정 / 결과</title>
+    <th:block th:include="layout/header"></th:block>
+    <link href="/css/layout/match/matchpage.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="match-page-body">
+<div class="team-container">
+    <div class="matchPage" id="content">
+        <div class="subTop">
+            <div class="top">
+                <div class="container">
+                    <div class="topTitle heading-skew-lg">
+                        <div class="skewItem lightBackground"></div>
+                        <div class="skewItem second lightBackground"></div>
+                        <p class="title">
+                            <span class="mobileBreak"><strong></strong>경기 일정/결과</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tabMenu">
+                <div class="container">
+                    <a href="#K5"
+                       class="main-tab wave router-link-exact-active router-link-active current"
+                       onclick="openTab(event, 'K5')" id="defaultOpen"><span>K5</span></a>
+                    <a href="#K7" class="main-tab wave"
+                       onclick="openTab(event, 'K7')"><span>K7</span></a>
+                    <a href="#W1" class="main-tab wave"
+                       onclick="openTab(event, 'W1')"><span>여성팀</span></a>
+                </div>
+            </div>
+
+            <div id="K5" class="sub_tabMenu">
+                <div class="sub_container">
+                    <ul class="sub-tab-bar">
+                        <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_K5')">
+                            <a href="#" class="subtablinks active" id="defaultSubOpen_K5">경기 일정</a>
+                        </li>
+                        <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_K5')">
+                            <a href="#" class="subtablinks">경기 결과</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div id="schedule_K5" class="subtabcontent">
+                    <div id="K5ScheduleTable" class="table">
+                        <div th:each="match : ${K5Schedulelist}" class="divClass match-row">
+                            <div class="left-info">
+                                <span th:if="${#lists.size(match.team) > 0}"
+                                      th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                <span th:text="${match.matchDate}" class="match-date"></span>
+                                <span th:text="${match.matchTime}" class="match-time"></span>
+                                <div class="location-home">
+                                    <span th:text="${match.matchLocation}" class="match-location"></span>
+                                    <span class="home-parenthesis">(</span>
+                                    <span th:text="${match.matchHome}" class="match-home"></span>
+                                    <span class="home-parenthesis">)</span>
+                                </div>
+                            </div>
+                            <div class="right-info">
+                                <div>
+                                    <span class="team-name">FC 투게더</span>
+                                    <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                                </div>
+                                <div class="versus-info">
+                                    <div class="versus">vs</div>
+                                    <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                                </div>
+                                <span th:if="${#lists.size(match.team) > 0}">
+                                    <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                                </span>
+                                <span th:text="${match.teamName}" class="team-name"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pagination">
+                        <button id="K5ScheduleLoadMore">더보기</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results_K5" class="subtabcontent">
+                <div id="K5ResultTable" class="table">
+                    <div th:each="match : ${K5Resultlist}" class="divClass match-row">
+                        <div class="left-info">
+                            <span th:if="${#lists.size(match.team) > 0}"
+                                  th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                            <span th:text="${match.matchDate}" class="match-date"></span>
+                            <span th:text="${match.matchTime}" class="match-time"></span>
+                            <div class="location-home">
+                                <span th:text="${match.matchLocation}" class="match-location"></span>
+                                <span class="home-parenthesis">(</span>
+                                <span th:text="${match.matchHome}" class="match-home"></span>
+                                <span class="home-parenthesis">)</span>
+                            </div>
+                        </div>
+                        <div class="right-info">
+                            <div>
+                                <span class="team-name">FC 투게더</span>
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" class="match-score"></span>
+                            </div>
+                            <div class="versus-info">
+                                <div class="versus">vs</div>
+                                <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                            </div>
+                            <span th:if="${#lists.size(match.team) > 0}">
+                                <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                            </span>
+                            <span th:text="${match.matchRelativeScore}" class="relative-score"></span>
+                            <span th:text="${match.teamName}" class="team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button id="K5ResultLoadMore">더보기</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="K7" class="sub_tabMenu">
+            <div class="sub_container">
+                <ul class="sub-tab-bar">
+                    <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_K7')">
+                        <a href="#" class="subtablinks active"
+                           id="defaultSubOpen_K7">경기 일정</a>
+                    </li>
+                    <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_K7')">
+                        <a href="#" class="subtablinks">경기 결과</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="schedule_K7" class="subtabcontent">
+                <div id="K7ScheduleTable">
+                    <div th:each="match : ${K7Schedulelist}" class="divClass match-row">
+                        <div class="left-info">
+                            <span th:if="${#lists.size(match.team) > 0}"
+                                  th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                            <span th:text="${match.matchDate}" class="match-date"></span>
+                            <span th:text="${match.matchTime}" class="match-time"></span>
+                            <div class="location-home">
+                                <span th:text="${match.matchLocation}" class="match-location"></span>
+                                <span class="home-parenthesis">(</span>
+                                <span th:text="${match.matchHome}" class="match-home"></span>
+                                <span class="home-parenthesis">)</span>
+                            </div>
+                        </div>
+                        <div class="right-info">
+                            <div>
+                                <span class="team-name">FC 투게더</span>
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                            </div>
+                            <div class="versus-info">
+                                <div class="versus">vs</div>
+                                <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                            </div>
+                            <span th:if="${#lists.size(match.team) > 0}">
+                                <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                            </span>
+                            <span th:text="${match.teamName}" class="team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button id="K7ScheduleLoadMore">더보기</button>
+                </div>
+            </div>
+
+            <div id="results_K7" class="subtabcontent">
+                <div id="K7ResultTable" class="table">
+                    <div th:each="match : ${K7Resultlist}" class="divClass match-row">
+                        <div class="left-info">
+                            <span th:if="${#lists.size(match.team) > 0}"
+                                  th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                            <span th:text="${match.matchDate}" class="match-date"></span>
+                            <span th:text="${match.matchTime}" class="match-time"></span>
+                            <div class="location-home">
+                                <span th:text="${match.matchLocation}" class="match-location"></span>
+                                <span class="home-parenthesis">(</span>
+                                <span th:text="${match.matchHome}" class="match-home"></span>
+                                <span class="home-parenthesis">)</span>
+                            </div>
+                        </div>
+                        <div class="right-info">
+                            <div>
+                                <span class="team-name">FC 투게더</span>
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" class="match-score"></span>
+                            </div>
+                            <div class="versus-info">
+                                <div class="versus">vs</div>
+                                <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                            </div>
+                            <span th:if="${#lists.size(match.team) > 0}">
+                                <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                            </span>
+                            <span th:text="${match.matchRelativeScore}" class="relative-score"></span>
+                            <span th:text="${match.teamName}" class="team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button id="K7ResultLoadMore">더보기</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="W1" class="sub_tabMenu">
+            <div class="sub_container">
+                <ul class="sub-tab-bar">
+                    <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_W1')">
+                        <a href="#" class="subtablinks active"
+                           id="defaultSubOpen_W1">경기 일정</a>
+                    </li>
+                    <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_W1')">
+                        <a href="#" class="subtablinks">경기 결과</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="schedule_W1" class="subtabcontent">
+                <div id="W1ScheduleTable">
+                    <div th:each="match : ${W1Schedulelist}" class="divClass match-row">
+                        <div class="left-info">
+                            <span th:if="${#lists.size(match.team) > 0}"
+                                  th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                            <span th:text="${match.matchDate}" class="match-date"></span>
+                            <span th:text="${match.matchTime}" class="match-time"></span>
+                            <div class="location-home">
+                                <span th:text="${match.matchLocation}" class="match-location"></span>
+                                <span class="home-parenthesis">(</span>
+                                <span th:text="${match.matchHome}" class="match-home"></span>
+                                <span class="home-parenthesis">)</span>
+                            </div>
+                        </div>
+                        <div class="right-info">
+                            <div>
+                                <span class="team-name">FC 투게더</span>
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                            </div>
+                            <div class="versus-info">
+                                <div class="versus">vs</div>
+                                <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                            </div>
+                            <span th:if="${#lists.size(match.team) > 0}">
+                                <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                            </span>
+                            <span th:text="${match.teamName}" class="team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button id="W1ScheduleLoadMore">더보기</button>
+                </div>
+            </div>
+
+            <div id="results_W1" class="subtabcontent">
+                <div id="W1ResultTable" class="table">
+                    <div th:each="match : ${W1Resultlist}" class="divClass match-row">
+                        <div class="left-info">
+                            <span th:if="${#lists.size(match.team) > 0}"
+                                  th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                            <span th:text="${match.matchDate}" class="match-date"></span>
+                            <span th:text="${match.matchTime}" class="match-time"></span>
+                            <div class="location-home">
+                                <span th:text="${match.matchLocation}" class="match-location"></span>
+                                <span class="home-parenthesis">(</span>
+                                <span th:text="${match.matchHome}" class="match-home"></span>
+                                <span class="home-parenthesis">)</span>
+                            </div>
+                        </div>
+                        <div class="right-info">
+                            <div>
+                                <span class="team-name">FC 투게더</span>
+                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" class="team-logo" style="width:50px;height:50px;">
+                                <span th:text="${match.matchScore}" class="match-score"></span>
+                            </div>
+                            <div class="versus-info">
+                                <div class="versus">vs</div>
+                                <div><span th:text="${match.matchStatus}" class="match-status"></span></div>
+                            </div>
+                            <span th:if="${#lists.size(match.team) > 0}">
+                                <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="team-logo" style="width:50px;height:50px;"/>
+                            </span>
+                            <span th:text="${match.matchRelativeScore}" class="relative-score"></span>
+                            <span th:text="${match.teamName}" class="team-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button id="W1ResultLoadMore">더보기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript for tab functionality -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (window.location.hash) {
+            var hash = decodeURIComponent(window.location.hash.substring(1));
+            var mainTabName = hash.split('_')[0];
+            var subTabName = hash;
+
+            var mainTab = document.querySelector('.main-tab[href="#' + mainTabName + '"]');
+            var subTabLink = document.querySelector('.subtablinks[href="#' + subTabName + '"]');
+
+            if (mainTab) {
+                mainTab.click();
+            }
+
+            if (subTabLink) {
+                setTimeout(function () {
+                    subTabLink.click();
+                }, 100);
+            }
+        }
+        // 기본적으로 특정 탭을 열지 않도록 else 부분을 제거합니다.
+    });
+
+        function openTab(evt, tabName) {
+            evt.preventDefault();
+
+            var i, tabcontent, tablinks;
+
+            tabcontent = document.getElementsByClassName("sub_tabMenu");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("main-tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" current", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " current";
+
+            var firstSubTab = document.querySelector("#" + tabName + " .subtablinks:first-child");
+            if (firstSubTab) {
+                firstSubTab.click();
+            }
+
+            history.replaceState(null, null, '#' + firstSubTab.id);
+        }
+
+        function openSubTab(evt, subTabName) {
+            evt.preventDefault();
+
+            var i, subtabcontent, subtablinks;
+
+            subtabcontent = document.getElementsByClassName("subtabcontent");
+            for (i = 0; i < subtabcontent.length; i++) {
+                subtabcontent[i].style.display = "none";
+            }
+
+            subtablinks = document.getElementsByClassName("subtablinks");
+            for (i = 0; i < subtablinks.length; i++) {
+                subtablinks[i].className = subtablinks[i].className.replace(" active", "");
+            }
+
+            var subtabitems = document.querySelectorAll(".sub-tab-bar .subtablinks");
+            subtabitems.forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            var subTabItems = document.querySelectorAll(".sub-tab-bar .sub-tab");
+            subTabItems.forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            document.getElementById(subTabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            evt.currentTarget.parentElement.className += " active";
+
+            history.replaceState(null, null, '#' + subTabName);
+        }
+
+        $(document).ready(function () {
+            var currentPageK5Schedule = 1;
+            var currentPageK5Results = 1;
+            var currentPageK7Schedule = 1;
+            var currentPageK7Results = 1;
+            var currentPageW1Schedule = 1;
+            var currentPageW1Results = 1;
+
+            $('#K5ScheduleLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageK5Schedule + 1), function (data) {
+                    var newMatches = $(data).find('#K5ScheduleTable .divClass');
+                    $('#K5ScheduleTable').append(newMatches);
+                    currentPageK5Schedule++;
+                });
+            });
+
+            $('#K5ResultLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageK5Results + 1), function (data) {
+                    var newMatches = $(data).find('#K5ResultTable .divClass');
+                    $('#K5ResultTable').append(newMatches);
+                    currentPageK5Results++;
+                });
+            });
+
+            $('#K7ScheduleLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageK7Schedule + 1), function (data) {
+                    var newMatches = $(data).find('#K7ScheduleTable .divClass');
+                    $('#K7ScheduleTable').append(newMatches);
+                    currentPageK7Schedule++;
+                });
+            });
+
+            $('#K7ResultLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageK7Results + 1), function (data) {
+                    var newMatches = $(data).find('#K7ResultTable .divClass');
+                    $('#K7ResultTable').append(newMatches);
+                    currentPageK7Results++;
+                });
+            });
+
+            $('#W1ScheduleLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageW1Schedule + 1), function (data) {
+                    var newMatches = $(data).find('#W1ScheduleTable .divClass');
+                    $('#W1ScheduleTable').append(newMatches);
+                    currentPageW1Schedule++;
+                });
+            });
+
+            $('#W1ResultLoadMore').click(function () {
+                $.get("/match/matchpage?page=" + (currentPageW1Results + 1), function (data) {
+                    var newMatches = $(data).find('#W1ResultTable .divClass');
+                    $('#W1ResultTable').append(newMatches);
+                    currentPageW1Results++;
+                });
+            });
+        });
+
+
+
+</script>
+<footer>
+    <th:block th:include="layout/footer"></th:block>
+</footer>
+</body>
+</html>

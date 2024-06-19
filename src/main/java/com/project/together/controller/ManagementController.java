@@ -64,7 +64,6 @@ public class ManagementController {
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size) {
         Map<String, Object> response = new HashMap<>();
-        System.out.println("1 ========== sectionName = " + sectionName);
         try {
             int offset = page * size;
             switch (sectionName.toLowerCase()) {
@@ -122,6 +121,8 @@ public class ManagementController {
         pageInfo.put("size", size);
         return pageInfo;
     }
+
+
 
     @GetMapping("/management_customer_support_rule_view")
     public String supportViewPage(@RequestParam("no") int ruleNum, Model model) throws NotFoundException {

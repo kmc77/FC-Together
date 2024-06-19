@@ -7,12 +7,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body class="match-page-body">
-<div class="team-container">
+<div class="match-container">
     <div class="matchPage" id="content">
         <div class="subTop">
             <div class="top">
                 <div class="container">
-                    <div class="topTitle">
+                    <div class="topTitle heading-skew-lg">
+                        <div class="skewItem lightBackground"></div>
+                        <div class="skewItem second lightBackground"></div>
                         <p class="title">
                             <span class="mobileBreak"><strong></strong>경기 일정/결과</span>
                         </p>
@@ -21,13 +23,13 @@
             </div>
             <div class="tabMenu">
                 <div class="container">
-                    <a href="#"
+                    <a href="#K5"
                        class="main-tab wave router-link-exact-active router-link-active current"
                        onclick="openTab(event, 'K5')" id="defaultOpen"><span>K5</span></a>
-                    <a href="#" class="main-tab wave"
+                    <a href="#K7" class="main-tab wave"
                        onclick="openTab(event, 'K7')"><span>K7</span></a>
-                    <a href="#" class="main-tab wave"
-                       onclick="openTab(event, 'W1')"><span>W1</span></a>
+                    <a href="#W1" class="main-tab wave"
+                       onclick="openTab(event, 'W1')"><span>여성팀</span></a>
                 </div>
             </div>
 
@@ -43,257 +45,301 @@
                     </ul>
                 </div>
 
-
                 <div id="schedule_K5" class="subtabcontent">
                     <div id="K5ScheduleTable" class="table">
                         <div th:each="match : ${K5Schedulelist}" class="divClass match-row">
-                            <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                                <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                                <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                                <div class="location-home">
-                                    <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                    <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                                style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
                                 </div>
                             </div>
-                            <div class="right-info">
-                                <div>
-                                    <span style="font-size:80px;">FC 투게더</span>
-                                    <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
                                 </div>
-                                <div class="versus-info">
-                                    <div class="versus" style="font-size:20px;">vs</div>
-                                    <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div class="vs">VS</div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
                                 </div>
-                                <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                                <span th:text="${match.teamName}" style="font-size:80px;"></span>
                             </div>
                         </div>
                     </div>
-
 
                     <div class="pagination">
-                        <button id="K5ScheduleLoadMore">더보기</button>
+                        <button id="K5ScheduleLoadMore">More</button>
+                    </div>
+                </div>
+
+                <div id="results_K5" class="subtabcontent">
+                    <div id="K5ResultTable" class="table">
+                        <div th:each="match : ${K5Resultlist}" class="divClass match-row">
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
+                                </div>
+                            </div>
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
+                                </div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div th:if="${match.matchScore}" class="matchScore" th:text="${match.matchScore}"></div>
+                                        <div class="vs">VS</div>
+                                        <div th:if="${match.matchRelativeScore}" class="score" th:text="${match.matchRelativeScore}"></div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <button id="K5ResultLoadMore">More</button>
                     </div>
                 </div>
             </div>
 
-            <div id="results_K5" class="subtabcontent">
-                <div id="K5ResultTable" class="table">
-                    <div th:each="match : ${K5Resultlist}" class="divClass match-row">
-                        <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                            <div class="location-home">
-                                <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                            style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
+            <div id="K7" class="sub_tabMenu">
+                <div class="sub_container">
+                    <ul class="sub-tab-bar">
+                        <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_K7')">
+                            <a href="#" class="subtablinks active" id="defaultSubOpen_K7">경기 일정</a>
+                        </li>
+                        <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_K7')">
+                            <a href="#" class="subtablinks">경기 결과</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="schedule_K7" class="subtabcontent">
+                    <div id="K7ScheduleTable" class="table">
+                        <div th:each="match : ${K7Schedulelist}" class="divClass match-row">
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="right-info">
-                            <div>
-                                <span style="font-size:80px;">FC 투게더</span>
-                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
-                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
+                                </div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div class="vs">VS</div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="versus-info">
-                                <div class="versus" style="font-size:20px;">vs</div>
-                                <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
-                            </div>
-                            <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                            <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
-                            <span th:text="${match.teamName}" style="font-size:80px;"></span>
                         </div>
                     </div>
-                </div>
-                <div class="pagination">
-                    <button id="K5ResultLoadMore">더보기</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="K7" class="sub_tabMenu">
-            <div class="sub_container">
-                <ul class="sub-tab-bar">
-                    <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_K7')">
-                        <a href="#" class="subtablinks active"
-                           id="defaultSubOpen_K7">경기 일정</a>
-                    </li>
-                    <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_K7')">
-                        <a href="#" class="subtablinks">경기 결과</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div id="schedule_K7" class="subtabcontent">
-                <div id="K7ScheduleTable">
-                    <div th:each="match : ${K7Schedulelist}" class="divClass match-row">
-                        <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                            <div class="location-home">
-                                <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                            style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
-                            </div>
-                        </div>
-                        <div class="right-info">
-                            <div>
-                                <span style="font-size:80px;">FC 투게더</span>
-                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
-                            </div>
-                            <div class="versus-info">
-                                <div class="versus" style="font-size:20px;">vs</div>
-                                <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
-                            </div>
-                            <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                            <span th:text="${match.teamName}" style="font-size:80px;"></span>
-                        </div>
+                    <div class="pagination">
+                        <button id="K7ScheduleLoadMore">More</button>
                     </div>
                 </div>
-                <div class="pagination">
-                    <button id="K7ScheduleLoadMore">더보기</button>
-                </div>
-            </div>
 
-            <div id="results_K7" class="subtabcontent">
-                <div id="K7ResultTable" class="table">
-                    <div th:each="match : ${K7Resultlist}" class="divClass match-row">
-                        <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                            <div class="location-home">
-                                <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                            style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
+                <div id="results_K7" class="subtabcontent">
+                    <div id="K7ResultTable" class="table">
+                        <div th:each="match : ${K7Resultlist}" class="divClass match-row">
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="right-info">
-                            <div>
-                                <span style="font-size:80px;">FC 투게더</span>
-                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
-                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
+                                </div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div th:if="${match.matchScore}" class="matchScore" th:text="${match.matchScore}"></div>
+                                        <div class="vs">VS</div>
+                                        <div th:if="${match.matchRelativeScore}" class="score" th:text="${match.matchRelativeScore}"></div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="versus-info">
-                                <div class="versus" style="font-size:20px;">vs</div>
-                                <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
-                            </div>
-                            <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                            <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
-                            <span th:text="${match.teamName}" style="font-size:80px;"></span>
                         </div>
                     </div>
-                </div>
-                <div class="pagination">
-                    <button id="K7ResultLoadMore">더보기</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="W1" class="sub_tabMenu">
-            <div class="sub_container">
-                <ul class="sub-tab-bar">
-                    <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_W1')">
-                        <a href="#" class="subtablinks active"
-                           id="defaultSubOpen_W1">경기 일정</a>
-                    </li>
-                    <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_W1')">
-                        <a href="#" class="subtablinks">경기 결과</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div id="schedule_W1" class="subtabcontent">
-                <div id="W1ScheduleTable">
-                    <div th:each="match : ${W1Schedulelist}" class="divClass match-row">
-                        <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                            <div class="location-home">
-                                <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                            style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
-                            </div>
-                        </div>
-                        <div class="right-info">
-                            <div>
-                                <span style="font-size:80px;">FC 투게더</span>
-                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
-                            </div>
-                            <div class="versus-info">
-                                <div class="versus" style="font-size:20px;">vs</div>
-                                <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
-                            </div>
-                            <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                            <span th:text="${match.teamName}" style="font-size:80px;"></span>
-                        </div>
+                    <div class="pagination">
+                        <button id="K7ResultLoadMore">More</button>
                     </div>
                 </div>
-                <div class="pagination">
-                    <button id="W1ScheduleLoadMore">더보기</button>
-                </div>
             </div>
 
-            <div id="results_W1" class="subtabcontent">
-                <div id="W1ResultTable" class="table">
-                    <div th:each="match : ${W1Resultlist}" class="divClass match-row">
-                        <div class="left-info">
-                <span th:if="${#lists.size(match.team) > 0}"
-                      th:text="${match.team[0].teamLeagueGb}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchDate}" style="font-size:25px;"></span>
-                            <span th:text="${match.matchTime}" style="font-size:35px;"></span>
-                            <div class="location-home">
-                                <span th:text="${match.matchLocation}" style="font-size:25px;"></span>
-                                <span style="font-size:18px;">(</span><span th:text="${match.matchHome}"
-                                                                            style="font-size:18px;">
-                    </span><span style="font-size:18px;">)</span>
+            <div id="W1" class="sub_tabMenu">
+                <div class="sub_container">
+                    <ul class="sub-tab-bar">
+                        <li data-num="1" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'schedule_W1')">
+                            <a href="#" class="subtablinks active" id="defaultSubOpen_W1">경기 일정</a>
+                        </li>
+                        <li data-num="2" class="sub-tab wave dark sub-tab" onclick="openSubTab(event, 'results_W1')">
+                            <a href="#" class="subtablinks">경기 결과</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="schedule_W1" class="subtabcontent">
+                    <div id="W1ScheduleTable" class="table">
+                        <div th:each="match : ${W1Schedulelist}" class="divClass match-row">
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="right-info">
-                            <div>
-                                <span style="font-size:80px;">FC 투게더</span>
-                                <img src="/img/FcTogether-removebg.png" alt="FC-TOGETHER" style="width:50px;height:50px;">
-                                <span th:text="${match.matchScore}" style="font-size:80px;"></span>
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
+                                </div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div class="vs">VS</div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="versus-info">
-                                <div class="versus" style="font-size:20px;">vs</div>
-                                <div><span th:text="${match.matchStatus}" style="font-size:20px;"></span></div>
-                            </div>
-                            <span th:if="${#lists.size(match.team) > 0}">
-                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" style="height: 50px; width: auto;"/>
-                    </span>
-                            <span th:text="${match.matchRelativeScore}" style="font-size:80px;"></span>
-                            <span th:text="${match.teamName}" style="font-size:80px;"></span>
                         </div>
                     </div>
+                    <div class="pagination">
+                        <button id="W1ScheduleLoadMore">More</button>
+                    </div>
                 </div>
-                <div class="pagination">
-                    <button id="W1ResultLoadMore">더보기</button>
+
+                <div id="results_W1" class="subtabcontent">
+                    <div id="W1ResultTable" class="table">
+                        <div th:each="match : ${W1Resultlist}" class="divClass match-row">
+                            <div th:class="'match-header ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')">
+                                <div th:class="'match-header-tag ' + (${match.matchHome} == '홈' ? 'is-home' : 'is-away')"
+                                     th:text="${match.matchHome} == '홈' ? 'HOME' : 'AWAY'">
+                                </div>
+                                <div class="match-header-place" th:text="${match.matchLocation}">
+                                </div>
+                            </div>
+                            <div class="match-row">
+                                <div class="left-info">
+                                    <div class="league-info">
+                                        <span th:if="${#lists.size(match.team) > 0}" th:text="${match.team[0].teamLeagueGb}" class="team-league"></span>
+                                        <span>League</span>
+                                    </div>
+                                    <div class="date-time">
+                                        <span th:text="${match.matchDate}" class="match-date"></span>
+                                        <span class="match-day"></span>
+                                        <span th:text="${match.matchTime}" class="match-time"></span>
+                                    </div>
+                                </div>
+
+                                <div class="right-info matchInfo">
+                                    <div class="team home">
+                                        <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                        <div class="name">투게더</div>
+                                    </div>
+                                    <div class="minfo">
+                                        <div th:if="${match.matchScore}" class="matchScore" th:text="${match.matchScore}"></div>
+                                        <div class="vs">VS</div>
+                                        <div th:if="${match.matchRelativeScore}" class="score" th:text="${match.matchRelativeScore}"></div>
+                                    </div>
+                                    <div th:if="${#lists.size(match.team) > 0}" class="team away">
+                                        <img th:src="${match.team[0].teamLogo}" alt="Team Logo" class="teamLogo">
+                                        <div class="name" th:text="${match.teamName}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <button id="W1ResultLoadMore">More</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -302,11 +348,29 @@
 <!-- JavaScript for tab functionality -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("defaultOpen").click();
-        document.getElementById("defaultSubOpen_K5").click();
+        if (window.location.hash) {
+            var hash = decodeURIComponent(window.location.hash.substring(1));
+            var mainTabName = hash.split('_')[0];
+            var subTabName = hash;
+
+            var mainTab = document.querySelector('.main-tab[href="#' + mainTabName + '"]');
+            var subTabLink = document.querySelector('.subtablinks[href="#' + subTabName + '"]');
+
+            if (mainTab) {
+                mainTab.click();
+            }
+
+            if (subTabLink) {
+                setTimeout(function () {
+                    subTabLink.click();
+                }, 100);
+            }
+        }
     });
 
     function openTab(evt, tabName) {
+        evt.preventDefault();
+
         var i, tabcontent, tablinks;
 
         tabcontent = document.getElementsByClassName("sub_tabMenu");
@@ -322,11 +386,17 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " current";
 
-        // 현재 선택된 탭에 해당하는 서브 탭의 첫 번째 항목을 자동으로 선택
-        document.querySelector("#" + tabName + " .sub-tab-bar .sub-tab:first-child .subtablinks").click();
+        var firstSubTab = document.querySelector("#" + tabName + " .subtablinks:first-child");
+        if (firstSubTab) {
+            firstSubTab.click();
+        }
+
+        history.replaceState(null, null, '#' + firstSubTab.id);
     }
 
     function openSubTab(evt, subTabName) {
+        evt.preventDefault();
+
         var i, subtabcontent, subtablinks;
 
         subtabcontent = document.getElementsByClassName("subtabcontent");
@@ -352,68 +422,152 @@
         document.getElementById(subTabName).style.display = "block";
         evt.currentTarget.className += " active";
         evt.currentTarget.parentElement.className += " active";
+
+        history.replaceState(null, null, '#' + subTabName);
     }
 
+    $(document).ready(function () {
+        var currentPageK5Schedule = 1;
+        var currentPageK5Results = 1;
+        var currentPageK7Schedule = 1;
+        var currentPageK7Results = 1;
+        var currentPageW1Schedule = 1;
+        var currentPageW1Results = 1;
 
-    $(document).ready(function() {
-    var currentPageK5Schedule = 1;
-    var currentPageK5Results = 1;
-    var currentPageK7Schedule = 1;
-    var currentPageK7Results = 1;
-    var currentPageW1Schedule = 1;
-    var currentPageW1Results = 1;
+        var days = ['일', '월', '화', '수', '목', '금', '토'];
 
-    $('#K5ScheduleLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageK5Schedule + 1), function(data) {
-            var newMatches = $(data).find('#K5ScheduleTable .divClass');
-            $('#K5ScheduleTable').append(newMatches);
-            currentPageK5Schedule++;
+        function getDayOfWeek(dateString) {
+            var date = new Date(dateString);
+            return days[date.getDay()];
+        }
+
+        function formatShortDate(dateString) {
+            var date = new Date(dateString);
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return month + '.' + day;
+        }
+
+        // 요일을 추가하는 함수
+        function addDayOfWeek() {
+            $('.date-time').each(function () {
+                var matchDateElement = $(this).find('.match-date');
+                var matchDayElement = $(this).find('.match-day');
+                var matchDate = matchDateElement.text().trim();
+                var dayOfWeek = getDayOfWeek(matchDate);
+                var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                matchDateElement.text(shortDate);
+                matchDayElement.text(dayOfWeek);
+            });
+        }
+
+        // 초기 로드 시 요일 추가
+        addDayOfWeek();
+
+        $('#K5ScheduleLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageK5Schedule + 1), function (data) {
+                var newMatches = $(data).find('#K5ScheduleTable .divClass');
+                $('#K5ScheduleTable').append(newMatches);
+                currentPageK5Schedule++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
+        });
+
+        $('#K5ResultLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageK5Results + 1), function (data) {
+                var newMatches = $(data).find('#K5ResultTable .divClass');
+                $('#K5ResultTable').append(newMatches);
+                currentPageK5Results++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
+        });
+
+        $('#K7ScheduleLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageK7Schedule + 1), function (data) {
+                var newMatches = $(data).find('#K7ScheduleTable .divClass');
+                $('#K7ScheduleTable').append(newMatches);
+                currentPageK7Schedule++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
+        });
+
+        $('#K7ResultLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageK7Results + 1), function (data) {
+                var newMatches = $(data).find('#K7ResultTable .divClass');
+                $('#K7ResultTable').append(newMatches);
+                currentPageK7Results++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
+        });
+
+        $('#W1ScheduleLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageW1Schedule + 1), function (data) {
+                var newMatches = $(data).find('#W1ScheduleTable .divClass');
+                $('#W1ScheduleTable').append(newMatches);
+                currentPageW1Schedule++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
+        });
+
+        $('#W1ResultLoadMore').click(function () {
+            $.get("/match/matchpage?page=" + (currentPageW1Results + 1), function (data) {
+                var newMatches = $(data).find('#W1ResultTable .divClass');
+                $('#W1ResultTable').append(newMatches);
+                currentPageW1Results++;
+                newMatches.each(function () {
+                    var matchDateElement = $(this).find('.match-date');
+                    var matchDayElement = $(this).find('.match-day');
+                    var matchDate = matchDateElement.text().trim();
+                    var dayOfWeek = getDayOfWeek(matchDate);
+                    var shortDate = formatShortDate(matchDate); // "M.D" 형식으로 변환
+                    matchDateElement.text(shortDate);
+                    matchDayElement.text(dayOfWeek);
+                });
+            });
         });
     });
-
-    $('#K5ResultLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageK5Results + 1), function(data) {
-            var newMatches = $(data).find('#K5ResultTable .divClass');
-            $('#K5ResultTable').append(newMatches);
-            currentPageK5Results++;
-        });
-    });
-
-    $('#K7ScheduleLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageK7Schedule + 1), function(data) {
-            var newMatches = $(data).find('#K7ScheduleTable .divClass');
-            $('#K7ScheduleTable').append(newMatches);
-            currentPageK7Schedule++;
-        });
-    });
-
-    $('#K7ResultLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageK7Results + 1), function(data) {
-            var newMatches = $(data).find('#K7ResultTable .divClass');
-            $('#K7ResultTable').append(newMatches);
-            currentPageK7Results++;
-        });
-    });
-
-    $('#W1ScheduleLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageW1Schedule + 1), function(data) {
-            var newMatches = $(data).find('#W1ScheduleTable .divClass');
-            $('#W1ScheduleTable').append(newMatches);
-            currentPageW1Schedule++;
-        });
-    });
-
-    $('#W1ResultLoadMore').click(function() {
-        $.get("/match/matchpage?page=" + (currentPageW1Results + 1), function(data) {
-            var newMatches = $(data).find('#W1ResultTable .divClass');
-            $('#W1ResultTable').append(newMatches);
-            currentPageW1Results++;
-        });
-    });
-});
-
-
 </script>
+
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

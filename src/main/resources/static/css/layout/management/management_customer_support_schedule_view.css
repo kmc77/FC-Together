@@ -113,11 +113,13 @@
 }
 
 .btn {
-    display: inline-block;
-    min-width: 125px;
-    padding: 1.1em 1em 1em;
+    display: inline-flex; /* 수정: inline-block에서 inline-flex로 변경 */
+    align-items: center; /* 텍스트 수직 중앙 정렬 */
+    justify-content: center; /* 텍스트 수평 중앙 정렬 */
+    min-width: 95px; /* 기존의 약 75% 크기 */
+    padding: 0.8em 0.75em; /* 기존의 약 75% 크기 */
     text-align: center;
-    font-size: 13px;
+    font-size: 18px; /* 기존의 약 75% 크기 */
     font-weight: 500;
     color: #000;
     border-radius: 4px;
@@ -131,10 +133,18 @@
 }
 
 .btn.btn-default {
-   /* min-width: 173px;*/
-    font-size: 18px;
+   /* min-width: 130px; */
+    font-size: 14px; /* 기존의 약 75% 크기 */
     font-weight: 700;
+    min-width: 130px; /* 기존의 약 75% 크기 */
+    height: 46px; /* 기존의 약 75% 크기 */
+    line-height: 46px; /* 높이와 동일하게 설정하여 텍스트 수직 중앙 정렬 */
+    padding: 0; /* padding을 제거 */
+    display: inline-flex; /* 텍스트 수평 및 수직 중앙 정렬 */
+    align-items: center; /* 텍스트 수직 중앙 정렬 */
+    justify-content: center; /* 텍스트 수평 중앙 정렬 */
 }
+
 
 
 .attachments {

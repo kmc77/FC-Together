@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <section class="rule">
+            <section class="rule" id="tab1">
                 <!-- board search area -->
                 <div id="board-search">
                     <div class="container">
@@ -72,7 +72,7 @@
                 </div>
             </section>
 
-            <section class="operation" style="display: none;">
+            <section class="operation" id="tab2" style="display: none;">
                 <!-- board search area -->
                 <div id="operation_board-search">
                     <div class="container">
@@ -108,12 +108,12 @@
                 </div>
             </section>
 
-            <section class="faq" style="display: none;">
+            <section class="faq" id="tab3" style="display: none;">
                 <div class="faq-list">
                 </div>
             </section>
 
-            <section class="schedule" style="display: none;">
+            <section class="schedule" id="tab4" style="display: none;">
                 <div id="training_board-search">
                     <div class="container">
                         <div class="search-window">
@@ -270,6 +270,8 @@
             var $pagination = $('#pagination .pagination');
             $pagination.empty();
 
+            if (!pageInfo) return;
+
             var totalPages = Math.ceil(pageInfo.total / pageInfo.size);
             totalPages = Math.max(totalPages, 1);
 
@@ -329,7 +331,7 @@
                         newRound.style.top = y + "px";
                         tab.appendChild(newRound);
 
-                        window.location.hash = 'tab' + (index + 1);
+                        // window.location.hash = 'tab' + (index + 1); // 해시 변경 부분 주석 처리
                         showSection(index);
 
                         setTimeout(() => newRound.remove(), 1200);
@@ -417,27 +419,9 @@
                 loadSectionData(event.state.sectionName, event.state.page);
             }
         };
-
-        $(window).on('hashchange', function() {
-            var hash = window.location.hash;
-            var tabIndex = 0;
-            if (hash) {
-                var tabsArray = Array.from(document.querySelectorAll('.main-tab.wave'));
-                var match = tabsArray.findIndex((tab) => '#tab' + (tabsArray.indexOf(tab) + 1) === hash);
-                tabIndex = match >= 0 ? match : 0;
-            }
-            currentTabIndex = tabIndex;
-            showSection(tabIndex);
-        });
-
-        // 새로고침 시 처리
-        if (!window.location.hash) {
-            window.location.hash = '#tab1'; // 기본 탭 설정
-        }
-        var initialTabIndex = window.location.hash.replace('#tab', '') - 1;
-        showSection(initialTabIndex);
     });
 </script>
+
 
 <footer>
     <th:block th:include="layout/footer"></th:block>

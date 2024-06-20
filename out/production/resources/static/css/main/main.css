@@ -1,12 +1,14 @@
-@import url('https://fonts.cdnfonts.com/css/d-din');
-
+@font-face {
+    font-family: 'D-DINExp';
+    src: url('/fonts/D-DIN.otf') format('opentype');
+}
 
 
 body {
     margin: 0;
     margin-top: -10px;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
 }
 
 .slick-container, .matchSchedule, .videoDiv, .tab-container {
@@ -201,35 +203,66 @@ body {
     filter: brightness(30%) blur(8px);
 }
 
+/* 탭 전체 컨테이너 스타일 */
 .leagueTabs {
-    position: absolute;
-    top: 3%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.85);
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 10;
+    position: absolute; /* 절대 위치 */
+    top: 3%; /* 상단에서 3% 위치 */
+    left: 50%; /* 좌측에서 50% 위치 */
+    transform: translateX(-50%); /* 수평 중앙 정렬 */
+    display: flex; /* 플렉스 박스 레이아웃 */
+    background-color: rgba(0, 0, 0, 0.25); /* 반투명 검정 배경 */
+    padding: 10px; /* 안쪽 여백 10px */
+    border-radius: 3px; /* 둥근 모서리 */
+    z-index: 10; /* z-index 값 설정 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
+/* 개별 탭 버튼 스타일 */
 .leagueTabButton {
-    background-color: transparent;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
+    background: none; /* 배경 없음 */
+    border: none; /* 테두리 없음 */
+    padding: 0; /* 안쪽 여백 없음 */
+    margin: 0 5px; /* 버튼 간 간격 */
+    cursor: pointer; /* 커서 모양 변경 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-.leagueTabButton:hover, .leagueTabButton.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
+.leagueTabButton img {
+    width: 80px; /* 이미지 너비 조절 */
+    margin-right: 10px;
+    height: auto; /* 이미지 높이 자동 조절 */
+    border-radius: 8px; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 */
 }
+
+/* Simin 로고 크기 조정 */
+#siminLogo {
+    width: 160px; /* Simin 로고 너비 조절 */
+}
+
+/* 호버 상태 스타일 (호버 시 떠오르지 않음) */
+.leagueTabButton:hover img {
+    transform: translateY(-3px); /* 약간 떠오르는 효과 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
+}
+
+/* 활성화 상태 스타일 (클릭된 상태에서 떠오름) */
+.leagueTabButton.active img {
+    transform: translateY(-3px); /* 떠오르는 효과 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
+}
+
+/* 클릭 상태 스타일 (활성화 상태와 일관되게 유지) */
+.leagueTabButton:active img {
+    transform: translateY(-3px); /* 떠오르는 효과 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
+}
+
 
 .pastMatch {
     position: absolute;
-    top: 12%;
+    top: 14%;
     left: 5%;
     width: 25%;
     height: 80%;
@@ -263,7 +296,7 @@ body {
 
 .nextMatch {
     position: absolute;
-    top: 12%;
+    top: 14%;
     left: 32%;
     width: 37%;
     height: 80%;
@@ -297,7 +330,7 @@ body {
 
 .leagueRanking {
     position: absolute;
-    top: 12%;
+    top: 14%;
     left: 71%;
     width: 23%;
     height: 80%;

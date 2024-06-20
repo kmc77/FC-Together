@@ -24,7 +24,7 @@
             <div class="tabMenu">
                 <div class="container">
                     <a href="#K5"
-                       class="main-tab wave router-link-exact-active router-link-active current"
+                       class="main-tab wave router-link-exact-active router-link-active"
                        onclick="openTab(event, 'K5')" id="defaultOpen"><span>K5</span></a>
                     <a href="#K7" class="main-tab wave"
                        onclick="openTab(event, 'K7')"><span>K7</span></a>
@@ -363,8 +363,15 @@
             if (subTabLink) {
                 setTimeout(function () {
                     subTabLink.click();
+                    window.scrollTo(0, 0);  // 페이지 로드 후 스크롤 위치를 최상단으로 초기화합니다.
                 }, 100);
             }
+        } else {
+            // Default open tabs if no hash is present
+            document.getElementById("defaultOpen").click();
+            setTimeout(function() {
+                document.getElementById("defaultSubOpen_K5").click();
+            }, 100);
         }
     });
 
@@ -391,7 +398,9 @@
             firstSubTab.click();
         }
 
-        history.replaceState(null, null, '#' + firstSubTab.id);
+        // 해시값을 설정하되, 브라우저의 기본 스크롤 동작을 방지합니다.
+        history.replaceState(null, null, '#' + tabName + "_" + firstSubTab.id);
+        window.scrollTo(0, 0);
     }
 
     function openSubTab(evt, subTabName) {
@@ -423,8 +432,31 @@
         evt.currentTarget.className += " active";
         evt.currentTarget.parentElement.className += " active";
 
+        // 해시값을 설정하되, 브라우저의 기본 스크롤 동작을 방지합니다.
         history.replaceState(null, null, '#' + subTabName);
+        window.scrollTo(0, 0);
     }
+
+    // 내부 페이지에서 해시를 변경했을 때 탭을 열도록 설정
+    window.addEventListener("hashchange", function() {
+        var hash = decodeURIComponent(window.location.hash.substring(1));
+        var mainTabName = hash.split('_')[0];
+        var subTabName = hash;
+
+        var mainTab = document.querySelector('.main-tab[href="#' + mainTabName + '"]');
+        var subTabLink = document.querySelector('.subtablinks[href="#' + subTabName + '"]');
+
+        if (mainTab) {
+            mainTab.click();
+        }
+
+        if (subTabLink) {
+            setTimeout(function () {
+                subTabLink.click();
+                window.scrollTo(0, 0);  // 페이지 로드 후 스크롤 위치를 최상단으로 초기화합니다.
+            }, 100);
+        }
+    });
 
     $(document).ready(function () {
         var currentPageK5Schedule = 1;

@@ -43,9 +43,15 @@
 
         <!-- 리그 구분 탭 추가 -->
         <div class="leagueTabs">
-            <button class="leagueTabButton" id="k5Tab">K5 리그</button>
-            <button class="leagueTabButton" id="k7Tab">K7 리그</button>
-            <button class="leagueTabButton" id="w1Tab">여성팀 리그</button>
+            <button class="leagueTabButton" id="k5Tab">
+                <img src="/img/main/k5.png" alt="K5 리그">
+            </button>
+            <button class="leagueTabButton" id="k7Tab">
+                <img src="/img/main/k7.png" alt="K7 리그">
+            </button>
+            <button class="leagueTabButton" id="w1Tab">
+                <img src="/img/main/simin.png" alt="여성팀 리그" id="siminLogo">
+            </button>
         </div>
 
         <div class="pastMatch">
@@ -234,10 +240,25 @@
 
     // 섹션2
     document.addEventListener('DOMContentLoaded', () => {
+        // 리그 탭 클릭 이벤트 및 초기 데이터 로드
         document.getElementById('k5Tab').addEventListener('click', () => fetchMatchData('K5'));
         document.getElementById('k7Tab').addEventListener('click', () => fetchMatchData('K7'));
         document.getElementById('w1Tab').addEventListener('click', () => fetchMatchData('W1'));
         fetchMatchData('K5'); // 기본적으로 K5 리그 데이터 로드
+
+        // 탭 버튼 활성화 상태 업데이트
+        var tabs = document.querySelectorAll(".leagueTabButton");
+        tabs.forEach(function(tab) {
+            tab.addEventListener("click", function() {
+                // 모든 탭에서 active 클래스 제거
+                tabs.forEach(function(tab) {
+                    tab.classList.remove("active");
+                });
+
+                // 클릭된 탭에 active 클래스 추가
+                tab.classList.add("active");
+            });
+        });
     });
 
     function updateMatchTitles(leagueName) {
@@ -440,7 +461,6 @@
 
         renderMatches();
     }
-
 
 
 

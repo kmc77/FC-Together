@@ -1,4 +1,7 @@
-@import url('https://fonts.cdnfonts.com/css/d-din');
+@font-face {
+    font-family: 'D-DINExp';
+    src: url('/fonts/D-DIN.otf') format('opentype');
+}
 
 
 /*공지사항 탭 영역*/
@@ -10,6 +13,7 @@
 
 .newsPage .top .topTitle {
   padding-top: 0;
+
 }
 
 .subTop .top .topTitle {

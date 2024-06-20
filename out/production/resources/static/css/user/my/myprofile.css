@@ -175,11 +175,11 @@ textarea {
 }
 
 .btn.large {
-    min-width: 173px;
+    min-width: 157px;
     font-size: 18px;
     font-weight: 700;
+    margin-right: 20px;
 }
-
 
 .btn {
     display: inline-block;

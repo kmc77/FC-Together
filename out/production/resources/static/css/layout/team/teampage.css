@@ -1,4 +1,7 @@
-@import url('https://fonts.cdnfonts.com/css/d-din');
+@font-face {
+    font-family: 'D-DINExp';
+    src: url('/fonts/D-DIN.otf') format('opentype');
+}
 
 .team-page-body {
     display: block;
@@ -6,6 +9,7 @@
      margin-right: 0;
      margin-bottom: 0;
      margin-left: 0;
+     font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
 }
 
 
@@ -745,6 +749,8 @@ a {
  .team-member__number {
    /*font-size: 3.7rem;*/
    margin-top: -2px;
+     font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
+
  }
 
 /* 등번호 */

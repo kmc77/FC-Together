@@ -1,8 +1,4 @@
-@font-face {
-    font-family: 'D-DINExp';
-    src: url('/fonts/D-DIN.otf') format('opentype');
-}
-
+@import url('https://fonts.cdnfonts.com/css/d-din');
 
 .match-page-body {
     display: block;
@@ -16,7 +12,7 @@
 .match-page-body {
   height: 100%;
   /*overflow: hidden;*/
-  font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
+  font-family: 'D-DIN', sans-serif;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -104,12 +100,11 @@
 }
 
 .matchPage .top .topTitle .title {
-    padding-top: 170px;
+    padding-top: 140px;
     text-align: center;
     font-size: 44px;
     font-weight: 500;
     background: url(/img/FcTogether-removebg.png) 50% 0/auto 120px no-repeat;
-    font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
 }
 
 .heading-skew-lg {
@@ -133,7 +128,7 @@
     transform: skewX(346deg) rotateY(309deg) translateZ(-33px);
     position: absolute;
     left: 40.5%;
-    top: 18%;
+    top: 5%;
     width: 173px; /* 박스 크기를 키워서 로고를 강조 */
     height: 147px; /* 박스 크기를 키워서 로고를 강조 */
     /* background: rgba(0, 64, 152, 0.2); */
@@ -426,7 +421,7 @@
 
 
         .subTop .top .topTitle {
-            padding-top: 75px;
+            padding-top: 34px;
             text-align: center;
         }
 
@@ -468,11 +463,23 @@
             margin-bottom: 10px;
         }
 
+        .subTop .tabMenu .current,
+        .subTop .tabMenu .router-link-exact-active {
+            color: #046a38;
+        }
+
         .subTop .tabMenu a {
             display: inline-block;
             position: relative;
             padding: 0 36px;
             vertical-align: middle;
+        }
+
+        .subTop .tabMenu a span {
+            display: inline-block;
+            position: relative;
+            padding: 25px 0;
+            vertical-align: top;
         }
 
         .title {
@@ -484,12 +491,30 @@
             line-height: 1;
         }
 
+        .tabMenu .main-tab span {
+            color: #000000;
+        }
+
+        .tabMenu .main-tab.current span {
+            color: #f4ae15;
+        }
+
+        .tabMenu .main-tab.current span:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffc954;
+        }
+
         .sub-tab-bar .sub-tab.active {
             background-color: #ddd;
         }
 
         .divClass {
-            padding: 5px;
+            padding: 10px;
             /*margin-bottom: 150px;*/
             overflow: hidden;
         }
@@ -497,7 +522,6 @@
 
 
 /* 경기 결과 및 일정 */
-
 
 .match-header {
     width: 100%;
@@ -556,7 +580,7 @@
 
 .match-header-place {
     padding: 0 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
 }
 
 .match-location,
@@ -578,7 +602,7 @@
 
 .left-info, .right-info {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
 }
 
 .left-info {
@@ -587,7 +611,6 @@
     align-items: flex-start;
     font-size: 0.7rem;
     margin-right: 180px;
-    flex-basis: 210px; /* 고정된 넓이 설정 */
 }
 
 .league-info {
@@ -598,7 +621,6 @@
 
 .league-info span {
     margin-left: 5px;
-    font-size: 23px;
 }
 
 .right-info > div, .versus-info {
@@ -652,7 +674,7 @@
     margin-right: 10px;
     font-size: 6em; /* match-date의 폰트 크기 조정 */
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
 }
 
 .match-day {
@@ -667,9 +689,9 @@
 }
 
 .team-league {
-    /*margin-right: 10px;*/
+    margin-right: 10px;
     font-size: 30px;
-    /*margin-bottom: 2px;*/
+    margin-bottom: 2px;
 }
 
 
@@ -679,7 +701,6 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-
 }
 
 .team {
@@ -705,7 +726,7 @@
 }
 
 .vs {
-    font-size: 2.5em;
+    font-size: 1.5em;
     margin: 10px;
     color: #9e9e9ea3;
 }

@@ -1068,13 +1068,59 @@ a {
 
 /* faq css */
 
-.faq-item-tit {display:block; position:relative; padding:17px 25px 16px 0}
-.faq-item-tit::after {content:''; position:absolute; top:50%; right:10px; display:inline-block; width:8px; height:8px; border-bottom:1px solid #121212; border-right:1px solid #121212; transform:rotate(45deg) translateY(-50%)}
-.faq-item-tit:hover {text-decoration:none}
-.faq-item-tit .faq-q {display:block; line-height:1.5; font-size:17px}
-.faq-item-tit .faq-category {display:inline-block; min-width:70px; height:23px; margin-bottom:5px; padding:0px 5px; border-radius:5px; line-height:25px; color:#fff; font-size:12px; text-align:center; white-space:nowrap; box-sizing:border-box}
-.faq-item-tit .faq-category.faq-cate {background:#0b6f0f}
-.faq-item-tit .faq-category.faq-cate.회원가입 { background: #1b73f7; }
+.faq-item-tit {
+    display: block;
+    position: relative;
+    padding: 17px 25px 16px 0;
+    cursor: pointer; /* 추가된 부분 */
+}
+
+.faq-item-tit::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-bottom: 1px solid #121212;
+    border-right: 1px solid #121212;
+    transform: rotate(45deg) translateY(-50%);
+}
+
+.faq-item-tit:hover {
+    text-decoration: none;
+}
+
+.faq-item-tit .faq-q {
+    display: block;
+    line-height: 1.5;
+    font-size: 17px;
+}
+
+.faq-item-tit .faq-category {
+    display: inline-block;
+    min-width: 70px;
+    height: 23px;
+    margin-bottom: 5px;
+    padding: 0px 5px;
+    border-radius: 5px;
+    line-height: 25px;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.faq-item-tit .faq-category.faq-cate {
+    background: #0b6f0f;
+}
+
+.faq-item-tit .faq-category.faq-cate.회원가입 {
+    background: #1b73f7;
+}
+
 
 .faq-item-tit .is-file {margin-left:2px}
 

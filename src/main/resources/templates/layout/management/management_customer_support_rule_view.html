@@ -17,60 +17,188 @@
             <div class="videoInformation">
                 <div class="titleBox">
                     <!-- 제목, 작성자, 작성일, 조회수 -->
-                    <p th:text="${rule.ruleTitle}">제목</p>
+                    <p id="rule-title">제목</p>
                     <div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-user"></i> 작성자</p>
-                            <p th:text="${rule.username}">Username</p>
+                            <p id="rule-username">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-calendar"></i> 작성일</p>
-                            <p th:text="${rule.ruleDate}">Date</p>
+                            <p id="rule-date">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-eye"></i> 조회수</p>
-                            <p th:text="${rule.ruleHits}">Hits</p>
+                            <p id="rule-hits">Hits</p>
                         </div>
+                    </div>
+                </div>
+                <div class="share">
+                    <div class="shareOptions">
+                        <a href="#" id="copy-link"><i class="fa-solid fa-copy"></i></a>
+                        <p class="copy-success-message" id="copy-success-message">링크가 복사되었습니다.</p>
                     </div>
                 </div>
             </div>
             <div class="ruleContent">
                 <!-- 글 내용 -->
                 <div class="content">
-                    <p th:utext="${rule.ruleContent}">Content</p>
+                    <p id="rule-content">Content</p>
                 </div>
                 <!-- 첨부 파일 목록 -->
                 <div class="attachments">
                     <h3>첨부 파일</h3>
-                    <ul>
-                        <li th:each="file : ${files}">
-                            <a th:href="@{${file.filePath}}" th:text="${file.fileName}">File Name</a>
-                        </li>
+                    <ul id="file-list">
+                        <!-- 파일 목록 -->
                     </ul>
                 </div>
 
                 <!-- 이전 글 링크 -->
-                <div class="previous-post post-navigation" th:if="${prevRule != null}">
+                <div class="previous-post post-navigation" id="prev-rule-container" style="display:none;">
                     <div>
                         <p>이전글</p>
                         <div class="arrow up"></div>
-                        <a th:href="@{/management/management_customer_support_rule_view(no=${prevRule.ruleNum})}" th:text="${prevRule.ruleTitle}">이전글 제목</a>
+                        <a href="#" id="prev-rule-link">이전글 제목</a>
                     </div>
                 </div>
 
                 <!-- 목록으로 돌아가기 버튼 -->
                 <div class="formBtns">
-                    <a id="default_butt" href="/management/management_customer_support" class="btn btn-default">목록</a>
+                    <a href="#" id="default_butt" class="btn btn-default">목록</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var ruleId = new URLSearchParams(window.location.search).get('no');
+        console.log("URL 파라미터 'no' 값: ", ruleId); // 디버깅을 위한 추가
+
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+        var isRequestInProgress = false; // 요청 진행 상태 확인 변수
+
+        function loadRuleView(ruleId, token, pushState = true) {
+            if (!ruleId) {
+                console.error('Invalid ruleId:', ruleId);
+                return;
+            }
+
+            if (isRequestInProgress) return; // 중복 요청 방지
+
+            if (loadedPages['/management/management_customer_support_rule_view?no=' + ruleId]) {
+                renderRuleView(loadedPages['/management/management_customer_support_rule_view?no=' + ruleId]);
+                if (pushState) {
+                    history.pushState({ ruleId: ruleId }, '', '/management/management_customer_support_rule_view?no=' + ruleId);
+                }
+                return;
+            }
+
+            isRequestInProgress = true; // 요청 진행 중 상태로 설정
+
+            $.ajax({
+                url: "/management/management_customer_support_rule_view/data",
+                type: "GET",
+                data: { no: ruleId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/management/management_customer_support_rule_view?no=' + ruleId] = response;
+                    renderRuleView(response);
+                    if (pushState) {
+                        history.pushState({ ruleId: ruleId }, '', '/management/management_customer_support_rule_view?no=' + ruleId);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('규정 상세 조회 에러:', error);
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료 상태로 설정
+                }
+            });
+        }
+
+        function renderRuleView(data) {
+            $('#rule-title').text(data.rule.ruleTitle);
+            $('#rule-username').text(data.rule.username);
+            $('#rule-date').text(data.rule.ruleDate);
+            $('#rule-hits').text(data.rule.ruleHits);
+            $('#rule-content').html(data.rule.ruleContent);
+
+            var fileListHtml = '';
+            data.files.forEach(function(file) {
+                fileListHtml += '<li><a href="' + file.filePath + '">' + file.fileName + '</a></li>';
+            });
+            $('#file-list').html(fileListHtml);
+
+            if (data.prevRule) {
+                $('#prev-rule-link').attr('href', '#').text(data.prevRule.ruleTitle).data('id', data.prevRule.ruleNum);
+                $('#prev-rule-container').show();
+            } else {
+                $('#prev-rule-container').hide();
+            }
+        }
 
 
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        $('#prev-rule-link').click(function(e) {
+            e.preventDefault();
+            var ruleId = $(this).data('id');
+            loadRuleView(ruleId, token);
+        });
+
+        $('#default_butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/management/management_customer_support', token); // 토큰과 함께 페이지 로드
+        });
+
+        $('#copy-link').click(function(e) {
+            e.preventDefault(); // 기본 동작 방지
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(function() {
+                $('#copy-success-message').fadeIn().delay(1000).fadeOut();
+            }, function(err) {
+                $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
+            });
+        });
+
+        loadRuleView(ruleId, token);
+    });
 </script>
 <footer>
     <th:block th:include="layout/footer"></th:block>

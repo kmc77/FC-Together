@@ -163,7 +163,15 @@
         var token = localStorage.getItem('accessToken');
         var currentTabIndex = 0;
 
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+        var loadedData = {}; // 로드된 데이터를 추적하는 객체
+        var isRequestInProgress = false; // 요청이 진행 중인지 확인하는 변수
+        var isDataLoaded = false; // 데이터 로드 여부 확인 변수
+
         function ajaxRequest(options) {
+            if (isRequestInProgress) return; // 중복 요청 방지
+
+            isRequestInProgress = true; // 요청 진행 중 상태로 설정
             $.ajax({
                 url: options.url,
                 type: options.type || 'GET',
@@ -179,7 +187,10 @@
                         location.href = '/user/loginform';
                     }
                 },
-                complete: options.complete
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료 상태로 설정
+                    if (options.complete) options.complete();
+                }
             });
         }
 
@@ -400,10 +411,19 @@
             $(document).on('click', '.item-link', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
+                if (loadedPages[url]) {
+                    $('body').html(loadedPages[url]);
+                    history.pushState({ url: url }, '', url); // URL 업데이트
+                    bindEvents(); // 이벤트 다시 바인딩
+                    return;
+                }
+
                 ajaxRequest({
                     url: url,
                     success: function(data) {
+                        loadedPages[url] = data;
                         $('body').html(data);
+                        history.pushState({ url: url }, '', url); // URL 업데이트
                         bindEvents();
                     }
                 });
@@ -416,10 +436,24 @@
         window.onpopstate = function (event) {
             var token = localStorage.getItem('accessToken');
             if (event.state) {
-                loadSectionData(event.state.sectionName, event.state.page);
+                var url = event.state.url;
+                if (loadedPages[url]) {
+                    $('body').html(loadedPages[url]);
+                    bindEvents(); // 이벤트 다시 바인딩
+                } else {
+                    ajaxRequest({
+                        url: url,
+                        success: function(data) {
+                            loadedPages[url] = data;
+                            $('body').html(data);
+                            bindEvents();
+                        }
+                    });
+                }
             }
         };
     });
+
 </script>
 
 

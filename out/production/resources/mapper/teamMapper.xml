@@ -13,6 +13,7 @@
         p.k5_player_birth,
         p.k5_player_height,
         p.k5_player_weight,
+        p.k5_player_cap_yn,
         f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
         FROM K5_Player p
         LEFT JOIN file f
@@ -31,6 +32,7 @@
         p.k7_player_birth,
         p.k7_player_height,  <!-- 선수의 키 정보를 추가 -->
         p.k7_player_weight,  <!-- 선수의 몸무게 정보를 추가 -->
+        p.k7_player_cap_yn,
         f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
         FROM K7_Player p
         LEFT JOIN file f
@@ -49,6 +51,7 @@
         p.w1_player_birth,
         p.w1_player_height,  <!-- 선수의 키 정보를 추가 -->
         p.w1_player_weight,  <!-- 선수의 몸무게 정보를 추가 -->
+        p.w1_player_cap_yn,
         f.file_path  <!-- 파일 경로를 포함시켜 조인 결과에 반영 -->
         FROM W1_Player p
         LEFT JOIN file f

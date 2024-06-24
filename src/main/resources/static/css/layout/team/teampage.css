@@ -898,6 +898,12 @@ a {
  }
 
 
+.captain-img {
+    display: inline-block;
+    vertical-align: middle;
+    filter: brightness(1.2); /* 밝기 증가 */
+}
+
 
  /* profile card end */
 

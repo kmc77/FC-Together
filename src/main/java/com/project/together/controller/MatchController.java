@@ -32,14 +32,6 @@ public class MatchController {
         List<Match> W1matchResult = matchService.W1selectResult();
         List<Team> W1leagueGb = matchService.W1leagueGb();
 
-        System.out.println("k5Schedule" + K5matchSchedule);
-        System.out.println("k5Result" + K5matchResult);
-        System.out.println("paginatedK5leagueGb" + K5leagueGb);
-
-        System.out.println("k7Schedule" + K7matchSchedule);
-        System.out.println("k7Result" + K7matchResult);
-        System.out.println("W1Schedule" + W1matchSchedule);
-        System.out.println("W1Result" + W1matchResult);
 
         // Set K5leagueGb data to each K5matchSchedule Match
         if (K5matchSchedule != null && K5leagueGb != null) {

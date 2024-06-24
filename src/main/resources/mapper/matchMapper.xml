@@ -8,10 +8,10 @@
         FROM matches m
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k5'
-        AND m.match_score IS  NULL
+        AND m.match_score IS NULL
         AND m.match_relative_score IS NULL
         AND m.league_gb = 'k5'
-        ORDER BY match_date DESC
+        ORDER BY m.match_date ASC
     </select>
 
     <select id="K5selectResult" resultType="com.project.together.domain.Match">
@@ -19,8 +19,9 @@
         FROM matches m
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'k5'
-        AND m.match_score is not null
+        AND m.match_score IS NOT NULL
         AND m.match_relative_score IS NOT NULL
+        ORDER BY m.match_date ASC
     </select>
 
     <select id="K5leagueGb" resultType="com.project.together.domain.Team">
@@ -40,7 +41,7 @@
         AND m.match_score IS  NULL
         AND m.match_relative_score IS NULL
         AND m.league_gb = 'k7'
-        ORDER BY match_date DESC
+        ORDER BY match_date ASC
     </select>
 
     <select id="K7selectResult" resultType="com.project.together.domain.Match">
@@ -50,6 +51,7 @@
         WHERE ts.team_league_gb = 'k7'
         AND m.match_score is not null
         AND m.match_relative_score IS NOT NULL
+        ORDER BY match_date ASC
     </select>
 
     <select id="K7leagueGb" resultType="com.project.together.domain.Team">
@@ -67,7 +69,7 @@
         AND m.match_score IS  NULL
         AND m.match_relative_score IS NULL
         AND m.league_gb = 'w1'
-        ORDER BY match_date DESC
+        ORDER BY match_date ASC
     </select>
 
     <select id="W1selectResult" resultType="com.project.together.domain.Match">
@@ -75,8 +77,9 @@
         FROM matches m
         JOIN team ts ON m.team_name = ts.team_name
         WHERE ts.team_league_gb = 'w1'
-        AND m.match_score is not null
+        AND m.match_score is NOT null
         AND m.match_relative_score IS NOT NULL
+        ORDER BY match_date ASC
     </select>
 
     <select id="W1leagueGb" resultType="com.project.together.domain.Team">

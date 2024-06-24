@@ -76,6 +76,8 @@
     $(document).ready(function() {
         var token = localStorage.getItem('accessToken');
         var noticeId = new URLSearchParams(window.location.search).get('no');
+            console.log("URL 파라미터 'no' 값: ", noticeId); // 디버깅을 위한 추가
+
         var loadedPages = {}; // 로드된 페이지 추적 객체
 
         function loadNoticeView(noticeId, token) {

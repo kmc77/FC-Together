@@ -297,15 +297,15 @@
         $(".alert-success").delay(3000).fadeOut('slow');
     });
 
-   // "선수등록" 버튼 클릭 이벤트
+    // "선수등록" 버튼 클릭 이벤트
     $('.writeButton').click(function() {
         // 'create' 상태 설정
         $('form').data('state', 'create');
 
         // 폼의 action 경로, method, 그리고 enctype을 선수 등록 URL, POST 방식, multipart/form-data로 변경
         $('form').attr('action', '/admin/layout/insertPlayerInfo')
-        .attr('method', 'post')
-        .attr('enctype', 'multipart/form-data');
+            .attr('method', 'post')
+            .attr('enctype', 'multipart/form-data');
 
         // "선수등록" 버튼 클릭 시 "정보 수정" 버튼을 숨김
         $('.change_submit-btn').hide();
@@ -327,8 +327,8 @@
             addFileUploadField('filePath-value', selectedPlayerType + 'filePath');
             addInputField('PlayerName-value', '이름', selectedPlayerType + 'PlayerName');
             addInputField('PlayerEnName-value', '영문 이름', selectedPlayerType + 'PlayerEnName');
-            addInputField('PlayerCapYn-value', '예 또는 아니요', selectedPlayerType + 'PlayerCapYn');
-            addInputField('PlayerSubCapYn-value', '예 또는 아니요', selectedPlayerType + 'PlayerSubCapYn');
+            addInputField('PlayerCapYn-value', '예(Y) 또는 아니요(N)', selectedPlayerType + 'PlayerCapYn');
+            addInputField('PlayerSubCapYn-value', '예(Y) 또는 아니요(N)', selectedPlayerType + 'PlayerSubCapYn');
             addInputField('PlayerPosition-value', 'GK, DF, MF, FW', selectedPlayerType + 'PlayerPosition');
             addInputField('PlayerHeight-value', '키 (cm)', selectedPlayerType + 'PlayerHeight');
             addInputField('PlayerWeight-value', '체중 (kg)', selectedPlayerType + 'PlayerWeight');
@@ -370,23 +370,14 @@
                 container.appendChild(input);
             } else if (name.includes('PlayerCapYn') || name.includes('PlayerSubCapYn')) {
                 // PlayerCapYn 및 PlayerSubCapYn 필드의 경우
-                var options = {'Y': '예', 'N': '아니요'};
-                for (var value in options) {
-                    var label = document.createElement('label');
-                    label.style.marginRight = '10px';
-
-                    var input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = name;
-                    input.value = value;
-
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(options[value]));
-
-                    container.appendChild(label);
-                }
-            // 키 입력 필드의 경우
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.name = name;
+                input.placeholder = hint || '';
+                container.appendChild(input);
             } else if (name.includes('PlayerHeight')) {
+                // 키 입력 필드의 경우
                 var inputGroup = document.createElement('div');
                 inputGroup.className = 'input-group mb-3';
 
@@ -424,10 +415,8 @@
                 inputGroup.appendChild(inputGroupAppend);
 
                 container.appendChild(inputGroup);
-            }
-
-            // 체중 입력 필드의 경우
-            else if (name.includes('PlayerWeight')) {
+            } else if (name.includes('PlayerWeight')) {
+                // 체중 입력 필드의 경우
                 var inputGroup = document.createElement('div');
                 inputGroup.className = 'input-group mb-3';
 
@@ -465,8 +454,7 @@
                 inputGroup.appendChild(inputGroupAppend);
 
                 container.appendChild(inputGroup);
-            }
-             else {
+            } else {
                 var input = document.createElement('input');
                 input.type = 'text';
                 input.style.width = '50%';

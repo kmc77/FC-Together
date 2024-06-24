@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${trainingSchedule.scheduleTitle}">Title</title>
+    <title>훈련일정 상세보기</title>
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <th:block th:include="layout/header"></th:block>
@@ -17,38 +17,43 @@
             <div class="tsInformation">
                 <div class="titleBox">
                     <!-- 제목, 작성자, 작성일, 조회수 -->
-                    <p th:text="${trainingSchedule.scheduleTitle}">제목</p>
+                    <p id="schedule-title" th:text="${trainingSchedule.scheduleTitle}">제목</p>
                     <div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-user"></i> 작성자</p>
-                            <p th:text="${trainingSchedule.username}">Username</p>
+                            <p id="schedule-username" th:text="${trainingSchedule.username}">Username</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-calendar"></i> 작성일</p>
-                            <p th:text="${trainingSchedule.scheduleDate}">Date</p>
+                            <p id="schedule-date" th:text="${trainingSchedule.scheduleDate}">Date</p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
                             <p><i class="fa-regular fa-eye"></i> 조회수</p>
-                            <p th:text="${trainingSchedule.scheduleHits}">Hits</p>
+                            <p id="schedule-hits" th:text="${trainingSchedule.scheduleHits}">Hits</p>
                         </div>
+                    </div>
+                </div>
+                <div class="share">
+                    <div class="shareOptions">
+                        <a href="#" id="copy-link"><i class="fa-solid fa-copy"></i></a>
+                        <p class="copy-success-message" id="copy-success-message">링크가 복사되었습니다.</p>
                     </div>
                 </div>
             </div>
             <div class="tsContent">
                 <!-- 글 내용 -->
                 <div class="content">
-                    <p th:utext="${trainingSchedule.scheduleContent}">Content</p>
+                    <p id="schedule-content" th:utext="${trainingSchedule.scheduleContent}">Content</p>
                 </div>
 
-
                 <!-- 이전 글 링크 -->
-                <div class="previous-post post-navigation" th:if="${prevSchedule != null}">
+                <div class="previous-post post-navigation" id="prev-schedule-container" th:if="${prevSchedule != null}">
                     <div>
                         <p>이전글</p>
                         <div class="arrow up"></div>
-                        <a th:href="@{/management/management_customer_support_schedule_view(no=${prevSchedule.scheduleNum})}" th:text="${prevSchedule.scheduleTitle}">Previous Schedule Title</a>
+                        <a href="#" id="prev-schedule-link" th:href="@{/management/management_customer_support_schedule_view(no=${prevSchedule.scheduleNum})}" th:text="${prevSchedule.scheduleTitle}">Previous Schedule Title</a>
                     </div>
                 </div>
 
@@ -60,6 +65,126 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        var token = localStorage.getItem('accessToken');
+        var scheduleId = new URLSearchParams(window.location.search).get('no');
+
+        var loadedPages = {}; // 로드된 페이지 추적 객체
+        var isRequestInProgress = false; // 요청 진행 상태 확인 변수
+
+        function loadScheduleView(scheduleId, token, pushState = true) {
+            if (!scheduleId) {
+                console.error('Invalid scheduleId:', scheduleId);
+                return;
+            }
+
+            if (isRequestInProgress) return; // 중복 요청 방지
+
+            if (loadedPages['/management/management_customer_support_schedule_view?no=' + scheduleId]) {
+                renderScheduleView(loadedPages['/management/management_customer_support_schedule_view?no=' + scheduleId]);
+                if (pushState) {
+                    history.pushState({ scheduleId: scheduleId }, '', '/management/management_customer_support_schedule_view?no=' + scheduleId);
+                }
+                return;
+            }
+
+            isRequestInProgress = true; // 요청 진행 중 상태로 설정
+
+            $.ajax({
+                url: "/management/management_customer_support_schedule_view/data",
+                type: "GET",
+                data: { no: scheduleId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function(response) {
+                    loadedPages['/management/management_customer_support_schedule_view?no=' + scheduleId] = response;
+                    renderScheduleView(response);
+                    if (pushState) {
+                        history.pushState({ scheduleId: scheduleId }, '', '/management/management_customer_support_schedule_view?no=' + scheduleId);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('훈련 일정 상세 조회 에러:', error);
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료 상태로 설정
+                }
+            });
+        }
+
+        function renderScheduleView(data) {
+            $('#schedule-title').text(data.schedule.scheduleTitle);
+            $('#schedule-username').text(data.schedule.username);
+            $('#schedule-date').text(data.schedule.scheduleDate);
+            $('#schedule-hits').text(data.schedule.scheduleHits);
+            $('#schedule-content').html(data.schedule.scheduleContent);
+
+            if (data.prevSchedule) {
+                $('#prev-schedule-link').attr('href', '#').text(data.prevSchedule.scheduleTitle).data('id', data.prevSchedule.scheduleNum);
+                $('#prev-schedule-container').show();
+            } else {
+                $('#prev-schedule-container').hide();
+            }
+        }
+
+        function loadPage(url, token, pushState = true) {
+            if (loadedPages[url]) {
+                $('body').html(loadedPages[url]);
+                if (pushState) {
+                    history.pushState({ url: url }, '', url);
+                }
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                },
+                success: function (data) {
+                    loadedPages[url] = data;
+                    $('body').html(data);
+                    if (pushState) {
+                        history.pushState({ url: url }, '', url);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('페이지 로드 실패:', error);
+                    if (xhr.status === 401) {
+                        alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
+                        location.href = '/user/loginform';
+                    }
+                }
+            });
+        }
+
+        $('#prev-schedule-link').click(function(e) {
+            e.preventDefault();
+            var scheduleId = $(this).data('id');
+            loadScheduleView(scheduleId, token);
+        });
+
+        $('#default_butt').click(function(e) {
+            e.preventDefault();
+            loadPage('/management/management_customer_support#tab4', token); // 토큰과 함께 페이지 로드
+        });
+
+        $('#copy-link').click(function(e) {
+            e.preventDefault(); // 기본 동작 방지
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(function() {
+                $('#copy-success-message').fadeIn().delay(1000).fadeOut();
+            }, function(err) {
+                $('#copy-success-message').text('링크 복사에 실패했습니다.').fadeIn().delay(1500).fadeOut();
+            });
+        });
+
+        loadScheduleView(scheduleId, token);
+    });
+</script>
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

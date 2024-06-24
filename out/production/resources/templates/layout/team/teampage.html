@@ -197,6 +197,12 @@
                             heightWeightText = playerWeight;
                         }
 
+                        // 주장 이미지 추가
+                        var captainImgHtml = '';
+                        if (player[playerType + 'PlayerCapYn'] === 'Y') {
+                                captainImgHtml = `<img class="captain-img" src="/img/teampage/captain.png" alt="Captain" style="width: 39px;height: auto;margin-left: 0px;">`;
+                        }
+
                         var playerHtml = `<li class="team-member__item">
                                            <a class="team-member__link">
                                                <div class="team-member__img-holder">
@@ -211,7 +217,7 @@
                                                        <p class="team-member__role">${player[playerType + 'PlayerPosition']}</p>
                                                    </div>
                                                    <div class="team-member__data-unit">
-                                                       <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']}</p>
+                                                       <p class="team-member__name-ja" wovn-ignore="true">${player[playerType + 'PlayerName']} ${captainImgHtml}</p>
                                                        <p class="team-member__name-en">${player[playerType + 'PlayerEnName']}</p>
                                                        <p class="team-member__text">${playerBirth}<br>${heightWeightText}</p>
                                                    </div>
@@ -326,7 +332,6 @@
         }
     });
 </script>
-
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

@@ -2,81 +2,76 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>제목</title>
-    <link href="/css/layout/history/historypage.css" rel="stylesheet"/>
+    <title>구단역사</title>
+    <link href="/css/layout/history/historypage.css" rel="stylesheet" id="historypage-css"/>
     <th:block th:include="layout/header"></th:block>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800">
-    <script>
-        window.console = window.console || function(t) {};
-    </script>
 </head>
-<body translate="no">
-<div class="container">
+<body class="history-body" translate="no">
+<div class="history-container">
     <h1 class="title">FC TOGETHER History</h1>
     <div class="timeline">
-        <div class="swiper-container swiper-container-vertical">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2017 FC TOGETHER 창단.jpeg'); height: 600px;" data-year="2017">
+        <div class="swiper-container history-swiper-container swiper-container-vertical">
+            <div class="swiper-wrapper history-swiper-wrapper">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2017 FC TOGETHER 창단.jpeg'); height: 600px;" data-year="2017">
                     <div class="swiper-slide-content"><span class="timeline-year">2017</span>
                         <h4 class="timeline-title">FC TOGETHER<br>창단</h4>
                         <p class="timeline-text">K7 리그 참가</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2018 K6리그 참가.jpeg'); height: 600px;" data-year="2018">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2018 K6리그 참가.jpeg'); height: 600px;" data-year="2018">
                     <div class="swiper-slide-content"><span class="timeline-year">2018</span>
                         <h4 class="timeline-title">두 번째 시즌</h4>
                         <p class="timeline-text">K6 리그로 승격하여 두 번째 시즌 시작</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2019 B팀 창단 K7리그 참가.jpeg'); height: 600px;" data-year="2019">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2019 B팀 창단 K7리그 참가.jpeg'); height: 600px;" data-year="2019">
                     <div class="swiper-slide-content"><span class="timeline-year">2019</span>
                         <h4 class="timeline-title">FC TOGETHER <br>B팀 창단</h4>
                         <p class="timeline-text">B팀 K7 리그 참가</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2020 K5 챔피언쉽 3위.jpeg'); height: 600px;" data-year="2020">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2020 K5 챔피언쉽 3위.jpeg'); height: 600px;" data-year="2020">
                     <div class="swiper-slide-content"><span class="timeline-year">2020</span>
                         <h4 class="timeline-title">챔피언쉽 3위</h4>
                         <p class="timeline-text">디비전 K5리그 우승(전승)</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2021 하나은행 FA컵.jpeg'); height: 600px;" data-year="2021">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2021 하나은행 FA컵.jpeg'); height: 600px;" data-year="2021">
                     <div class="swiper-slide-content"><span class="timeline-year">2021</span>
                         <h4 class="timeline-title">하나은행 FA CUP 창단 첫 출전</h4>
                         <p class="timeline-text">現 코리아 컵</p>
                     </div>
                 </div>
                 <!-- 추가 연도 슬라이드 -->
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2022성동구민축구단 출범.jpeg'); height: 600px;" data-year="2022">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2022성동구민축구단 출범.jpeg'); height: 600px;" data-year="2022">
                     <div class="swiper-slide-content"><span class="timeline-year">2022</span>
                         <h4 class="timeline-title">성동구민축구단 <br>출범</h4>
                         <p class="timeline-text">FC TOGETHER 위민(여성팀) 창단</p>
                     </div>
                 </div>
-                <div class="swiper-slide" style="background-image: url('/img/historypage/2023 K5리그 2위.jpeg'); height: 600px;" data-year="2023">
+                <div class="swiper-slide history-swiper-slide" style="background-image: url('/img/historypage/2023 K5리그 2위.jpeg'); height: 600px;" data-year="2023">
                     <div class="swiper-slide-content"><span class="timeline-year">2023</span>
                         <h4 class="timeline-title">K5 리그 2위,<br>챔피언쉽 8강</h4>
                         <p class="timeline-text">하나은행 FA CUP 출전</p>
                     </div>
                 </div>
             </div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"></div>
+            <div class="swiper-button-prev history-swiper-button-prev"></div>
+            <div class="swiper-button-next history-swiper-button-next"></div>
+            <div class="swiper-pagination history-swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"></div>
         </div>
     </div>
 </div>
 <!-- Swiper JS 및 초기화 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
 <script>
-    var timelineSwiper = new Swiper('.timeline .swiper-container', {
+    var timelineSwiper = new Swiper('.timeline .history-swiper-container', {
         direction: 'vertical',
         loop: false,
         speed: 1600,
         pagination: '.swiper-pagination',
         paginationBulletRender: function (swiper, index, className) {
-            var year = document.querySelectorAll('.swiper-slide')[index].getAttribute('data-year');
+            var year = document.querySelectorAll('.history-swiper-slide')[index].getAttribute('data-year');
             return '<span class="' + className + '">' + year + '</span>';
         },
         paginationClickable: true,
@@ -88,39 +83,20 @@
             }
         }
     });
-</script>
 
-<!-- 페이지 로드 시 자동 스크롤 -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const containerElement = document.querySelector('.container');
-        const targetY = containerElement.offsetTop;
-
-        function smoothScrollTo(endY, duration) {
-            const startY = window.scrollY || window.pageYOffset;
-            const distanceY = endY - startY;
-            const startTime = new Date().getTime();
-
-            function scroll() {
-                const currentTime = new Date().getTime();
-                const time = Math.min(1, ((currentTime - startTime) / duration));
-                const easedT = easeInOutCubic(time);
-                window.scrollTo(0, startY + (distanceY * easedT));
-
-                if (time < 1) {
-                    requestAnimationFrame(scroll);
-                }
-            }
-
-            function easeInOutCubic(t) {
-                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-            }
-
-            scroll();
+    // 공지사항 페이지로 이동 시 CSS 파일 교체
+    function loadNoticePage() {
+        var oldLink = document.getElementById("historypage-css");
+        if (oldLink) {
+            oldLink.parentNode.removeChild(oldLink);
         }
-
-        smoothScrollTo(targetY, 1300);
-    });
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = "/css/layout/media/notice.css";
+        link.id = "notice-css";
+        document.head.appendChild(link);
+    }
 </script>
 <!--<footer>
     <th:block th:include="layout/footer"></th:block>

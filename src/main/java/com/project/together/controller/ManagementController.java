@@ -145,6 +145,27 @@ public class ManagementController {
         return "layout/management/management_customer_support_rule_view";
     }
 
+    @GetMapping("/management_customer_support_rule_view/data")
+    public ResponseEntity<Map<String, Object>> getRuleViewData(@RequestParam("no") int ruleNum) throws NotFoundException {
+        managementService.increaseRuleHits(ruleNum); // 조회수 증가
+        Rule rule = managementService.viewRuleSupportPage(ruleNum);
+        if (rule == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID가 포함된 규정을 찾을 수 없습니다. : " + ruleNum);
+        }
+
+        List<File> files = managementService.findFilesByRuleNum(ruleNum);
+        Rule prevRule = managementService.findPrevRuleByCurrentRuleDate(LocalDate.parse(rule.getRuleDate()));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("rule", rule);
+        response.put("files", files);
+        response.put("prevRule", prevRule);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
     @GetMapping("/management_customer_support_operation_view")
     public String operationViewPage(@RequestParam("no") int operationNum, Model model) throws NotFoundException {
         managementService.increaseOperationHits(operationNum);
@@ -166,12 +187,32 @@ public class ManagementController {
         return "layout/management/management_customer_support_operation_view";
     }
 
+    @GetMapping("/management_customer_support_operation_view/data")
+    public ResponseEntity<Map<String, Object>> getOperationViewData(@RequestParam("no") int operationNum) throws NotFoundException {
+        managementService.increaseOperationHits(operationNum); // 조회수 증가
+        Operation operation = managementService.viewOperationSupportPage(operationNum);
+        if (operation == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + operationNum);
+        }
+
+        List<File> files = managementService.findFilesByOperationNum(operationNum);
+        Operation prevOperation = managementService.findPrevOperationByCurrentOperationDate(LocalDate.parse(operation.getOperationDate()));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("operation", operation);
+        response.put("files", files);
+        response.put("prevOperation", prevOperation);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @GetMapping("/management_customer_support_schedule_view")
     public String scheduleViewPage(@RequestParam("no") int scheduleNum, Model model) throws NotFoundException {
         managementService.increaseScheduleHits(scheduleNum);
         TrainingSchedule trainingSchedule = managementService.viewSchedulePage(scheduleNum);
         if (trainingSchedule == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Operation not found with id: " + scheduleNum);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Schedule not found with id: " + scheduleNum);
         }
 
         model.addAttribute("trainingSchedule", trainingSchedule);
@@ -184,4 +225,22 @@ public class ManagementController {
 
         return "layout/management/management_customer_support_schedule_view";
     }
+
+    @GetMapping("/management_customer_support_schedule_view/data")
+    public ResponseEntity<Map<String, Object>> getScheduleViewData(@RequestParam("no") int scheduleNum) throws NotFoundException {
+        managementService.increaseScheduleHits(scheduleNum);
+        TrainingSchedule trainingSchedule = managementService.viewSchedulePage(scheduleNum);
+        if (trainingSchedule == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Schedule not found with id: " + scheduleNum);
+        }
+
+        TrainingSchedule prevSchedule = managementService.findPrevScheduleByCurrentScheduleDate(LocalDate.parse(trainingSchedule.getScheduleDate()));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("schedule", trainingSchedule);
+        response.put("prevSchedule", prevSchedule);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

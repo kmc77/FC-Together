@@ -224,16 +224,18 @@ body {
     padding: 0; /* 안쪽 여백 없음 */
     margin: 0 5px; /* 버튼 간 간격 */
     cursor: pointer; /* 커서 모양 변경 */
+    perspective: 1000px; /* 3D 효과를 위한 원근감 설정 */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 */
+    position: relative; /* 이모지 위치를 위한 상대 위치 설정 */
 }
 
 .leagueTabButton img {
-    width: 80px; /* 이미지 너비 조절 */
+    width: 70px; /* 이미지 너비 조절 */
     margin-right: 10px;
     height: auto; /* 이미지 높이 자동 조절 */
     border-radius: 8px; /* 둥근 모서리 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 */
+    transition: transform 1s ease, box-shadow 0.3s ease, filter 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 /* Simin 로고 크기 조정 */
@@ -241,23 +243,46 @@ body {
     width: 160px; /* Simin 로고 너비 조절 */
 }
 
-/* 호버 상태 스타일 (호버 시 떠오르지 않음) */
-.leagueTabButton:hover img {
-    transform: translateY(-3px); /* 약간 떠오르는 효과 */
+/* 호버 상태 스타일 (호버 시 밝기 증가) */
+.leagueTabButton img:hover {
+    filter: brightness(1.1); /* 밝기 증가 */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
 }
 
-/* 활성화 상태 스타일 (클릭된 상태에서 떠오름) */
-.leagueTabButton.active img {
-    transform: translateY(-3px); /* 떠오르는 효과 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
+/* 클릭 상태 스타일 */
+.leagueTabButton img.rotate {
+    transform: rotateY(var(--rotation-angle, 0deg)) !important;
 }
 
-/* 클릭 상태 스타일 (활성화 상태와 일관되게 유지) */
-.leagueTabButton:active img {
-    transform: translateY(-3px); /* 떠오르는 효과 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
+@keyframes spin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(var(--rotation-angle, 0deg)); }
 }
+
+/* 더보기 버튼 스타일 */
+.leagueMoreButton {
+    position: absolute; /* 절대 위치 */
+    top: 60px; /* 상단에서 10px 위치 */
+    right: 110px;
+    background-color: rgba(255, 255, 255, 0.25); /* 반투명 흰색 배경 */
+    border: none; /* 테두리 없음 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 커서 모양 변경 */
+    font-size: 30px; /* 폰트 크기 */
+    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.leagueMoreButton:hover {
+    background-color: rgba(255, 255, 255, 0.5); /* 호버 시 배경 색상 변경 */
+}
+
+/* matchImgDiv 스타일 조정 */
+.matchImgDiv {
+    position: relative; /* 상대 위치 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+
 
 
 .pastMatch {
@@ -266,7 +291,7 @@ body {
     left: 5%;
     width: 25%;
     height: 80%;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
@@ -300,7 +325,7 @@ body {
     left: 32%;
     width: 37%;
     height: 80%;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
@@ -334,7 +359,7 @@ body {
     left: 71%;
     width: 23%;
     height: 80%;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
@@ -350,7 +375,7 @@ body {
     overflow: hidden;
     display: flex;
     transition: transform 0.5s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
 }
 

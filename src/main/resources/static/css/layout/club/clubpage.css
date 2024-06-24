@@ -1,166 +1,84 @@
-@import url('https://fonts.cdnfonts.com/css/d-din');
+@font-face {
+    font-family: 'D-DINExp';
+    src: url('/fonts/D-DIN.otf') format('opentype');
+}
+
 
 .club-page-body {
     display: block;
-     margin-top: 10px;
-     margin-right: 0;
-     margin-bottom: 0;
-     margin-left: 0;
+    margin: 10px 0 0 0;
+    height: 100%;
+    font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
+    display: flex;
+    flex-direction: column;
 }
 
-
-.club-page-body {
-  height: 100%;
-  /*overflow: hidden;*/
-  font-family: 'D-DIN', sans-serif;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+.tab-bar, .sub-tab-bar {
+    margin: 30px auto;
+    display: flex;
+    list-style-type: none;
+    padding-start: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-.tab-bar {
-  margin: 30px auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  list-style-type: none;
-  -webkit-padding-start: 0;
-
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.sub-tab-bar {
-  margin: 30px auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  list-style-type: none;
-  -webkit-padding-start: 0;
-
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.tab {
-  width: 150px;
-  padding: 17px 0;
-  background: white;
-  color: #607D8B;
-  overflow: hidden;
-  text-align: center;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  cursor: pointer;
-  position: relative;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
-.sub-tab {
-  width: 150px;
-  padding: 17px 0;
-  background: white;
-  color: #607D8B;
-  overflow: hidden;
-  text-align: center;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  cursor: pointer;
-  position: relative;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+.tab, .sub-tab {
+    width: 150px;
+    padding: 17px 0;
+    background: white;
+    color: #607D8B;
+    overflow: hidden;
+    text-align: center;
+    flex-grow: 1;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
 }
 
 .tab a, .sub-tab a {
- color: #607D8B;
+    color: #607D8B;
 }
 
-.indicator {
-  width: auto;
-  height: 3px;
-  background: #FF9800;
-  position: absolute;
-  margin-top: 58px;
-  margin-left:0;
-  -webkit-transition: margin 0.10s ease; /* 속도 조정 */
-  transition: margin 0.10s ease; /* 속도 조정 */
-}
-
-.sub-indicator {
-   width: auto;
-   height: 3px;
-   background: #FF9800;
-   position: absolute;
-   margin-top: 58px;
-   margin-left:0;
-   -webkit-transition: margin 0.10s ease; /* 속도 조정 */
-   transition: margin 0.10s ease; /* 속도 조정 */
+.indicator, .sub-indicator {
+    height: 3px;
+    background: #FF9800;
+    position: absolute;
+    transition: margin 0.10s ease;
 }
 
 .cercle {
-  width: 0px;
-  height: 0px;
-  position: absolute;
+    width: 0px;
+    height: 0px;
+    position: absolute;
 }
 
-.light .cercle {background: white}
-.dark .cercle {background: black}
+.light .cercle { background: white; }
+.dark .cercle { background: black; }
 
 .anim {
-  opacity: 0.2;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-  -webkit-animation: touch 1.2s ease-out;
-          animation: touch 1.2s ease-out;
-}
-
-@-webkit-keyframes touch {
-  100% {
-    width: 600px;
-    height: 600px;
-    border-radius: 600px;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    margin: -300px;
-  }
+    opacity: 0.2;
+    animation: touch 1.2s ease-out;
 }
 
 @keyframes touch {
-  100% {
-    width: 600px;
-    height: 600px;
-    border-radius: 600px;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    margin: -300px;
-  }
+    100% {
+        width: 600px;
+        height: 600px;
+        border-radius: 600px;
+        opacity: 0;
+        margin: -300px;
+    }
 }
 
-
 .teamPage .top .topTitle {
-  padding-top: 0;
+    padding-top: 0;
 }
 
 .subTop .top .topTitle {
-  padding-top: 34px;
-  text-align: center;
+    padding-top: 34px;
+    text-align: center;
 }
 
 .teamPage .top .topTitle .title {
-    /*margin-left: -90px;
-    margin-right: -40px;*/
     padding-top: 140px;
     text-align: center;
     font-size: 44px;
@@ -168,89 +86,80 @@
     background: url(/img/FcTogether.jpg) 50% 0/auto 120px no-repeat;
 }
 
-
 * {
-  margin: 0;
-  padding: 0;
-  /*box-sizing: border-box;*/
+    margin: 0;
+    padding: 0;
 }
 
 .team-container {
-  position: relative;
-  max-width: 1260px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 30px;
-  padding-right: 30px;
+    position: relative;
+    max-width: 1260px;
+    margin: auto;
+    padding: 0 30px;
 }
 
 .sub_container {
-  position: relative;
-  max-width: 1000px; /* 기존의 1260px에서 줄임 */
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 100px; /* 기존의 80px에서 증가 */
-  padding-right: 100px; /* 기존의 30px에서 크게 증가 */
+    position: relative;
+    max-width: 1000px;
+    margin: auto;
+    padding: 0 100px;
 }
 
-
-
-.subTop .tabMenu .sub_tabMenu {
-  padding-top: 10px;
-  text-align: center;
-  font-size: 18px;
-  color: #777;
-  vertical-align: top;
-  border-bottom: 1px solid #e5e5e5;
+.subTop .tabMenu {
+    padding-top: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-.subTop .tabMenu .sub_tabMenu .current,
-.subTop .tabMenu .sub_tabMenu .router-link-exact-active {
-  color: #046a38;
+.subTop .tabMenu .current,
+.subTop .tabMenu .router-link-exact-active {
+    color: #046a38;
 }
 
-.subTop .tabMenu a .sub_tabMenu a{
-  display: inline-block;
-  position: relative;
-  padding: 0 36px;
-  vertical-align: middle;
+.subTop .tabMenu a {
+    display: inline-block;
+    position: relative;
+    padding: 0 36px;
+    vertical-align: middle;
 }
 
-.subTop .tabMenu a span .sub_tabMenu a span {
-  display: inline-block;
-  position: relative;
-  padding: 25px 0;
-  vertical-align: top;
+.subTop .tabMenu a span {
+    display: inline-block;
+    position: relative;
+    padding: 25px 0;
+    vertical-align: top;
 }
 
-.tabMenu .sub_tabMenu .main-tab span {
-  color: #000000; /* 검정색 */
+.tabMenu .main-tab span {
+    color: #000000;
 }
 
-.tabMenu .sub_tabMenu .main-tab.current span {
-  color: #f4ae15; /* 선택된 탭의 글자 색상 */
+.tabMenu .main-tab.current span {
+    color: #f4ae15;
 }
 
-.tabMenu .sub_tabMenu .main-tab.current span:before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #ffc954; /* 선택된 탭의 아래 줄 색상 */
+.tabMenu .main-tab.current span:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ffc954;
 }
 
 .tabContent .content {
-  padding-top: 30px;
+    padding-top: 30px;
 }
 
 .btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
 
 .contents > .layout-inner {
     max-width: 1040px;
@@ -299,10 +208,8 @@
     word-break: keep-all;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
-
-
 
 .list-item .col.tit:hover {
     text-decoration: underline;
@@ -313,6 +220,7 @@ a {
     color: #121212;
     text-decoration: none;
 }
+
 .team-wrap .btn {
     display: inline-block;
     min-width: 125px;
@@ -345,710 +253,449 @@ a {
     color: #7e7a7a;
 }
 
-/*============= 선수 정보 tab__content ============*/
-
-
-
-
-
- /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
-
-
-
- /* Profile card text */
-
-
-
- /*html {
-   font-size: 62.5%;
- }
-
- body {
-   color: #000;
-   font-family: 'D-DIN', sans-serif;
-   font-size: 1.2rem;
-   line-height: 1.6;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
- }
-
- @media (min-width: 737px) {
-   body {
-     font-size: 1.5rem;
-   }
- }
-
- @media (min-width: 737px) {
-     body  ul  li  a {
-         font-size: 1.7rem;
-     }
- }*/
-
-/* 좌우 레이아웃 영향 */
-
-@media (min-width: 1024px) {
-   .team-container {
-      width: auto;  /* 자동 조정 */
-      max-width: 1260px;
-   }
+#greeting, #greeting2 {
+    width: 1280px;
+    height: 300px;
+    resize: none;
+    border: none;
 }
 
- @media (min-width: 1024px) {
-   .team-container--narrow {
-     max-width: 1024px;
-   }
- }
-
-/* section padding */
-
-.section {
-  padding: 65px 0;
-  overflow: hidden;
+.hidden {
+    display: none;
 }
 
- @media (min-width: 737px) {
-   .section {
-     padding: 20px 0;
-   }
- }
-
-/* position text */
-
- .title {
-   display: block;
-   text-align: center;
-   font-family: 'D-DIN', sans-serif;
-   font-size: 3.5rem;
-   font-weight: 400;
-   line-height: 1;
- }
-
- @media (min-width: 737px) {
-   .title {
-     /*font-size: 6.3rem;*/
-     letter-spacing: -2.2px;
-   }
- }
-
- .title--underline {
-   display: table;
-   position: relative;
-   z-index: 1;
-   margin-left: auto;
-   margin-right: auto;
- }
-
- .title--underline:before {
-   content: "";
-   position: absolute;
-   bottom: 0;
-   left: 0;
-   z-index: 1;
-   width: 100%;
-   height: 2px;
-   background-color: #FF9800;
- }
-
- @media (min-width: 737px) {
-   .title--underline:before {
-     height: 4px;
-   }
- }
-
- @media (min-width: 737px) {
-   .title--underline {
-     padding-bottom: 2px;
-   }
- }
-
- .title-sub {
-   display: block;
-   text-align: center;
-   font-size: 1rem;
-   margin-top: -0.5em;
- }
-
- @media (min-width: 737px) {
-   .title-sub {
-     font-size: 1.4rem;
-   }
- }
-
- .title-ja {
-   text-align: center;
-   font-size: 2.4rem;
-   font-weight: 400;
- }
-
- @media (min-width: 737px) {
-   .title-ja {
-     font-size: 3.8rem;
-   }
- }
-
- .title-underline {
-   display: table;
-   position: relative;
-   z-index: 1;
-   text-align: center;
-   font-weight: 700;
-   padding-bottom: 0.1em;
-   margin-right: auto;
-   margin-left: auto;
-   font-size: 1.6rem;
-   line-height: 1.6;
-   border: none;
- }
-
- @media (min-width: 737px) {
-   .title-underline {
-     font-size: 2rem;
-   }
- }
-
- .title-underline:before {
-   content: "";
-   width: 100%;
-   height: 3px;
-   position: absolute;
-   right: 0;
-   bottom: -3px;
-   left: 0;
-   z-index: 1;
-   margin: auto;
-   background-color: #e6002d;
- }
-
- .title-overlap-border {
-   text-align: center;
-   font-weight: 400;
-   margin-top: -0.5em;
-   line-height: 1;
- }
-
- /* position text end */
-
-
-/* profile card */
-
-.team-member__list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 각 행에 4개의 항목을 표시 */
-  gap: 16px; /* 항목 간의 간격을 유지 */
-  margin-top: 30px;
+#greetings {
+    margin-top: 10px;
 }
-
-@media (max-width: 1024px) {
-  .team-member__list {
-    grid-template-columns: repeat(2, 1fr); /* 화면이 작아질 경우 2개의 항목을 표시 */
-  }
-}
-
-@media (max-width: 768px) {
-  .team-member__list {
-    grid-template-columns: 1fr; /* 화면이 더 작아질 경우 1개의 항목을 표시 */
-  }
-}
-
-@media (min-width: 737px) {
-  .team-member__list {
-    margin-top: 60px;
-  }
-}
-
-.team-member__list--staff .team-member__data {
-  padding-left: 10px;
-}
-
-@media (min-width: 1024px) {
-  .team-member__list--staff .team-member__data {
-    padding-left: 20px;
-  }
-}
-
-.team-member__list--staff .team-member__data-unit:nth-child(1) {
-  text-align: left;
-  flex-basis: 100%;
-  max-width: 100%;
-  font-family: 'D-DIN', sans-serif;
-}
-
-.team-member__item {
-  background-color: #fff;
-  border-bottom: 2px solid #ff9800;
-  position: relative;
-  z-index: 1;
-  overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
-}
-
-.team-member__item img {
-  width: 100%;
-  height: auto;
-  transition: transform 0.5s ease, opacity 0.5s ease; /* 확대 및 투명도 변화 속도를 0.3초에서 0.5초로 조정 */
-  transform-origin: center; /* 확대의 기준점을 이미지 중앙으로 설정 */
-  opacity: 0.9; /* 초기 투명도 설정 */
-}
-
-.team-member__item:hover img {
-  transform: scale(1.1); /* 호버 시 이미지를 조금 더 확대 */
-  opacity: 1; /* 호버 시 투명도를 완전하게 만들어 선명도 증가 */
-}
-
-
-
-
- /* 프로필 애니메이션 처리 */
-/*
- .team-member__item:before {
-   content: "";
-   width: 100%;
-   height: 2px;
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: 2;
-   background-color: #FF9800;
-   -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   -webkit-transform: scaleX(0);
-   transform: scaleX(0);
-   -webkit-transform-origin: left;
-   transform-origin: left;
- }
-
-.team-member__item:hover:before {
-   -webkit-transform: scaleX(1);
-   transform: scaleX(1);
-}
-
-.team-member__item:hover .team-member__link:before,
-.team-member__item:hover .team-member__link:after {
-   -webkit-transform: scaleY(1);
-   transform: scaleY(1);
-}
-
-
- .team-member__link {
-   display: block;
-   height: 100%;
-   color: #000;
- }
-
- .team-member__link:before, .team-member__link:after {
-   content: "";
-   width: 2px;
-   height: 100%;
-   position: absolute;
-   z-index: 2;
-   background-color: #FF9800;
-   -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   transition: transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-   -webkit-transform: scaleY(0);
-   transform: scaleY(0);
- }
-
- .team-member__link:before {
-   bottom: 0;
-   left: 0;
-   -webkit-transform-origin: bottom;
-   transform-origin: bottom;
- }
-
- .team-member__link:after {
-   top: 0;
-   right: 0;
-   -webkit-transform-origin: top;
-           transform-origin: top;
- }
-*/
-
-
-
-
-
-
-
- .team-member__data {
-   display: -webkit-box;
-   display: -ms-flexbox;
-   display: flex;
-   padding: 10px 10px 10px 0;
- }
-
- @media (min-width: 1024px) {
-   .team-member__data {
-     padding: 20px 20px 20px 0;
-   }
- }
-
- .team-member__data-unit:nth-child(1) {
-   text-align: center;
-   font-family: 'D-DIN', sans-serif;
-   line-height: 1;
-   -ms-flex-preferred-size: 50px;
-   flex-basis: 50px;
- }
-
- @media (min-width: 1024px) {
-   .team-member__data-unit:nth-child(1) {
-     -ms-flex-preferred-size: 70px;
-     flex-basis: 70px;
-     max-width: 70px;
-   }
- }
-
- .team-member__data-unit:nth-child(2) {
-   -webkit-box-flex: 1;
-   -ms-flex: 1 1;
-   flex: 1 1;
-   line-height: 1.2;
- }
-
- .team-member__img-holder {
-   position: relative;
-   z-index: 1;
-   padding-top: 121%;
-   background-image: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#ddd));
-   background-image: linear-gradient(#ccc, #ddd);
-   overflow: hidden;
- }
-
- .team-member__img {
-   width: 100%;
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: 1;
- }
-
- .team-member__number {
-   /*font-size: 3.7rem;*/
-   margin-top: -2px;
- }
-
-/* 등번호 */
- @media (min-width: 1024px) {
-   .team-member__number {
-     font-size: 3rem;
-     margin-top: -4px;
-   }
- }
-
- .team-member__position {
-   font-size: 1.2rem;
-   margin-top: -0.2em;
- }
-
- @media (min-width: 1024px) {
-   .team-member__position {
-     font-size: 2rem;
-   }
- }
-
- .team-member__hg {
-   font-size: 1rem;
-   margin-top: 0.1em;
- }
-
- @media (min-width: 1024px) {
-   .team-member__hg {
-     font-size: 1.6rem;
-   }
- }
-
- .team-member__name-ja {
-   font-size: 1.3rem;
- }
-
- @media (min-width: 1024px) {
-   .team-member__name-ja {
-     font-size: 1.4rem;
-   }
- }
-
- .team-member__name-en {
-   font-size: 1rem;
-   margin-top: 0.4em;
- }
-
- @media (min-width: 1024px) {
-   .team-member__name-en {
-     font-size: 1.2rem;
-   }
- }
-
- .team-member__text {
-   font-size: 1rem;
-   margin-top: 0.9em;
- }
-
- .team-member__role {
-   margin-bottom: 0.8em;
-   font-size: 1.1rem;
- }
-
- /* 반응형 디자인을 위한 미디어 쿼리 */
- @media (max-width: 768px) {
-   .team-member__text {
-     font-size: 0.9rem; /* 모바일 기기에서는 글자 크기를 조금 줄입니다 */
-     margin-top: 0.7em; /* 상단 여백도 조금 줄입니다 */
-   }
-
-   .team-member__role {
-     font-size: 1rem; /* 모바일 기기에서는 역할 글자 크기를 조금 줄입니다 */
-     margin-bottom: 0.6em; /* 하단 여백도 조금 줄입니다 */
-   }
- }
-
- @media (min-width: 769px) and (max-width: 1024px) {
-   .team-member__text {
-     font-size: 1.1rem; /* 태블릿에서는 글자 크기를 조금 늘립니다 */
-     margin-top: 1em; /* 상단 여백을 조금 늘립니다 */
-   }
-
-   .team-member__role {
-     font-size: 1.2rem; /* 태블릿에서는 역할 글자 크기를 늘립니다 */
-     margin-bottom: 1em; /* 하단 여백을 늘립니다 */
-   }
- }
-
-
- .team-member__switch {
-   display: -webkit-box;
-   display: -ms-flexbox;
-   display: flex;
-   -webkit-box-pack: center;
-       -ms-flex-pack: center;
-           justify-content: center;
-   margin-top: 35px;
- }
-
- .team-member__switch-label {
-   text-align: center;
-   color: #fff;
-   background-color: #7d7d7d;
-   padding: 0.5em 1em;
-   -webkit-box-sizing: border-box;
-           box-sizing: border-box;
-   cursor: pointer;
-   width: 140px;
-   font-size: 1.5rem;
- }
-
- @media (min-width: 737px) {
-   .team-member__switch-label {
-     width: 176px;
-     font-size: 1.8rem;
-   }
- }
-
- .team-member__switch-label:nth-child(n + 2) {
-   margin-left: 20px;
- }
-
- .team-member__switch-label.is-active {
-   background-color: #000;
-   pointer-events: none;
- }
-
- .team-member__note {
-   text-align: right;
-   margin-top: -45px;
-   margin-bottom: 65px;
-   font-size: 1rem;
- }
-
- @media (min-width: 737px) {
-   .team-member__note {
-     margin-top: -80px;
-     margin-bottom: 110px;
-     font-size: 1.3rem;
-   }
- }
-
- .team-member__note a {
-   text-decoration: underline;
- }
-
-
-
- /* profile card end */
-
-
- @import url('https://fonts.cdnfonts.com/css/d-din');
-
-
-
-
-
- .subTop .tabMenu {
-   padding-top: 10px;
-   text-align: center;
-   font-size: 18px;
-   color: #777;
-   vertical-align: top;
-   border-bottom: 1px solid #e5e5e5;
- }
-
- .subTop .tabMenu .current,
- .subTop .tabMenu .router-link-exact-active {
-   color: #046a38;
- }
-
- .subTop .tabMenu a {
-   display: inline-block;
-   position: relative;
-   padding: 0 36px;
-   vertical-align: middle;
- }
-
- .subTop .tabMenu a span {
-   display: inline-block;
-   position: relative;
-   padding: 25px 0;
-   vertical-align: top;
- }
-
- .tabMenu .main-tab span {
-   color: #000000; /* 검정색 */
- }
-
- .tabMenu .main-tab.current span {
-   color: #f4ae15; /* 선택된 탭의 글자 색상 */
- }
-
- .tabMenu .main-tab.current span:before {
-   content: "";
-   position: absolute;
-   bottom: 0;
-   left: 0;
-   width: 100%;
-   height: 2px;
-   background-color: #ffc954; /* 선택된 탭의 아래 줄 색상 */
- }
-
- .tabContent .content {
-   padding-top: 30px;
- }
-
- .btns {
-   display: flex;
-   justify-content: center;
-   align-items: center;
- }
-
-
- .contents > .layout-inner {
-     max-width: 1040px;
-     padding: 0 15px 30px;
-     box-sizing: border-box;
- }
-
- .cont-tit {
-     display: block;
-     margin-bottom: 20px;
-     font-size: 24px;
- }
-
- .list-item {
-     display: flex;
-     flex-direction: column;
-     padding: 17px 10px;
-     border-bottom: 1px solid #eee;
-     box-sizing: border-box;
- }
-
- .list-item:last-child {
-     border-color: #ddd;
- }
-
- .list-item > .col + .col {
-     margin-top: 7px;
- }
-
- .list-item.fixed {
-     background-color: #f7f7f7;
- }
-
- .list-item.fixed .notice-tit {
-     font-weight: 700;
- }
-
- .list-item .col.tit a {
-     display: block;
-     display: -webkit-box;
-     max-height: 48px;
-     line-height: 24px;
-     font-size: 18px;
-     font-weight: 700;
-     text-overflow: ellipsis;
-     word-break: keep-all;
-     -webkit-line-clamp: 2;
-     -webkit-box-orient: vertical;
-     overflow: hidden;
- }
-
-
-
- .list-item .col.tit:hover {
-     text-decoration: underline;
-     cursor: pointer;
- }
-
- a {
-     color: #121212;
-     text-decoration: none;
- }
- .notice-wrap .btn {
-     display: inline-block;
-     min-width: 125px;
-     padding: 1.1em 1em 1em;
-     text-align: center;
-     font-size: 13px;
-     font-weight: 500;
-     color: #000;
-     border-radius: 4px;
-     border: 1px solid #034f36;
-     background-color: #ffc954;
- }
-
- .formBtns {
-     margin-top: 48px;
-     text-align: center;
- }
-
- .btn.btn-more {
-     min-width: 173px;
-     font-size: 18px;
-     font-weight: 700;
- }
-
- .dot::before {
-     content: "•";
- }
-
- .txt-num, .txt-hit {
-     color: #7e7a7a;
- }
-
-
- /*공지사항 탭 and*/
-
-
 
 .sub-tab {
-    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 색상 전환만 적용 */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sub-tab.active {
-    background-color: #e0e0e0; /* 활성화된 탭의 배경색을 조금 더 어둡게 조정 */
-    color: #333; /* 활성화된 탭의 텍스트 색상을 어둡게 하여 대비 향상 */
+    background-color: #e0e0e0;
+    color: #333;
 }
 
-/* 활성 서브 탭 아래로 서브 지시자가 부드럽게 이동하도록 조정 */
 .sub-indicator {
-    transition: left 0.3s ease; /* 위치 변화만 부드럽게 */
+    transition: left 0.3s ease;
+}
+
+.greeting-section {
+    display: flex;
+    /*align-items: center;*/
+    margin-bottom: 70px;
+}
+
+
+.profile-img {
+    width: 200px;
+    height: 200px;
+    margin-right: 30px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+
+.greeting-content {
+    flex: 1;
+}
+
+.greeting-content h3 {
+    margin-bottom: 5px;
+}
+
+.greeting-content p {
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 17px;
+    letter-spacing: -1px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 300;
+}
+
+.title-section {
+    position: relative;
+    padding-top: 40px;
+    font-size: 23px;
+}
+
+@media (min-width: 1024px) {
+    .team-container {
+        width: auto;
+        max-width: 1260px;
+    }
+    .team-container--narrow {
+        max-width: 1024px;
+    }
+}
+
+.section {
+    padding: 65px 0;
+    overflow: hidden;
+}
+
+@media (min-width: 737px) {
+    .section {
+        padding: 20px 0;
+    }
+}
+
+.title {
+    display: block;
+    text-align: center;
+    font-family: 'D-DIN', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+@media (min-width: 737px) {
+    .title {
+        letter-spacing: -2.2px;
+    }
+}
+
+.title--underline {
+    display: table;
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title--underline:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 2px;
+    background-color: #FF9800;
+}
+
+@media (min-width: 737px) {
+    .title--underline:before {
+        height: 4px;
+    }
+    .title--underline {
+        padding-bottom: 2px;
+    }
+}
+
+.title-sub {
+    display: block;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: -0.5em;
+}
+
+@media (min-width: 737px) {
+    .title-sub {
+        font-size: 1.4rem;
+    }
+}
+
+.title-ja {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 400;
+}
+
+@media (min-width: 737px) {
+    .title-ja {
+        font-size: 3.8rem;
+    }
+}
+
+.title-underline {
+    display: table;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-weight: 700;
+    padding-bottom: 0.1em;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    border: none;
+}
+
+@media (min-width: 737px) {
+    .title-underline {
+        font-size: 2rem;
+    }
+}
+
+.title-underline:before {
+    content: "";
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    left: 0;
+    z-index: 1;
+    margin: auto;
+    background-color: #e6002d;
+}
+
+.title-overlap-border {
+    text-align: center;
+    font-weight: 400;
+    margin-top: -0.5em;
+    line-height: 1;
+}
+
+.team-member__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+    .team-member__list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .team-member__list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 737px) {
+    .team-member__list {
+        margin-top: 60px;
+    }
+}
+
+.team-member__list--staff .team-member__data {
+    padding-left: 10px;
+}
+
+@media (min-width: 1024px) {
+    .team-member__list--staff .team-member__data {
+        padding-left: 20px;
+    }
+}
+
+.team-member__list--staff .team-member__data-unit:nth-child(1) {
+    text-align: left;
+    flex-basis: 100%;
+    max-width: 100%;
+    font-family: 'D-DIN', sans-serif;
+}
+
+.team-member__item {
+    background-color: #fff;
+    border-bottom: 2px solid #ff9800;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.team-member__item img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform-origin: center;
+    opacity: 0.9;
+}
+
+.team-member__item:hover img {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.team-member__data {
+    display: flex;
+    padding: 10px 10px 10px 0;
+}
+
+@media (min-width: 1024px) {
+    .team-member__data {
+        padding: 20px 20px 20px 0;
+    }
+}
+
+.team-member__data-unit:nth-child(1) {
+    text-align: center;
+    font-family: 'D-DIN', sans-serif;
+    line-height: 1;
+    flex-basis: 50px;
+}
+
+@media (min-width: 1024px) {
+    .team-member__data-unit:nth-child(1) {
+        flex-basis: 70px;
+        max-width: 70px;
+    }
+}
+
+.team-member__data-unit:nth-child(2) {
+    flex: 1 1;
+    line-height: 1.2;
+}
+
+.team-member__img-holder {
+    position: relative;
+    z-index: 1;
+    padding-top: 121%;
+    background-image: linear-gradient(#ccc, #ddd);
+    overflow: hidden;
+}
+
+.team-member__img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.team-member__number {
+    margin-top: -2px;
+}
+
+@media (min-width: 1024px) {
+    .team-member__number {
+        font-size: 3rem;
+        margin-top: -4px;
+    }
+}
+
+.team-member__position {
+    font-size: 1.2rem;
+    margin-top: -0.2em;
+}
+
+@media (min-width: 1024px) {
+    .team-member__position {
+        font-size: 2rem;
+    }
+}
+
+.team-member__hg {
+    font-size: 1rem;
+    margin-top: 0.1em;
+}
+
+@media (min-width: 1024px) {
+    .team-member__hg {
+        font-size: 1.6rem;
+    }
+}
+
+.team-member__name-ja {
+    font-size: 1.3rem;
+}
+
+@media (min-width: 1024px) {
+    .team-member__name-ja {
+        font-size: 1.4rem;
+    }
+}
+
+.team-member__name-en {
+    font-size: 1rem;
+    margin-top: 0.4em;
+}
+
+@media (min-width: 1024px) {
+    .team-member__name-en {
+        font-size: 1.2rem;
+    }
+}
+
+.team-member__text {
+    font-size: 1rem;
+    margin-top: 0.9em;
+}
+
+.team-member__role {
+    margin-bottom: 0.8em;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .team-member__text {
+        font-size: 0.9rem;
+        margin-top: 0.7em;
+    }
+    .team-member__role {
+        font-size: 1rem;
+        margin-bottom: 0.6em;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .team-member__text {
+        font-size: 1.1rem;
+        margin-top: 1em;
+    }
+    .team-member__role {
+        font-size: 1.2rem;
+        margin-bottom: 1em;
+    }
+}
+
+.team-member__switch {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.team-member__switch-label {
+    text-align: center;
+    color: #fff;
+    background-color: #7d7d7d;
+    padding: 0.5em 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 140px;
+    font-size: 1.5rem;
+}
+
+@media (min-width: 737px) {
+    .team-member__switch-label {
+        width: 176px;
+        font-size: 1.8rem;
+    }
+}
+
+.team-member__switch-label:nth-child(n + 2) {
+    margin-left: 20px;
+}
+
+.team-member__switch-label.is-active {
+    background-color: #000;
+    pointer-events: none;
+}
+
+.team-member__note {
+    text-align: right;
+    margin-top: -45px;
+    margin-bottom: 65px;
+    font-size: 1rem;
+}
+
+@media (min-width: 737px) {
+    .team-member__note {
+        margin-top: -80px;
+        margin-bottom: 110px;
+        font-size: 1.3rem;
+    }
+}
+
+.team-member__note a {
+    text-decoration: underline;
 }

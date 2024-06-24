@@ -187,6 +187,32 @@
 }
 
 
+.shareOptions {
+    margin-top: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.shareOptions a {
+    display: inline-block;
+    margin: 5px;
+    font-size: 24px;
+    color: #333;
+    position: relative;
+}
+
+.copy-success-message {
+    display: none;
+    color: rgba(128, 128, 128, 0.7); /* 투명도가 적용된 회색 */
+    position: absolute;
+    top: 100%; /* 아이콘 바로 아래에 위치시킴 */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap; /* 텍스트가 한 줄에 표시되도록 함 */
+    margin-top: 5px; /* 아이콘과 메시지 사이의 간격 조정 */
+    font-size: 12px; /* 메시지 크기 축소 */
+}
+
 
 
 

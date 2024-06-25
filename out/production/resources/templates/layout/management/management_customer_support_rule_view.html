@@ -81,19 +81,11 @@
         var loadedPages = {}; // 로드된 페이지 추적 객체
         var isRequestInProgress = false; // 요청 진행 상태 확인 변수
 
-        function loadRuleView(ruleId, token, pushState = true) {
-            if (!ruleId) {
-                console.error('Invalid ruleId:', ruleId);
-                return;
-            }
-
+        function loadRuleView(ruleId, token) {
             if (isRequestInProgress) return; // 중복 요청 방지
 
             if (loadedPages['/management/management_customer_support_rule_view?no=' + ruleId]) {
                 renderRuleView(loadedPages['/management/management_customer_support_rule_view?no=' + ruleId]);
-                if (pushState) {
-                    history.pushState({ ruleId: ruleId }, '', '/management/management_customer_support_rule_view?no=' + ruleId);
-                }
                 return;
             }
 
@@ -109,9 +101,6 @@
                 success: function(response) {
                     loadedPages['/management/management_customer_support_rule_view?no=' + ruleId] = response;
                     renderRuleView(response);
-                    if (pushState) {
-                        history.pushState({ ruleId: ruleId }, '', '/management/management_customer_support_rule_view?no=' + ruleId);
-                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('규정 상세 조회 에러:', error);
@@ -143,8 +132,9 @@
             }
         }
 
-
         function loadPage(url, token, pushState = true) {
+            if (isRequestInProgress) return; // 중복 요청 방지
+
             if (loadedPages[url]) {
                 $('body').html(loadedPages[url]);
                 if (pushState) {
@@ -152,6 +142,8 @@
                 }
                 return;
             }
+
+            isRequestInProgress = true; // 요청 진행 중 상태로 설정
 
             $.ajax({
                 url: url,
@@ -172,6 +164,9 @@
                         alert('인증이 필요합니다. 로그인 페이지로 이동합니다.');
                         location.href = '/user/loginform';
                     }
+                },
+                complete: function() {
+                    isRequestInProgress = false; // 요청 완료 상태로 설정
                 }
             });
         }
@@ -200,6 +195,7 @@
         loadRuleView(ruleId, token);
     });
 </script>
+
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>

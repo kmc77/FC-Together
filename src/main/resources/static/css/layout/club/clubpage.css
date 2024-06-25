@@ -92,10 +92,12 @@
 }
 
 .team-container {
-    position: relative;
-    max-width: 1260px;
-    margin: auto;
-    padding: 0 30px;
+  position: relative;
+  max-width: 1260px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .sub_container {
@@ -289,8 +291,8 @@ a {
 
 
 .profile-img {
-    width: 200px;
-    height: 200px;
+    width: 280px;
+    height: 280px;
     margin-right: 30px;
     object-fit: cover;
     border-radius: 3px;
@@ -698,4 +700,8 @@ p {
 
 .team-member__note a {
     text-decoration: underline;
+}
+
+.organization img {
+    margin-bottom: 110px;
 }

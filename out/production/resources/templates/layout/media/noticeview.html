@@ -17,21 +17,24 @@
             <div class="noticeInformation">
                 <div class="titleBox">
                     <!-- 제목, 작성자, 작성일, 조회수 -->
-                    <p id="notice-title">제목</p>
+                    <p id="notice-title" th:text="${notice.noticeTitle}"></p>
                     <div>
                         <div class="titleInfo">
-                            <p><i class="fa-regular fa-user"></i> 작성자</p>
-                            <p id="notice-username">Username</p>
+                            <i class="fa-regular fa-user"></i>
+                            <p>작성자</p>
+                            <p id="notice-username" th:text="${notice.username}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p><i class="fa-regular fa-calendar"></i> 작성일</p>
-                            <p id="notice-date">Date</p>
+                            <i class="fa-regular fa-calendar"></i>
+                            <p>작성일</p>
+                            <p id="notice-date" th:text="${notice.noticeDate}"></p>
                         </div>
                         <div class="line"></div>
                         <div class="titleInfo">
-                            <p><i class="fa-regular fa-eye"></i> 조회수</p>
-                            <p id="notice-hits">Hits</p>
+                            <i class="fa-regular fa-eye"></i>
+                            <p>조회수</p>
+                            <p id="notice-hits" th:text="${notice.noticeHits}"></p>
                         </div>
                     </div>
                 </div>
@@ -45,7 +48,7 @@
             <div class="noticeContent">
                 <!-- 글 내용 -->
                 <div class="content">
-                    <p id="notice-content">Content</p>
+                    <p id="notice-content" th:text="${notice.noticeContent}"></p>
                 </div>
                 <!-- 첨부 파일 목록 -->
                 <div class="attachments">

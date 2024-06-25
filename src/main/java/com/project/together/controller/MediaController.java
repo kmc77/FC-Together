@@ -87,8 +87,23 @@ public class MediaController {
     // 공지사항 상세보기 페이지
     @GetMapping("/noticeview")
     public String noticeViewPage(@RequestParam("no") int noticeNum, Model model) throws NotFoundException {
-        return "/layout/media/noticeview";
+        mediaService.increaseNoticeHits(noticeNum); // 조회수 증가
+        Notice notice = mediaService.getNotice(noticeNum);
+
+        if (notice == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID가 포함된 공지를 찾을 수 없습니다.: " + noticeNum);
+        }
+
+        model.addAttribute("notice", notice);
+
+        Notice prevNotice = mediaService.findPrevNoticeByNoticeNum(noticeNum);
+        if (prevNotice != null) {
+            model.addAttribute("prevNotice", prevNotice);
+        }
+
+        return "layout/media/noticeview";
     }
+
 
     // 공지사항 상세 데이터 조회
     @GetMapping("/noticeview/data")

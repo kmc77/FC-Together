@@ -551,17 +551,17 @@ a {
   margin-top: 30px;
 }
 
-@media (max-width: 1024px) {
+/*@media (max-width: 1024px) {
   .team-member__list {
-    grid-template-columns: repeat(2, 1fr); /* 화면이 작아질 경우 2개의 항목을 표시 */
+    grid-template-columns: repeat(2, 1fr); *//* 화면이 작아질 경우 2개의 항목을 표시 *//*
   }
 }
 
 @media (max-width: 768px) {
   .team-member__list {
-    grid-template-columns: 1fr; /* 화면이 더 작아질 경우 1개의 항목을 표시 */
+    grid-template-columns: 1fr; *//* 화면이 더 작아질 경우 1개의 항목을 표시 *//*
   }
-}
+}*/
 
 @media (min-width: 737px) {
   .team-member__list {
@@ -754,11 +754,9 @@ a {
  }
 
 /* 등번호 */
- @media (min-width: 1024px) {
    .team-member__number {
      font-size: 3rem;
      margin-top: -4px;
-   }
  }
 
  .team-member__position {

@@ -705,7 +705,7 @@
             tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
 
             postElement.innerHTML = `
-                <a href="/media/noticeview?no=${post.noticeNum}" target="_blank" class="notice-post-link">
+                <a href="#" data-url="/media/noticeview?no=${post.noticeNum}" class="notice-post-link" target="_blank">
                     <div class="notice-post-title">${post.noticeTitle}</div>
                     <div class="notice-post-content">${tempDiv.innerHTML}</div>
                     <div class="notice-post-timestamp">${new Date(post.noticeDate).toLocaleDateString()}</div>
@@ -713,6 +713,15 @@
             `;
 
             noticeContent.appendChild(postElement);
+        });
+
+        document.querySelectorAll('.notice-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.getAttribute('data-url');
+                console.log('Notice link clicked:', url); // 로그 추가
+                openPageInNewTab(url, localStorage.getItem('accessToken'));
+            });
         });
     }
 
@@ -745,7 +754,7 @@
             tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
 
             postElement.innerHTML = `
-                <a href="/media/newsview?no=${post.newsIdx}" target="_blank" class="news-post-link">
+                <a href="#" data-url="/media/newsview?no=${post.newsIdx}" class="news-post-link" target="_blank">
                     <div class="news-post-title">${post.newsTitle}</div>
                     <div class="news-post-content">${tempDiv.innerHTML}</div>
                     <div class="news-post-timestamp">${new Date(post.newsRegdate).toLocaleDateString()}</div>
@@ -753,6 +762,42 @@
             `;
 
             newsContent.appendChild(postElement);
+        });
+
+        document.querySelectorAll('.news-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.getAttribute('data-url');
+                console.log('News link clicked:', url); // 로그 추가
+                openPageInNewTab(url, localStorage.getItem('accessToken'));
+            });
+        });
+    }
+
+    function openPageInNewTab(url, token) {
+        const newWindow = window.open('', '_blank');
+
+        console.log('Opening new tab with URL:', url); // 로그 추가
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            success: function(data) {
+                console.log('Page loaded successfully'); // 로그 추가
+                newWindow.document.open();
+                newWindow.document.write(data);
+                newWindow.document.close();
+            },
+            error: function(xhr, status, error) {
+                console.error('Page load failed:', error); // 로그 추가
+                if (xhr.status === 401) {
+                    alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
+                    location.href = '/user/loginform';
+                }
+                newWindow.close();
+            }
         });
     }
 

@@ -37,14 +37,15 @@
             <li class="slide2"></li>
             <li><a href="#/list">User 목록</a></li>
             <li><a href="#/section1photos">섹션 사진목록</a></li>
-            <li><a href="#/gamma">Gamma</a></li>
+            <li><a href="#/leagueRanking">리그순위</a></li>
             <li><a href="#/section1photoregistration">섹션 사진등록</a></li>
+            <li><a href="#/rankRegistration">순위등록</a></li>
         </ul>
         <script src="/dist/js/adminpage.js"></script>
     </div>
 
-    <!-- 테이블 시작 -->
-    <div class="container mx-auto py-6 px-4" id="listContent"> <!-- 목록 콘텐츠 -->
+    <!-- User 목록 -->
+    <div class="container mx-auto py-6 px-4" id="listContent">
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-3xl py-4 border-b mb-10">User 목록</h1>
             <button id="deleteUserButton" class="bg-red-500 text-white px-4 py-2 rounded-lg">선택된 사용자 삭제</button>
@@ -61,7 +62,6 @@
                 </div>
             </div>
         </div>
-
         <div class="mb-4 flex justify-between items-center">
             <div class="flex-1 pr-4">
                 <div class="relative md:w-1/3">
@@ -79,12 +79,12 @@
                 <div class="shadow rounded-lg flex">
                     <div class="relative">
                         <button id="displayButton" class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/1999/xhtml" class="w-6 h-6 md:hidden" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
                                 <path d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5"></path>
                             </svg>
                             <span class="hidden md:block">Display</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/1999/xhtml" class="w-5 h-5 ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
@@ -96,50 +96,32 @@
                 </div>
             </div>
         </div>
-
         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
             <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative" id="mainTable">
                 <thead>
-
-                <!-- 테이블 항목 -->
                 <tr class="text-left">
                     <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
                         <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                             <input id="selectAllCheckboxUser" type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
                         </label>
                     </th>
-
                     <template>
                         <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"></th>
                     </template>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs id">회원번호</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs username">회원아이디</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs email">Email</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs roles">roles</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_real_name">회원이름</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_gender">회원성별</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_phone">Phone</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_address">회원주소</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_birth">생년월일</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_like_player">좋아하는 선수</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs user_marketing">마케팅 동의</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs providerId">소셜로그인 플렛폼</th>
-
                     <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs provider">소셜로그인아이디</th>
                 </tr>
-                <!-- 테이블 항목 끝 -->
                 </thead>
                 <tbody id="userTableBody">
                 <!-- 사용자 데이터가 여기에 추가됩니다 -->
@@ -147,7 +129,35 @@
             </table>
         </div>
     </div>
-    <!-- 테이블 끝 -->
+    <!-- User 목록 끝 -->
+
+    <!-- 리그 순위 콘텐츠 -->
+    <div id="leagueRankingContent" class="container mx-auto py-6 px-4" style="display: none;">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-3xl py-4 border-b mb-10">리그 순위</h1>
+            <button id="saveRankingButton" class="bg-green-500 text-white px-4 py-2 rounded-lg">순위 저장</button>
+        </div>
+        <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
+            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+                <thead>
+                <tr class="text-left">
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">리그</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">순위</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">팀</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">경기수</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">승</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">무</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">패</th>
+                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">승점</th>
+                </tr>
+                </thead>
+                <tbody id="leagueRankingTableBody">
+                <!-- 리그 순위 데이터가 여기에 추가됩니다 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 리그 순위 끝 -->
 
     <!-- 섹션1 사진 목록 -->
     <div id="section1PhotoListContainer" class="container mx-auto py-6 px-4" style="display: none;">
@@ -186,6 +196,49 @@
         </form>
     </div>
     <!-- 섹션1 사진 등록 폼 끝 -->
+
+    <!-- 순위 등록 폼 -->
+    <div id="insertRankingFormContainer" class="container mx-auto py-6 px-4" style="display: none;">
+        <h1 class="text-3xl py-4 border-b mb-10">순위 등록</h1>
+        <form id="insertRankingForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="insertLeagueGb" class="block text-gray-700">리그 구분</label>
+                    <input type="text" id="insertLeagueGb" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertLeagueRank" class="block text-gray-700">순위</label>
+                    <input type="number" id="insertLeagueRank" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertTeamName" class="block text-gray-700">팀</label>
+                    <input type="text" id="insertTeamName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertGamesPlayed" class="block text-gray-700">경기수</label>
+                    <input type="number" id="insertGamesPlayed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertWins" class="block text-gray-700">승</label>
+                    <input type="number" id="insertWins" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertDraws" class="block text-gray-700">무</label>
+                    <input type="number" id="insertDraws" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertLosses" class="block text-gray-700">패</label>
+                    <input type="number" id="insertLosses" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="insertPoints" class="block text-gray-700">승점</label>
+                    <input type="number" id="insertPoints" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+            </div>
+            <button type="button" id="insertRankingButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">추가</button>
+        </form>
+    </div>
+    <!-- 순위 등록 폼 끝 -->
 
 </div>
 
@@ -386,7 +439,9 @@
         $('#nav-1 a[href="#/section1photos"]').click(function (event) {
             event.preventDefault(); // 기본 동작 방지
             $('#listContent').hide(); // User 목록을 숨김
+            $('#leagueRankingContent').hide(); // 리그순위 목록을 숨김
             $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            $('#insertRankingFormContainer').hide(); // 리그 순위 인서트 폼을 숨김
             $('#section1PhotoListContainer').show(); // 섹션1 사진 목록을 표시
             selectedRowsPhoto = []; // 선택 항목 초기화
             updateSelectedCountPhoto(); // 선택 항목 수 초기화
@@ -397,17 +452,42 @@
         $('#nav-1 a[href="#/section1photoregistration"]').click(function (event) {
             event.preventDefault(); // 기본 동작 방지
             $('#listContent').hide(); // User 목록을 숨김
+            $('#leagueRankingContent').hide(); // 리그순위 목록을 숨김
+            $('#insertRankingFormContainer').hide(); // 리그 순위 인서트 폼을 숨김
             $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
             $('#section1PhotoForm').show(); // 섹션1 사진 등록 폼을 표시
             selectedRowsPhoto = []; // 선택 항목 초기화
             updateSelectedCountPhoto(); // 선택 항목 수 초기화
         });
 
-        // 다른 탭 클릭 시 섹션1 사진 등록 폼과 목록을 숨김
-        $('#nav-1 a[href!="#/section1photos"][href!="#/section1photoregistration"]').click(function (event) {
+        // 리그 순위 탭 클릭 이벤트 추가
+        $('#nav-1 a[href="#/leagueRanking"]').click(function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            $('#listContent').hide(); // User 목록을 숨김
             $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
             $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
+            $('#insertRankingFormContainer').hide(); // 리그 순위 인서트 폼을 숨김
+            $('#leagueRankingContent').show(); // 리그 순위 콘텐츠를 표시
+            loadLeagueRankings(); // 리그 순위 데이터 로드 함수 호출
+        });
+
+        // 순위 등록 탭 클릭 이벤트 추가
+        $('#nav-1 a[href="#/rankRegistration"]').click(function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            $('#listContent').hide(); // User 목록을 숨김
+            $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
+            $('#leagueRankingContent').hide(); // 리그 순위 콘텐츠를 숨김
+            $('#insertRankingFormContainer').show(); // 리그 순위 인서트 폼을 표시
+        });
+
+        // 다른 탭 클릭 시 섹션1 사진 등록 폼과 목록을 숨김
+        $('#nav-1 a[href!="#/section1photos"][href!="#/section1photoregistration"][href!="#/leagueRanking"][href!="#/rankRegistration"]').click(function (event) {
+            $('#section1PhotoForm').hide(); // 섹션1 사진 등록 폼을 숨김
+            $('#section1PhotoListContainer').hide(); // 섹션1 사진 목록을 숨김
+            $('#insertRankingFormContainer').hide(); // 리그 순위 인서트 폼을 숨김
             $('#listContent').show(); // User 목록을 표시
+            $('#leagueRankingContent').hide(); // 리그 순위 콘텐츠를 숨김
             selectedRowsUser = []; // 선택 항목 초기화
             selectedRowsPhoto = []; // 선택 항목 초기화
             updateSelectedCountUser(); // 선택 항목 수 초기화
@@ -470,6 +550,176 @@
                 }
             });
         }
+
+        function loadLeagueRankings() {
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/getLeagueRankings",
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                },
+                success: function(data) {
+                    var rankings = data;
+                    var content = '';
+                    $.each(rankings, function (i, ranking) {
+                        content += '<tr>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600 leagueGb">' + ranking.leagueGb + '</td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.leagueRank + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.leagueRank + '" class="rankingInput leagueRankInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="text" value="' + ranking.teamName + '" data-league-gb="' + ranking.leagueGb + '" data-old-value="' + ranking.teamName + '" class="rankingInput teamNameInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.gamesPlayed + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.gamesPlayed + '" class="rankingInput gamesPlayedInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.wins + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.wins + '" class="rankingInput winsInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.draws + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.draws + '" class="rankingInput drawsInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.losses + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.losses + '" class="rankingInput lossesInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><input type="number" value="' + ranking.points + '" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '" data-old-value="' + ranking.points + '" class="rankingInput pointsInput"></td>';
+                        content += '<td class="border-dashed border-t border-gray-200 px-6 py-2 text-gray-600"><button class="deleteRankingButton bg-red-500 text-white px-2 py-1 rounded-lg" data-league-gb="' + ranking.leagueGb + '" data-team-name="' + ranking.teamName + '">삭제</button></td>';
+                        content += '</tr>';
+                    });
+                    $('#leagueRankingTableBody').html(content);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        $('#saveRankingButton').click(function() {
+            var updatedRankings = [];
+            var changesDetected = false;
+
+            $('.rankingInput').each(function() {
+                var leagueGb = $(this).data('league-gb');
+                var teamName = $(this).data('team-name');
+                var field = $(this).attr('class').split(' ')[1].replace('Input', '');
+                var oldValue = $(this).data('old-value');
+                var newValue = field === 'teamName' ? $(this).val() : parseInt($(this).val());
+
+                if (oldValue != newValue) {
+                    changesDetected = true;
+                    var existingRanking = updatedRankings.find(function(r) {
+                        return r.leagueGb === leagueGb && r.teamName === teamName;
+                    });
+
+                    if (existingRanking) {
+                        existingRanking[field] = newValue;
+                    } else {
+                        var newRanking = {
+                            leagueGb: leagueGb,
+                            teamName: teamName,
+                            leagueRank: null,
+                            gamesPlayed: null,
+                            wins: null,
+                            draws: null,
+                            losses: null,
+                            points: null,
+                        };
+                        newRanking[field] = newValue;
+                        updatedRankings.push(newRanking);
+                    }
+                }
+            });
+
+            if (!changesDetected) {
+                alert("수정사항이 없습니다.");
+                return;
+            }
+
+            if (!confirm("수정하시겠습니까?")) {
+                return;
+            }
+
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/updateLeagueRankings",
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + accessToken,
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify(updatedRankings),
+                success: function() {
+                    alert('리그 순위가 성공적으로 업데이트되었습니다.');
+                    loadLeagueRankings();
+                },
+                error: function(error) {
+                    alert('리그 순위 업데이트 중 오류가 발생했습니다.');
+                }
+            });
+        });
+
+        // 순위 추가 버튼 클릭 이벤트 핸들러
+        $('#insertRankingButton').click(function() {
+            var leagueGb = $('#insertLeagueGb').val();
+            var leagueRank = $('#insertLeagueRank').val();
+            var teamName = $('#insertTeamName').val();
+            var gamesPlayed = $('#insertGamesPlayed').val();
+            var wins = $('#insertWins').val();
+            var draws = $('#insertDraws').val();
+            var losses = $('#insertLosses').val();
+            var points = $('#insertPoints').val();
+
+            if (!leagueGb || !leagueRank || !teamName || !gamesPlayed || !wins || !draws || !losses || !points) {
+                alert('모든 필드를 입력해 주세요.');
+                return;
+            }
+
+            var newRanking = {
+                leagueGb: leagueGb,
+                leagueRank: parseInt(leagueRank),
+                teamName: teamName,
+                gamesPlayed: parseInt(gamesPlayed),
+                wins: parseInt(wins),
+                draws: parseInt(draws),
+                losses: parseInt(losses),
+                points: parseInt(points)
+            };
+
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/insertLeagueRanking",
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + accessToken,
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify(newRanking),
+                success: function() {
+                    alert('새로운 리그 순위가 성공적으로 추가되었습니다.');
+                    loadLeagueRankings();
+                    $('#insertRankingForm')[0].reset();
+                },
+                error: function(error) {
+                    alert('리그 순위 추가 중 오류가 발생했습니다.');
+                }
+            });
+        });
+
+
+        $(document).on('click', '.deleteRankingButton', function() {
+            if (!confirm("정말 삭제하시겠습니까?")) {
+                return;
+            }
+
+            var leagueGb = $(this).data('league-gb');
+            var teamName = $(this).data('team-name');
+            var accessToken = localStorage.getItem('accessToken');
+            $.ajax({
+                url: "/admin/layout/deleteLeagueRanking",
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + accessToken,
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify({ leagueGb: leagueGb, teamName: teamName }),
+                success: function() {
+                    alert('리그 순위가 성공적으로 삭제되었습니다.');
+                    loadLeagueRankings();
+                },
+                error: function(error) {
+                    alert('리그 순위 삭제 중 오류가 발생했습니다.');
+                }
+            });
+        });
 
 
         function bindCheckboxEvents() {
@@ -566,7 +816,6 @@
                 }
             });
         });
-
 
         // 삭제 버튼 클릭 이벤트
         $('#deleteUserButton').click(function() {

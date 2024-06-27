@@ -1,8 +1,6 @@
 package com.project.together.controller;
 
-import com.project.together.domain.ClubVideo;
-import com.project.together.domain.File;
-import com.project.together.domain.Match;
+import com.project.together.domain.*;
 import com.project.together.service.FileService;
 import com.project.together.service.MainService;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +65,23 @@ public class MainController {
         List<Match> w1Matches = mainService.findW1MatchListByLeague("w1");
         return ResponseEntity.ok(w1Matches);
     }
+
+    // 리그 순위 목록 가져오기
+    @GetMapping("/mainMatch/getLeagueRankings")
+    public ResponseEntity<List<Ranking>> getLeagueRankings() {
+        List<Ranking> rankings = mainService.getAllRankings();
+        return ResponseEntity.ok(rankings);
+    }
+
+    // 수상 내역 가져오기
+    @GetMapping("/mainTrophy/getTrophy")
+    public ResponseEntity<List<Trophy>> getTrophy() {
+        System.out.println("================ mainService = " + mainService);
+        List<Trophy> trophies = mainService.getTrophy();
+        return ResponseEntity.ok(trophies);
+    }
+
+
 
 
 

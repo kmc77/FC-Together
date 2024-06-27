@@ -41,7 +41,7 @@
                 localStorage.setItem('accessToken', data.accessToken);
                 console.log('엑세스 토큰이 성공적으로 갱신되었습니다.');
                 alert('엑세스 토큰이 성공적으로 갱신되었습니다.');
-
+                location.reload(); // 알림창에서 "확인"을 누르면 페이지 새로고침
             },
             error: function () {
                 console.error('새로운 토큰을 발급받는 데 실패했습니다.');
@@ -128,7 +128,7 @@
             error: function (xhr, status, error) {
                 console.error('페이지 로드 실패:', error);
                 if (xhr.status === 401) {
-                    alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
+                    /*alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');*/
                     location.href = '/user/loginform';
                 }
             }

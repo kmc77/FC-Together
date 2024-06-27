@@ -1,8 +1,6 @@
 package com.project.together.service;
 
-import com.project.together.domain.ClubVideo;
-import com.project.together.domain.File;
-import com.project.together.domain.Match;
+import com.project.together.domain.*;
 import com.project.together.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,5 +34,13 @@ public class MainService {
 
     public List<Match> findW1MatchListByLeague(String w1) {
         return mainMapper.findW1MatchListByLeague(w1);
+    }
+
+    public List<Ranking> getAllRankings() {
+        return mainMapper.getAllRankings();
+    }
+
+    public List<Trophy> getTrophy() {
+        return mainMapper.getTrophy();
     }
 }

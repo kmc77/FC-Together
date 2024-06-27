@@ -25,11 +25,10 @@
             </div>
             <div class="tabMenu">
                 <div class="container">
-                    <a href="javascript:void(0);" data-num="1"
-                       class="main-tab wave router-link-exact-active router-link-active current">
+                    <a href="#greetings" data-num="1" class="main-tab wave">
                         <span>인사말</span>
                     </a>
-                    <a href="javascript:void(0);" data-num="2" class="main-tab wave">
+                    <a href="#organization" data-num="2" class="main-tab wave">
                         <span>조직도</span>
                     </a>
                 </div>
@@ -45,9 +44,9 @@
                         </p>
                         <p>FC투게더는 2022년 성동구민축구단으로 출범하여 성동구 축구 발전에 힘쓰고 있습니다.</p>
                         <p>저 또한 성동구 출신으로 지난 40여 년간 성동구축구협회 소속으로 활동하였습니다.</p>
-                        <p>성동구는 서울시 내에서도 축구 참여 인구가 많은 구 중 하나입니다. 성동구민들의 축구에 대한 열정과 관심이 매우 높습니다. 이러한 성동구민들의 축구<br> 사랑을 바탕으로 성동구민축구단 투게더가 출범하게 되었습니다.</p>
+                        <p>성동구는 서울시 내에서도 축구 참여 인구가 많은 구 중 하나입니다. 성동구민들의 축구에 대한 열정과 관심이 매우 높습니다. <br>이러한 성동구민들의 축구 사랑을 바탕으로 성동구민축구단 투게더가 출범하게 되었습니다.</p>
                         <p>저는 성동구민축구단 투게더의 명예구단주로서 성동구 축구 발전을 위해 최선을 다하겠습니다.</p>
-                        <p>성동구민 여러분의 적극적인 관심과 참여를 부탁드립니다. 함께 성동구민축구단 투게더를 응원하고 성장시켜 나가면서 성동구 축구의 새로운 역사를 만들어 나가겠습니다.</p>
+                        <p>성동구민 여러분의 적극적인 관심과 참여를 부탁드립니다. <br>함께 성동구민축구단 투게더를 응원하고 성장시켜 나가면서 성동구 축구의 새로운 역사를 만들어 나가겠습니다.</p>
                         <p>감사합니다.</p>
                     </div>
                 </div>
@@ -60,9 +59,9 @@
                             <strong>안녕하십니까? 성동구민축구단 투게더 단장 오정수입니다.</strong>
                         </p>
                         <p>저는 오랫동안 축구를 통해 다양한 사람들과 소통하고 교감하며, 경쟁 속에서 동료와 상대를 존중하는 축구의 특성에 매료되어 왔습니다.</p>
-                        <p>이러한 경험을 통해 스포츠가 사회 전반에 걸쳐 긍정적인 영향을 미칠 수 있다는 것을 깨달았습니다. 특히 아마추어 축구팀의 체계적인 성장이 한국 축구<br> 발전의 밑거름이 될 수 있다고 생각합니다.</p>
-                        <p>FC투게더는 이러한 축구와 사회의 긍정적인 시너지 효과를 실현하고자 하는 팀입니다. 다 ‘함께’라는 가치관을 바탕으로 젊은 선수들의 비전과 선진 축구<br> 시스템을 접목하여 한국 축구의 새로운 모델을 만들어 나가고자 합니다.</p>
-                        <p>이를 위해 성동구민과 팬 여러분의 지속적인 관심과 성원이 필요합니다. '구민 구단'이라는 성동의 자부심을 가지고 스포츠 강국, 스포츠 이벤트 메카 성동을<br> 만들어 나가는 데 힘쓰겠습니다.</p>
+                        <p>이러한 경험을 통해 스포츠가 사회 전반에 걸쳐 긍정적인 영향을 미칠 수 있다는 것을 깨달았습니다. <br>특히 아마추어 축구팀의 체계적인 성장이 한국 축구 발전의 밑거름이 될 수 있다고 생각합니다.</p>
+                        <p>FC투게더는 이러한 축구와 사회의 긍정적인 시너지 효과를 실현하고자 하는 팀입니다. <br>다 ‘함께’라는 가치관을 바탕으로 젊은 선수들의 비전과 선진 축구 시스템을 접목하여 한국 축구의 새로운 모델을 만들어 나가고자 합니다.</p>
+                        <p>이를 위해 성동구민과 팬 여러분의 지속적인 관심과 성원이 필요합니다. <br>'구민 구단'이라는 성동의 자부심을 가지고 스포츠 강국, 스포츠 이벤트 메카 성동을 만들어 나가는 데 힘쓰겠습니다.</p>
                         <p>감사합니다.</p>
                     </div>
                 </div>
@@ -75,18 +74,43 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('.tabMenu a').click(function() {
+        function showTab(tabNum) {
             $('.tabMenu a').removeClass('current');
-            $(this).addClass('current');
-            var tabNum = $(this).data('num');
             if (tabNum == 1) {
                 $('#greetings').show();
                 $('#organization').hide();
+                $('a[data-num="1"]').addClass('current');
             } else if (tabNum == 2) {
                 $('#greetings').hide();
                 $('#organization').show();
+                $('a[data-num="2"]').addClass('current');
             }
+        }
+
+        function updateTabBasedOnHash() {
+            var hash = window.location.hash;
+            if (hash === '#organization') {
+                showTab(2);
+            } else {
+                showTab(1);
+            }
+        }
+
+        $('.tabMenu a').click(function(event) {
+            event.preventDefault();
+            var scrollPosition = $(window).scrollTop();
+            var tabNum = $(this).data('num');
+            showTab(tabNum);
+            window.location.hash = $(this).attr('href');
+            $(window).scrollTop(scrollPosition);
         });
+
+        $(window).on('hashchange', function() {
+            updateTabBasedOnHash();
+        });
+
+        // URL의 해시를 기반으로 초기 탭 설정
+        updateTabBasedOnHash();
     });
 </script>
 <footer>

@@ -31,6 +31,14 @@ public interface AdminMapper {
     void deleteUser(@Param("userIds") Set<Long> userIds);
 
 
+    List<Ranking> getAllRankings();
+    void updateRanking(Ranking ranking);
+    void insertRanking(Ranking newRanking);
+
+    void deleteRanking(@Param("leagueGb") String leagueGb, @Param("teamName") String teamName);
+
+
+
 
     /* ======================================= */
 
@@ -303,4 +311,5 @@ public interface AdminMapper {
     File findFileByFileIdx(Long fileIdx);
 
     void deleteFileByFileIdx(Long fileIdx);
+
 }

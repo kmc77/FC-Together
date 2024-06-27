@@ -46,6 +46,34 @@
 
 
 
+    <select id="getAllRankings" resultType="com.project.together.domain.Ranking">
+        SELECT * FROM Ranking
+    </select>
+
+    <update id="updateRanking">
+        UPDATE Ranking
+        SET
+        league_rank = #{leagueRank},
+        games_played = #{gamesPlayed},
+        wins = #{wins},
+        draws = #{draws},
+        losses = #{losses},
+        points = #{points}
+        WHERE league_gb = #{leagueGb} AND team_name = #{teamName}
+    </update>
+
+    <insert id="insertRanking">
+        INSERT INTO Ranking (league_gb, team_name, games_played, wins, draws, losses, points, league_rank)
+        VALUES (#{leagueGb}, #{teamName}, #{gamesPlayed}, #{wins}, #{draws}, #{losses}, #{points}, #{leagueRank})
+    </insert>
+
+    <delete id="deleteRanking">
+        DELETE FROM Ranking
+        WHERE league_gb = #{leagueGb} AND team_name = #{teamName}
+    </delete>
+
+
+
 
     <!-- ==============  QnA Start ============== -->
 

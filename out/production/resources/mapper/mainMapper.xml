@@ -35,4 +35,14 @@
     </select>
 
 
+    <select id="getAllRankings" resultType="com.project.together.domain.Ranking">
+        SELECT * FROM Ranking
+    </select>
+
+
+    <select id="getTrophy" resultType="com.project.together.domain.Trophy">
+        SELECT * FROM trophy
+    </select>
+
+
 </mapper>

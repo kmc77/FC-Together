@@ -73,6 +73,29 @@ public class AdminService {
         adminMapper.deleteSection1Photos(photoIds);
     }
 
+
+    public List<Ranking> getAllRankings() {
+        return adminMapper.getAllRankings();
+    }
+
+
+    public void updateRankings(List<Ranking> updatedRankings) {
+        for (Ranking ranking : updatedRankings) {
+            adminMapper.updateRanking(ranking);
+        }
+    }
+
+
+    public void insertRanking(Ranking newRanking) {
+        adminMapper.insertRanking(newRanking);
+    }
+
+
+    public void deleteRanking(String leagueGb, String teamName) {
+        adminMapper.deleteRanking(leagueGb, teamName);
+    }
+
+
     // ================================== QnA start
 
     public List<Qna> getAllQnAs() {

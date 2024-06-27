@@ -59,10 +59,11 @@ body {
 
 .swiperImg {
     width: 100vw; /* 뷰포트 너비로 고정 */
-    height: 100vh; /* 뷰포트 높이로 고정 */
+    /*height: 100vh*/; /* 뷰포트 높이로 고정 */
+    height: 95vh;
     object-fit: cover;
     cursor: pointer;
-    filter: brightness(60%);
+    filter: brightness(70%);
     transform: translateY(-15%); /* 위쪽으로 이동 */
 }
 
@@ -245,7 +246,7 @@ body {
 
 /* 호버 상태 스타일 (호버 시 밝기 증가) */
 .leagueTabButton img:hover {
-    filter: brightness(1.1); /* 밝기 증가 */
+    filter: brightness(1.3); /* 밝기 증가 */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 그림자 */
 }
 
@@ -323,7 +324,7 @@ body {
     position: absolute;
     top: 14%;
     left: 32%;
-    width: 37%;
+    width: 35%;
     height: 80%;
     background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
@@ -356,44 +357,154 @@ body {
 .leagueRanking {
     position: absolute;
     top: 14%;
-    left: 71%;
-    width: 23%;
+    left: 69%;
+    width: 26%;
     height: 80%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.85);
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .leagueRank {
-    color: white;
+    color: #f1f1f1;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .rankingTable {
     width: 100%;
-    height: 80%;
-    overflow: hidden;
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.75);
+    height: 40%; /* 기존 높이에서 줄임 */
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #f1f1f1;
+}
+
+.additionalInfo {
+    width: 100%;
+    height: 39%; /* 수상내역 영역 높이 설정 */
+    margin-top: 10px;
+    overflow: hidden; /* 스크롤 대신 숨김으로 변경 */
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #f1f1f1;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.additionalTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
     color: white;
+}
+
+.trophyImage {
+    width: 24px; /* 이미지 크기 조정 */
+    height: 24px; /* 이미지 크기 조정 */
+    margin-left: 10px; /* 제목과 이미지 사이의 간격 */
+}
+
+.trophyContainer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 40px); /* 영역 전체에서 제목 높이 제외 */
+}
+
+.trophies {
+    position: absolute;
+    bottom: 0; /* 시작 위치를 조정 */
+    width: 100%;
+    animation: scrollUp 30s linear infinite; /* 애니메이션 추가 */
+    animation-timing-function: linear; /* 속도 일정하게 유지 */
+}
+
+@keyframes scrollUp {
+    0% {
+        transform: translateY(100%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+}
+
+.trophyItemContent {
+    display: flex;
+    justify-content: space-between; /* 요소들을 좌우로 배치 */
+    align-items: center; /* 요소들을 세로로 중앙 정렬 */
+    padding: 10px; /* 적절한 패딩 추가 */
+    border-bottom: 1px solid #dddddd3d; /* 하단에 구분선 추가 */
+}
+
+.trophyName {
+    flex: 1;
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.trophyDetail {
+    flex: 1;
+    text-align: right; /* 오른쪽 정렬 */
+}
+
+.dataSource {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ffffff7d;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    font-size: 16px;
 }
 
 th, td {
-    padding: 10px;
+    padding: 12px;
     text-align: center;
+    border-bottom: 1px solid #444;
+    transition: background-color 0.3s;
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 18px;
+}
+
+td {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+td.leftAlign {
+    text-align: left;
+}
+
+.flexContainer {
+    display: flex;
+    align-items: center;
+}
+
+.flexContainer span {
+    margin-left: 10px;
 }
 
 a {
     color: inherit;
     text-decoration: none;
 }
+
+tr:hover td {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+
 
 /* 섹션2 end */
 

@@ -104,7 +104,7 @@
 }
 
 .matchPage .top .topTitle .title {
-    padding-top: 170px;
+    padding-top: 140px;
     text-align: center;
     font-size: 44px;
     font-weight: 500;
@@ -112,13 +112,15 @@
     font-family: 'D-DINExp', sans-serif; /* 폰트 적용 */
 }
 
-.heading-skew-lg {
+/* 도형 백그라운드 */
+
+/*.heading-skew-lg {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     padding: 2.2rem 0;
-    perspective: 1000px; /* 3D 효과를 위한 원근 설정 */
+    perspective: 1000px; *//* 3D 효과를 위한 원근 설정 *//*
 }
 
 .skewContainer {
@@ -134,30 +136,30 @@
     position: absolute;
     left: 40.5%;
     top: 18%;
-    width: 173px; /* 박스 크기를 키워서 로고를 강조 */
-    height: 147px; /* 박스 크기를 키워서 로고를 강조 */
-    /* background: rgba(0, 64, 152, 0.2); */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 그림자 크기와 강도를 높여 강조 */
+    width: 173px; *//* 박스 크기를 키워서 로고를 강조 *//*
+    height: 147px; *//* 박스 크기를 키워서 로고를 강조 *//*
+    *//* background: rgba(0, 64, 152, 0.2); *//*
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); *//* 그림자 크기와 강도를 높여 강조 *//*
     z-index: -1;
-    /* backdrop-filter: blur(5px); */
-    /* transform-origin: center; */
+    *//* backdrop-filter: blur(5px); *//*
+    *//* transform-origin: center; *//*
     clip-path: 100%, 25% 100%);
 }
 
 .skewItem.second {
     transform: skewX(12deg) rotateY(296deg) translateZ(-60px);
-    width: 178px; /* 더 큰 박스를 추가하여 강조 */
+    width: 178px; *//* 더 큰 박스를 추가하여 강조 *//*
     height: 151px;
-    background: rgb(149 154 161 / 10%); /* 색상을 약간 다르게 */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* 더 부드러운 그림자 */
-    z-index: -2; /* 첫 번째 skewItem 아래에 위치 */
+    background: rgb(149 154 161 / 10%); *//* 색상을 약간 다르게 *//*
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); *//* 더 부드러운 그림자 *//*
+    z-index: -2; *//* 첫 번째 skewItem 아래에 위치 *//*
     transform-origin: center;
     clip-path: polygon(0 0, 100% 0, 124% 100%, 20% 100%);
 }
 
 .lightBackground {
     background: rgb(179 196 220 / 15%);
-}
+}*/
 
 
 
@@ -322,13 +324,13 @@
 /* CSS for tabs */
 
         .sub_container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            /* display: flex; */
+            /* justify-content: space-between; */
+            /* align-items: center; */
             max-width: 300px;
-            margin-top: -30px;
-            overflow: hidden;
-            border: none;
+            /* margin-top: -30px; */
+            /* overflow: hidden; */
+            /* border: none; */
             background-color: inherit;
         }
 
@@ -365,6 +367,7 @@
             display: flex;
             justify-content: center;
             margin-top: 60px;
+            margin-bottom: 100px;
         }
 
 .pagination button {
@@ -420,15 +423,6 @@
             margin-top: -50px;
         }
 
-        .matchPage .top .topTitle {
-            padding-top: 0;
-        }
-
-
-        .subTop .top .topTitle {
-            padding-top: 75px;
-            text-align: center;
-        }
 
         .subTop .tabMenu .sub_tabMenu {
             padding-top: 10px;
@@ -459,13 +453,13 @@
         }
 
         .subTop .tabMenu {
-            padding-top: 10px;
+            padding-top: 50px;
             text-align: center;
             font-size: 18px;
             color: #777;
             vertical-align: top;
             border-bottom: 1px solid #e5e5e5;
-            margin-bottom: 10px;
+            /* margin-bottom: 16px; */
         }
 
         .subTop .tabMenu a {

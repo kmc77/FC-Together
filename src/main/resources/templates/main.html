@@ -103,6 +103,19 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 추가 정보 섹션 -->
+            <h3 class="additionalTitle">
+                수상 내역
+                <!--<img src="/img/main/trophy.jpg" alt="Trophy" class="trophyImage">-->
+            </h3>
+            <div class="additionalInfo">
+                <div class="trophyContainer">
+                    <div class="trophies" id="trophies">
+                        <!-- 역대 수상 정보가 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+            <p class="dataSource">* 데이터 출처: joinkfa</p>
         </div>
     </div>
 </div>
@@ -241,7 +254,7 @@
         $('.fade').slick('slickGoTo', index);
     }
 
-    // 섹션2
+    // 섹션 2
     document.addEventListener('DOMContentLoaded', () => {
         let currentActiveTab = 'K5'; // 기본 활성화된 탭 설정
 
@@ -266,6 +279,8 @@
         });
 
         fetchMatchData('K5'); // 기본적으로 K5 리그 데이터 로드
+        fetchLeagueRankings(); // 리그 랭킹 데이터 로드
+        fetchTrophy(); // 수상 내역 데이터 로드
 
         // 탭 버튼 활성화 상태 업데이트
         var tabs = document.querySelectorAll(".leagueTabButton");
@@ -350,209 +365,281 @@
                 }
             });
         });
+
+function fetchTrophy() {
+    fetch('/mainTrophy/getTrophy')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched Trophy:', data);
+            updateTrophy(data);
+            initObserver();
+            addPausePlayEvents(); // 애니메이션 제어 이벤트 추가
+        })
+        .catch(error => console.error('Error fetching Trophy:', error));
+}
+
+function updateTrophy(trophies) {
+    const trophyContainer = document.getElementById('trophies');
+    trophyContainer.innerHTML = '';
+
+    trophies.forEach(trophy => {
+        const trophyElement = document.createElement('div');
+        trophyElement.className = 'trophyItem';
+        trophyElement.innerHTML = `
+            <div class="trophyItemContent">
+                <div class="trophyName">${trophy.tournamentName}</div>
+                <div class="trophyDetail">${trophy.awardList}</div>
+            </div>
+        `;
+        trophyContainer.appendChild(trophyElement);
+    });
+}
+
+function addPausePlayEvents() {
+    const additionalInfo = document.querySelector('.additionalInfo');
+    const trophies = document.querySelector('.trophies');
+
+    additionalInfo.addEventListener('mousedown', () => {
+        trophies.style.animationPlayState = 'paused';
+    });
+
+    additionalInfo.addEventListener('mouseup', () => {
+        trophies.style.animationPlayState = 'running';
+    });
+
+    additionalInfo.addEventListener('mouseleave', () => {
+        trophies.style.animationPlayState = 'running';
+    });
+}
+
+
+        function initObserver() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    } else {
+                        entry.target.classList.remove('animate');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.trophyItem').forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+
+
+        function updateMatchTitles(leagueName) {
+            const matchResult = document.querySelector('.matchResult');
+            const nextSchedule = document.querySelector('.nextSchedule');
+
+            matchResult.innerHTML = `${leagueName} 경기 결과<div class="button-container">
+                <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+            </div>`;
+
+            nextSchedule.innerHTML = `${leagueName} 다가오는 경기<div class="button-container">
+                <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+            </div>`;
+        }
+
+        function fetchMatchData(league) {
+            let leagueName = league;
+            if (league === 'W1') {
+                leagueName = '여성팀';
+            }
+            updateMatchTitles(leagueName);  // 리그 명칭 업데이트
+            fetch(`/mainMatch/get${league}MatchList`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched data:', data);
+                    data.forEach(match => {
+                        const date = new Date(match.matchDate);
+                        const days = ['일', '월', '화', '수', '목', '금', '토'];
+                        match.matchDay = days[date.getDay()]; // 요일 추가
+                    });
+                    animateChange(() => {
+                        displayPastMatches(data);
+                        displayNextMatches(data);
+                        updateActiveTab(league);
+                    });
+                })
+                .catch(error => console.error('Error fetching match data:', error));
+        }
+
+        function fetchLeagueRankings() {
+            fetch('/mainMatch/getLeagueRankings')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched league rankings:', data);
+                    updateLeagueRankings(data);
+                })
+                .catch(error => console.error('Error fetching league rankings:', error));
+        }
+
+        function animateChange(callback) {
+            const pastMatchesContainer = document.getElementById('pastMatches');
+            const nextMatchesContainer = document.getElementById('nextMatches');
+
+            const elementsToAnimate = [
+                pastMatchesContainer,
+                nextMatchesContainer
+            ];
+
+            elementsToAnimate.forEach(element => element.classList.add('fade-exit'));
+
+            setTimeout(() => {
+                elementsToAnimate.forEach(element => element.classList.remove('fade-exit'));
+
+                callback();
+
+                elementsToAnimate.forEach(element => element.classList.add('fade-enter'));
+
+                setTimeout(() => {
+                    elementsToAnimate.forEach(element => element.classList.remove('fade-enter'));
+                }, 100); // Animation duration
+            }, 100); // Animation duration
+        }
+
+        function updateActiveTab(activeLeague) {
+            const tabs = document.querySelectorAll('.leagueTabButton');
+            tabs.forEach(tab => {
+                if (tab.id === `${activeLeague}Tab`) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        function displayPastMatches(matches) {
+            const pastMatchesContainer = document.getElementById('pastMatches');
+            pastMatchesContainer.innerHTML = '';
+
+            const pastMatches = matches.filter(match => match.matchScore);
+            pastMatches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)); // 최근 날짜 순으로 정렬
+            const limitedPastMatches = pastMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+            displayMatchesInChunks(limitedPastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
+        }
+
+        function displayNextMatches(matches) {
+            const nextMatchesContainer = document.getElementById('nextMatches');
+            nextMatchesContainer.innerHTML = '';
+
+            const nextMatches = matches.filter(match => !match.matchScore);
+            nextMatches.sort((a, b) => new Date(a.matchDate) - new Date(b.matchDate)); // 최근 날짜 순으로 정렬
+            const limitedNextMatches = nextMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+            displayMatchesInChunks(limitedNextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
+        }
+
+        function updateLeagueRankings(rankings) {
+            const leagueRankingsContainer = document.getElementById('leagueRankings');
+            leagueRankingsContainer.innerHTML = '';
+
+            rankings.forEach(rank => {
+                const row = document.createElement('tr');
+                const leagueGbText = rank.leagueGb === "S" ? "여성팀" : rank.leagueGb;
+                row.innerHTML = `
+                    <td>${rank.leagueRank}</td>
+                    <td class="leftAlign">
+                        <div class="flexContainer">
+                            <img src="/img/FcTogether-removebg.png" alt="투게더" style="width: 40px; height: 40px;">
+                            <span>${leagueGbText}</span>
+                        </div>
+                    </td>
+                    <td>${rank.gamesPlayed}</td>
+                    <td>${rank.wins}</td>
+                    <td>${rank.draws}</td>
+                    <td>${rank.losses}</td>
+                    <td>${rank.points}</td>
+                `;
+                leagueRankingsContainer.appendChild(row);
+            });
+        }
+
+        function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
+            const chunkSize = 3;
+            let currentPage = 0;
+
+            const nextButton = document.getElementById(nextButtonId);
+            const prevButton = document.getElementById(prevButtonId);
+
+            nextButton.addEventListener('click', () => {
+                currentPage++;
+                renderMatches();
+            });
+
+            prevButton.addEventListener('click', () => {
+                currentPage--;
+                renderMatches();
+            });
+
+            function renderMatches() {
+                container.classList.remove('fade-enter', 'fade-exit');
+                void container.offsetWidth;
+                container.classList.add('fade-exit');
+
+                setTimeout(() => {
+                    container.innerHTML = '';
+                    const start = currentPage * chunkSize;
+                    const end = start + chunkSize;
+                    const currentMatches = matches.slice(start, end);
+
+                    currentMatches.forEach(match => {
+                        const matchElement = document.createElement('div');
+                        matchElement.className = 'matchItem';
+                        matchElement.innerHTML = `
+                            <div class="date">${match.matchDate} (${match.matchDay}) ${match.matchTime}</div>
+                            <div class="matchInfo">
+                                <div class="team home">
+                                    <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                    <div class="name">투게더</div>
+                                </div>
+                                <div class="minfo">
+                                    ${match.matchScore ? `<div class="matchScore">${match.matchScore}</div>` : ''}
+                                    <div class="vs">VS</div>
+                                    ${match.matchRelativeScore ? `<div class="score">${match.matchRelativeScore}</div>` : ''}
+                                </div>
+                                <div class="team away">
+                                    <img src="${match.teamLogo}" alt="${match.teamName}" class="teamLogo">
+                                    <div class="name">${match.teamName}</div>
+                                </div>
+                            </div>
+                            <div class="stadium"><i class="fas fa-map-marker-alt"></i> <span>${match.matchLocation} | ${match.matchHome}</span></div>
+                        `;
+                        container.appendChild(matchElement);
+                    });
+
+                    prevButton.disabled = currentPage === 0;
+                    nextButton.disabled = end >= matches.length;
+
+                    if (prevButton.disabled) {
+                        prevButton.classList.add('disabled');
+                    } else {
+                        prevButton.classList.remove('disabled');
+                    }
+
+                    if (nextButton.disabled) {
+                        nextButton.classList.add('disabled');
+                    } else {
+                        nextButton.classList.remove('disabled');
+                    }
+
+                    container.classList.remove('fade-exit');
+                    container.classList.add('fade-enter');
+                }, 500); // Animation duration
+            }
+
+            renderMatches();
+        }
     });
 
 
-    function updateMatchTitles(leagueName) {
-        const matchResult = document.querySelector('.matchResult');
-        const nextSchedule = document.querySelector('.nextSchedule');
-        const leagueRank = document.querySelector('.leagueRank');
-
-        matchResult.innerHTML = `${leagueName} 경기 결과<div class="button-container">
-            <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
-            <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
-        </div>`;
-
-        nextSchedule.innerHTML = `${leagueName} 다가오는 경기<div class="button-container">
-            <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
-            <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
-        </div>`;
-
-        leagueRank.innerHTML = `${leagueName} 리그 순위`;
-    }
-
-    function fetchMatchData(league) {
-        let leagueName = league;
-        if (league === 'W1') {
-            leagueName = '여성팀';
-        }
-        updateMatchTitles(leagueName);  // 리그 명칭 업데이트
-        fetch(`/mainMatch/get${league}MatchList`)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched data:', data);
-                data.forEach(match => {
-                    const date = new Date(match.matchDate);
-                    const days = ['일', '월', '화', '수', '목', '금', '토'];
-                    match.matchDay = days[date.getDay()]; // 요일 추가
-                });
-                animateChange(() => {
-                    displayPastMatches(data);
-                    displayNextMatches(data);
-                    updateLeagueRankings(data);
-                    updateActiveTab(league);
-                });
-            })
-            .catch(error => console.error('Error fetching match data:', error));
-    }
-
-    function animateChange(callback) {
-        const pastMatchesContainer = document.getElementById('pastMatches');
-        const nextMatchesContainer = document.getElementById('nextMatches');
-        const leagueRankingsContainer = document.getElementById('leagueRankings');
-
-        const elementsToAnimate = [
-            pastMatchesContainer,
-            nextMatchesContainer,
-            leagueRankingsContainer
-        ];
-
-        elementsToAnimate.forEach(element => element.classList.add('fade-exit'));
-
-        setTimeout(() => {
-            elementsToAnimate.forEach(element => element.classList.remove('fade-exit'));
-
-            callback();
-
-            elementsToAnimate.forEach(element => element.classList.add('fade-enter'));
-
-            setTimeout(() => {
-                elementsToAnimate.forEach(element => element.classList.remove('fade-enter'));
-            }, 100); // Animation duration
-        }, 100); // Animation duration
-    }
-
-    function updateActiveTab(activeLeague) {
-        const tabs = document.querySelectorAll('.leagueTabButton');
-        tabs.forEach(tab => {
-            if (tab.id === `${activeLeague}Tab`) {
-                tab.classList.add('active');
-            } else {
-                tab.classList.remove('active');
-            }
-        });
-    }
-
-    function displayPastMatches(matches) {
-        const pastMatchesContainer = document.getElementById('pastMatches');
-        pastMatchesContainer.innerHTML = '';
-
-        const pastMatches = matches.filter(match => match.matchScore);
-        pastMatches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)); // 최근 날짜 순으로 정렬
-        const limitedPastMatches = pastMatches.slice(0, 9); // 9개 데이터만 가져옴
-
-        displayMatchesInChunks(limitedPastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
-    }
-
-    function displayNextMatches(matches) {
-        const nextMatchesContainer = document.getElementById('nextMatches');
-        nextMatchesContainer.innerHTML = '';
-
-        const nextMatches = matches.filter(match => !match.matchScore);
-        nextMatches.sort((a, b) => new Date(a.matchDate) - new Date(b.matchDate)); // 최근 날짜 순으로 정렬
-        const limitedNextMatches = nextMatches.slice(0, 9); // 9개 데이터만 가져옴
-
-        displayMatchesInChunks(limitedNextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
-    }
-
-    function updateLeagueRankings(matches) {
-        const leagueRankingsContainer = document.getElementById('leagueRankings');
-        leagueRankingsContainer.innerHTML = '';
-
-        // 리그 순위 데이터를 가져오는 부분은 가정합니다.
-        // 아래 예시는 match 데이터에서 순위를 가져오는 형태로 수정이 필요합니다.
-        const rankings = matches.filter(match => match.leagueRanking).slice(0, 9);
-
-        rankings.forEach(rank => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${rank.rank}</td>
-                <td>${rank.team}</td>
-                <td>${rank.games}</td>
-                <td>${rank.wins}</td>
-                <td>${rank.draws}</td>
-                <td>${rank.losses}</td>
-                <td>${rank.points}</td>
-            `;
-            leagueRankingsContainer.appendChild(row);
-        });
-    }
-
-    function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
-        const chunkSize = 3;
-        let currentPage = 0;
-
-        const nextButton = document.getElementById(nextButtonId);
-        const prevButton = document.getElementById(prevButtonId);
-
-        nextButton.addEventListener('click', () => {
-            currentPage++;
-            renderMatches();
-        });
-
-        prevButton.addEventListener('click', () => {
-            currentPage--;
-            renderMatches();
-        });
-
-        function renderMatches() {
-            container.classList.remove('fade-enter', 'fade-exit');
-            void container.offsetWidth;
-            container.classList.add('fade-exit');
-
-            setTimeout(() => {
-                container.innerHTML = '';
-                const start = currentPage * chunkSize;
-                const end = start + chunkSize;
-                const currentMatches = matches.slice(start, end);
-
-                currentMatches.forEach(match => {
-                    const matchElement = document.createElement('div');
-                    matchElement.className = 'matchItem';
-                    matchElement.innerHTML = `
-                        <div class="date">${match.matchDate} (${match.matchDay}) ${match.matchTime}</div>
-                        <div class="matchInfo">
-                            <div class="team home">
-                                <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
-                                <div class="name">투게더</div>
-                            </div>
-                            <div class="minfo">
-                                ${match.matchScore ? `<div class="matchScore">${match.matchScore}</div>` : ''}
-                                <div class="vs">VS</div>
-                                ${match.matchRelativeScore ? `<div class="score">${match.matchRelativeScore}</div>` : ''}
-                            </div>
-                            <div class="team away">
-                                <img src="${match.teamLogo}" alt="${match.teamName}" class="teamLogo">
-                                <div class="name">${match.teamName}</div>
-                            </div>
-                        </div>
-                        <div class="stadium"><i class="fas fa-map-marker-alt"></i> <span>${match.matchLocation} | ${match.matchHome}</span></div>
-                    `;
-                    container.appendChild(matchElement);
-                });
-
-                prevButton.disabled = currentPage === 0;
-                nextButton.disabled = end >= matches.length;
-
-                if (prevButton.disabled) {
-                    prevButton.classList.add('disabled');
-                } else {
-                    prevButton.classList.remove('disabled');
-                }
-
-                if (nextButton.disabled) {
-                    nextButton.classList.add('disabled');
-                } else {
-                    nextButton.classList.remove('disabled');
-                }
-
-                container.classList.remove('fade-exit');
-                container.classList.add('fade-enter');
-            }, 500); // Animation duration
-        }
-
-        renderMatches();
-    }
 
 
 
@@ -695,7 +782,7 @@
 
         posts.forEach(post => {
             const postElement = document.createElement('div');
-            postElement.className = 'notice-post'; // 클래스 이름 변경
+            postElement.className = 'notice-post';
 
             // Create a temporary element to manipulate the content
             const tempDiv = document.createElement('div');
@@ -705,7 +792,7 @@
             tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
 
             postElement.innerHTML = `
-                <a href="#" data-url="/media/noticeview?no=${post.noticeNum}" class="notice-post-link" target="_blank">
+                <a href="#" class="notice-post-link" data-id="${post.noticeNum}">
                     <div class="notice-post-title">${post.noticeTitle}</div>
                     <div class="notice-post-content">${tempDiv.innerHTML}</div>
                     <div class="notice-post-timestamp">${new Date(post.noticeDate).toLocaleDateString()}</div>
@@ -718,9 +805,9 @@
         document.querySelectorAll('.notice-post-link').forEach(link => {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
-                const url = this.getAttribute('data-url');
-                console.log('Notice link clicked:', url); // 로그 추가
-                openPageInNewTab(url, localStorage.getItem('accessToken'));
+                const noticeId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/noticeview?no=${noticeId}`, token);
             });
         });
     }
@@ -744,17 +831,17 @@
 
         posts.forEach(post => {
             const postElement = document.createElement('div');
-            postElement.className = 'news-post'; // 클래스 이름 변경
+            postElement.className = 'news-post';
 
-            // 콘텐츠를 조작하기 위한 임시 요소 만들기
+            // Create a temporary element to manipulate the content
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = post.newsContent;
 
-            // 그림 태그 제거
+            // Remove figure tags
             tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
 
             postElement.innerHTML = `
-                <a href="#" data-url="/media/newsview?no=${post.newsIdx}" class="news-post-link" target="_blank">
+                <a href="#" class="news-post-link" data-id="${post.newsIdx}">
                     <div class="news-post-title">${post.newsTitle}</div>
                     <div class="news-post-content">${tempDiv.innerHTML}</div>
                     <div class="news-post-timestamp">${new Date(post.newsRegdate).toLocaleDateString()}</div>
@@ -767,17 +854,14 @@
         document.querySelectorAll('.news-post-link').forEach(link => {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
-                const url = this.getAttribute('data-url');
-                console.log('News link clicked:', url); // 로그 추가
-                openPageInNewTab(url, localStorage.getItem('accessToken'));
+                const newsId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/newsview?no=${newsId}`, token);
             });
         });
     }
 
-    function openPageInNewTab(url, token) {
-        const newWindow = window.open('', '_blank');
-
-        console.log('Opening new tab with URL:', url); // 로그 추가
+    function loadPage(url, token) {
         $.ajax({
             url: url,
             type: 'GET',
@@ -785,21 +869,45 @@
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             },
             success: function(data) {
-                console.log('Page loaded successfully'); // 로그 추가
-                newWindow.document.open();
-                newWindow.document.write(data);
-                newWindow.document.close();
+                $('body').html(data);
+                history.pushState({ url: url }, '', url);
+                bindEvents();
             },
             error: function(xhr, status, error) {
-                console.error('Page load failed:', error); // 로그 추가
+                console.error('Page load failed:', error);
                 if (xhr.status === 401) {
                     alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
                     location.href = '/user/loginform';
                 }
-                newWindow.close();
             }
         });
     }
+
+    function bindEvents() {
+        document.querySelectorAll('.notice-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const noticeId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/noticeview?no=${noticeId}`, token);
+            });
+        });
+
+        document.querySelectorAll('.news-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const newsId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/newsview?no=${newsId}`, token);
+            });
+        });
+
+        document.querySelector('#default-butt').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/media/notice'; // 페이지 새로고침을 위해 window.location.href 사용
+        });
+    }
+
 
 
     function redirectToMore(tabName) {

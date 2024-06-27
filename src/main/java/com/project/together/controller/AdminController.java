@@ -89,6 +89,43 @@ public class AdminController {
     }
 
 
+    // 리그 순위 정보 가져오기
+    @GetMapping("/layout/getLeagueRankings")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Ranking>> getLeagueRankings() {
+        List<Ranking> rankings = adminService.getAllRankings();
+        return ResponseEntity.ok(rankings);
+    }
+
+    // 리그 순위 업데이트
+    @PostMapping("/layout/updateLeagueRankings")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> updateLeagueRankings(@RequestBody List<Ranking> updatedRankings) {
+        adminService.updateRankings(updatedRankings);
+        return ResponseEntity.ok("리그 순위가 성공적으로 업데이트되었습니다.");
+    }
+
+    @PostMapping("/layout/insertLeagueRanking")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> insertLeagueRanking(@RequestBody Ranking newRanking) {
+        adminService.insertRanking(newRanking);
+        return ResponseEntity.ok("새로운 리그 순위가 성공적으로 추가되었습니다.");
+    }
+
+
+    @DeleteMapping("/layout/deleteLeagueRanking")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteLeagueRanking(@RequestBody Map<String, String> request) {
+        String leagueGb = request.get("leagueGb");
+        String teamName = request.get("teamName");
+
+        if (leagueGb == null || teamName == null) {
+            return ResponseEntity.badRequest().body("리그 구분 및 팀 이름을 제공해야 합니다.");
+        }
+
+        adminService.deleteRanking(leagueGb, teamName);
+        return ResponseEntity.ok("리그 순위가 성공적으로 삭제되었습니다.");
+    }
 
 
     // ================================== QnA start

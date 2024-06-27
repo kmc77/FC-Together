@@ -104,7 +104,9 @@ footer {
     justify-content: center;
     gap: 40px;
     flex-wrap: wrap; /* 작은 화면에서는 줄바꿈되도록 설정 */
+    border-top: 2px solid #ccc; /* 위쪽 경계선 추가 */
 }
+
 
 .support.container .item {
     flex: 1 1 150px; /* 최소 크기를 150px로 설정하고, 자동으로 크기 조정 */
@@ -130,7 +132,7 @@ footer {
 .information img {
     float: left;
     margin-bottom: 0;
-    width: 120px;
+    width: 400px;
     height: auto;
     line-height: 0;
     transition: all 0.3s ease;

@@ -43,6 +43,28 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+
+                <!-- 서비스 메뉴 -->
+                <li class="nav-item"
+                    th:classappend="${currentPage == 'popup' ? 'menu-open' : ''}">
+                    <a href="#" class="nav-link"
+                       th:classappend="${currentPage == 'popup' ? 'active' : ''}">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Service
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{./popup}"
+                               th:classappend="${currentPage == 'popup' ? 'active' : ''}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>popup</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item"
                     th:classappend="${currentPage == 'qna'  ? 'menu-open' : ''}">
                     <a href="#" class="nav-link"

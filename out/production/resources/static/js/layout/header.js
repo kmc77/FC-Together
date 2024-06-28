@@ -142,27 +142,34 @@
         location.href = '/user/Logout';
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-    // 이벤트 위임을 사용하여 mouseover와 mouseout 이벤트 처리
-    document.querySelector('.p-nav-global').addEventListener('mouseover', function(event) {
-        var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
-        if (parentMenuItem) {
-            var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
-            if (childMenu && childMenu.children.length > 0) {
-                childMenu.style.display = 'block';
+document.addEventListener('DOMContentLoaded', function() {
+    // 이벤트 위임을 사용하여 mouseover와 mouseout 이벤트 처리 (햄버거 메뉴가 활성화되지 않은 경우에만)
+    function handleMouseOver(event) {
+        if (window.innerWidth > 1330) {
+            var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+            if (parentMenuItem) {
+                var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                if (childMenu && childMenu.children.length > 0) {
+                    childMenu.style.display = 'block';
+                }
             }
         }
-    });
+    }
 
-    document.querySelector('.p-nav-global').addEventListener('mouseout', function(event) {
-        var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
-        if (parentMenuItem) {
-            var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
-            if (childMenu) {
-                childMenu.style.display = 'none';
+    function handleMouseOut(event) {
+        if (window.innerWidth > 1330) {
+            var parentMenuItem = event.target.closest('.p-nav-sub__parent > li');
+            if (parentMenuItem) {
+                var childMenu = parentMenuItem.querySelector('.p-nav-sub__child');
+                if (childMenu) {
+                    childMenu.style.display = 'none';
+                }
             }
         }
-    });
+    }
+
+    document.querySelector('.p-nav-global').addEventListener('mouseover', handleMouseOver);
+    document.querySelector('.p-nav-global').addEventListener('mouseout', handleMouseOut);
 
     // 초기 로드 시 하위 메뉴가 비어 있으면 숨기기
     var subMenus = document.querySelectorAll('.p-nav-sub__child');
@@ -171,4 +178,53 @@
             menu.style.display = 'none';
         }
     });
+
+    // 햄버거 메뉴 클릭 이벤트
+    $('#hamburger-menu').click(function() {
+        var navSub = $('#nav-sub');
+        var utils = $('.utils');
+
+        if (navSub.is(':visible')) {
+            navSub.removeClass('slide-down').addClass('slide-up');
+            utils.removeClass('slide-down').addClass('slide-up');
+            setTimeout(function() {
+                navSub.hide();
+                utils.hide();
+            }, 300); // 슬라이드 업 애니메이션 시간과 동일하게 설정
+        } else {
+            navSub.removeClass('slide-up').addClass('slide-down').show();
+            utils.removeClass('slide-up').addClass('slide-down').show();
+        }
+    });
+
+    // 서브 메뉴 토글 (햄버거 메뉴일 때만 적용)
+    $(document).on('click', '.hamburger-menu + .p-nav-global .p-nav-sub__parent > li > a', function(e) {
+        var submenu = $(this).next('.p-nav-sub__child');
+        if (submenu.length) {
+            e.preventDefault(); // 링크 클릭 기본 동작 방지
+            submenu.slideToggle();
+        }
+    });
+
+    // 화면 크기 변경 시 이벤트 처리
+    window.addEventListener('resize', function() {
+        var width = window.innerWidth;
+        if (width > 1330) {
+            $('#nav-sub').removeClass('slide-down slide-up').show();
+            $('.utils').removeClass('slide-down slide-up').show();
+        } else {
+            $('#nav-sub').hide();
+            $('.utils').hide();
+        }
+    });
+
+    // 페이지 로드 시 화면 크기 체크
+    var width = window.innerWidth;
+    if (width > 1330) {
+        $('#nav-sub').removeClass('slide-down slide-up').show();
+        $('.utils').removeClass('slide-down slide-up').show();
+    } else {
+        $('#nav-sub').hide();
+        $('.utils').hide();
+    }
 });

@@ -1,11 +1,13 @@
 package com.project.together.service;
 
 import com.project.together.domain.*;
+import com.project.together.domain.Popup;
 import com.project.together.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 
 @Service
@@ -42,5 +44,9 @@ public class MainService {
 
     public List<Trophy> getTrophy() {
         return mainMapper.getTrophy();
+    }
+
+    public List<Popup> getAllPopups() {
+        return mainMapper.getAllPopups();
     }
 }

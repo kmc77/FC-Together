@@ -99,7 +99,7 @@ body .gnbBox {
 
 /* 공통 스타일 */
 .p-header {
-    z-index: 99999;
+    z-index: 88888;
     width: 100%;
     height: 80px;
     background-color: #fff;
@@ -265,4 +265,224 @@ body .gnbBox {
 .p-header .p-nav-global .p-nav-sub .p-nav-sub__child li a:hover {
     opacity: 1;
     color: #7cdf80;
+}
+
+/* 반응형 스타일 */
+
+.hamburger-menu {
+    display: none;
+}
+
+/* 슬라이드 다운 애니메이션 */
+@keyframes slide-down {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 80vh; /* 충분히 큰 값으로 설정 */
+        opacity: 1;
+    }
+}
+
+/* 슬라이드 업 애니메이션 */
+@keyframes slide-up {
+    from {
+        max-height: 80vh; /* 충분히 큰 값으로 설정 */
+        opacity: 1;
+    }
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+.slide-down {
+    animation: slide-down 0.3s forwards;
+    margin-right: 20px;
+    background: white;
+    margin-top: 96px;
+    padding: 34px;
+    right: -20px;
+}
+
+.slide-up {
+    animation: slide-up 0.3s forwards;
+}
+
+/* 반응형 설정 */
+@media (max-width: 1600px) {
+    .p-header .p-nav-global {
+        padding-left: 100px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 0 10px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 17px;
+    }
+}
+
+
+@media (max-width: 1500px) {
+    #account-info #adminPage-link {
+        display: none;
+    }
+
+    .p-header .p-nav-global {
+        padding-left: 50px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 0 8px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 16px;
+    }
+}
+
+/* 1400px 이하에서 추가 반응형 설정 */
+@media (max-width: 1400px) {
+    .p-header .p-nav-global {
+        padding-left: 30px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 0 6px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 15px;
+    }
+}
+
+
+/* 1330px 이하에서 햄버거 메뉴 보이기 */
+@media (max-width: 1330px) {
+    .utils {
+        display: none;
+    }
+
+    .utils.slide-down {
+        padding: 10px;
+    }
+
+    .p-header {
+        position: relative;
+    }
+
+    .hamburger-menu {
+        display: block;
+        cursor: pointer;
+        font-size: 30px;
+        padding: 10px;
+        position: absolute;
+        top: 10px;
+        right: 10px; /* 오른쪽 상단에 위치 */
+        z-index: 1001; /* 메뉴 위로 올라오게 설정 */
+    }
+
+    .p-header .p-nav-global {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .p-header .p-nav-global .p-nav-sub {
+        display: none;
+        background-color: #ffffff; /* 배경색을 흰색으로 설정 */
+        padding: 20px; /* 여백을 넉넉하게 설정 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+        border-radius: 1px; /* 모서리를 둥글게 설정 */
+        position: absolute;
+        top: 84px; /* 햄버거 메뉴 아래에 위치 */
+        right: -20px; /* 오른쪽에 맞춤 */
+        z-index: 1000; /* 다른 요소 위에 표시 */
+        width: calc(100% - 20px); /* 화면 너비에 맞게 조정 */
+        max-width: 387px; /* 최대 너비 설정 */
+        min-height: 340px; /* 최소 높이 설정 */
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 10px 0;
+        width: 100%; /* 부모의 너비에 맞춤 */
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 16px; /* 글꼴 크기를 조금 키움 */
+        color: #333; /* 글꼴 색상 설정 */
+        text-decoration: none; /* 밑줄 제거 */
+        display: block;
+        width: 100%; /* 부모의 너비에 맞춤 */
+        padding: 10px 15px; /* 여백 추가 */
+        border-radius: 4px; /* 모서리를 둥글게 설정 */
+        transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 추가 */
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a:hover {
+        background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+    }
+
+    #popup-container {
+        background-color: rgba(0, 0, 0, 0.5); /* 1330px 이하에서도 배경색 유지 */
+    }
+}
+
+
+@media (max-width: 768px) {
+    .p-header .p-nav-global {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 20px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 10px 0;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 680px) {
+    .p-header .p-nav-global {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 20px;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li {
+        padding: 10px 0;
+    }
+
+    .p-header .p-nav-global .p-nav-sub .p-nav-sub__parent > li > a {
+        font-size: 15px;
+    }
+}
+
+/* 560px 이하에서 로고 이미지 변경 */
+@media (max-width: 560px) {
+    .p-site-branding__logo img {
+        content: url('/img/horizontal_symbol.jpg'); /* 변경할 로고 이미지 경로 */
+    }
 }

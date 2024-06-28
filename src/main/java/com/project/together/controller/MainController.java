@@ -1,6 +1,7 @@
 package com.project.together.controller;
 
 import com.project.together.domain.*;
+import com.project.together.domain.Popup;
 import com.project.together.service.FileService;
 import com.project.together.service.MainService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.swing.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,18 +34,28 @@ public class MainController {
     public String mainpage(Model model) {
         List<File> sliderImages = mainService.getImagesForSectionClubPhoto();
         List<ClubVideo> clubVideos = mainService.getAllClubVideos();
+        List<Popup> popups = mainService.getAllPopups();
 
-        // 비디오 목록을 최대 5개까지만 자르기
+        // 현재 날짜를 가져옵니다.
+        LocalDate currentDate = LocalDate.now();
+
+        // 현재 날짜가 게시 날짜와 종료 날짜 사이에 있는 팝업만 필터링합니다.
+        List<Popup> validPopups = popups.stream()
+                .filter(popup -> !popup.getPopupStartDate().isAfter(currentDate) && !popup.getPopupEndDate().isBefore(currentDate))
+                .collect(Collectors.toList());
+
+        // 비디오 목록을 최대 5개까지만 자릅니다.
         if (clubVideos.size() > 5) {
             clubVideos = clubVideos.subList(0, 5);
         }
 
         model.addAttribute("sliderImages", sliderImages);
         model.addAttribute("clubVideos", clubVideos);
+        model.addAttribute("popups", validPopups); // 유효한 팝업만 모델에 추가합니다.
         model.addAttribute("instagramUserId", instagramUserId);
         model.addAttribute("instagramAccessToken", instagramAccessToken);
 
-        return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환
+        return "main"; // 메인 페이지의 Thymeleaf 템플릿 이름을 반환합니다.
     }
 
 

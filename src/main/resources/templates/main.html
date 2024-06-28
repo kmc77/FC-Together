@@ -15,6 +15,27 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
+<!-- popup -->
+<div id="popup-container">
+    <div th:each="popup, index : ${popups}" class="popup hidden" th:classappend="${popup.popupType == 'image'} ? 'image' : 'text'" th:attr="data-id=${popup.id}">
+        <div th:if="${popup.popupType == 'image'}" class="popup-content">
+            <img th:src="${popup.popupImage}" alt="Popup Image">
+        </div>
+        <div th:if="${popup.popupType == 'text'}" class="popup-content">
+            <h3 th:text="${popup.popupTitle}"></h3>
+            <p th:utext="${popup.popupContent}"></p>
+        </div>
+        <div class="popup-buttons">
+            <label class="popup-no-today-container popup-no-today">
+                <input type="radio" name="no-today" class="popup-no-today-radio" aria-label="오늘 하루 안보기">
+                <span class="popup-no-today-text">오늘 하루 안보기</span>
+            </label>
+            <button class="popup-close" aria-label="닫기">닫기</button>
+        </div>
+    </div>
+</div>
+
+
 <!-- 섹션1 -->
 <div class="slick-container">
     <div class="slick fade">
@@ -54,7 +75,9 @@
             </button>
         </div>
 
-        <a href="/match/matchpage#K5" class="leagueMoreButton"><i class="fas fa-plus"></i></a>
+        <a href="/match/matchpage#K5" class="leagueMoreButton">
+            <img src="/img/main/pngegg.png" alt="더보기" class="leagueMoreButton-img">
+        </a>
 
 
         <div class="pastMatch">
@@ -169,7 +192,7 @@
     </div>
     <div class="more-button-container">
         <button id="more-button" class="more-button" onclick="redirectToMore('instagram')">
-            더보기 <i class="fas fa-angle-right"></i>
+            <img src="/img/main/pngegg.png" alt="더보기" class="more-button-img">
         </button>
     </div>
 </div>
@@ -185,6 +208,95 @@
 </script>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const popups = document.querySelectorAll('#popup-container .popup');
+
+        function showPopups() {
+            popups.forEach(popup => {
+                const popupId = popup.getAttribute('data-id');
+                if (!getCookie(`hidePopup-${popupId}`)) {
+                    if (popup.classList.contains('image')) {
+                        const img = popup.querySelector('img');
+                        img.onload = () => {
+                            adjustPopupSize(popup, img);
+                        };
+                    }
+                    popup.classList.remove('hidden');
+                }
+            });
+            const visiblePopups = document.querySelectorAll('#popup-container .popup:not(.hidden)');
+            if (visiblePopups.length > 0) {
+                document.getElementById('popup-container').style.display = 'flex';
+            }
+        }
+
+        function adjustPopupSize(popup, img) {
+            const maxWidth = window.innerWidth * 0.9; // 최대 가로 크기 (윈도우 가로 크기의 90%)
+            const maxHeight = window.innerHeight * 0.9; // 최대 세로 크기 (윈도우 세로 크기의 90%)
+            let width = img.naturalWidth;
+            let height = img.naturalHeight;
+
+            // 이미지 크기가 최대 크기를 넘는 경우 크기를 비율에 맞게 조정
+            if (width > maxWidth || height > maxHeight) {
+                const widthScale = maxWidth / width;
+                const heightScale = maxHeight / height;
+                const scaleFactor = Math.min(widthScale, heightScale);
+                width = width * scaleFactor;
+                height = height * scaleFactor;
+            }
+
+            popup.style.width = width + 'px';
+            popup.style.height = height + 'px';
+        }
+
+        function closePopup(button) {
+            const popup = button.closest('.popup');
+            popup.classList.add('hidden');
+            checkIfAllPopupsHidden();
+        }
+
+        function closePopupForToday(popup) {
+            const popupId = popup.getAttribute('data-id');
+            const date = new Date();
+            date.setTime(date.getTime() + (24 * 60 * 60 * 1000)); // 1일 후
+            document.cookie = `hidePopup-${popupId}=true; expires=" + date.toUTCString() + "; path=/`;
+            popup.classList.add('hidden');
+            checkIfAllPopupsHidden();
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function checkIfAllPopupsHidden() {
+            const allHidden = Array.from(popups).every(popup => popup.classList.contains('hidden'));
+            if (allHidden) {
+                document.getElementById('popup-container').style.display = 'none';
+            }
+        }
+
+        showPopups();
+
+        // 각 팝업의 닫기 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.popup-close').forEach(button => {
+            button.addEventListener('click', function() {
+                closePopup(this);
+            });
+        });
+
+        // 각 팝업의 "오늘 하루 안보기" 라벨에 이벤트 리스너 추가
+        document.querySelectorAll('.popup-no-today').forEach(label => {
+            label.addEventListener('click', function() {
+                const popup = label.closest('.popup');
+                closePopupForToday(popup);
+            });
+        });
+    });
+
+
     // 섹션1
     $(document).ready(function(){
         var $slickElement = $('.fade');
@@ -641,9 +753,6 @@ function addPausePlayEvents() {
 
 
 
-
-
-
     // 섹션3
     console.clear();
     // animation on scroll
@@ -685,6 +794,7 @@ function addPausePlayEvents() {
             });
         }
     });
+
 
     // 섹션4
     $(document).ready(function() {
@@ -1021,7 +1131,6 @@ $(document).ready(function(){
 function goToSlide(index) {
     $('.fade').slick('slickGoTo', index);
 }
-
 
 
 </script>

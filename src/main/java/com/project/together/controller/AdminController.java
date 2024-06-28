@@ -1752,6 +1752,12 @@ public class AdminController {
         return "layout/adminpage";
     }
 
+    @GetMapping("/layout/popup")
+    public String servicePage(Model model) {
+        model.addAttribute("currentPage", "popup");
+        return "layout/common/board/popup";
+    }
+
     @GetMapping("/layout/qna")
     public String oneOneContact(Model model) {
         model.addAttribute("currentPage", "qna");

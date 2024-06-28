@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link th:href="@{/css/main/main.css}" rel="stylesheet"/>
     <th:block th:include="layout/header"></th:block>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -19,56 +18,72 @@
 <!-- 섹션1 -->
 <div class="slick-container">
     <div class="slick fade">
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225301988.jpg}" alt="" class="swiperImg">
+        <div th:each="image : ${sliderImages}">
+            <img th:src="@{${image.filePath}}" alt="" class="swiperImg">
         </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225000752.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225459830.jpg}" alt="" class="swiperImg">
-        </div>
-        <div>
-            <img th:src="@{img/KakaoTalk_20240201_225719222.jpg}" alt="" class="swiperImg">
-        </div>
+    </div>
+    <button class="animated-button" onclick="toggleDropdown()">입단 신청하기</button>
+
+    <!-- 드롭다운 리스트 -->
+    <div class="dropdown" id="dropdown">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7KTSJ6aOTX_W9awQinNvKjXlsvv-9Tg7lCne-HaQBi0WGqg/viewform" target="_blank">남성팀</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNe9NGwfBnXN3zAobKiczd-mP-C2LjUI9djwU32TC6c44lZw/viewform" target="_blank">여성팀</a>
     </div>
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
-    <div class="btn-bullets">
-        <button class="btn-bullet" onclick="goToSlide(0)"></button>
-        <button class="btn-bullet" onclick="goToSlide(1)"></button>
-        <button class="btn-bullet" onclick="goToSlide(2)"></button>
-        <button class="btn-bullet" onclick="goToSlide(3)"></button>
+    <div class="btn-bullets" id="btn-bullets">
+        <!-- 버튼은 JavaScript에서 동적으로 추가됩니다 -->
     </div>
 </div>
-<!--섹션2-->
+<!-- 섹션2 -->
 <div class="matchSchedule">
     <div class="matchImgDiv">
-        <img src="/img/FcTogether.jpg" alt="" class="matchImg">
+        <img src="/img/matchSectionPhoto.webp" alt="" class="matchImg">
+
+        <!-- 리그 구분 탭 추가 -->
+        <div class="leagueTabs">
+            <button class="leagueTabButton" id="k5Tab">
+                <img src="/img/main/k5.png" alt="K5 리그">
+            </button>
+            <button class="leagueTabButton" id="k7Tab">
+                <img src="/img/main/k7.png" alt="K7 리그">
+            </button>
+            <button class="leagueTabButton" id="w1Tab">
+                <img src="/img/main/simin.png" alt="여성팀 리그" id="siminLogo">
+            </button>
+        </div>
+
+        <a href="/match/matchpage#K5" class="leagueMoreButton">
+            <img src="/img/main/pngegg.png" alt="더보기" class="leagueMoreButton-img">
+        </a>
+
+
         <div class="pastMatch">
-            <h2 class="matchResult">지난 경기 결과</h2>
+            <h2 class="matchResult">지난 경기 결과
+                <div class="button-container">
+                    <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </h2>
             <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slide">matchResult1</div>
-                    <div class="slide">matchResult2</div>
-                    <div class="slide">matchResult3</div>
+                <div class="slider-wrapper" id="pastMatches">
+                    <!-- 과거 경기 결과가 여기에 표시됩니다 -->
                 </div>
             </div>
-            <button onclick="prevSlide1()"> <</button>
-            <button onclick="nextSlide1()"> ></button>
         </div>
         <div class="nextMatch">
-            <h2 class="nextSchedule">다음 경기 일정</h2>
+            <h2 class="nextSchedule">다가오는 경기
+                <div class="button-container">
+                    <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </h2>
             <div class="slider-container2">
-                <div class="slider-wrapper2">
-                    <div class="slide2">nextMatch1</div>
-                    <div class="slide2">nextMatch2</div>
-                    <div class="slide2">nextMatch3</div>
+                <div class="slider-wrapper2" id="nextMatches">
+                    <!-- 다음 경기 일정이 여기에 표시됩니다 -->
                 </div>
             </div>
-            <button onclick="prevSlide2()"> <</button>
-            <button onclick="nextSlide2()"> ></button>
         </div>
         <div class="leagueRanking">
             <h3 class="leagueRank">리그 순위</h3>
@@ -85,155 +100,94 @@
                         <th>승점</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>5</td>
-                    </tr>
+                    <tbody id="leagueRankings">
+                    <!-- 리그 순위가 여기에 표시됩니다 -->
                     </tbody>
                 </table>
             </div>
+            <!-- 추가 정보 섹션 -->
+            <h3 class="additionalTitle">
+                수상 내역
+                <!--<img src="/img/main/trophy.jpg" alt="Trophy" class="trophyImage">-->
+            </h3>
+            <div class="additionalInfo">
+                <div class="trophyContainer">
+                    <div class="trophies" id="trophies">
+                        <!-- 역대 수상 정보가 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+            <p class="dataSource">* 데이터 출처: joinkfa</p>
         </div>
     </div>
 </div>
-<!--섹션3-->
+
+
+
+<!-- 섹션3 -->
 <div class="videoDiv">
     <div class="v-story-wrap con">
         <div class="v-story-slider" data-aos="fade-up">
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box block">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
-            </div>
-            <div class="slider-item">
-                <a href="#" class="block">
-                    <div class="img-box">
-                        <img src="/img/FcTogether.jpg" alt="" class="videoImg">
-                    </div>
-                </a>
+            <div class="slider-item" th:each="video, iterStat : ${clubVideos}">
+                <div class="img-box block">
+                    <iframe th:src="@{${video.mvTheOriginUrl}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--섹션4-->
+<!-- 섹션4 -->
 <div class="tab-container">
-
-    <p class="feeds"><strong>투게더 소식</strong></p>
-
+    <p class="contents"><strong>FC Together Contents</strong></p>
     <div class="gnbBox">
         <ul class="mainMenuBox" id="nav-1">
             <li class="slide1"></li>
             <li class="slide2"></li>
             <li class="mainMenu">
-                <a onclick="showTab('all')">전체</a>
+                <a id="tab1-link" data-more-target="instagram" onclick="showTab('tab1', 'instagram')">
+                    INSTAGRAM <i class="fab fa-instagram"></i>
+                </a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab1')">notice</a>
+                <a id="tab2-link" data-more-target="notice" onclick="showTab('tab2', 'notice')">
+                    NOTICE <i class="far fa-bell"></i>
+                </a>
             </li>
             <li class="mainMenu">
-                <a onclick="showTab('tab2')">news</a>
-            </li>
-            <li class="mainMenu">
-                <a onclick="showTab('tab3')">instagram</a>
+                <a id="tab3-link" data-more-target="news" onclick="showTab('tab3', 'news')">
+                    NEWS <i class="far fa-newspaper"></i>
+                </a>
             </li>
         </ul>
-        <script src="/dist/js/header.js"></script>
     </div>
-
-    <div class="tab-content" id="all-content">
-        all
-    </div>
-
     <div class="tab-content" id="tab1-content">
-        notice
+        <!-- 인스타그램 게시글이 여기 표시 -->
     </div>
-
     <div class="tab-content" id="tab2-content">
-        news
+        <!-- 공지사항 게시글이 여기 표시 -->
     </div>
-
     <div class="tab-content" id="tab3-content">
-        instagram
+        <!-- 구단소식 게시글이 여기 표시 -->
+    </div>
+    <div class="more-button-container">
+        <button id="more-button" class="more-button" onclick="redirectToMore('instagram')">
+            <img src="/img/main/pngegg.png" alt="더보기" class="more-button-img">
+        </button>
     </div>
 </div>
+
 
 <footer>
     <th:block th:include="layout/footer"></th:block>
 </footer>
 
+<script th:inline="javascript">
+    var instagramUserId = /*[[${instagramUserId}]]*/ 'defaultUserId';
+    var instagramAccessToken = /*[[${instagramAccessToken}]]*/ 'defaultAccessToken';
+</script>
+
 <script>
-    <!--    섹션1-->
+    // 섹션1
     $(document).ready(function(){
         var $slickElement = $('.fade');
         var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
@@ -245,7 +199,7 @@
             cssEase: 'linear',
             autoplay: true,
             autoplaySpeed: autoplaySpeed, // 자동 재생 속도 설정
-            dots: true
+            dots: false // slick-dots를 비활성화
         });
 
         function startProgressBar() {
@@ -262,14 +216,24 @@
             });
         }
 
-        $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            resetProgressBar();
-        });
+        function updateBullets(slideCount) {
+            var bulletsContainer = $('#btn-bullets');
+            bulletsContainer.empty(); // 기존 버튼들 삭제
+            for (var i = 0; i < slideCount; i++) {
+                var bullet = $('<button class="btn-bullet"></button>');
+                bullet.attr('onclick', 'goToSlide(' + i + ')');
+                bulletsContainer.append(bullet);
+            }
+        }
 
-        $slickElement.on('afterChange', function(event, slick, currentSlide){
+        $slickElement.on('init reInit afterChange', function(event, slick, currentSlide){
             startProgressBar();
             $('.btn-bullet').removeClass('active');
             $('.btn-bullet').eq(currentSlide).addClass('active');
+        });
+
+        $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            resetProgressBar();
         });
 
         $('.btn-bullet').on('click', function(){
@@ -281,53 +245,408 @@
             $slickElement.slick('slickNext');
         });
 
+        // 초기화 후 동적으로 버튼 업데이트
+        var slideCount = $('.fade').slick('getSlick').slideCount;
+        updateBullets(slideCount);
+
         startProgressBar(); // 초기 프로그레스 바 상태 시작
     });
-    <!--    섹션2-->
-    let currentIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-    const sliderWrapper = document.querySelector('.slider-wrapper');
 
-    function showSlide(index) {
-        if (index < 0 || index >= totalSlides) {
-            return;
+    function goToSlide(index) {
+        $('.fade').slick('slickGoTo', index);
+    }
+
+    // 섹션 2
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentActiveTab = 'K5'; // 기본 활성화된 탭 설정
+
+        // 리그 탭 클릭 이벤트 및 초기 데이터 로드
+        document.getElementById('k5Tab').addEventListener('click', () => {
+            if (currentActiveTab !== 'K5') {
+                currentActiveTab = 'K5';
+                fetchMatchData('K5');
+            }
+        });
+        document.getElementById('k7Tab').addEventListener('click', () => {
+            if (currentActiveTab !== 'K7') {
+                currentActiveTab = 'K7';
+                fetchMatchData('K7');
+            }
+        });
+        document.getElementById('w1Tab').addEventListener('click', () => {
+            if (currentActiveTab !== 'W1') {
+                currentActiveTab = 'W1';
+                fetchMatchData('W1');
+            }
+        });
+
+        fetchMatchData('K5'); // 기본적으로 K5 리그 데이터 로드
+        fetchLeagueRankings(); // 리그 랭킹 데이터 로드
+        fetchTrophy(); // 수상 내역 데이터 로드
+
+        // 탭 버튼 활성화 상태 업데이트
+        var tabs = document.querySelectorAll(".leagueTabButton");
+        tabs.forEach(function(tab) {
+            tab.addEventListener("click", function() {
+                if (!tab.classList.contains("active")) {
+                    // 모든 탭에서 active 클래스 제거
+                    tabs.forEach(function(tab) {
+                        tab.classList.remove("active");
+                    });
+
+                    // 클릭된 탭에 active 클래스 추가
+                    tab.classList.add("active");
+                }
+            });
+        });
+
+        document.querySelectorAll('.leagueTabButton').forEach(button => {
+            let clickCount = 0;
+            const emoji = document.createElement('span');
+            emoji.textContent = '🎉';
+            emoji.style.position = 'absolute';
+            emoji.style.fontSize = '24px';
+            emoji.style.top = '5px';
+            emoji.style.right = '5px';
+            emoji.style.display = 'none'; // 초기 상태는 숨김
+            button.style.position = 'relative'; // 부모 요소에 상대 위치 설정
+            button.appendChild(emoji);
+
+            const message50 = document.createElement('div');
+            const text50 = '5️⃣0️⃣🎉';
+            message50.textContent = text50;
+            message50.style.position = 'absolute';
+            message50.style.fontSize = '24px';
+            message50.style.top = '50%';
+            message50.style.left = '50%';
+            message50.style.transform = 'translate(-50%, -50%)';
+            message50.style.display = 'none'; // 초기 상태는 숨김
+            button.appendChild(message50);
+
+            const message100 = document.createElement('div');
+            const text100 = '1️⃣0️⃣0️⃣🎉';
+            message100.textContent = text100;
+            message100.style.position = 'absolute';
+            message100.style.fontSize = '24px';
+            message100.style.top = '50%';
+            message100.style.left = '50%';
+            message100.style.transform = 'translate(-50%, -50%)';
+            message100.style.display = 'none'; // 초기 상태는 숨김
+            button.appendChild(message100);
+
+            button.addEventListener('click', () => {
+                const img = button.querySelector('img');
+                clickCount += 1;
+                img.style.setProperty('--rotation-angle', `${clickCount * 360}deg`);
+                img.classList.add('rotate');
+
+                // 애니메이션이 끝나면 클래스 제거
+                img.addEventListener('animationend', () => {
+                    img.classList.remove('rotate');
+                }, { once: true });
+
+                // 20번 클릭 시 이스터에그 실행
+                if (clickCount === 20) {
+                    emoji.style.display = 'block';
+                    setTimeout(() => {
+                        emoji.style.display = 'none';
+                    }, 3000); // 3초 후 이모지 숨김
+                }
+                if (clickCount === 50) {
+                    message50.style.display = 'block';
+                    setTimeout(() => {
+                        message50.style.display = 'none';
+                    }, 5000);
+                }
+                if (clickCount === 100) {
+                    message100.style.display = 'block';
+                    setTimeout(() => {
+                        message100.style.display = 'none';
+                    }, 8000);
+                    clickCount = 0; // 클릭 횟수 초기화
+                }
+            });
+        });
+
+function fetchTrophy() {
+    fetch('/mainTrophy/getTrophy')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched Trophy:', data);
+            updateTrophy(data);
+            initObserver();
+            addPausePlayEvents(); // 애니메이션 제어 이벤트 추가
+        })
+        .catch(error => console.error('Error fetching Trophy:', error));
+}
+
+function updateTrophy(trophies) {
+    const trophyContainer = document.getElementById('trophies');
+    trophyContainer.innerHTML = '';
+
+    trophies.forEach(trophy => {
+        const trophyElement = document.createElement('div');
+        trophyElement.className = 'trophyItem';
+        trophyElement.innerHTML = `
+            <div class="trophyItemContent">
+                <div class="trophyName">${trophy.tournamentName}</div>
+                <div class="trophyDetail">${trophy.awardList}</div>
+            </div>
+        `;
+        trophyContainer.appendChild(trophyElement);
+    });
+}
+
+function addPausePlayEvents() {
+    const additionalInfo = document.querySelector('.additionalInfo');
+    const trophies = document.querySelector('.trophies');
+
+    additionalInfo.addEventListener('mousedown', () => {
+        trophies.style.animationPlayState = 'paused';
+    });
+
+    additionalInfo.addEventListener('mouseup', () => {
+        trophies.style.animationPlayState = 'running';
+    });
+
+    additionalInfo.addEventListener('mouseleave', () => {
+        trophies.style.animationPlayState = 'running';
+    });
+}
+
+
+        function initObserver() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    } else {
+                        entry.target.classList.remove('animate');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.trophyItem').forEach(item => {
+                observer.observe(item);
+            });
         }
-        const translateValue = -index * 100 + '%';
-        sliderWrapper.style.transform = 'translateX(' + translateValue + ')';
-        currentIndex = index;
-    }
 
-    function prevSlide1() {
-        showSlide(currentIndex - 1);
-    }
 
-    function nextSlide1() {
-        showSlide(currentIndex + 1);
-    }
 
-    let currentIndex2 = 0;
-    const slides2 = document.querySelectorAll('.slide2');
-    const totalSlides2 = slides2.length;
-    const sliderWrapper2 = document.querySelector('.slider-wrapper2');
+        function updateMatchTitles(leagueName) {
+            const matchResult = document.querySelector('.matchResult');
+            const nextSchedule = document.querySelector('.nextSchedule');
 
-    function showSlide2(index) {
-        if (index < 0 || index >= totalSlides2) {
-            return;
+            matchResult.innerHTML = `${leagueName} 경기 결과<div class="button-container">
+                <button id="prevPastButton"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextPastButton"><i class="fas fa-chevron-right"></i></button>
+            </div>`;
+
+            nextSchedule.innerHTML = `${leagueName} 다가오는 경기<div class="button-container">
+                <button id="prevNextButton"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextNextButton"><i class="fas fa-chevron-right"></i></button>
+            </div>`;
         }
-        const translateValue2 = -index * 100 + '%';
-        sliderWrapper2.style.transform = 'translateX(' + translateValue2 + ')';
-        currentIndex2 = index;
-    }
 
-    function prevSlide2() {
-        showSlide2(currentIndex2 - 1);
-    }
+        function fetchMatchData(league) {
+            let leagueName = league;
+            if (league === 'W1') {
+                leagueName = '여성팀';
+            }
+            updateMatchTitles(leagueName);  // 리그 명칭 업데이트
+            fetch(`/mainMatch/get${league}MatchList`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched data:', data);
+                    data.forEach(match => {
+                        const date = new Date(match.matchDate);
+                        const days = ['일', '월', '화', '수', '목', '금', '토'];
+                        match.matchDay = days[date.getDay()]; // 요일 추가
+                    });
+                    animateChange(() => {
+                        displayPastMatches(data);
+                        displayNextMatches(data);
+                        updateActiveTab(league);
+                    });
+                })
+                .catch(error => console.error('Error fetching match data:', error));
+        }
 
-    function nextSlide2() {
-        showSlide2(currentIndex2 + 1);
-    }
-    <!--    섹션3-->
+        function fetchLeagueRankings() {
+            fetch('/mainMatch/getLeagueRankings')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched league rankings:', data);
+                    updateLeagueRankings(data);
+                })
+                .catch(error => console.error('Error fetching league rankings:', error));
+        }
+
+        function animateChange(callback) {
+            const pastMatchesContainer = document.getElementById('pastMatches');
+            const nextMatchesContainer = document.getElementById('nextMatches');
+
+            const elementsToAnimate = [
+                pastMatchesContainer,
+                nextMatchesContainer
+            ];
+
+            elementsToAnimate.forEach(element => element.classList.add('fade-exit'));
+
+            setTimeout(() => {
+                elementsToAnimate.forEach(element => element.classList.remove('fade-exit'));
+
+                callback();
+
+                elementsToAnimate.forEach(element => element.classList.add('fade-enter'));
+
+                setTimeout(() => {
+                    elementsToAnimate.forEach(element => element.classList.remove('fade-enter'));
+                }, 100); // Animation duration
+            }, 100); // Animation duration
+        }
+
+        function updateActiveTab(activeLeague) {
+            const tabs = document.querySelectorAll('.leagueTabButton');
+            tabs.forEach(tab => {
+                if (tab.id === `${activeLeague}Tab`) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        function displayPastMatches(matches) {
+            const pastMatchesContainer = document.getElementById('pastMatches');
+            pastMatchesContainer.innerHTML = '';
+
+            const pastMatches = matches.filter(match => match.matchScore);
+            pastMatches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)); // 최근 날짜 순으로 정렬
+            const limitedPastMatches = pastMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+            displayMatchesInChunks(limitedPastMatches, pastMatchesContainer, 'prevPastButton', 'nextPastButton');
+        }
+
+        function displayNextMatches(matches) {
+            const nextMatchesContainer = document.getElementById('nextMatches');
+            nextMatchesContainer.innerHTML = '';
+
+            const nextMatches = matches.filter(match => !match.matchScore);
+            nextMatches.sort((a, b) => new Date(a.matchDate) - new Date(b.matchDate)); // 최근 날짜 순으로 정렬
+            const limitedNextMatches = nextMatches.slice(0, 9); // 9개 데이터만 가져옴
+
+            displayMatchesInChunks(limitedNextMatches, nextMatchesContainer, 'prevNextButton', 'nextNextButton');
+        }
+
+        function updateLeagueRankings(rankings) {
+            const leagueRankingsContainer = document.getElementById('leagueRankings');
+            leagueRankingsContainer.innerHTML = '';
+
+            rankings.forEach(rank => {
+                const row = document.createElement('tr');
+                const leagueGbText = rank.leagueGb === "S" ? "여성팀" : rank.leagueGb;
+                row.innerHTML = `
+                    <td>${rank.leagueRank}</td>
+                    <td class="leftAlign">
+                        <div class="flexContainer">
+                            <img src="/img/FcTogether-removebg.png" alt="투게더" style="width: 40px; height: 40px;">
+                            <span>${leagueGbText}</span>
+                        </div>
+                    </td>
+                    <td>${rank.gamesPlayed}</td>
+                    <td>${rank.wins}</td>
+                    <td>${rank.draws}</td>
+                    <td>${rank.losses}</td>
+                    <td>${rank.points}</td>
+                `;
+                leagueRankingsContainer.appendChild(row);
+            });
+        }
+
+        function displayMatchesInChunks(matches, container, prevButtonId, nextButtonId) {
+            const chunkSize = 3;
+            let currentPage = 0;
+
+            const nextButton = document.getElementById(nextButtonId);
+            const prevButton = document.getElementById(prevButtonId);
+
+            nextButton.addEventListener('click', () => {
+                currentPage++;
+                renderMatches();
+            });
+
+            prevButton.addEventListener('click', () => {
+                currentPage--;
+                renderMatches();
+            });
+
+            function renderMatches() {
+                container.classList.remove('fade-enter', 'fade-exit');
+                void container.offsetWidth;
+                container.classList.add('fade-exit');
+
+                setTimeout(() => {
+                    container.innerHTML = '';
+                    const start = currentPage * chunkSize;
+                    const end = start + chunkSize;
+                    const currentMatches = matches.slice(start, end);
+
+                    currentMatches.forEach(match => {
+                        const matchElement = document.createElement('div');
+                        matchElement.className = 'matchItem';
+                        matchElement.innerHTML = `
+                            <div class="date">${match.matchDate} (${match.matchDay}) ${match.matchTime}</div>
+                            <div class="matchInfo">
+                                <div class="team home">
+                                    <img src="/img/FcTogether-removebg.png" alt="투게더" class="teamLogo">
+                                    <div class="name">투게더</div>
+                                </div>
+                                <div class="minfo">
+                                    ${match.matchScore ? `<div class="matchScore">${match.matchScore}</div>` : ''}
+                                    <div class="vs">VS</div>
+                                    ${match.matchRelativeScore ? `<div class="score">${match.matchRelativeScore}</div>` : ''}
+                                </div>
+                                <div class="team away">
+                                    <img src="${match.teamLogo}" alt="${match.teamName}" class="teamLogo">
+                                    <div class="name">${match.teamName}</div>
+                                </div>
+                            </div>
+                            <div class="stadium"><i class="fas fa-map-marker-alt"></i> <span>${match.matchLocation} | ${match.matchHome}</span></div>
+                        `;
+                        container.appendChild(matchElement);
+                    });
+
+                    prevButton.disabled = currentPage === 0;
+                    nextButton.disabled = end >= matches.length;
+
+                    if (prevButton.disabled) {
+                        prevButton.classList.add('disabled');
+                    } else {
+                        prevButton.classList.remove('disabled');
+                    }
+
+                    if (nextButton.disabled) {
+                        nextButton.classList.add('disabled');
+                    } else {
+                        nextButton.classList.remove('disabled');
+                    }
+
+                    container.classList.remove('fade-exit');
+                    container.classList.add('fade-enter');
+                }, 500); // Animation duration
+            }
+
+            renderMatches();
+        }
+    });
+
+
+
+
+
+
+    // 섹션3
     console.clear();
     // animation on scroll
     AOS.init({
@@ -368,14 +687,346 @@
             });
         }
     });
-    <!--    섹션4-->
-    $(document).ready(function () {
-        showTab('all');
+
+    // 섹션4
+    $(document).ready(function() {
+        var firstTabPosition = $("#tab1-link").parent().position();
+        var firstTabWidth = $("#tab1-link").parent().width();
+
+        $("#nav-1 .slide1").css({ opacity: 1, left: firstTabPosition.left, width: firstTabWidth });
+
+        $("#nav-1 a").on("click", function() {
+            var position = $(this).parent().position();
+            var width = $(this).parent().width();
+            $("#nav-1 .slide1").css({ opacity: 1, left: position.left, width: width });
+            var tabId = $(this).attr('id').replace('-link', '');
+            showTab(tabId, $(this).attr('data-more-target'));
+        });
+
+        $("#nav-1 a").on("mouseover", function() {
+            var position = $(this).parent().position();
+            var width = $(this).parent().width();
+            $("#nav-1 .slide2").css({
+                opacity: 1, left: position.left, width: width
+            }).addClass("squeeze");
+        });
+
+        $("#nav-1 a").on("mouseout", function() {
+            $("#nav-1 .slide2").css({ opacity: 0 }).removeClass("squeeze");
+        });
+
+        showTab('tab1', 'instagram'); // 인스타그램 탭을 첫 번째로 설정
+        $('#tab1-link').addClass('active'); // 탭 클릭 효과 추가
+
+        // 인스타그램 게시물 불러오기
+        fetchInstagramPosts();
     });
-    function showTab(tabName) {
-        $('.tab-content').removeClass('active');
-        $('#' + tabName + '-content').addClass('active');
+
+    document.querySelector("#tab1-link").addEventListener('click', fetchInstagramPosts);
+    document.querySelector("#tab2-link").addEventListener('click', fetchNoticePosts);
+    document.querySelector("#tab3-link").addEventListener('click', fetchNewsPosts);
+
+    let longLivedAccessToken = instagramAccessToken; // 민감 정보 주입
+
+    const instagramPostsEndpoint = "https://graph.instagram.com/me/media";
+
+    async function fetchInstagramPosts() {
+        try {
+            const response = await fetch(`${instagramPostsEndpoint}?fields=id,caption,media_type,media_url,permalink,timestamp,thumbnail_url&access_token=${longLivedAccessToken}&limit=12`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayInstagramPosts(data.data);
+        } catch (error) {
+            console.error("Error fetching Instagram posts:", error);
+        }
     }
+
+    function displayInstagramPosts(posts) {
+        const instagramContent = document.getElementById('tab1-content');
+        instagramContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'instagram-post';
+
+            const mediaUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+
+            postElement.innerHTML = `
+                <a href="${post.permalink}" target="_blank" class="instagram-post-link">
+                    <div class="instagram-post-image" style="background-image: url('${mediaUrl}');"></div>
+                    <div class="instagram-post-caption">${post.caption}</div>
+                    <div class="instagram-post-timestamp">${new Date(post.timestamp).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            instagramContent.appendChild(postElement);
+        });
+    }
+
+    async function fetchNoticePosts() {
+        try {
+            const response = await fetch('/media/notice/list?start=0&limit=12');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayNoticePosts(data);
+        } catch (error) {
+            console.error("Error fetching notice posts:", error);
+        }
+    }
+
+    function displayNoticePosts(posts) {
+        const noticeContent = document.getElementById('tab2-content');
+        noticeContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'notice-post';
+
+            // Create a temporary element to manipulate the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.noticeContent;
+
+            // Remove figure tags
+            tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
+
+            postElement.innerHTML = `
+                <a href="#" class="notice-post-link" data-id="${post.noticeNum}">
+                    <div class="notice-post-title">${post.noticeTitle}</div>
+                    <div class="notice-post-content">${tempDiv.innerHTML}</div>
+                    <div class="notice-post-timestamp">${new Date(post.noticeDate).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            noticeContent.appendChild(postElement);
+        });
+
+        document.querySelectorAll('.notice-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const noticeId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/noticeview?no=${noticeId}`, token);
+            });
+        });
+    }
+
+    async function fetchNewsPosts() {
+        try {
+            const response = await fetch('/media/news/list?start=0&limit=12');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            displayNewsPosts(data);
+        } catch (error) {
+            console.error("Error fetching news posts:", error);
+        }
+    }
+
+    function displayNewsPosts(posts) {
+        const newsContent = document.getElementById('tab3-content');
+        newsContent.innerHTML = '';
+
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'news-post';
+
+            // Create a temporary element to manipulate the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.newsContent;
+
+            // Remove figure tags
+            tempDiv.querySelectorAll('figure').forEach(figure => figure.remove());
+
+            postElement.innerHTML = `
+                <a href="#" class="news-post-link" data-id="${post.newsIdx}">
+                    <div class="news-post-title">${post.newsTitle}</div>
+                    <div class="news-post-content">${tempDiv.innerHTML}</div>
+                    <div class="news-post-timestamp">${new Date(post.newsRegdate).toLocaleDateString()}</div>
+                </a>
+            `;
+
+            newsContent.appendChild(postElement);
+        });
+
+        document.querySelectorAll('.news-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const newsId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/newsview?no=${newsId}`, token);
+            });
+        });
+    }
+
+    function loadPage(url, token) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            success: function(data) {
+                $('body').html(data);
+                history.pushState({ url: url }, '', url);
+                bindEvents();
+            },
+            error: function(xhr, status, error) {
+                console.error('Page load failed:', error);
+                if (xhr.status === 401) {
+                    alert('접근 권한이 없습니다. 로그인 또는 회원가입 후 이용해 주세요.');
+                    location.href = '/user/loginform';
+                }
+            }
+        });
+    }
+
+    function bindEvents() {
+        document.querySelectorAll('.notice-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const noticeId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/noticeview?no=${noticeId}`, token);
+            });
+        });
+
+        document.querySelectorAll('.news-post-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const newsId = this.getAttribute('data-id');
+                const token = localStorage.getItem('accessToken');
+                loadPage(`/media/newsview?no=${newsId}`, token);
+            });
+        });
+
+        document.querySelector('#default-butt').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/media/notice'; // 페이지 새로고침을 위해 window.location.href 사용
+        });
+    }
+
+
+
+    function redirectToMore(tabName) {
+        switch(tabName) {
+            case 'instagram':
+                window.location.href = 'https://www.instagram.com/fc_together_seongdong_gu/';
+                break;
+            case 'notice':
+                window.location.href = '/media/notice';
+                break;
+            case 'news':
+                window.location.href = '/media/news';
+                break;
+            default:
+                console.error('Invalid tab name:', tabName);
+        }
+    }
+
+    function showTab(tabName, moreButtonTarget) {
+        $('.tab-content').removeClass('active').hide(); // 모든 탭 콘텐츠를 숨김
+        $('#' + tabName + '-content').addClass('active').show(); // 선택한 탭 콘텐츠만 보임
+        $('.mainMenuBox .mainMenu a').removeClass('active'); // 모든 탭 링크에서 active 클래스 제거
+        $('#' + tabName + '-link').addClass('active'); // 선택한 탭 링크에 active 클래스 추가
+        $('#more-button').attr('onclick', `redirectToMore('${moreButtonTarget}')`); // 더보기 버튼의 onclick 이벤트를 업데이트
+    }
+
+
+function toggleDropdown() {
+    var dropdown = document.getElementById('dropdown');
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+//입단 신청하기 버튼
+function toggleDropdown() {
+    var dropdown = document.getElementById('dropdown');
+    if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+    } else {
+        dropdown.classList.add('show');
+    }
+}
+
+$(document).ready(function(){
+    var $slickElement = $('.fade');
+    var autoplaySpeed = 3000; // 자동 재생 속도를 설정 (조금 늦춤)
+
+    $slickElement.slick({
+        infinite: true,
+        speed: 300, // 애니메이션 속도를 빠르게 설정
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: autoplaySpeed, // 자동 재생 속도 설정
+        dots: false // slick-dots를 비활성화
+    });
+
+    function startProgressBar() {
+        $(".progress-bar").css({
+            width: "100%",
+            transition: "width " + autoplaySpeed + "ms linear"
+        });
+    }
+
+    function resetProgressBar() {
+        $(".progress-bar").css({
+            width: 0,
+            transition: "width 0s"
+        });
+    }
+
+    function updateBullets(slideCount) {
+        var bulletsContainer = $('#btn-bullets');
+        bulletsContainer.empty(); // 기존 버튼들 삭제
+        for (var i = 0; i < slideCount; i++) {
+            var bullet = $('<button class="btn-bullet"></button>');
+            bullet.attr('onclick', 'goToSlide(' + i + ')');
+            bulletsContainer.append(bullet);
+        }
+    }
+
+    $slickElement.on('init reInit afterChange', function(event, slick, currentSlide){
+        startProgressBar();
+        $('.btn-bullet').removeClass('active');
+        $('.btn-bullet').eq(currentSlide).addClass('active');
+    });
+
+    $slickElement.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+        resetProgressBar();
+    });
+
+    $('.btn-bullet').on('click', function(){
+        var index = $(this).index();
+        $slickElement.slick('slickGoTo', index);
+    });
+
+    $('.swiperImg').on('click', function(){
+        $slickElement.slick('slickNext');
+    });
+
+    // 초기화 후 동적으로 버튼 업데이트
+    var slideCount = $('.fade').slick('getSlick').slideCount;
+    updateBullets(slideCount);
+
+    startProgressBar(); // 초기 프로그레스 바 상태 시작
+});
+
+function goToSlide(index) {
+    $('.fade').slick('slickGoTo', index);
+}
+
+
+
 </script>
+
 </body>
 </html>

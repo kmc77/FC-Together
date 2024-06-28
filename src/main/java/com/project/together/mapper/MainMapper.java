@@ -1,8 +1,10 @@
 package com.project.together.mapper;
 
 import com.project.together.domain.*;
+import com.project.together.domain.Popup;
 import org.apache.ibatis.annotations.Mapper;
 
+import javax.swing.*;
 import java.util.List;
 
 @Mapper
@@ -20,4 +22,6 @@ public interface MainMapper {
     List<Ranking> getAllRankings();
 
     List<Trophy> getTrophy();
+
+    List<Popup> getAllPopups();
 }

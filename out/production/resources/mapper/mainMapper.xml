@@ -44,5 +44,9 @@
         SELECT * FROM trophy
     </select>
 
+    <select id="getAllPopups" resultType="com.project.together.domain.Popup">
+        SELECT * FROM Popup
+    </select>
+
 
 </mapper>
